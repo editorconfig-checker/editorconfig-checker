@@ -7,4 +7,4 @@ script:
   - make build
 
 notifications:
-email: false
+    email: false
