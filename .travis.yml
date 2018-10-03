@@ -1,0 +1,10 @@
+language: go
+
+go:
+  - 1.11
+
+script:
+  - make build
+
+notifications:
+email: false
