@@ -5,7 +5,9 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"os/exec"
 	"path/filepath"
+	"strings"
 )
 
 // version
@@ -83,10 +85,28 @@ func contains(slice []string, element string) bool {
 	return false
 }
 
+// Checks if the file is ignored by the gitignore
+// TODO: Remove dependency to git?
+func isIgnoredByGitignore(file string) bool {
+	isInGitFolder(file)
+	cmd := exec.Command("git", "check-ignore", file)
+	err := cmd.Run()
+	if err != nil {
+		return false
+	}
+
+	return true
+}
+
+// Returns wether the file is inside a git folder or not
+func isInGitFolder(file string) bool {
+	return strings.Contains(filepath.ToSlash(file), ".git/")
+}
+
 // Adds a file to a slice if it isn't already in there
 // and returns the new slice
 func addToFiles(files []string, file string) []string {
-	if !contains(files, file) {
+	if !contains(files, file) && !isIgnoredByGitignore(file) && !isInGitFolder(file) {
 		return append(files, file)
 	}
 
@@ -94,7 +114,7 @@ func addToFiles(files []string, file string) []string {
 }
 
 // Returns all files which should be checked
-// @TODO: filtering/gitignore
+// TODO: Manual excludes
 func getFiles() []string {
 	var files []string
 
@@ -138,6 +158,7 @@ func getFiles() []string {
 	return files
 }
 
+// Main function, dude
 func main() {
 	// Check for returnworthy params
 	switch {
@@ -155,6 +176,7 @@ func main() {
 
 	// do real stuff aka validation
 	fmt.Println(files)
+	fmt.Printf("%d files found!\n", len(files))
 
 	fmt.Println("Run Forrest, run!!!")
 }
