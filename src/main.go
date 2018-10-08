@@ -4,6 +4,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"gopkg.in/editorconfig/editorconfig-core-go.v1"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -167,14 +168,12 @@ func getFiles() []string {
 }
 
 // Validates a single file and returns the errors
-func validateFile(file string) []ValidationError {
+func validateFile(file string, editorconfig *editorconfig.Definition) []ValidationError {
 	var errors []ValidationError
 
 	// TODO: actual validation
-	for i := 0; i < 10; i++ {
-		validationError := ValidationError{i, strconv.Itoa(i)}
-		errors = append(errors, validationError)
-	}
+	validationError := ValidationError{1, strconv.Itoa(1)}
+	errors = append(errors, validationError)
 
 	return errors
 }
@@ -184,7 +183,12 @@ func validateFiles(files []string) []ValidationErrors {
 	var validationErrors []ValidationErrors
 
 	for _, file := range files {
-		validationErrors = append(validationErrors, ValidationErrors{file, validateFile(file)})
+		editorconfig, err := editorconfig.GetDefinitionForFilename(file)
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println(editorconfig)
+		validationErrors = append(validationErrors, ValidationErrors{file, validateFile(file, editorconfig)})
 	}
 
 	return validationErrors
