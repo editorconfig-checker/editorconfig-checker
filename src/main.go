@@ -105,15 +105,19 @@ func isIgnoredByGitignore(file string) bool {
 	return true
 }
 
-// Returns wether the file is inside a git folder or not
-func isInGitFolder(file string) bool {
-	return strings.Contains(filepath.ToSlash(file), ".git/")
+// Returns wether the file is inside an unwanted folder
+// TODO: This is only here for performance for now
+// TODO: At least make this configurable i.e. .ecrc/.editorconfig-checkerrc
+func isInDefaultExcludes(file string) bool {
+	return strings.Contains(filepath.ToSlash(file), ".git/") ||
+		strings.Contains(filepath.ToSlash(file), "node_modules/") ||
+		strings.Contains(filepath.ToSlash(file), "vendor")
 }
 
 // Adds a file to a slice if it isn't already in there
 // and returns the new slice
 func addToFiles(files []string, file string) []string {
-	if !contains(files, file) && !isInGitFolder(file) && !isIgnoredByGitignore(file) {
+	if !contains(files, file) && !isInDefaultExcludes(file) && !isIgnoredByGitignore(file) {
 		return append(files, file)
 	}
 
@@ -187,7 +191,7 @@ func validateFiles(files []string) []ValidationErrors {
 		if err != nil {
 			panic(err)
 		}
-		fmt.Println(editorconfig)
+		// fmt.Println(editorconfig)
 		validationErrors = append(validationErrors, ValidationErrors{file, validateFile(file, editorconfig)})
 	}
 
