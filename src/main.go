@@ -2,12 +2,14 @@
 package main
 
 import (
+	"bufio"
 	"flag"
 	"fmt"
 	"gopkg.in/editorconfig/editorconfig-core-go.v1"
 	"os"
 	"os/exec"
 	"path/filepath"
+	"regexp"
 	"strconv"
 	"strings"
 )
@@ -111,7 +113,8 @@ func isIgnoredByGitignore(file string) bool {
 func isInDefaultExcludes(file string) bool {
 	return strings.Contains(filepath.ToSlash(file), ".git/") ||
 		strings.Contains(filepath.ToSlash(file), "node_modules/") ||
-		strings.Contains(filepath.ToSlash(file), "vendor")
+		strings.Contains(filepath.ToSlash(file), "vendor") ||
+		strings.HasSuffix(file, ".png")
 }
 
 // Adds a file to a slice if it isn't already in there
@@ -171,13 +174,69 @@ func getFiles() []string {
 	return files
 }
 
-// Validates a single file and returns the errors
-func validateFile(file string, editorconfig *editorconfig.Definition) []ValidationError {
-	var errors []ValidationError
+func readLinesOfFile(file string) []string {
+	var lines []string
+	fileHandle, _ := os.Open(file)
+	defer fileHandle.Close()
+	fileScanner := bufio.NewScanner(fileHandle)
 
-	// TODO: actual validation
-	validationError := ValidationError{1, strconv.Itoa(1)}
-	errors = append(errors, validationError)
+	for fileScanner.Scan() {
+		lines = append(lines, fileScanner.Text())
+	}
+
+	return lines
+}
+
+// Validates if a file has trailing whitespace if the trimTrailingWhitespace parameter is true
+func trailingWhitespaceValidator(line string, trimTrailingWhitespace bool) bool {
+	if trimTrailingWhitespace {
+		// TODO: Maybe check for trailing tab
+		return !strings.HasSuffix(line, " ")
+	}
+
+	return true
+}
+
+// Validates if a file uses correct indent_size for spaces
+func spaceValidator(line string, indentStyle string, indentSize int) bool {
+	if indentStyle == "space" && indentSize > 0 && len(line) > 0 {
+		// TODO: Adjust this regex
+		matched, err := regexp.MatchString("( {"+strconv.Itoa(indentSize)+"})*\\S", line)
+		fmt.Println("( {"+strconv.Itoa(indentSize)+"})*\\S", line)
+		if err != nil {
+			panic(err)
+		}
+
+		return matched
+	}
+
+	return true
+}
+
+// Validates a single file and returns the errors
+func validateFile(file string) []ValidationError {
+	var errors []ValidationError
+	lines := readLinesOfFile(file)
+
+	editorconfig, err := editorconfig.GetDefinitionForFilename(file)
+	if err != nil {
+		panic(err)
+	}
+
+	for lineNumber, line := range lines {
+		if !trailingWhitespaceValidator(line, editorconfig.Raw["trim_trailing_whitespace"] == "true") {
+			errors = append(errors, ValidationError{lineNumber, "TRAILING WHITESPACE VALIDATOR FAILED"})
+		}
+
+		indent_size, err := strconv.Atoi(editorconfig.Raw["indent_size"])
+		if err != nil {
+			panic(err)
+		}
+
+		if !spaceValidator(line, editorconfig.Raw["indent_style"], indent_size) {
+			errors = append(errors, ValidationError{lineNumber, "SPACES VALIDATOR FAILED"})
+		}
+	}
 
 	return errors
 }
@@ -187,12 +246,7 @@ func validateFiles(files []string) []ValidationErrors {
 	var validationErrors []ValidationErrors
 
 	for _, file := range files {
-		editorconfig, err := editorconfig.GetDefinitionForFilename(file)
-		if err != nil {
-			panic(err)
-		}
-		// fmt.Println(editorconfig)
-		validationErrors = append(validationErrors, ValidationErrors{file, validateFile(file, editorconfig)})
+		validationErrors = append(validationErrors, ValidationErrors{file, validateFile(file)})
 	}
 
 	return validationErrors
