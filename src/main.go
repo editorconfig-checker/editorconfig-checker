@@ -26,13 +26,13 @@ type Params struct {
 	rawFiles []string
 }
 
-// Represents one validation error
+// ValidationError represents one validation error
 type ValidationError struct {
 	line        int
 	description string
 }
 
-// Represents which errors occured in a file
+// ValidationErrors represents which errors occurred in a file
 type ValidationErrors struct {
 	file   string
 	errors []ValidationError
@@ -202,12 +202,12 @@ func validateFile(file string) []ValidationError {
 			errors = append(errors, ValidationError{lineNumber, "TRAILING WHITESPACE VALIDATOR FAILED"})
 		}
 
-		indent_size, err := strconv.Atoi(editorconfig.Raw["indent_size"])
+		indentSize, err := strconv.Atoi(editorconfig.Raw["indent_size"])
 		if err != nil {
 			panic(err)
 		}
 
-		if !validators.Space(line, editorconfig.Raw["indent_style"], indent_size) {
+		if !validators.Space(line, editorconfig.Raw["indent_style"], indentSize) {
 			errors = append(errors, ValidationError{lineNumber, "SPACES VALIDATOR FAILED"})
 		}
 	}

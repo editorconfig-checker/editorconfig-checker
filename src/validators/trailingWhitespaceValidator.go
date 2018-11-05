@@ -7,7 +7,8 @@ import (
 // Validates if a file has trailing whitespace if the trimTrailingWhitespace parameter is true
 func TrailingWhitespace(line string, trimTrailingWhitespace bool) bool {
 	if trimTrailingWhitespace {
-		matched, err := regexp.MatchString("^.*[ \t]+$", line)
+		regexpPattern := "^.*[ \t]+$"
+		matched, err := regexp.MatchString(regexpPattern, line)
 
 		if err != nil {
 			panic(err)

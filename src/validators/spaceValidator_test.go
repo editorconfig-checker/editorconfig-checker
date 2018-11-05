@@ -25,6 +25,10 @@ func TestSpaceValidator(t *testing.T) {
 		t.Error("Expected if indentStyle is set to tab to return true")
 	}
 
+	if !Space("x", "tab", 4) {
+		t.Error("Expected if indentStyle is set to tab to return true")
+	}
+
 	if !Space("    x", "tab", 4) {
 		t.Error("Expected if indentStyle is set to tab to return true")
 	}
