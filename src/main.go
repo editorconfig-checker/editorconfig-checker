@@ -10,7 +10,6 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
-	"regexp"
 	"strconv"
 	"strings"
 )
@@ -188,22 +187,6 @@ func readLinesOfFile(file string) []string {
 	return lines
 }
 
-// Validates if a file uses correct indent_size for spaces
-func spaceValidator(line string, indentStyle string, indentSize int) bool {
-	if indentStyle == "space" && indentSize > 0 && len(line) > 0 {
-		// TODO: Adjust this regex
-		matched, err := regexp.MatchString("( {"+strconv.Itoa(indentSize)+"})*\\S", line)
-		fmt.Println("( {"+strconv.Itoa(indentSize)+"})*\\S", line)
-		if err != nil {
-			panic(err)
-		}
-
-		return matched
-	}
-
-	return true
-}
-
 // Validates a single file and returns the errors
 func validateFile(file string) []ValidationError {
 	var errors []ValidationError
@@ -224,7 +207,7 @@ func validateFile(file string) []ValidationError {
 			panic(err)
 		}
 
-		if !spaceValidator(line, editorconfig.Raw["indent_style"], indent_size) {
+		if !validators.Space(line, editorconfig.Raw["indent_style"], indent_size) {
 			errors = append(errors, ValidationError{lineNumber, "SPACES VALIDATOR FAILED"})
 		}
 	}
