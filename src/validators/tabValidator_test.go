@@ -4,36 +4,36 @@ import (
 	"testing"
 )
 
-func TestSpaceValidator(t *testing.T) {
-	if !Space("", "space", 4) {
+func TestTabValidator(t *testing.T) {
+	if !Tab("", "tab") {
 		t.Error("Expected empty line to return true regardless of parameter")
 	}
 
-	if !Space("x", "space", 4) {
+	if !Tab("x", "tab") {
 		t.Error("Expected line which starts at the beginning to return true")
 	}
 
-	if !Space("    x", "space", 4) {
+	if !Tab("	x", "tab") {
 		t.Error("Expected correctly indented line to return true")
 	}
 
-	if Space("   x", "space", 4) {
+	if Tab(" x", "tab") {
 		t.Error("Expected falsy indented line to return false")
 	}
 
-	if !Space("", "tab", 4) {
+	if !Tab("", "space") {
 		t.Error("Expected if indentStyle is set to tab to return true")
 	}
 
-	if !Space("x", "tab", 4) {
+	if !Tab("x", "space") {
 		t.Error("Expected if indentStyle is set to tab to return true")
 	}
 
-	if !Space("    x", "tab", 4) {
+	if !Tab("	x", "space") {
 		t.Error("Expected if indentStyle is set to tab to return true")
 	}
 
-	if !Space("   x", "tab", 4) {
+	if !Tab("   x", "space") {
 		t.Error("Expected if indentStyle is set to tab to return true")
 	}
 }

@@ -7,9 +7,9 @@ import (
 )
 
 // Validates if a file is indented correctly if indentStyle is set to "space"
-func Space(line string, indentStyle string, indentSize int) bool {
-	if indentStyle == "space" && len(line) > 0 && indentSize > 0 {
-		regexpPattern := fmt.Sprintf("^( {%d})*[^ \t]", indentSize)
+func Tab(line string, indentStyle string) bool {
+	if indentStyle == "tab" && len(line) > 0 {
+		regexpPattern := fmt.Sprintf("^\t*[^ \t]")
 		matched, err := regexp.MatchString(regexpPattern, line)
 
 		if err != nil {
