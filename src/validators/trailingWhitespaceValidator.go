@@ -4,7 +4,7 @@ import (
 	"regexp"
 )
 
-// Validates if a file has trailing whitespace if the trimTrailingWhitespace parameter is true
+// TrailingWhitespace validates if a file has trailing whitespace if the trimTrailingWhitespace parameter is true
 func TrailingWhitespace(line string, trimTrailingWhitespace bool) bool {
 	if trimTrailingWhitespace {
 		regexpPattern := "^.*[ \t]+$"
