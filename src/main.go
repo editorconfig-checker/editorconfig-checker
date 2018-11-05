@@ -5,6 +5,7 @@ import (
 	"bufio"
 	"flag"
 	"fmt"
+	"github.com/editorconfig-checker/editorconfig-checker.go/src/validators"
 	"gopkg.in/editorconfig/editorconfig-core-go.v1"
 	"os"
 	"os/exec"
@@ -187,16 +188,6 @@ func readLinesOfFile(file string) []string {
 	return lines
 }
 
-// Validates if a file has trailing whitespace if the trimTrailingWhitespace parameter is true
-func trailingWhitespaceValidator(line string, trimTrailingWhitespace bool) bool {
-	if trimTrailingWhitespace {
-		// TODO: Maybe check for trailing tab
-		return !strings.HasSuffix(line, " ")
-	}
-
-	return true
-}
-
 // Validates if a file uses correct indent_size for spaces
 func spaceValidator(line string, indentStyle string, indentSize int) bool {
 	if indentStyle == "space" && indentSize > 0 && len(line) > 0 {
@@ -224,7 +215,7 @@ func validateFile(file string) []ValidationError {
 	}
 
 	for lineNumber, line := range lines {
-		if !trailingWhitespaceValidator(line, editorconfig.Raw["trim_trailing_whitespace"] == "true") {
+		if !validators.TrailingWhitespace(line, editorconfig.Raw["trim_trailing_whitespace"] == "true") {
 			errors = append(errors, ValidationError{lineNumber, "TRAILING WHITESPACE VALIDATOR FAILED"})
 		}
 

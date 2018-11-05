@@ -5,6 +5,8 @@ go:
 
 script:
   - make setup
+  - make test
+  - make run
 
 notifications:
-    email: false
+  email: false
