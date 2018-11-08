@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"github.com/editorconfig-checker/editorconfig-checker.go/src/validators"
 	"gopkg.in/editorconfig/editorconfig-core-go.v1"
+	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -191,10 +192,21 @@ func readLinesOfFile(file string) []string {
 func validateFile(file string) []ValidationError {
 	var errors []ValidationError
 	lines := readLinesOfFile(file)
+	rawFileContent, err := ioutil.ReadFile(file)
+
+	if err != nil {
+		panic(err)
+	}
+
+	fileContent := string(rawFileContent)
 
 	editorconfig, err := editorconfig.GetDefinitionForFilename(file)
 	if err != nil {
 		panic(err)
+	}
+
+	if !validators.FinalNewline(fileContent, editorconfig.Raw["insert_final_newline"] == "true", editorconfig.Raw["end_of_line"]) {
+		errors = append(errors, ValidationError{-1, "TRAILING WHITESPACE VALIDATOR FAILED"})
 	}
 
 	for lineNumber, line := range lines {
@@ -208,6 +220,10 @@ func validateFile(file string) []ValidationError {
 		}
 
 		if !validators.Space(line, editorconfig.Raw["indent_style"], indentSize) {
+			errors = append(errors, ValidationError{lineNumber, "SPACES VALIDATOR FAILED"})
+		}
+
+		if !validators.Tab(line, editorconfig.Raw["indent_style"]) {
 			errors = append(errors, ValidationError{lineNumber, "SPACES VALIDATOR FAILED"})
 		}
 	}
