@@ -206,7 +206,7 @@ func validateFile(file string) []ValidationError {
 	}
 
 	if !validators.FinalNewline(fileContent, editorconfig.Raw["insert_final_newline"] == "true", editorconfig.Raw["end_of_line"]) {
-		fmt.Println("EERR")
+		errors = append(errors, ValidationError{-1, "TRAILING WHITESPACE VALIDATOR FAILED"})
 	}
 
 	for lineNumber, line := range lines {
