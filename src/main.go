@@ -209,6 +209,10 @@ func validateFile(file string) []ValidationError {
 		errors = append(errors, ValidationError{-1, "TRAILING WHITESPACE VALIDATOR FAILED"})
 	}
 
+	if !validators.LineEnding(fileContent, editorconfig.Raw["end_of_line"]) {
+		errors = append(errors, ValidationError{-1, "LINE ENDING VALIDATOR FAILED"})
+	}
+
 	for lineNumber, line := range lines {
 		if !validators.TrailingWhitespace(line, editorconfig.Raw["trim_trailing_whitespace"] == "true") {
 			errors = append(errors, ValidationError{lineNumber, "TRAILING WHITESPACE VALIDATOR FAILED"})
@@ -242,6 +246,16 @@ func validateFiles(files []string) []ValidationErrors {
 	return validationErrors
 }
 
+func getErrorCount(errors []ValidationErrors) int {
+	var errorCount = 0
+
+	for _, v := range errors {
+		errorCount += len(v.errors)
+	}
+
+	return errorCount
+}
+
 // Main function, dude
 func main() {
 	// Check for returnworthy params
@@ -258,9 +272,17 @@ func main() {
 	// contains all files which should be checked
 	files := getFiles()
 	errors := validateFiles(files)
+	errorCount := getErrorCount(errors)
 
 	fmt.Println(errors)
 	fmt.Printf("%d files found!\n", len(files))
+
+	if errorCount != 0 {
+		fmt.Printf("%d errors found\n", errorCount)
+		os.Exit(1)
+	}
+
+	os.Exit(0)
 
 	fmt.Println("Run Forrest, run!!!")
 }

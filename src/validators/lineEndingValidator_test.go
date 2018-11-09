@@ -4,6 +4,24 @@ import (
 	"testing"
 )
 
+func TestNotExistingEndOfLineChar(t *testing.T) {
+	if !LineEnding("x", "y") {
+		t.Error("Expected to return true for not existing end of line char")
+	}
+
+	if !LineEnding("x\n", "y") {
+		t.Error("Expected to return true for not existing end of line char")
+	}
+
+	if !LineEnding("x\r", "y") {
+		t.Error("Expected to return true for not existing end of line char")
+	}
+
+	if !LineEnding("x\r\n", "y") {
+		t.Error("Expected to return true for not existing end of line char")
+	}
+}
+
 func TestLineEndingWithLf(t *testing.T) {
 	if !LineEnding("x", "lf") {
 		t.Error("Expected to return true for line without linebreak")
