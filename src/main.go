@@ -256,6 +256,19 @@ func getErrorCount(errors []ValidationErrors) int {
 	return errorCount
 }
 
+func printErrors(errors []ValidationErrors) {
+	for _, v := range errors {
+		fmt.Println(v.file)
+		for _, errorr := range v.errors {
+			if errorr.line != -1 {
+				fmt.Printf("\t%d: ", errorr.line)
+			}
+
+			fmt.Printf("%s\n", errorr.description)
+		}
+	}
+}
+
 // Main function, dude
 func main() {
 	// Check for returnworthy params
@@ -274,10 +287,10 @@ func main() {
 	errors := validateFiles(files)
 	errorCount := getErrorCount(errors)
 
-	fmt.Println(errors)
 	fmt.Printf("%d files found!\n", len(files))
 
 	if errorCount != 0 {
+		printErrors(errors)
 		fmt.Printf("%d errors found\n", errorCount)
 		os.Exit(1)
 	}
