@@ -209,6 +209,10 @@ func validateFile(file string) []ValidationError {
 		errors = append(errors, ValidationError{-1, "TRAILING WHITESPACE VALIDATOR FAILED"})
 	}
 
+	if !validators.LineEnding(fileContent, editorconfig.Raw["end_of_line"]) {
+		errors = append(errors, ValidationError{-1, "LINE ENDING VALIDATOR FAILED"})
+	}
+
 	for lineNumber, line := range lines {
 		if !validators.TrailingWhitespace(line, editorconfig.Raw["trim_trailing_whitespace"] == "true") {
 			errors = append(errors, ValidationError{lineNumber, "TRAILING WHITESPACE VALIDATOR FAILED"})
