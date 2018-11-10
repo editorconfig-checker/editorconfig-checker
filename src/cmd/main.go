@@ -5,6 +5,7 @@ import (
 	"bufio"
 	"flag"
 	"fmt"
+	"github.com/editorconfig-checker/editorconfig-checker.go/src/types"
 	"github.com/editorconfig-checker/editorconfig-checker.go/src/validators"
 	"gopkg.in/editorconfig/editorconfig-core-go.v1"
 	"io/ioutil"
@@ -18,41 +19,20 @@ import (
 // version
 const version string = "0.0.1"
 
-// Params is a Struct which represents the cli-params
-type Params struct {
-	version bool
-	help    bool
-	verbose bool
-	// directories and/or files which should be validated
-	rawFiles []string
-}
-
-// ValidationError represents one validation error
-type ValidationError struct {
-	line        int
-	description string
-}
-
-// ValidationErrors represents which errors occurred in a file
-type ValidationErrors struct {
-	filePath string
-	errors   []ValidationError
-}
-
 // Global variable to store the cli parameter
 // only the init function should write to this variable
-var params Params
+var params types.Params
 
 // Init function, runs on start automagically
 func init() {
 	// define flags
-	flag.BoolVar(&params.version, "version", false, "print the version number")
-	flag.BoolVar(&params.version, "v", false, "print the version number")
+	flag.BoolVar(&params.Version, "version", false, "print the version number")
+	flag.BoolVar(&params.Version, "v", false, "print the version number")
 
-	flag.BoolVar(&params.help, "help", false, "print the help")
-	flag.BoolVar(&params.help, "h", false, "print the help")
+	flag.BoolVar(&params.Help, "help", false, "print the help")
+	flag.BoolVar(&params.Help, "h", false, "print the help")
 
-	flag.BoolVar(&params.verbose, "verbose", false, "print debugging information")
+	flag.BoolVar(&params.Verbose, "verbose", false, "print debugging information")
 
 	// parse flags
 	flag.Parse()
@@ -64,7 +44,7 @@ func init() {
 		rawFiles = []string{"."}
 	}
 
-	params.rawFiles = rawFiles
+	params.RawFiles = rawFiles
 }
 
 // Returns wether a path is a directory or not
@@ -135,7 +115,7 @@ func getFiles() []string {
 
 	// loop over rawFiles to make them absolute
 	// and check if they exist
-	for _, value := range params.rawFiles {
+	for _, value := range params.RawFiles {
 		absolutePath, err := filepath.Abs(value)
 		if err != nil {
 			panic(err)
@@ -175,7 +155,7 @@ func getFiles() []string {
 	return files
 }
 
-func readLinesOfFile(file string) []string {
+func readLineNumbersOfFile(file string) []string {
 	var lines []string
 	fileHandle, _ := os.Open(file)
 	defer fileHandle.Close()
@@ -189,9 +169,9 @@ func readLinesOfFile(file string) []string {
 }
 
 // Validates a single file and returns the errors
-func validateFile(file string) []ValidationError {
-	var errors []ValidationError
-	lines := readLinesOfFile(file)
+func validateFile(file string) []types.ValidationError {
+	var errors []types.ValidationError
+	lines := readLineNumbersOfFile(file)
 	rawFileContent, err := ioutil.ReadFile(file)
 
 	if err != nil {
@@ -206,16 +186,16 @@ func validateFile(file string) []ValidationError {
 	}
 
 	if !validators.FinalNewline(fileContent, editorconfig.Raw["insert_final_newline"] == "true", editorconfig.Raw["end_of_line"]) {
-		errors = append(errors, ValidationError{-1, "TRAILING WHITESPACE VALIDATOR FAILED"})
+		errors = append(errors, types.ValidationError{LineNumber: -1, Message: "TRAILING WHITESPACE VALIDATOR FAILED"})
 	}
 
 	if !validators.LineEnding(fileContent, editorconfig.Raw["end_of_line"]) {
-		errors = append(errors, ValidationError{-1, "LINE ENDING VALIDATOR FAILED"})
+		errors = append(errors, types.ValidationError{LineNumber: -1, Message: "LINE ENDING VALIDATOR FAILED"})
 	}
 
 	for lineNumber, line := range lines {
 		if !validators.TrailingWhitespace(line, editorconfig.Raw["trim_trailing_whitespace"] == "true") {
-			errors = append(errors, ValidationError{lineNumber, "TRAILING WHITESPACE VALIDATOR FAILED"})
+			errors = append(errors, types.ValidationError{LineNumber: lineNumber, Message: "TRAILING WHITESPACE VALIDATOR FAILED"})
 		}
 
 		indentSize, err := strconv.Atoi(editorconfig.Raw["indent_size"])
@@ -224,11 +204,11 @@ func validateFile(file string) []ValidationError {
 		}
 
 		if !validators.Space(line, editorconfig.Raw["indent_style"], indentSize) {
-			errors = append(errors, ValidationError{lineNumber, "SPACES VALIDATOR FAILED"})
+			errors = append(errors, types.ValidationError{LineNumber: lineNumber, Message: "SPACES VALIDATOR FAILED"})
 		}
 
 		if !validators.Tab(line, editorconfig.Raw["indent_style"]) {
-			errors = append(errors, ValidationError{lineNumber, "SPACES VALIDATOR FAILED"})
+			errors = append(errors, types.ValidationError{LineNumber: lineNumber, Message: "SPACES VALIDATOR FAILED"})
 		}
 	}
 
@@ -236,38 +216,38 @@ func validateFile(file string) []ValidationError {
 }
 
 // Validates all files and returns an array of validation errors
-func validateFiles(files []string) []ValidationErrors {
-	var validationErrors []ValidationErrors
+func validateFiles(files []string) []types.ValidationErrors {
+	var validationErrors []types.ValidationErrors
 
 	for _, file := range files {
-		validationErrors = append(validationErrors, ValidationErrors{file, validateFile(file)})
+		validationErrors = append(validationErrors, types.ValidationErrors{FilePath: file, Errors: validateFile(file)})
 	}
 
 	return validationErrors
 }
 
-func getErrorCount(errors []ValidationErrors) int {
+func getErrorCount(errors []types.ValidationErrors) int {
 	var errorCount = 0
 
 	for _, v := range errors {
-		errorCount += len(v.errors)
+		errorCount += len(v.Errors)
 	}
 
 	return errorCount
 }
 
-func printErrors(errors []ValidationErrors) {
+func printErrors(errors []types.ValidationErrors) {
 	for _, file := range errors {
-		if len(file.errors) > 0 {
-			fmt.Println(file.filePath)
-			for _, errorr := range file.errors {
+		if len(file.Errors) > 0 {
+			fmt.Println(file.FilePath)
+			for _, errorr := range file.Errors {
 				fmt.Printf("\t")
 
-				if errorr.line != -1 {
-					fmt.Printf("%d: ", errorr.line)
+				if errorr.LineNumber != -1 {
+					fmt.Printf("%d: ", errorr.LineNumber)
 				}
 
-				fmt.Printf("%s\n", errorr.description)
+				fmt.Printf("%s\n", errorr.Message)
 			}
 		}
 	}
@@ -277,10 +257,10 @@ func printErrors(errors []ValidationErrors) {
 func main() {
 	// Check for returnworthy params
 	switch {
-	case params.version:
+	case params.Version:
 		fmt.Println(version)
 		return
-	case params.help:
+	case params.Help:
 		fmt.Println("USAGE:")
 		flag.PrintDefaults()
 		return
@@ -291,7 +271,7 @@ func main() {
 	errors := validateFiles(files)
 	errorCount := getErrorCount(errors)
 
-	if params.verbose {
+	if params.Verbose {
 		fmt.Printf("%d files found!\n", len(files))
 	}
 
