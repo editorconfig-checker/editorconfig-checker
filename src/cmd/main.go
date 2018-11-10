@@ -5,6 +5,7 @@ import (
 	"bufio"
 	"flag"
 	"fmt"
+	"github.com/editorconfig-checker/editorconfig-checker.go/src/slice"
 	"github.com/editorconfig-checker/editorconfig-checker.go/src/types"
 	"github.com/editorconfig-checker/editorconfig-checker.go/src/validators"
 	"gopkg.in/editorconfig/editorconfig-core-go.v1"
@@ -65,16 +66,6 @@ func pathExists(path string) (bool, error) {
 	return true, err
 }
 
-// Returns wether a slice contains a specific element
-func contains(slice []string, element string) bool {
-	for _, sliceElement := range slice {
-		if element == sliceElement {
-			return true
-		}
-	}
-	return false
-}
-
 // Checks if the file is ignored by the gitignore
 // TODO: Remove dependency to git?
 // TODO: In this state the application has to be run out of the repository root or some sub-folder
@@ -101,7 +92,7 @@ func isInDefaultExcludes(file string) bool {
 // Adds a file to a slice if it isn't already in there
 // and returns the new slice
 func addToFiles(files []string, file string) []string {
-	if !contains(files, file) && !isInDefaultExcludes(file) && !isIgnoredByGitignore(file) {
+	if !slice.Contains(files, file) && !isInDefaultExcludes(file) && !isIgnoredByGitignore(file) {
 		return append(files, file)
 	}
 
@@ -115,19 +106,21 @@ func getFiles() []string {
 
 	// loop over rawFiles to make them absolute
 	// and check if they exist
-	for _, value := range params.RawFiles {
-		absolutePath, err := filepath.Abs(value)
+	for _, rawFile := range params.RawFiles {
+		absolutePath, err := filepath.Abs(rawFile)
+
 		if err != nil {
 			panic(err)
 		}
+
 		pathExist, err := pathExists(absolutePath)
+
+		if err != nil {
+			panic(err)
+		}
 
 		if !pathExist {
 			panic("The directory or file `" + absolutePath + "` does not exist or is not accessible.")
-		}
-
-		if err != nil {
-			panic(err)
 		}
 
 		// if the path is an directory walk through it and add all files to files slice
