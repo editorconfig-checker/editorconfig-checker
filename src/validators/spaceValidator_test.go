@@ -21,6 +21,10 @@ func TestSpaceValidator(t *testing.T) {
 		t.Error("Expected falsy indented line to return false")
 	}
 
+	if !Space("     * some comment", "space", 4) {
+		t.Error("Expected correctly indented line to be true with block comment")
+	}
+
 	if !Space("", "tab", 4) {
 		t.Error("Expected if indentStyle is set to tab to return true")
 	}
