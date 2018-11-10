@@ -7,7 +7,7 @@ install-deps:
 setup: install-deps build
 
 bin/ec: $(SOURCES)
-	@go build -o bin/ec src/main.go
+	@go build -o bin/ec src/cmd/main.go
 
 build: bin/ec
 

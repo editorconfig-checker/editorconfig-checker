@@ -35,8 +35,8 @@ type ValidationError struct {
 
 // ValidationErrors represents which errors occurred in a file
 type ValidationErrors struct {
-	file   string
-	errors []ValidationError
+	filePath string
+	errors   []ValidationError
 }
 
 // Global variable to store the cli parameter
@@ -257,14 +257,16 @@ func getErrorCount(errors []ValidationErrors) int {
 }
 
 func printErrors(errors []ValidationErrors) {
-	for _, v := range errors {
-		fmt.Println(v.file)
-		for _, errorr := range v.errors {
-			if errorr.line != -1 {
-				fmt.Printf("\t%d: ", errorr.line)
-			}
+	for _, file := range errors {
+		if len(file.errors) > 0 {
+			fmt.Println(file.filePath)
+			for _, errorr := range file.errors {
+				if errorr.line != -1 {
+					fmt.Printf("\t%d: ", errorr.line)
+				}
 
-			fmt.Printf("%s\n", errorr.description)
+				fmt.Printf("%s\n", errorr.description)
+			}
 		}
 	}
 }
@@ -287,7 +289,9 @@ func main() {
 	errors := validateFiles(files)
 	errorCount := getErrorCount(errors)
 
-	fmt.Printf("%d files found!\n", len(files))
+	if params.verbose {
+		fmt.Printf("%d files found!\n", len(files))
+	}
 
 	if errorCount != 0 {
 		printErrors(errors)
