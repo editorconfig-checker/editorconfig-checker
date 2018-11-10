@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"github.com/editorconfig-checker/editorconfig-checker.go/src/slice"
 	"github.com/editorconfig-checker/editorconfig-checker.go/src/types"
+	"github.com/editorconfig-checker/editorconfig-checker.go/src/utils"
 	"github.com/editorconfig-checker/editorconfig-checker.go/src/validators"
 	"gopkg.in/editorconfig/editorconfig-core-go.v1"
 	"io/ioutil"
@@ -48,24 +49,6 @@ func init() {
 	params.RawFiles = rawFiles
 }
 
-// Returns wether a path is a directory or not
-func isDirectory(path string) bool {
-	fi, _ := os.Stat(path)
-	return fi.Mode().IsDir()
-}
-
-// Checks wether a path of a file or directory exists or not
-func pathExists(path string) (bool, error) {
-	_, err := os.Stat(path)
-	if err == nil {
-		return true, nil
-	}
-	if os.IsNotExist(err) {
-		return false, nil
-	}
-	return true, err
-}
-
 // Checks if the file is ignored by the gitignore
 // TODO: Remove dependency to git?
 // TODO: In this state the application has to be run out of the repository root or some sub-folder
@@ -85,14 +68,17 @@ func isIgnoredByGitignore(file string) bool {
 func isInDefaultExcludes(file string) bool {
 	return strings.Contains(filepath.ToSlash(file), ".git/") ||
 		strings.Contains(filepath.ToSlash(file), "node_modules/") ||
-		strings.Contains(filepath.ToSlash(file), "vendor") ||
-		strings.HasSuffix(file, ".png")
+		strings.Contains(filepath.ToSlash(file), "vendor")
 }
 
 // Adds a file to a slice if it isn't already in there
 // and returns the new slice
 func addToFiles(files []string, file string) []string {
-	if !slice.Contains(files, file) && !isInDefaultExcludes(file) && !isIgnoredByGitignore(file) {
+	contentType := utils.GetContentType(file)
+	if !slice.Contains(files, file) &&
+		(contentType == "application/octet-stream" || strings.Contains(contentType, "text/plain")) &&
+		!isInDefaultExcludes(file) &&
+		!isIgnoredByGitignore(file) {
 		return append(files, file)
 	}
 
@@ -113,18 +99,14 @@ func getFiles() []string {
 			panic(err)
 		}
 
-		pathExist, err := pathExists(absolutePath)
-
-		if err != nil {
-			panic(err)
-		}
+		pathExist := utils.PathExists(absolutePath)
 
 		if !pathExist {
 			panic("The directory or file `" + absolutePath + "` does not exist or is not accessible.")
 		}
 
 		// if the path is an directory walk through it and add all files to files slice
-		if isDirectory(absolutePath) {
+		if utils.IsDirectory(absolutePath) {
 			// TODO: Performance optimization - this is the bottleneck and loops over every folder/file
 			// and then checks if should be added. This needs some refactoring.
 			err := filepath.Walk(absolutePath, func(path string, f os.FileInfo, err error) error {
@@ -179,7 +161,7 @@ func validateFile(file string) []types.ValidationError {
 	}
 
 	if !validators.FinalNewline(fileContent, editorconfig.Raw["insert_final_newline"] == "true", editorconfig.Raw["end_of_line"]) {
-		errors = append(errors, types.ValidationError{LineNumber: -1, Message: "TRAILING WHITESPACE VALIDATOR FAILED"})
+		errors = append(errors, types.ValidationError{LineNumber: -1, Message: "FINAL NEWLINE VALIDATOR FAILED"})
 	}
 
 	if !validators.LineEnding(fileContent, editorconfig.Raw["end_of_line"]) {
@@ -270,11 +252,9 @@ func main() {
 
 	if errorCount != 0 {
 		printErrors(errors)
-		fmt.Printf("%d errors found\n", errorCount)
+		fmt.Printf("\n%d errors found\n", errorCount)
 		os.Exit(1)
 	}
 
 	os.Exit(0)
-
-	fmt.Println("Run Forrest, run!!!")
 }
