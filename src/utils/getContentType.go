@@ -8,6 +8,17 @@ import (
 
 // GetContentType returns the content type of a file
 func GetContentType(path string) string {
+	// TODO: Refactor this into somewhere else or return additionally an error
+	fileStat, err := os.Stat(path)
+
+	if err != nil {
+		panic(err)
+	}
+
+	if fileStat.Size() == 0 {
+		return ""
+	}
+
 	file, err := os.Open(path)
 	if err != nil {
 		panic(err)

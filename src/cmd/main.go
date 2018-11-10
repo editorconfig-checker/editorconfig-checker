@@ -21,6 +21,13 @@ import (
 // version
 const version string = "0.0.1"
 
+var defaultExcludes = [...]string{
+	"/.git/",
+	"/vendor/",
+	"/yarn.lock",
+	"/composer.lock",
+	"node_modules/"}
+
 // Global variable to store the cli parameter
 // only the init function should write to this variable
 var params types.Params
@@ -65,10 +72,14 @@ func isIgnoredByGitignore(file string) bool {
 // Returns wether the file is inside an unwanted folder
 // TODO: This is only here for performance for now
 // TODO: At least make this configurable i.e. .ecrc/.editorconfig-checkerrc
+// TODO: BETTER: elimante the need for this (better git filtering)
 func isInDefaultExcludes(file string) bool {
-	return strings.Contains(filepath.ToSlash(file), ".git/") ||
-		strings.Contains(filepath.ToSlash(file), "node_modules/") ||
-		strings.Contains(filepath.ToSlash(file), "vendor")
+	var result bool = false
+	for _, exclude := range defaultExcludes {
+		result = result || strings.Contains(filepath.ToSlash(file), exclude)
+	}
+
+	return result
 }
 
 // Adds a file to a slice if it isn't already in there
@@ -76,8 +87,8 @@ func isInDefaultExcludes(file string) bool {
 func addToFiles(files []string, file string) []string {
 	contentType := utils.GetContentType(file)
 	if !slice.Contains(files, file) &&
-		(contentType == "application/octet-stream" || strings.Contains(contentType, "text/plain")) &&
 		!isInDefaultExcludes(file) &&
+		(contentType == "application/octet-stream" || strings.Contains(contentType, "text/plain")) &&
 		!isIgnoredByGitignore(file) {
 		return append(files, file)
 	}
@@ -109,10 +120,11 @@ func getFiles() []string {
 		if utils.IsDirectory(absolutePath) {
 			// TODO: Performance optimization - this is the bottleneck and loops over every folder/file
 			// and then checks if should be added. This needs some refactoring.
-			err := filepath.Walk(absolutePath, func(path string, f os.FileInfo, err error) error {
-				if !f.IsDir() {
+			err := filepath.Walk(absolutePath, func(path string, fi os.FileInfo, err error) error {
+				if utils.IsRegularFile(fi) {
 					files = addToFiles(files, path)
 				}
+
 				return nil
 			})
 
@@ -170,7 +182,7 @@ func validateFile(file string) []types.ValidationError {
 
 	for lineNumber, line := range lines {
 		if !validators.TrailingWhitespace(line, editorconfig.Raw["trim_trailing_whitespace"] == "true") {
-			errors = append(errors, types.ValidationError{LineNumber: lineNumber, Message: "TRAILING WHITESPACE VALIDATOR FAILED"})
+			errors = append(errors, types.ValidationError{LineNumber: lineNumber + 1, Message: "TRAILING WHITESPACE VALIDATOR FAILED"})
 		}
 
 		indentSize, err := strconv.Atoi(editorconfig.Raw["indent_size"])
@@ -179,11 +191,11 @@ func validateFile(file string) []types.ValidationError {
 		}
 
 		if !validators.Space(line, editorconfig.Raw["indent_style"], indentSize) {
-			errors = append(errors, types.ValidationError{LineNumber: lineNumber, Message: "SPACES VALIDATOR FAILED"})
+			errors = append(errors, types.ValidationError{LineNumber: lineNumber + 1, Message: "SPACES VALIDATOR FAILED"})
 		}
 
 		if !validators.Tab(line, editorconfig.Raw["indent_style"]) {
-			errors = append(errors, types.ValidationError{LineNumber: lineNumber, Message: "SPACES VALIDATOR FAILED"})
+			errors = append(errors, types.ValidationError{LineNumber: lineNumber + 1, Message: "SPACES VALIDATOR FAILED"})
 		}
 	}
 
