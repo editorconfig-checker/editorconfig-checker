@@ -261,8 +261,10 @@ func printErrors(errors []ValidationErrors) {
 		if len(file.errors) > 0 {
 			fmt.Println(file.filePath)
 			for _, errorr := range file.errors {
+				fmt.Printf("\t")
+
 				if errorr.line != -1 {
-					fmt.Printf("\t%d: ", errorr.line)
+					fmt.Printf("%d: ", errorr.line)
 				}
 
 				fmt.Printf("%s\n", errorr.description)
