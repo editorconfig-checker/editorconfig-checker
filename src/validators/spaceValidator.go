@@ -9,7 +9,10 @@ import (
 // Space validates if a file is indented correctly if indentStyle is set to "space"
 func Space(line string, indentStyle string, indentSize int) bool {
 	if indentStyle == "space" && len(line) > 0 && indentSize > 0 {
-		regexpPattern := fmt.Sprintf("^( {%d})*(\\ \\*)? ?[^ \t]", indentSize)
+		// match recurring spaces indentSize times - this can be recurring or never
+		// match either a space followed by a * and maybe a space (block-comments)
+		// or match everything despite a space or tab-character
+		regexpPattern := fmt.Sprintf("^( {%d})*( \\* ?|[^ \t])", indentSize)
 
 		matched, err := regexp.MatchString(regexpPattern, line)
 
