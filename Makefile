@@ -1,4 +1,4 @@
-SRC_DIR = src
+SRC_DIR = $(PWD)
 SOURCES = $(shell find $(SRC_DIR) -type f -name '*.go')
 
 install-deps:
@@ -7,7 +7,7 @@ install-deps:
 setup: install-deps build
 
 bin/ec: $(SOURCES)
-	@go build -o bin/ec src/cmd/main.go
+	@go build -o bin/ec ./cmd/editorconfig-checker/main.go
 
 build: bin/ec
 

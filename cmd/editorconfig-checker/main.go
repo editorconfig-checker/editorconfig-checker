@@ -5,10 +5,10 @@ import (
 	"bufio"
 	"flag"
 	"fmt"
-	"github.com/editorconfig-checker/editorconfig-checker.go/src/slice"
-	"github.com/editorconfig-checker/editorconfig-checker.go/src/types"
-	"github.com/editorconfig-checker/editorconfig-checker.go/src/utils"
-	"github.com/editorconfig-checker/editorconfig-checker.go/src/validators"
+	"github.com/editorconfig-checker/editorconfig-checker.go/slice"
+	"github.com/editorconfig-checker/editorconfig-checker.go/types"
+	"github.com/editorconfig-checker/editorconfig-checker.go/utils"
+	"github.com/editorconfig-checker/editorconfig-checker.go/validators"
 	"gopkg.in/editorconfig/editorconfig-core-go.v1"
 	"io/ioutil"
 	"os"
@@ -185,9 +185,12 @@ func validateFile(file string) []types.ValidationError {
 			errors = append(errors, types.ValidationError{LineNumber: lineNumber + 1, Message: "TRAILING WHITESPACE VALIDATOR FAILED"})
 		}
 
-		indentSize, err := strconv.Atoi(editorconfig.Raw["indent_size"])
+		var indentSize int
+		indentSize, err = strconv.Atoi(editorconfig.Raw["indent_size"])
+
+		// Set indentSize to zero if there is no indentSize set
 		if err != nil {
-			panic(err)
+			indentSize = 0
 		}
 
 		if !validators.Space(line, editorconfig.Raw["indent_style"], indentSize) {
