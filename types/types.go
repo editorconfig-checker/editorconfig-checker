@@ -1,4 +1,4 @@
-// Package types provides ...
+// Package types provides types for the application
 package types
 
 // Params is a Struct which represents the cli-params

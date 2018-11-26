@@ -1,4 +1,4 @@
-// Package validators provides ...
+// Package validators provides functions to validate if the rules of the `.editorconfig` are respected
 package validators
 
 import (
@@ -10,6 +10,7 @@ import (
 	"github.com/editorconfig-checker/editorconfig-checker.go/utils"
 )
 
+// Indentation validates a files indentation
 func Indentation(line string, indentStyle string, indentSize int) error {
 	if indentStyle == "space" {
 		return Space(line, indentSize)
@@ -20,7 +21,7 @@ func Indentation(line string, indentStyle string, indentSize int) error {
 	return nil
 }
 
-// Space validates if a file is indented correctly if indentStyle is set to "space"
+// Space validates if a line is indented correctly respecting the indentSize
 func Space(line string, indentSize int) error {
 	if len(line) > 0 && indentSize > 0 {
 		// match recurring spaces indentSize times - this can be recurring or never
@@ -43,7 +44,7 @@ func Space(line string, indentSize int) error {
 	return nil
 }
 
-// Tab validates if a file is indented correctly if indentStyle is set to "space"
+// Tab validates if a line is indented with only tabs
 func Tab(line string) error {
 	if len(line) > 0 {
 		regexpPattern := "^\t*[^ \t]"
@@ -62,7 +63,7 @@ func Tab(line string) error {
 	return nil
 }
 
-// TrailingWhitespace validates if a file has trailing whitespace if the trimTrailingWhitespace parameter is true
+// TrailingWhitespace validates if a line has trailing whitespace
 func TrailingWhitespace(line string, trimTrailingWhitespace bool) error {
 	if trimTrailingWhitespace {
 		regexpPattern := "^.*[ \t]+$"
@@ -80,7 +81,7 @@ func TrailingWhitespace(line string, trimTrailingWhitespace bool) error {
 	return nil
 }
 
-// FinalNewline validates if a file has a final newline if finalNewline is set to true
+// FinalNewline validates if a file has a final and correct newline
 func FinalNewline(fileContent string, insertFinalNewline bool, endOfLine string) error {
 	if insertFinalNewline {
 		regexpPattern := fmt.Sprintf("%s$", utils.GetEolChar(endOfLine))

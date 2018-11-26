@@ -1,4 +1,4 @@
-// Package utils provides ...
+// Package utils provides functions that are considered utility for being project independent
 package utils
 
 import (
@@ -22,7 +22,7 @@ func GetEolChar(endOfLine string) string {
 	return "\n"
 }
 
-// Contains returns wether a slice contains a specific element
+// StringSliceContains returns wether a slice contains a specific element
 func StringSliceContains(slice []string, element string) bool {
 	for _, sliceElement := range slice {
 		if element == sliceElement {
