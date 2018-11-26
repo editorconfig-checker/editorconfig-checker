@@ -5,7 +5,6 @@ import (
 	"bufio"
 	"flag"
 	"fmt"
-	"github.com/editorconfig-checker/editorconfig-checker.go/slice"
 	"github.com/editorconfig-checker/editorconfig-checker.go/types"
 	"github.com/editorconfig-checker/editorconfig-checker.go/utils"
 	"github.com/editorconfig-checker/editorconfig-checker.go/validators"
@@ -86,7 +85,8 @@ func isInDefaultExcludes(file string) bool {
 // and returns the new slice
 func addToFiles(files []string, file string) []string {
 	contentType := utils.GetContentType(file)
-	if !slice.Contains(files, file) &&
+
+	if !utils.StringSliceContains(files, file) &&
 		!isInDefaultExcludes(file) &&
 		(contentType == "application/octet-stream" || strings.Contains(contentType, "text/plain")) &&
 		!isIgnoredByGitignore(file) {
@@ -172,17 +172,17 @@ func validateFile(file string) []types.ValidationError {
 		panic(err)
 	}
 
-	if !validators.FinalNewline(fileContent, editorconfig.Raw["insert_final_newline"] == "true", editorconfig.Raw["end_of_line"]) {
-		errors = append(errors, types.ValidationError{LineNumber: -1, Message: "FINAL NEWLINE VALIDATOR FAILED"})
+	if currentError := validators.FinalNewline(fileContent, editorconfig.Raw["insert_final_newline"] == "true", editorconfig.Raw["end_of_line"]); currentError != nil {
+		errors = append(errors, types.ValidationError{LineNumber: -1, Message: currentError})
 	}
 
-	if !validators.LineEnding(fileContent, editorconfig.Raw["end_of_line"]) {
-		errors = append(errors, types.ValidationError{LineNumber: -1, Message: "LINE ENDING VALIDATOR FAILED"})
+	if currentError := validators.LineEnding(fileContent, editorconfig.Raw["end_of_line"]); currentError != nil {
+		errors = append(errors, types.ValidationError{LineNumber: -1, Message: currentError})
 	}
 
 	for lineNumber, line := range lines {
-		if !validators.TrailingWhitespace(line, editorconfig.Raw["trim_trailing_whitespace"] == "true") {
-			errors = append(errors, types.ValidationError{LineNumber: lineNumber + 1, Message: "TRAILING WHITESPACE VALIDATOR FAILED"})
+		if currentError := validators.TrailingWhitespace(line, editorconfig.Raw["trim_trailing_whitespace"] == "true"); currentError != nil {
+			errors = append(errors, types.ValidationError{LineNumber: lineNumber + 1, Message: currentError})
 		}
 
 		var indentSize int
@@ -193,12 +193,8 @@ func validateFile(file string) []types.ValidationError {
 			indentSize = 0
 		}
 
-		if !validators.Space(line, editorconfig.Raw["indent_style"], indentSize) {
-			errors = append(errors, types.ValidationError{LineNumber: lineNumber + 1, Message: "SPACES VALIDATOR FAILED"})
-		}
-
-		if !validators.Tab(line, editorconfig.Raw["indent_style"]) {
-			errors = append(errors, types.ValidationError{LineNumber: lineNumber + 1, Message: "SPACES VALIDATOR FAILED"})
+		if currentError := validators.Indentation(line, editorconfig.Raw["indent_style"], indentSize); currentError != nil {
+			errors = append(errors, types.ValidationError{LineNumber: lineNumber + 1, Message: currentError})
 		}
 	}
 

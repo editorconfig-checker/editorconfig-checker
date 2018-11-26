@@ -13,7 +13,7 @@ type Params struct {
 // ValidationError represents one validation error
 type ValidationError struct {
 	LineNumber int
-	Message    string
+	Message    error
 }
 
 // ValidationErrors represents which errors occurred in a file
