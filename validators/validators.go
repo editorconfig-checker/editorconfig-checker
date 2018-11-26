@@ -36,7 +36,7 @@ func Space(line string, indentSize int) error {
 		}
 
 		if !matched {
-			return errors.New(fmt.Sprintf("Wrong amount of left-padding spaces(want multiple of %d)", indentSize))
+			return fmt.Errorf("Wrong amount of left-padding spaces(want multiple of %d)", indentSize)
 		}
 
 	}
