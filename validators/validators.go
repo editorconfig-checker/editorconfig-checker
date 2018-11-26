@@ -2,6 +2,7 @@
 package validators
 
 import (
+	"errors"
 	"fmt"
 	"regexp"
 	"strings"
@@ -9,9 +10,19 @@ import (
 	"github.com/editorconfig-checker/editorconfig-checker.go/utils"
 )
 
+func Indentation(line string, indentStyle string, indentSize int) error {
+	if indentStyle == "space" {
+		return Space(line, indentSize)
+	} else if indentStyle == "tab" {
+		return Tab(line)
+	}
+
+	return nil
+}
+
 // Space validates if a file is indented correctly if indentStyle is set to "space"
-func Space(line string, indentStyle string, indentSize int) bool {
-	if indentStyle == "space" && len(line) > 0 && indentSize > 0 {
+func Space(line string, indentSize int) error {
+	if len(line) > 0 && indentSize > 0 {
 		// match recurring spaces indentSize times - this can be recurring or never
 		// match either a space followed by a * and maybe a space (block-comments)
 		// or match everything despite a space or tab-character
@@ -23,19 +34,18 @@ func Space(line string, indentStyle string, indentSize int) bool {
 			panic(err)
 		}
 
-		if matched {
-			return true
+		if !matched {
+			return errors.New(fmt.Sprintf("Wrong amount of left-padding spaces(want multiple of %d)", indentSize))
 		}
 
-		return false
 	}
 
-	return true
+	return nil
 }
 
 // Tab validates if a file is indented correctly if indentStyle is set to "space"
-func Tab(line string, indentStyle string) bool {
-	if indentStyle == "tab" && len(line) > 0 {
+func Tab(line string) error {
+	if len(line) > 0 {
 		regexpPattern := "^\t*[^ \t]"
 		matched, err := regexp.MatchString(regexpPattern, line)
 
@@ -43,18 +53,17 @@ func Tab(line string, indentStyle string) bool {
 			panic(err)
 		}
 
-		if matched {
-			return true
+		if !matched {
+			return errors.New("Wrong indentation type(spaces instead of tabs)")
 		}
 
-		return false
 	}
 
-	return true
+	return nil
 }
 
 // TrailingWhitespace validates if a file has trailing whitespace if the trimTrailingWhitespace parameter is true
-func TrailingWhitespace(line string, trimTrailingWhitespace bool) bool {
+func TrailingWhitespace(line string, trimTrailingWhitespace bool) error {
 	if trimTrailingWhitespace {
 		regexpPattern := "^.*[ \t]+$"
 		matched, err := regexp.MatchString(regexpPattern, line)
@@ -64,17 +73,15 @@ func TrailingWhitespace(line string, trimTrailingWhitespace bool) bool {
 		}
 
 		if matched {
-			return false
+			return errors.New("Trailing whitespace")
 		}
-
-		return true
 	}
 
-	return true
+	return nil
 }
 
 // FinalNewline validates if a file has a final newline if finalNewline is set to true
-func FinalNewline(fileContent string, insertFinalNewline bool, endOfLine string) bool {
+func FinalNewline(fileContent string, insertFinalNewline bool, endOfLine string) error {
 	if insertFinalNewline {
 		regexpPattern := fmt.Sprintf("%s$", utils.GetEolChar(endOfLine))
 		matched, err := regexp.MatchString(regexpPattern, fileContent)
@@ -83,17 +90,16 @@ func FinalNewline(fileContent string, insertFinalNewline bool, endOfLine string)
 			panic(err)
 		}
 
-		if matched {
-			return true
+		if !matched {
+			return errors.New("Wrong line endings or new final newline")
 		}
-
-		return false
 	}
-	return true
+
+	return nil
 }
 
 // LineEnding validates if a file uses the correct line endings
-func LineEnding(fileContent string, endOfLine string) bool {
+func LineEnding(fileContent string, endOfLine string) error {
 	if endOfLine != "" {
 		expectedEolChar := utils.GetEolChar(endOfLine)
 		expectedEols := len(strings.Split(fileContent, expectedEolChar))
@@ -103,14 +109,20 @@ func LineEnding(fileContent string, endOfLine string) bool {
 
 		switch endOfLine {
 		case "lf":
-			return expectedEols == lfEols && crEols == 1 && crlfEols == 1
+			if !(expectedEols == lfEols && crEols == 1 && crlfEols == 1) {
+				return errors.New("Not all lines have the correct end of line character")
+			}
 		case "cr":
-			return expectedEols == crEols && lfEols == 1 && crlfEols == 1
+			if !(expectedEols == crEols && lfEols == 1 && crlfEols == 1) {
+				return errors.New("Not all lines have the correct end of line character")
+			}
 		case "crlf":
 			// A bit hacky because \r\n matches \r and \n
-			return expectedEols == crlfEols && lfEols == expectedEols && crEols == expectedEols
+			if !(expectedEols == crlfEols && lfEols == expectedEols && crEols == expectedEols) {
+				return errors.New("Not all lines have the correct end of line character")
+			}
 		}
 	}
 
-	return true
+	return nil
 }
