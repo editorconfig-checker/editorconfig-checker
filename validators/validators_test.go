@@ -130,18 +130,38 @@ func TestLineEnding(t *testing.T) {
 }
 
 func TestIndentation(t *testing.T) {
-	if (Indentation("   ", "space", 4)) == nil {
+	if (Indentation("    x", "space", 4)) != nil {
+		t.Error("Expected correctly indented line to return an nil")
+	}
+
+	if (Indentation("   x", "space", 4)) == nil {
 		t.Error("Expected wrong indented line to return an error")
 	}
 
-	if (Indentation("   ", "tab", 0)) == nil {
+	if (Indentation("	x", "tab", 0)) != nil {
+		t.Error("Expected correctly indented line to return an nil")
+	}
+
+	if (Indentation("   x", "tab", 0)) == nil {
 		t.Error("Expected wrong indented line to return an error")
+	}
+
+	if (Indentation("	x", "x", 0)) != nil {
+		t.Error("Expected unknown indentation to return nil")
+	}
+
+	if (Indentation("   x", "x", 0)) != nil {
+		t.Error("Expected unknown indentation to return nil")
 	}
 }
 
 func TestSpace(t *testing.T) {
 	if Space("", 4) != nil {
 		t.Error("Expected empty line to return true regardless of parameter")
+	}
+
+	if Space("x", 0) != nil {
+		t.Error("Expected call with indentSize 0 to always return nil")
 	}
 
 	if Space("x", 4) != nil {

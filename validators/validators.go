@@ -18,6 +18,7 @@ func Indentation(line string, indentStyle string, indentSize int) error {
 		return Tab(line)
 	}
 
+	// if no indentStyle is given it should be valid
 	return nil
 }
 
