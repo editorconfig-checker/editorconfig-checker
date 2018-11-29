@@ -257,9 +257,9 @@ func main() {
 	errors := processValidation(files)
 	errorCount := getErrorCount(errors)
 
-	// if params.Verbose {
-	fmt.Printf("%d files found!\n", len(files))
-	// }
+	if params.Verbose {
+		fmt.Printf("%d files found!\n", len(files))
+	}
 
 	if errorCount != 0 {
 		printErrors(errors)
