@@ -202,7 +202,7 @@ func validateFile(file string) []types.ValidationError {
 }
 
 // Validates all files and returns an array of validation errors
-func validateFiles(files []string) []types.ValidationErrors {
+func processValidation(files []string) []types.ValidationErrors {
 	var validationErrors []types.ValidationErrors
 
 	for _, file := range files {
@@ -254,12 +254,12 @@ func main() {
 
 	// contains all files which should be checked
 	files := getFiles()
-	errors := validateFiles(files)
+	errors := processValidation(files)
 	errorCount := getErrorCount(errors)
 
-	if params.Verbose {
-		fmt.Printf("%d files found!\n", len(files))
-	}
+	// if params.Verbose {
+	fmt.Printf("%d files found!\n", len(files))
+	// }
 
 	if errorCount != 0 {
 		printErrors(errors)
