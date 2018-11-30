@@ -7,8 +7,6 @@ script:
   - make setup
   - make test
   - make run
-  # run two times because of caching
-  - make bench
   - make bench
 
 notifications:
