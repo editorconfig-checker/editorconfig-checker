@@ -17,7 +17,7 @@ test:
 	@test -z $(shell gofmt -s -l . | tee /dev/stderr) || (echo "[ERROR] Fix formatting issues with 'gofmt'" && exit 1)
 
 bench:
-	go test -bench=. ./cmd/editorconfig-checker/
+	go test -bench=. ./**/*/
 
 run: build
 	@./bin/ec
