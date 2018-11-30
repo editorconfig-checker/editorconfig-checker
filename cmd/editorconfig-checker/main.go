@@ -5,16 +5,18 @@ import (
 	"bufio"
 	"flag"
 	"fmt"
-	"github.com/editorconfig-checker/editorconfig-checker.go/types"
-	"github.com/editorconfig-checker/editorconfig-checker.go/utils"
-	"github.com/editorconfig-checker/editorconfig-checker.go/validators"
-	"gopkg.in/editorconfig/editorconfig-core-go.v1"
 	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"strconv"
 	"strings"
+
+	"gopkg.in/editorconfig/editorconfig-core-go.v1"
+
+	"github.com/editorconfig-checker/editorconfig-checker.go/types"
+	"github.com/editorconfig-checker/editorconfig-checker.go/utils"
+	"github.com/editorconfig-checker/editorconfig-checker.go/validators"
 )
 
 // version
@@ -83,24 +85,17 @@ func isInDefaultExcludes(file string) bool {
 
 // Adds a file to a slice if it isn't already in there
 // and returns the new slice
-func addToFiles(files []string, file string) []string {
+func addFile(file string, addFileChan chan bool) {
 	contentType := utils.GetContentType(file)
 
-	if !utils.StringSliceContains(files, file) &&
-		!isInDefaultExcludes(file) &&
+	addFileChan <- !isInDefaultExcludes(file) &&
 		(contentType == "application/octet-stream" || strings.Contains(contentType, "text/plain")) &&
-		!isIgnoredByGitignore(file) {
-		return append(files, file)
-	}
-
-	return files
+		!isIgnoredByGitignore(file)
 }
 
 // Returns all files which should be checked
 // TODO: Manual excludes
-func getFiles() []string {
-	var files []string
-
+func getFiles(getFileChan chan string) {
 	// loop over rawFiles to make them absolute
 	// and check if they exist
 	for _, rawFile := range params.RawFiles {
@@ -118,11 +113,13 @@ func getFiles() []string {
 
 		// if the path is an directory walk through it and add all files to files slice
 		if utils.IsDirectory(absolutePath) {
-			// TODO: Performance optimization - this is the bottleneck and loops over every folder/file
-			// and then checks if should be added. This needs some refactoring.
 			err := filepath.Walk(absolutePath, func(path string, fi os.FileInfo, err error) error {
 				if utils.IsRegularFile(fi) {
-					files = addToFiles(files, path)
+					addFileChan := make(chan bool)
+					go addFile(path, addFileChan)
+					if <-addFileChan {
+						getFileChan <- path
+					}
 				}
 
 				return nil
@@ -136,10 +133,14 @@ func getFiles() []string {
 		}
 
 		// just add the absolutePath to files
-		files = addToFiles(files, absolutePath)
+		addFileChan := make(chan bool)
+		go addFile(absolutePath, addFileChan)
+		if <-addFileChan {
+			getFileChan <- absolutePath
+		}
 	}
 
-	return files
+	close(getFileChan)
 }
 
 func readLineNumbersOfFile(file string) []string {
@@ -156,8 +157,7 @@ func readLineNumbersOfFile(file string) []string {
 }
 
 // Validates a single file and returns the errors
-func validateFile(file string) []types.ValidationError {
-	var errors []types.ValidationError
+func validateFile(file string, errorChan chan types.ValidationError) {
 	lines := readLineNumbersOfFile(file)
 	rawFileContent, err := ioutil.ReadFile(file)
 
@@ -173,16 +173,16 @@ func validateFile(file string) []types.ValidationError {
 	}
 
 	if currentError := validators.FinalNewline(fileContent, editorconfig.Raw["insert_final_newline"] == "true", editorconfig.Raw["end_of_line"]); currentError != nil {
-		errors = append(errors, types.ValidationError{LineNumber: -1, Message: currentError})
+		errorChan <- types.ValidationError{LineNumber: -1, Message: currentError}
 	}
 
 	if currentError := validators.LineEnding(fileContent, editorconfig.Raw["end_of_line"]); currentError != nil {
-		errors = append(errors, types.ValidationError{LineNumber: -1, Message: currentError})
+		errorChan <- types.ValidationError{LineNumber: -1, Message: currentError}
 	}
 
 	for lineNumber, line := range lines {
 		if currentError := validators.TrailingWhitespace(line, editorconfig.Raw["trim_trailing_whitespace"] == "true"); currentError != nil {
-			errors = append(errors, types.ValidationError{LineNumber: lineNumber + 1, Message: currentError})
+			errorChan <- types.ValidationError{LineNumber: lineNumber + 1, Message: currentError}
 		}
 
 		var indentSize int
@@ -194,32 +194,19 @@ func validateFile(file string) []types.ValidationError {
 		}
 
 		if currentError := validators.Indentation(line, editorconfig.Raw["indent_style"], indentSize); currentError != nil {
-			errors = append(errors, types.ValidationError{LineNumber: lineNumber + 1, Message: currentError})
+			errorChan <- types.ValidationError{LineNumber: lineNumber + 1, Message: currentError}
 		}
 	}
 
-	return errors
+	close(errorChan)
 }
 
-// Validates all files and returns an array of validation errors
-func processValidation(files []string) []types.ValidationErrors {
-	var validationErrors []types.ValidationErrors
-
-	for _, file := range files {
-		validationErrors = append(validationErrors, types.ValidationErrors{FilePath: file, Errors: validateFile(file)})
-	}
-
-	return validationErrors
-}
-
-func getErrorCount(errors []types.ValidationErrors) int {
-	var errorCount = 0
-
+func getErrorCount(errors []types.ValidationErrors, errorCountChan chan int) {
 	for _, v := range errors {
-		errorCount += len(v.Errors)
+		errorCountChan <- len(v.Errors)
 	}
 
-	return errorCount
+	close(errorCountChan)
 }
 
 func printErrors(errors []types.ValidationErrors) {
@@ -252,13 +239,54 @@ func main() {
 		return
 	}
 
-	// contains all files which should be checked
-	files := getFiles()
-	errors := processValidation(files)
-	errorCount := getErrorCount(errors)
+	var errors []types.ValidationErrors
+	var fileCount int = 0
+
+	getFileChan := make(chan string)
+	go getFiles(getFileChan)
+
+	for {
+		file, running := <-getFileChan
+
+		if running == false {
+			break
+		}
+
+		fileCount++
+
+		errorChan := make(chan types.ValidationError)
+		go validateFile(file, errorChan)
+		var fileErrors []types.ValidationError
+
+		for {
+			singleError, running := <-errorChan
+
+			if running == false {
+				break
+			}
+
+			fileErrors = append(fileErrors, singleError)
+		}
+
+		errors = append(errors, types.ValidationErrors{FilePath: file, Errors: fileErrors})
+	}
+
+	errorCountChan := make(chan int)
+	go getErrorCount(errors, errorCountChan)
+	var errorCount int = 0
+
+	for {
+		errorCountPerFile, running := <-errorCountChan
+
+		if running == false {
+			break
+		}
+
+		errorCount += errorCountPerFile
+	}
 
 	if params.Verbose {
-		fmt.Printf("%d files found!\n", len(files))
+		fmt.Printf("%d files found!\n", fileCount)
 	}
 
 	if errorCount != 0 {
