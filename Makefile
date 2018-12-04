@@ -12,7 +12,7 @@ bin/ec: $(SOURCES)
 build: bin/ec
 
 test:
-	@go test -p=1 -cover -v ./...
+	@go test -p=1 -cover -v -coverprofile=coverage.txt -covermode=atomic -coverpkg=github.com/editorconfig-checker/editorconfig-checker/... ./...
 	@go tool vet .
 	@test -z $(shell gofmt -s -l . | tee /dev/stderr) || (echo "[ERROR] Fix formatting issues with 'gofmt'" && exit 1)
 
