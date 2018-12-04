@@ -63,7 +63,7 @@ func TestGetContentType(t *testing.T) {
 		t.Error("Expected getContentType.go to be of type text/plain")
 	}
 
-	contentType = GetContentType("./../docs/logo.png")
+	contentType = GetContentType("./../../docs/logo.png")
 	if !strings.Contains(contentType, "image/png") {
 		t.Error("Expected getContentType_test.go to be of type application/octet-stream")
 	}
