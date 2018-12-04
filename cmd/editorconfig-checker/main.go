@@ -5,16 +5,18 @@ import (
 	"bufio"
 	"flag"
 	"fmt"
-	"github.com/editorconfig-checker/editorconfig-checker.go/types"
-	"github.com/editorconfig-checker/editorconfig-checker.go/utils"
-	"github.com/editorconfig-checker/editorconfig-checker.go/validators"
-	"gopkg.in/editorconfig/editorconfig-core-go.v1"
 	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"strconv"
 	"strings"
+
+	"gopkg.in/editorconfig/editorconfig-core-go.v1"
+
+	"github.com/editorconfig-checker/editorconfig-checker.go/pkg/types"
+	"github.com/editorconfig-checker/editorconfig-checker.go/pkg/utils"
+	"github.com/editorconfig-checker/editorconfig-checker.go/pkg/validators"
 )
 
 // version

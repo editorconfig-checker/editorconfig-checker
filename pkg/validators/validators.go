@@ -7,7 +7,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/editorconfig-checker/editorconfig-checker.go/utils"
+	"github.com/editorconfig-checker/editorconfig-checker.go/pkg/utils"
 )
 
 // Indentation validates a files indentation
