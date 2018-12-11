@@ -15,6 +15,7 @@ import (
 
 	"gopkg.in/editorconfig/editorconfig-core-go.v1"
 
+	"github.com/editorconfig-checker/editorconfig-checker.go/pkg/logger"
 	"github.com/editorconfig-checker/editorconfig-checker.go/pkg/types"
 	"github.com/editorconfig-checker/editorconfig-checker.go/pkg/utils"
 	"github.com/editorconfig-checker/editorconfig-checker.go/pkg/validators"
@@ -60,7 +61,6 @@ func init() {
 		lines := readLineNumbersOfFile(".ecrc")
 		excludes = strings.Join(lines, "|")
 	} else {
-		fmt.Println("file doesnt exists")
 		excludes = defaultExcludes
 	}
 
@@ -238,15 +238,15 @@ func getErrorCount(errors []types.ValidationErrors) int {
 func printErrors(errors []types.ValidationErrors) {
 	for _, file := range errors {
 		if len(file.Errors) > 0 {
-			fmt.Println(file.FilePath)
+			logger.Warning(file.FilePath)
 			for _, errorr := range file.Errors {
 				fmt.Printf("\t")
 
 				if errorr.LineNumber != -1 {
-					fmt.Printf("%d: ", errorr.LineNumber)
+					logger.Error(fmt.Sprintf("%d: ", errorr.LineNumber))
 				}
 
-				fmt.Printf("%s\n", errorr.Message)
+				logger.Error(fmt.Sprintf("%s\n", errorr.Message))
 			}
 		}
 	}
