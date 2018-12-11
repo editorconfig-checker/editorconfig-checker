@@ -99,8 +99,7 @@ func isInDefaultExcludes(filePath string) bool {
 func addToFiles(files []string, file string) []string {
 	contentType := utils.GetContentType(file)
 
-	if !utils.StringSliceContains(files, file) &&
-		!isInDefaultExcludes(file) &&
+	if !isInDefaultExcludes(file) &&
 		(contentType == "application/octet-stream" || strings.Contains(contentType, "text/plain")) &&
 		!isIgnoredByGitignore(file) {
 		return append(files, file)
@@ -240,13 +239,12 @@ func printErrors(errors []types.ValidationErrors) {
 		if len(file.Errors) > 0 {
 			logger.Warning(file.FilePath)
 			for _, errorr := range file.Errors {
-				fmt.Printf("\t")
-
 				if errorr.LineNumber != -1 {
-					logger.Error(fmt.Sprintf("%d: ", errorr.LineNumber))
+					logger.Error(fmt.Sprintf("\t%d: %s", errorr.LineNumber, errorr.Message))
+				} else {
+					logger.Error(fmt.Sprintf("\t%s", errorr.Message))
 				}
 
-				logger.Error(fmt.Sprintf("%s\n", errorr.Message))
 			}
 		}
 	}
@@ -270,13 +268,16 @@ func main() {
 	errors := processValidation(files)
 	errorCount := getErrorCount(errors)
 
+	if errorCount != 0 {
+		printErrors(errors)
+		fmt.Printf("\n%d errors found\n", errorCount)
+	}
+
 	if params.Verbose {
 		fmt.Printf("%d files found!\n", len(files))
 	}
 
 	if errorCount != 0 {
-		printErrors(errors)
-		fmt.Printf("\n%d errors found\n", errorCount)
 		os.Exit(1)
 	}
 

@@ -25,5 +25,5 @@ func Output(message string) {
 }
 
 func print(message string, color string, stream *os.File) {
-	fmt.Fprintf(stream, "%s%s%s", color, message, RESET)
+	fmt.Fprintf(stream, "%s%s%s\n", color, message, RESET)
 }

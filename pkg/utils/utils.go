@@ -23,17 +23,6 @@ func GetEolChar(endOfLine string) string {
 	return "\n"
 }
 
-// StringSliceContains returns wether a slice contains a specific element
-func StringSliceContains(slice []string, element string) bool {
-	for _, sliceElement := range slice {
-		if element == sliceElement {
-			return true
-		}
-	}
-
-	return false
-}
-
 // IsDirectory returns wether a path is a directory or not
 func IsDirectory(path string) bool {
 	fi, _ := os.Stat(path)
