@@ -8,6 +8,7 @@ type Params struct {
 	Verbose bool
 	// directories and/or files which should be validated
 	RawFiles []string
+	Excludes string
 }
 
 // ValidationError represents one validation error

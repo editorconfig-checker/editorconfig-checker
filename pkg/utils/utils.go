@@ -4,6 +4,7 @@ package utils
 import (
 	"net/http"
 	"os"
+	"path/filepath"
 )
 
 // GetEolChar returns the end of line character used in regexp
@@ -45,8 +46,13 @@ func IsRegularFile(fi os.FileInfo) bool {
 }
 
 // PathExists checks wether a path of a file or directory exists or not
-func PathExists(path string) bool {
-	_, err := os.Stat(path)
+func PathExists(filePath string) bool {
+	absolutePath, err := filepath.Abs(filePath)
+	if err != nil {
+		panic(err)
+	}
+
+	_, err = os.Stat(absolutePath)
 
 	if err == nil {
 		return true
