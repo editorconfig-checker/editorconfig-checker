@@ -6,18 +6,6 @@ import (
 	"testing"
 )
 
-func TestContains(t *testing.T) {
-	testSlice := []string{"a", "b", "c"}
-
-	if !StringSliceContains(testSlice, "a") {
-		t.Error("Expected \"a\" to be part of the slice")
-	}
-
-	if StringSliceContains(testSlice, "z") {
-		t.Error("Expected \"z\" to be not part of the slice")
-	}
-}
-
 func TestPathExists(t *testing.T) {
 	if !PathExists(".") {
 		t.Error("Expected . to be an existing path")
