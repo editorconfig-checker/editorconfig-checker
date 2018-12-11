@@ -9,6 +9,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"regexp"
 	"strconv"
 	"strings"
 
@@ -22,12 +23,8 @@ import (
 // version
 const version string = "0.0.1"
 
-var defaultExcludes = [...]string{
-	"/.git/",
-	"/vendor/",
-	"/yarn.lock",
-	"/composer.lock",
-	"node_modules/"}
+// defaultExcludes
+const defaultExcludes string = "\\.git\\/|vendor\\/|yarn\\.lock$|composer\\.lock$|node_modules\\/"
 
 // Global variable to store the cli parameter
 // only the init function should write to this variable
@@ -36,6 +33,9 @@ var params types.Params
 // Init function, runs on start automagically
 func init() {
 	// define flags
+	flag.StringVar(&params.Excludes, "exclude", "", "a regex which files should be excluded from checking - needs to be a valid regular expression")
+	flag.StringVar(&params.Excludes, "e", "", "a regex which files should be excluded from checking - needs to be a valid regular expression")
+
 	flag.BoolVar(&params.Version, "version", false, "print the version number")
 	flag.BoolVar(&params.Version, "v", false, "print the version number")
 
@@ -54,6 +54,17 @@ func init() {
 		rawFiles = []string{"."}
 	}
 
+	// if excludes are empty look for a `.ecrc` file in the current directory or use default excludes
+	excludes := ""
+	if params.Excludes == "" && utils.PathExists(".ecrc") {
+		lines := readLineNumbersOfFile(".ecrc")
+		excludes = strings.Join(lines, "|")
+	} else {
+		fmt.Println("file doesnt exists")
+		excludes = defaultExcludes
+	}
+
+	params.Excludes = excludes
 	params.RawFiles = rawFiles
 }
 
@@ -74,10 +85,10 @@ func isIgnoredByGitignore(file string) bool {
 // TODO: This is only here for performance for now
 // TODO: At least make this configurable i.e. .ecrc/.editorconfig-checkerrc
 // TODO: BETTER: elimante the need for this (better git filtering)
-func isInDefaultExcludes(file string) bool {
-	var result bool = false
-	for _, exclude := range defaultExcludes {
-		result = result || strings.Contains(filepath.ToSlash(file), exclude)
+func isInDefaultExcludes(filePath string) bool {
+	result, err := regexp.MatchString(params.Excludes, filePath)
+	if err != nil {
+		panic(err)
 	}
 
 	return result
