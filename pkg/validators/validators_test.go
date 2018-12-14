@@ -65,7 +65,12 @@ func TestLineEnding(t *testing.T) {
 		t.Error("Expected to return true for not existing end of line char")
 	}
 
-	// LF
+	lf(t)
+	cr(t)
+	crlf(t)
+}
+
+func lf(t *testing.T) {
 	if LineEnding("x", "lf") != nil {
 		t.Error("Expected to return true for line without linebreak")
 	}
@@ -85,8 +90,9 @@ func TestLineEnding(t *testing.T) {
 	if LineEnding("x\ry\nz\n", "lf") == nil {
 		t.Error("Expected to return false for mixed file(lf)")
 	}
+}
 
-	// CR
+func cr(t *testing.T) {
 	if LineEnding("x", "cr") != nil {
 		t.Error("Expected to return true for line without linebreak")
 	}
@@ -106,8 +112,9 @@ func TestLineEnding(t *testing.T) {
 	if LineEnding("x\ry\nz\n", "cr") == nil {
 		t.Error("Expected to return false for mixed file(lf)")
 	}
+}
 
-	// CRLF
+func crlf(t *testing.T) {
 	if LineEnding("x", "crlf") != nil {
 		t.Error("Expected to return true for line without linebreak")
 	}
