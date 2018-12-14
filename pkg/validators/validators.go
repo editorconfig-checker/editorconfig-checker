@@ -30,11 +30,7 @@ func Space(line string, indentSize int) error {
 		// or match everything despite a space or tab-character
 		regexpPattern := fmt.Sprintf("^( {%d})*( \\* ?|[^ \t])", indentSize)
 
-		matched, err := regexp.MatchString(regexpPattern, line)
-
-		if err != nil {
-			panic(err)
-		}
+		matched, _ := regexp.MatchString(regexpPattern, line)
 
 		if !matched {
 			return fmt.Errorf("Wrong amount of left-padding spaces(want multiple of %d)", indentSize)
@@ -49,11 +45,7 @@ func Space(line string, indentSize int) error {
 func Tab(line string) error {
 	if len(line) > 0 {
 		regexpPattern := "^\t*[^ \t]"
-		matched, err := regexp.MatchString(regexpPattern, line)
-
-		if err != nil {
-			panic(err)
-		}
+		matched, _ := regexp.MatchString(regexpPattern, line)
 
 		if !matched {
 			return errors.New("Wrong indentation type(spaces instead of tabs)")
@@ -68,11 +60,7 @@ func Tab(line string) error {
 func TrailingWhitespace(line string, trimTrailingWhitespace bool) error {
 	if trimTrailingWhitespace {
 		regexpPattern := "^.*[ \t]+$"
-		matched, err := regexp.MatchString(regexpPattern, line)
-
-		if err != nil {
-			panic(err)
-		}
+		matched, _ := regexp.MatchString(regexpPattern, line)
 
 		if matched {
 			return errors.New("Trailing whitespace")
@@ -86,11 +74,7 @@ func TrailingWhitespace(line string, trimTrailingWhitespace bool) error {
 func FinalNewline(fileContent string, insertFinalNewline bool, endOfLine string) error {
 	if insertFinalNewline {
 		regexpPattern := fmt.Sprintf("%s$", utils.GetEolChar(endOfLine))
-		matched, err := regexp.MatchString(regexpPattern, fileContent)
-
-		if err != nil {
-			panic(err)
-		}
+		matched, _ := regexp.MatchString(regexpPattern, fileContent)
 
 		if !matched {
 			return errors.New("Wrong line endings or new final newline")

@@ -2,6 +2,7 @@
 package utils
 
 import (
+	"fmt"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -24,25 +25,10 @@ func GetEolChar(endOfLine string) string {
 	return "\n"
 }
 
-// IsDirectory returns wether a path is a directory or not
-func IsDirectory(path string) bool {
-	fi, _ := os.Stat(path)
-	return fi.Mode().IsDir()
-}
-
-// IsRegularFile return wether a file is a regular file or not
-func IsRegularFile(fi os.FileInfo) bool {
-	return fi.Mode().IsRegular()
-}
-
 // PathExists checks wether a path of a file or directory exists or not
 func PathExists(filePath string) bool {
-	absolutePath, err := filepath.Abs(filePath)
-	if err != nil {
-		panic(err)
-	}
-
-	_, err = os.Stat(absolutePath)
+	absolutePath, _ := filepath.Abs(filePath)
+	_, err := os.Stat(absolutePath)
 
 	if err == nil {
 		return true
@@ -52,21 +38,20 @@ func PathExists(filePath string) bool {
 }
 
 // GetContentType returns the content type of a file
-func GetContentType(path string) string {
-	// TODO: Refactor this into somewhere else or return additionally an error
+func GetContentType(path string) (string, error) {
 	fileStat, err := os.Stat(path)
 
 	if err != nil {
-		panic(err)
+		return "", err
 	}
 
 	if fileStat.Size() == 0 {
-		return ""
+		return "", nil
 	}
 
 	file, err := os.Open(path)
 	if err != nil {
-		panic(err)
+		return "", err
 	}
 	defer file.Close()
 
@@ -74,23 +59,23 @@ func GetContentType(path string) string {
 	buffer := make([]byte, 512)
 	_, err = file.Read(buffer)
 	if err != nil {
-		panic(err)
+		return "", err
 	}
 
 	// Reset the read pointer if necessary.
 	file.Seek(0, 0)
 
 	// Always returns a valid content-type and "application/octet-stream" if no others seemed to match.
-	return http.DetectContentType(buffer)
+	return http.DetectContentType(buffer), nil
 }
 
 // GetRelativePath returns the relative path of a file from the current working directory
-func GetRelativePath(filePath string) string {
+func GetRelativePath(filePath string) (string, error) {
 	cwd, err := os.Getwd()
 	if err != nil {
-		panic(err)
+		return "", fmt.Errorf("Could not get the current working directy")
 	}
 
 	relativePath := strings.Replace(filePath, cwd, ".", 1)
-	return relativePath
+	return relativePath, nil
 }

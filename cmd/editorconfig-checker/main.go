@@ -83,10 +83,14 @@ func isIgnoredByGitignore(file string) bool {
 
 // Returns wether the file is inside an unwanted folder
 // TODO: This is only here for performance for now
-// TODO: At least make this configurable i.e. .ecrc/.editorconfig-checkerrc
 // TODO: BETTER: elimante the need for this (better git filtering)
 func isInDefaultExcludes(filePath string) bool {
-	result, err := regexp.MatchString(params.Excludes, utils.GetRelativePath(filePath))
+	relativeFilePath, err := utils.GetRelativePath(filePath)
+	if err != nil {
+		panic(err)
+	}
+
+	result, err := regexp.MatchString(params.Excludes, relativeFilePath)
 	if err != nil {
 		panic(err)
 	}
@@ -96,13 +100,18 @@ func isInDefaultExcludes(filePath string) bool {
 
 // Adds a file to a slice if it isn't already in there
 // and returns the new slice
-func addToFiles(files []string, file string) []string {
-	contentType := utils.GetContentType(file)
+func addToFiles(files []string, filePath string) []string {
+	contentType, err := utils.GetContentType(filePath)
 
-	if !isInDefaultExcludes(file) &&
+	if err != nil {
+		logger.Error(fmt.Sprintf("Could not get the ContentType of file: %s", filePath))
+		logger.Error(err.Error())
+	}
+
+	if !isInDefaultExcludes(filePath) &&
 		(contentType == "application/octet-stream" || strings.Contains(contentType, "text/plain")) &&
-		!isIgnoredByGitignore(file) {
-		return append(files, file)
+		!isIgnoredByGitignore(filePath) {
+		return append(files, filePath)
 	}
 
 	return files
@@ -129,11 +138,12 @@ func getFiles() []string {
 		}
 
 		// if the path is an directory walk through it and add all files to files slice
-		if utils.IsDirectory(absolutePath) {
+		if fi, _ := os.Stat(absolutePath); fi.Mode().IsDir() {
 			// TODO: Performance optimization - this is the bottleneck and loops over every folder/file
 			// and then checks if should be added. This needs some refactoring.
 			err := filepath.Walk(absolutePath, func(path string, fi os.FileInfo, err error) error {
-				if utils.IsRegularFile(fi) {
+				// no symlinks or special files, just regular files
+				if fi.Mode().IsRegular() {
 					files = addToFiles(files, path)
 				}
 
@@ -237,7 +247,13 @@ func getErrorCount(errors []types.ValidationErrors) int {
 func printErrors(errors []types.ValidationErrors) {
 	for _, file := range errors {
 		if len(file.Errors) > 0 {
-			logger.Warning(utils.GetRelativePath(file.FilePath))
+			relativeFilePath, err := utils.GetRelativePath(file.FilePath)
+
+			if err != nil {
+				logger.Error(err.Error())
+			}
+
+			logger.Warning(relativeFilePath)
 			for _, errorr := range file.Errors {
 				if errorr.LineNumber != -1 {
 					logger.Error(fmt.Sprintf("\t%d: %s", errorr.LineNumber, errorr.Message))
