@@ -84,6 +84,7 @@ func GetContentType(path string) string {
 	return http.DetectContentType(buffer)
 }
 
+// GetRelativePath returns the relative path of a file from the current working directory
 func GetRelativePath(filePath string) string {
 	cwd, err := os.Getwd()
 	if err != nil {
