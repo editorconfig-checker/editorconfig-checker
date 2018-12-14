@@ -73,7 +73,7 @@ func GetContentType(path string) (string, error) {
 func GetRelativePath(filePath string) (string, error) {
 	cwd, err := os.Getwd()
 	if err != nil {
-		return "", fmt.Errorf("Could not get the current working directy")
+		return "", fmt.Errorf("Could not get the current working directly")
 	}
 
 	relativePath := strings.Replace(filePath, cwd, ".", 1)
