@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"os"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -54,5 +55,18 @@ func TestGetContentType(t *testing.T) {
 	contentType = GetContentType("./../../docs/logo.png")
 	if !strings.Contains(contentType, "image/png") {
 		t.Error("Expected getContentType_test.go to be of type application/octet-stream")
+	}
+}
+
+func TestGetRelativePath(t *testing.T) {
+	cwd, err := os.Getwd()
+	if err != nil {
+		panic(err)
+	}
+
+	filePath := "/bin/ec"
+
+	if GetRelativePath(cwd+filePath) != "."+filePath {
+		t.Error("Expected the relative filePath to match")
 	}
 }

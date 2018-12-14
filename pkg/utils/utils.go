@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 // GetEolChar returns the end of line character used in regexp
@@ -81,4 +82,14 @@ func GetContentType(path string) string {
 
 	// Always returns a valid content-type and "application/octet-stream" if no others seemed to match.
 	return http.DetectContentType(buffer)
+}
+
+func GetRelativePath(filePath string) string {
+	cwd, err := os.Getwd()
+	if err != nil {
+		panic(err)
+	}
+
+	relativePath := strings.Replace(filePath, cwd, ".", 1)
+	return relativePath
 }
