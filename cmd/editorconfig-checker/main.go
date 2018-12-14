@@ -86,7 +86,7 @@ func isIgnoredByGitignore(file string) bool {
 // TODO: At least make this configurable i.e. .ecrc/.editorconfig-checkerrc
 // TODO: BETTER: elimante the need for this (better git filtering)
 func isInDefaultExcludes(filePath string) bool {
-	result, err := regexp.MatchString(params.Excludes, filePath)
+	result, err := regexp.MatchString(params.Excludes, utils.GetRelativePath(filePath))
 	if err != nil {
 		panic(err)
 	}
@@ -237,7 +237,7 @@ func getErrorCount(errors []types.ValidationErrors) int {
 func printErrors(errors []types.ValidationErrors) {
 	for _, file := range errors {
 		if len(file.Errors) > 0 {
-			logger.Warning(file.FilePath)
+			logger.Warning(utils.GetRelativePath(file.FilePath))
 			for _, errorr := range file.Errors {
 				if errorr.LineNumber != -1 {
 					logger.Error(fmt.Sprintf("\t%d: %s", errorr.LineNumber, errorr.Message))
