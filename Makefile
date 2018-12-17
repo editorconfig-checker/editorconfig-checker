@@ -21,3 +21,6 @@ bench:
 
 run: build
 	@./bin/ec
+
+run-verbose: build
+	@./bin/ec --verbose

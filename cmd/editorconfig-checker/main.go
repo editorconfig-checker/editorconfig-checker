@@ -71,8 +71,8 @@ func init() {
 // Checks if the file is ignored by the gitignore
 // TODO: Remove dependency to git?
 // TODO: In this state the application has to be run out of the repository root or some sub-folder
-func isIgnoredByGitignore(file string) bool {
-	cmd := exec.Command("git", "check-ignore", file)
+func isIgnoredByGitignore(filePath string) bool {
+	cmd := exec.Command("git", "check-ignore", filePath)
 	err := cmd.Run()
 	if err != nil {
 		return false
@@ -100,7 +100,7 @@ func isInDefaultExcludes(filePath string) bool {
 
 // Adds a file to a slice if it isn't already in there
 // and returns the new slice
-func addToFiles(files []string, filePath string) []string {
+func addToFiles(files []string, filePath string, verbose bool) []string {
 	contentType, err := utils.GetContentType(filePath)
 
 	if err != nil {
@@ -111,7 +111,14 @@ func addToFiles(files []string, filePath string) []string {
 	if !isInDefaultExcludes(filePath) &&
 		(contentType == "application/octet-stream" || strings.Contains(contentType, "text/plain")) &&
 		!isIgnoredByGitignore(filePath) {
+		if verbose {
+			logger.Output(fmt.Sprintf("Add %s to be checked", filePath))
+		}
 		return append(files, filePath)
+	}
+
+	if verbose {
+		logger.Output(fmt.Sprintf("Don't add %s to be checked", filePath))
 	}
 
 	return files
@@ -119,7 +126,7 @@ func addToFiles(files []string, filePath string) []string {
 
 // Returns all files which should be checked
 // TODO: Manual excludes
-func getFiles() []string {
+func getFiles(verbose bool) []string {
 	var files []string
 
 	// loop over rawFiles to make them absolute
@@ -142,9 +149,13 @@ func getFiles() []string {
 			// TODO: Performance optimization - this is the bottleneck and loops over every folder/file
 			// and then checks if should be added. This needs some refactoring.
 			err := filepath.Walk(absolutePath, func(path string, fi os.FileInfo, err error) error {
+				if verbose {
+					logger.Output(fmt.Sprintf("Check if %s should be added to checked files", path))
+				}
+
 				// no symlinks or special files, just regular files
 				if fi.Mode().IsRegular() {
-					files = addToFiles(files, path)
+					files = addToFiles(files, path, verbose)
 				}
 
 				return nil
@@ -158,15 +169,15 @@ func getFiles() []string {
 		}
 
 		// just add the absolutePath to files
-		files = addToFiles(files, absolutePath)
+		files = addToFiles(files, absolutePath, verbose)
 	}
 
 	return files
 }
 
-func readLineNumbersOfFile(file string) []string {
+func readLineNumbersOfFile(filePath string) []string {
 	var lines []string
-	fileHandle, _ := os.Open(file)
+	fileHandle, _ := os.Open(filePath)
 	defer fileHandle.Close()
 	fileScanner := bufio.NewScanner(fileHandle)
 
@@ -178,10 +189,10 @@ func readLineNumbersOfFile(file string) []string {
 }
 
 // Validates a single file and returns the errors
-func validateFile(file string) []types.ValidationError {
+func validateFile(filePath string, verbose bool) []types.ValidationError {
 	var errors []types.ValidationError
-	lines := readLineNumbersOfFile(file)
-	rawFileContent, err := ioutil.ReadFile(file)
+	lines := readLineNumbersOfFile(filePath)
+	rawFileContent, err := ioutil.ReadFile(filePath)
 
 	if err != nil {
 		panic(err)
@@ -189,21 +200,37 @@ func validateFile(file string) []types.ValidationError {
 
 	fileContent := string(rawFileContent)
 
-	editorconfig, err := editorconfig.GetDefinitionForFilename(file)
+	editorconfig, err := editorconfig.GetDefinitionForFilename(filePath)
 	if err != nil {
 		panic(err)
 	}
 
-	if currentError := validators.FinalNewline(fileContent, editorconfig.Raw["insert_final_newline"] == "true", editorconfig.Raw["end_of_line"]); currentError != nil {
+	if currentError := validators.FinalNewline(
+		fileContent,
+		editorconfig.Raw["insert_final_newline"] == "true",
+		editorconfig.Raw["end_of_line"]); currentError != nil {
+		if verbose {
+			logger.Output(fmt.Sprintf("Final newline error found in %s", filePath))
+		}
 		errors = append(errors, types.ValidationError{LineNumber: -1, Message: currentError})
 	}
 
-	if currentError := validators.LineEnding(fileContent, editorconfig.Raw["end_of_line"]); currentError != nil {
+	if currentError := validators.LineEnding(
+		fileContent,
+		editorconfig.Raw["end_of_line"]); currentError != nil {
+		if verbose {
+			logger.Output(fmt.Sprintf("Line ending error found in %s", filePath))
+		}
 		errors = append(errors, types.ValidationError{LineNumber: -1, Message: currentError})
 	}
 
 	for lineNumber, line := range lines {
-		if currentError := validators.TrailingWhitespace(line, editorconfig.Raw["trim_trailing_whitespace"] == "true"); currentError != nil {
+		if currentError := validators.TrailingWhitespace(
+			line,
+			editorconfig.Raw["trim_trailing_whitespace"] == "true"); currentError != nil {
+			if verbose {
+				logger.Output(fmt.Sprintf("Trailing whitespace error found in %s on line %d", filePath, lineNumber))
+			}
 			errors = append(errors, types.ValidationError{LineNumber: lineNumber + 1, Message: currentError})
 		}
 
@@ -215,7 +242,13 @@ func validateFile(file string) []types.ValidationError {
 			indentSize = 0
 		}
 
-		if currentError := validators.Indentation(line, editorconfig.Raw["indent_style"], indentSize); currentError != nil {
+		if currentError := validators.Indentation(
+			line,
+			editorconfig.Raw["indent_style"],
+			indentSize); currentError != nil {
+			if verbose {
+				logger.Output(fmt.Sprintf("Indentation error found in %s on line %d", filePath, lineNumber))
+			}
 			errors = append(errors, types.ValidationError{LineNumber: lineNumber + 1, Message: currentError})
 		}
 	}
@@ -224,11 +257,14 @@ func validateFile(file string) []types.ValidationError {
 }
 
 // Validates all files and returns an array of validation errors
-func processValidation(files []string) []types.ValidationErrors {
+func processValidation(files []string, verbose bool) []types.ValidationErrors {
 	var validationErrors []types.ValidationErrors
 
-	for _, file := range files {
-		validationErrors = append(validationErrors, types.ValidationErrors{FilePath: file, Errors: validateFile(file)})
+	for _, filePath := range files {
+		if verbose {
+			logger.Output(fmt.Sprintf("Validate %s", filePath))
+		}
+		validationErrors = append(validationErrors, types.ValidationErrors{FilePath: filePath, Errors: validateFile(filePath, verbose)})
 	}
 
 	return validationErrors
@@ -245,20 +281,20 @@ func getErrorCount(errors []types.ValidationErrors) int {
 }
 
 func printErrors(errors []types.ValidationErrors) {
-	for _, file := range errors {
-		if len(file.Errors) > 0 {
-			relativeFilePath, err := utils.GetRelativePath(file.FilePath)
+	for _, fileErrors := range errors {
+		if len(fileErrors.Errors) > 0 {
+			relativeFilePath, err := utils.GetRelativePath(fileErrors.FilePath)
 
 			if err != nil {
 				logger.Error(err.Error())
 			}
 
-			logger.Warning(relativeFilePath)
-			for _, errorr := range file.Errors {
-				if errorr.LineNumber != -1 {
-					logger.Error(fmt.Sprintf("\t%d: %s", errorr.LineNumber, errorr.Message))
+			logger.Print(fmt.Sprintf("%s:", relativeFilePath), logger.YELLOW, os.Stderr)
+			for _, singleError := range fileErrors.Errors {
+				if singleError.LineNumber != -1 {
+					logger.Error(fmt.Sprintf("\t%d: %s", singleError.LineNumber, singleError.Message))
 				} else {
-					logger.Error(fmt.Sprintf("\t%s", errorr.Message))
+					logger.Error(fmt.Sprintf("\t%s", singleError.Message))
 				}
 
 			}
@@ -271,26 +307,26 @@ func main() {
 	// Check for returnworthy params
 	switch {
 	case params.Version:
-		fmt.Println(version)
+		logger.Output(version)
 		return
 	case params.Help:
-		fmt.Println("USAGE:")
+		logger.Output("USAGE:")
 		flag.PrintDefaults()
 		return
 	}
 
 	// contains all files which should be checked
-	files := getFiles()
-	errors := processValidation(files)
+	files := getFiles(params.Verbose)
+	errors := processValidation(files, params.Verbose)
 	errorCount := getErrorCount(errors)
 
 	if errorCount != 0 {
 		printErrors(errors)
-		fmt.Printf("\n%d errors found\n", errorCount)
+		logger.Error(fmt.Sprintf("\n%d errors found\n", errorCount))
 	}
 
 	if params.Verbose {
-		fmt.Printf("%d files found!\n", len(files))
+		logger.Output(fmt.Sprintf("%d files checked", len(files)))
 	}
 
 	if errorCount != 0 {
