@@ -25,7 +25,7 @@ import (
 const version string = "0.0.1"
 
 // defaultExcludes
-const defaultExcludes string = "\\.git\\/|vendor\\/|yarn\\.lock$|composer\\.lock$|node_modules\\/"
+const defaultExcludes string = "yarn\\.lock$|composer\\.lock$\\/"
 
 // Global variable to store the cli parameter
 // only the init function should write to this variable
@@ -56,35 +56,20 @@ func init() {
 	}
 
 	// if excludes are empty look for a `.ecrc` file in the current directory or use default excludes
-	excludes := ""
+	excludes := defaultExcludes
 	if params.Excludes == "" && utils.PathExists(".ecrc") {
 		lines := readLineNumbersOfFile(".ecrc")
-		excludes = strings.Join(lines, "|")
-	} else {
-		excludes = defaultExcludes
+		if len(lines) > 0 {
+			excludes = strings.Join(lines, "|")
+		}
 	}
 
 	params.Excludes = excludes
 	params.RawFiles = rawFiles
 }
 
-// Checks if the file is ignored by the gitignore
-// TODO: Remove dependency to git?
-// TODO: In this state the application has to be run out of the repository root or some sub-folder
-func isIgnoredByGitignore(filePath string) bool {
-	cmd := exec.Command("git", "check-ignore", filePath)
-	err := cmd.Run()
-	if err != nil {
-		return false
-	}
-
-	return true
-}
-
 // Returns wether the file is inside an unwanted folder
-// TODO: This is only here for performance for now
-// TODO: BETTER: elimante the need for this (better git filtering)
-func isInDefaultExcludes(filePath string) bool {
+func isExcluded(filePath string) bool {
 	relativeFilePath, err := utils.GetRelativePath(filePath)
 	if err != nil {
 		panic(err)
@@ -108,9 +93,7 @@ func addToFiles(files []string, filePath string, verbose bool) []string {
 		logger.Error(err.Error())
 	}
 
-	if !isInDefaultExcludes(filePath) &&
-		(contentType == "application/octet-stream" || strings.Contains(contentType, "text/plain")) &&
-		!isIgnoredByGitignore(filePath) {
+	if !isExcluded(filePath) && (contentType == "application/octet-stream" || strings.Contains(contentType, "text/plain")) {
 		if verbose {
 			logger.Output(fmt.Sprintf("Add %s to be checked", filePath))
 		}
@@ -125,51 +108,35 @@ func addToFiles(files []string, filePath string, verbose bool) []string {
 }
 
 // Returns all files which should be checked
-// TODO: Manual excludes
 func getFiles(verbose bool) []string {
 	var files []string
 
-	// loop over rawFiles to make them absolute
-	// and check if they exist
-	for _, rawFile := range params.RawFiles {
-		absolutePath, err := filepath.Abs(rawFile)
-
+	byteArray, err := exec.Command("git", "ls-tree", "-r", "--name-only", "HEAD").Output()
+	if err != nil {
+		// It is not a git repository.
+		cwd, err := os.Getwd()
 		if err != nil {
-			panic(err)
+			panic("Could not get the current working directly")
 		}
 
-		pathExist := utils.PathExists(absolutePath)
-
-		if !pathExist {
-			panic("The directory or file `" + absolutePath + "` does not exist or is not accessible.")
-		}
-
-		// if the path is an directory walk through it and add all files to files slice
-		if fi, _ := os.Stat(absolutePath); fi.Mode().IsDir() {
-			// TODO: Performance optimization - this is the bottleneck and loops over every folder/file
-			// and then checks if should be added. This needs some refactoring.
-			err := filepath.Walk(absolutePath, func(path string, fi os.FileInfo, err error) error {
-				if verbose {
-					logger.Output(fmt.Sprintf("Check if %s should be added to checked files", path))
-				}
-
-				// no symlinks or special files, just regular files
-				if fi.Mode().IsRegular() {
-					files = addToFiles(files, path, verbose)
-				}
-
-				return nil
-			})
-
-			if err != nil {
-				panic(err)
+		err = filepath.Walk(cwd, func(path string, fi os.FileInfo, err error) error {
+			if fi.Mode().IsRegular() {
+				files = addToFiles(files, path, verbose)
 			}
 
-			continue
-		}
+			return nil
+		})
+	}
 
-		// just add the absolutePath to files
-		files = addToFiles(files, absolutePath, verbose)
+	filesSlice := strings.Split(string(byteArray[:]), "\n")
+
+	for _, filePath := range filesSlice {
+		if len(filePath) > 0 {
+			fi, _ := os.Stat(filePath)
+			if fi.Mode().IsRegular() {
+				files = addToFiles(files, filePath, verbose)
+			}
+		}
 	}
 
 	return files
