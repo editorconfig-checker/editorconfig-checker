@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"regexp"
 	"strconv"
 	"strings"
@@ -107,13 +108,24 @@ func addToFiles(files []string, filePath string, verbose bool) []string {
 }
 
 // Returns all files which should be checked
-// TODO: Manual excludes
 func getFiles(verbose bool) []string {
 	var files []string
 
 	byteArray, err := exec.Command("git", "ls-tree", "-r", "--name-only", "HEAD").Output()
 	if err != nil {
-		panic(err)
+		// It is not a git repository.
+		cwd, err := os.Getwd()
+		if err != nil {
+			panic("Could not get the current working directly")
+		}
+
+		err = filepath.Walk(cwd, func(path string, fi os.FileInfo, err error) error {
+			if fi.Mode().IsRegular() {
+				files = addToFiles(files, path, verbose)
+			}
+
+			return nil
+		})
 	}
 
 	filesSlice := strings.Split(string(byteArray[:]), "\n")
