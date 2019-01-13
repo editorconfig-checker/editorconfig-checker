@@ -33,7 +33,7 @@ run-verbose: build
 release: _tag_version _do_release
 	echo Release done. Go to Github and create a release.
 
-_do_release: clean test build run _compress-all-binaries
+_do_release: clean test build run _build-all-binaries
 
 _tag_version:
 	@read -p "Enter version to release: " version && \
