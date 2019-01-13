@@ -5,15 +5,17 @@
 
 ![Logo](https://raw.githubusercontent.com/editorconfig-checker/editorconfig-checker.go/master/docs/logo.png "Logo")
 
-1. [What](#what)
-1. [Installation](#installation)
-1. [Usage](#usage)
-1. [Excluding Files](#excluding-files)
-2. [Default Excludes](#default-excludes)
-2. [Manually Excluding](#manually-excluding)
-3. [via ecrc](#via-ecrc)
-3. [Generally](#generally)
-1. [Support](#support)
+1. [What](#what)  
+2. [Installation](#installation)  
+3. [Usage](#usage)  
+4. [Excluding Files](#excluding-files)  
+4.1. [Default Excludes](#default-excludes)  
+4.2. [Manually Excluding](#manually-excluding)  
+4.3. [via ecrc](#via-ecrc)  
+4.4. [via arguments](#via-arguments)  
+4.5. [Generally](#generally)  
+5. [Support](#support)
+
 
 ## What?
 
@@ -26,7 +28,7 @@ If you don't know about editorconfig already you can read about it here: [editor
 
 ## Installation
 
-Grab a binary from the release page. 
+Grab a binary from the [release page](https://github.com/editorconfig-checker/editorconfig-checker.go/releases). 
 
 If you have go installed you can run `go get github.com/editorconfig-checker/editorconfig-checker.go` and run `make build` inside the project folder. 
 This will place a binary called `ec` into the `bin` directory.
