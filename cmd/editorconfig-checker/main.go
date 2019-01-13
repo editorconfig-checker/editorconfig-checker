@@ -132,8 +132,11 @@ func getFiles(verbose bool) []string {
 
 	for _, filePath := range filesSlice {
 		if len(filePath) > 0 {
-			fi, _ := os.Stat(filePath)
-			if fi.Mode().IsRegular() {
+			fi, err := os.Stat(filePath)
+
+			// The err would be a broken symlink for example,
+			// so we want to program to continue but the file should not be checked
+			if err == nil && fi.Mode().IsRegular() {
 				files = addToFiles(files, filePath, verbose)
 			}
 		}
