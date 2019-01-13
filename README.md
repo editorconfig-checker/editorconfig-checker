@@ -1,9 +1,9 @@
 # editorconfig-checker
-[![Build Status](https://travis-ci.org/editorconfig-checker/editorconfig-checker.go.svg?branch=master)](https://travis-ci.org/editorconfig-checker/editorconfig-checker.go) 
-[![codecov](https://codecov.io/gh/editorconfig-checker/editorconfig-checker.go/branch/master/graph/badge.svg)](https://codecov.io/gh/editorconfig-checker/editorconfig-checker.go)
-[![Go Report Card](https://goreportcard.com/badge/github.com/editorconfig-checker/editorconfig-checker.go)](https://goreportcard.com/report/github.com/editorconfig-checker/editorconfig-checker.go)
+[![Build Status](https://travis-ci.org/editorconfig-checker/editorconfig-checker.svg?branch=master)](https://travis-ci.org/editorconfig-checker/editorconfig-checker) 
+[![codecov](https://codecov.io/gh/editorconfig-checker/editorconfig-checker/branch/master/graph/badge.svg)](https://codecov.io/gh/editorconfig-checker/editorconfig-checker)
+[![Go Report Card](https://goreportcard.com/badge/github.com/editorconfig-checker/editorconfig-checker)](https://goreportcard.com/report/github.com/editorconfig-checker/editorconfig-checker)
 
-![Logo](https://raw.githubusercontent.com/editorconfig-checker/editorconfig-checker.go/master/docs/logo.png "Logo")
+![Logo](https://raw.githubusercontent.com/editorconfig-checker/editorconfig-checker/master/docs/logo.png "Logo")
 
 1. [What](#what)  
 2. [Installation](#installation)  
@@ -25,12 +25,14 @@ This tool only needs your `.editorconfig` to check all files.
 
 If you don't know about editorconfig already you can read about it here: [editorconfig.org](https://editorconfig.org/).
 
+![Example Screenshot](https://raw.githubusercontent.com/editorconfig-checker/editorconfig-checker/master/docs/screenshot.png "Example Screenshot")
+
 
 ## Installation
 
-Grab a binary from the [release page](https://github.com/editorconfig-checker/editorconfig-checker.go/releases). 
+Grab a binary from the [release page](https://github.com/editorconfig-checker/editorconfig-checker/releases). 
 
-If you have go installed you can run `go get github.com/editorconfig-checker/editorconfig-checker.go` and run `make build` inside the project folder. 
+If you have go installed you can run `go get github.com/editorconfig-checker/editorconfig-checker` and run `make build` inside the project folder. 
 This will place a binary called `ec` into the `bin` directory.
 
 
