@@ -30,7 +30,18 @@ run: build
 run-verbose: build
 	@./bin/ec --verbose
 
-build-all-binaries: build run test clean
+release: _tag_version _do_release
+	echo Release done. Go to Github and create a release.
+
+_do_release: clean test build run _compress-all-binaries
+
+_tag_version:
+	@read -p "Enter version to release: " version && \
+	sed -i "s/const version string = \".*\"/const version string = \"$${version}\"/" ./cmd/editorconfig-checker/main.go && \
+	git add . && git commit -m "chore: tag release $${version}" && git tag "$${version}" && \
+	git push origin master && git push origin master --tags
+
+_build-all-binaries: build run test clean
 	# doesn't work on my machine and not in travis, see: https://github.com/golang/go/wiki/GoArm
 	# GOOS=android GOARCH=arm  $(COMPILE_COMMAND) && mv ./bin/ec ./bin/ec-android-arm
 	# GOOS=darwin  GOARCH=arm $(COMPILE_COMMAND) && mv ./bin/ec ./bin/ec-darwin-arm
@@ -63,18 +74,8 @@ build-all-binaries: build run test clean
 	GOOS=windows   GOARCH=386      $(COMPILE_COMMAND) && mv ./bin/ec ./bin/ec-windows-386
 	GOOS=windows   GOARCH=amd64    $(COMPILE_COMMAND) && mv ./bin/ec ./bin/ec-windows-amd64
 
-compress-all-binaries: build-all-binaries
+_compress-all-binaries: _build-all-binaries
 	for f in $(BINARIES); do      \
 		tar czf $$f.tar.gz $$f;    \
 	done
 	@rm $(BINARIES)
-
-_do_release: clean test build run compress-all-binaries
-
-_tag_version:
-	@read -p "Enter version to release: " version; \
-	sed -i "s/const version string = \".*\"/const version string = \"$${version}\"/" ./cmd/editorconfig-checker/main.go
-	git add . && git commit -m "chore: tag release $${version}" && git tag "$${version}"
-	# && git push origin master && git push origin master --tags
-
-release: _tag_version
