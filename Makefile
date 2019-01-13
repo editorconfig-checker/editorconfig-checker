@@ -33,7 +33,7 @@ run-verbose: build
 release: _tag_version _do_release
 	echo Release done. Go to Github and create a release.
 
-_do_release: clean test build run _compress-all-binaries
+_do_release: clean test build run _build-all-binaries _compress-all-binaries
 
 _tag_version:
 	@read -p "Enter version to release: " version && \
@@ -41,7 +41,7 @@ _tag_version:
 	git add . && git commit -m "chore: tag release $${version}" && git tag "$${version}" && \
 	git push origin master && git push origin master --tags
 
-_build-all-binaries: build run test clean
+_build-all-binaries:
 	# doesn't work on my machine and not in travis, see: https://github.com/golang/go/wiki/GoArm
 	# GOOS=android GOARCH=arm  $(COMPILE_COMMAND) && mv ./bin/ec ./bin/ec-android-arm
 	# GOOS=darwin  GOARCH=arm $(COMPILE_COMMAND) && mv ./bin/ec ./bin/ec-darwin-arm
@@ -74,7 +74,7 @@ _build-all-binaries: build run test clean
 	GOOS=windows   GOARCH=386      $(COMPILE_COMMAND) && mv ./bin/ec ./bin/ec-windows-386
 	GOOS=windows   GOARCH=amd64    $(COMPILE_COMMAND) && mv ./bin/ec ./bin/ec-windows-amd64
 
-_compress-all-binaries: _build-all-binaries
+_compress-all-binaries:
 	for f in $(BINARIES); do      \
 		tar czf $$f.tar.gz $$f;    \
 	done
