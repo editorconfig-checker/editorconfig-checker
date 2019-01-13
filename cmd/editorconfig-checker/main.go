@@ -22,7 +22,7 @@ import (
 )
 
 // version
-const version string = "0.0.1"
+const version string = "0.0.2"
 
 // defaultExcludes
 const defaultExcludes string = "yarn\\.lock$|package-lock\\.json$|composer\\.lock$|min\\.css$|min\\.js$\\/"

@@ -61,10 +61,19 @@ build-all-binaries: build run test clean
 	GOOS=plan9     GOARCH=amd64    $(COMPILE_COMMAND) && mv ./bin/ec ./bin/ec-plan9-amd64
 	GOOS=solaris   GOARCH=amd64    $(COMPILE_COMMAND) && mv ./bin/ec ./bin/ec-solaris-amd64
 	GOOS=windows   GOARCH=386      $(COMPILE_COMMAND) && mv ./bin/ec ./bin/ec-windows-386
-	GOOS=windows GOARCH=amd64 $(COMPILE_COMMAND) && mv ./bin/ec ./bin/ec-windows-amd64
+	GOOS=windows   GOARCH=amd64    $(COMPILE_COMMAND) && mv ./bin/ec ./bin/ec-windows-amd64
 
 compress-all-binaries: build-all-binaries
 	for f in $(BINARIES); do      \
 		tar czf $$f.tar.gz $$f;    \
 	done
 	@rm $(BINARIES)
+
+_do_release: clean test build run compress-all-binaries
+
+_tag_version:
+	@read -p "Enter version to release: " version; \
+	sed -i "s/const version string = \".*\"/const version string = \"$${version}\"/" ./cmd/editorconfig-checker/main.go
+	git add . && git commit -m "chore: tag release $${version}" && git tag $${version} && git push origin master
+
+release: _tag_version _do_release
