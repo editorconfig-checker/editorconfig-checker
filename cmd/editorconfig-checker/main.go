@@ -122,7 +122,7 @@ func getFiles(verbose bool) []string {
 			panic("Could not get the current working directly")
 		}
 
-		err = filepath.Walk(cwd, func(path string, fi os.FileInfo, err error) error {
+		_ = filepath.Walk(cwd, func(path string, fi os.FileInfo, err error) error {
 			if fi.Mode().IsRegular() {
 				files = addToFiles(files, path, verbose)
 			}
