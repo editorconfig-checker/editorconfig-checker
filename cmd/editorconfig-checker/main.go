@@ -15,10 +15,10 @@ import (
 
 	"gopkg.in/editorconfig/editorconfig-core-go.v1"
 
-	"github.com/editorconfig-checker/editorconfig-checker.go/pkg/logger"
-	"github.com/editorconfig-checker/editorconfig-checker.go/pkg/types"
-	"github.com/editorconfig-checker/editorconfig-checker.go/pkg/utils"
-	"github.com/editorconfig-checker/editorconfig-checker.go/pkg/validators"
+	"github.com/editorconfig-checker/editorconfig-checker/pkg/logger"
+	"github.com/editorconfig-checker/editorconfig-checker/pkg/types"
+	"github.com/editorconfig-checker/editorconfig-checker/pkg/utils"
+	"github.com/editorconfig-checker/editorconfig-checker/pkg/validators"
 )
 
 // version
