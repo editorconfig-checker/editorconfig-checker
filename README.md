@@ -5,6 +5,15 @@
 
 ![Logo](https://raw.githubusercontent.com/editorconfig-checker/editorconfig-checker.go/master/docs/logo.png "Logo")
 
+1. [What](#what)
+1. [Installation](#installation)
+1. [Usage](#usage)
+1. [Excluding Files](#excluding-files)
+2. [Default Excludes](#default-excludes)
+2. [Manually Excluding](#manually-excluding)
+3. [via ecrc](#via-ecrc)
+3. [Generally](#generally)
+1. [Support](#support)
 
 ## What?
 
@@ -59,10 +68,29 @@ If you don't manually exclude files these files are currently excluded automatic
 You can create a file called `.ecrc` where you can put a regular expression on each line which files should be excluded. If you do this the default excludes will *not* be active anymore.
 Remember to escape your regular expressions correctly. :)
 
+An `.ecrc` can look like this:
+
+```
+\.spec\.js\.snap$
+yarn\.lock$
+\.spec\.tsx\.snap$
+LICENSE$
+slick-styles\.vanilla-css$
+banner\.js$
+react_crop\.vanilla-css$
+vanilla
+\.svg$
+Resources/Public/Plugins
+README\.md$
+```
+
 #### via arguments
 
 If you want to play around how the tool would behave you can also pass the `--exclude|-e` argument to the binary. This will accept a regular expression as well. If you use this argument the default excludes as well as the excludes from the `.ecrc`-file will *not* be active anymore.
 
+For example: `ec --exclude node_modules`
+
+#### Generally
 
 If nothing is set the default excludes are considered.
 If there is an `.ecrc`-file that will be considered and the default excludes will be ignored.
@@ -70,7 +98,7 @@ If there are arguments passed directly to the binary it will ignore the default 
 
 
 ## Support
-If you have any questions, suggestions or just want to chat join #editorconfig-checker on 
+If you have any questions, suggestions, need a wrapper for a programming language or just want to chat join #editorconfig-checker on 
 freenode(IRC).
 If you don't have an IRC-client set up you can use the 
 [freenode webchat](https://webchat.freenode.net/?channels=editorconfig-checker).
