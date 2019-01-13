@@ -25,7 +25,7 @@ import (
 const version string = "0.0.1"
 
 // defaultExcludes
-const defaultExcludes string = "yarn\\.lock$|composer\\.lock$\\/"
+const defaultExcludes string = "yarn\\.lock$|package-lock\\.json$|composer\\.lock$|min\\.css$|min\\.js$\\/"
 
 // Global variable to store the cli parameter
 // only the init function should write to this variable
@@ -38,12 +38,12 @@ func init() {
 	flag.StringVar(&params.Excludes, "e", "", "a regex which files should be excluded from checking - needs to be a valid regular expression")
 
 	flag.BoolVar(&params.Version, "version", false, "print the version number")
-	flag.BoolVar(&params.Version, "v", false, "print the version number")
 
 	flag.BoolVar(&params.Help, "help", false, "print the help")
 	flag.BoolVar(&params.Help, "h", false, "print the help")
 
 	flag.BoolVar(&params.Verbose, "verbose", false, "print debugging information")
+	flag.BoolVar(&params.Verbose, "v", false, "print debugging information")
 
 	// parse flags
 	flag.Parse()
@@ -56,15 +56,18 @@ func init() {
 	}
 
 	// if excludes are empty look for a `.ecrc` file in the current directory or use default excludes
-	excludes := defaultExcludes
-	if params.Excludes == "" && utils.PathExists(".ecrc") {
-		lines := readLineNumbersOfFile(".ecrc")
-		if len(lines) > 0 {
-			excludes = strings.Join(lines, "|")
+	if params.Excludes == "" {
+		excludes := defaultExcludes
+		if params.Excludes == "" && utils.PathExists(".ecrc") {
+			lines := readLineNumbersOfFile(".ecrc")
+			if len(lines) > 0 {
+				excludes = strings.Join(lines, "|")
+			}
 		}
+
+		params.Excludes = excludes
 	}
 
-	params.Excludes = excludes
 	params.RawFiles = rawFiles
 }
 
@@ -292,7 +295,7 @@ func main() {
 
 	if errorCount != 0 {
 		printErrors(errors)
-		logger.Error(fmt.Sprintf("\n%d errors found\n", errorCount))
+		logger.Error(fmt.Sprintf("\n%d errors found", errorCount))
 	}
 
 	if params.Verbose {
