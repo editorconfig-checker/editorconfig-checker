@@ -212,6 +212,31 @@ func TestTab(t *testing.T) {
 	if Tab(" x") == nil {
 		t.Error("Expected falsy indented line to return false")
 	}
+
+	// Adjust following two tests
+	if Tab(" *") != nil {
+		t.Error("Expected tab indented block comment without indentation to return nil")
+	}
+
+	if Tab(" * some comment") != nil {
+		t.Error("Expected tab indented block comment without indentation and with comment to return nil")
+	}
+
+	if Tab("	 *") != nil {
+		t.Error("Expected tab indented block comment with indentation and without comment to return nil")
+	}
+
+	if Tab("	 * some comment") != nil {
+		t.Error("Expected tab indented block comment with indentation and with comment to return nil")
+	}
+
+	if Tab(" */") != nil {
+		t.Error("Expected tab indented block comment without indentation in the last line to return nil")
+	}
+
+	if Tab("	 */") != nil {
+		t.Error("Expected tab indented block comment with indentation in the last line to return nil")
+	}
 }
 
 func TestTrailingWhitespace(t *testing.T) {
