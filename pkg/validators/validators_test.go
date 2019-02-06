@@ -213,7 +213,6 @@ func TestTab(t *testing.T) {
 		t.Error("Expected falsy indented line to return false")
 	}
 
-	// Adjust following two tests
 	if Tab(" *") != nil {
 		t.Error("Expected tab indented block comment without indentation to return nil")
 	}
