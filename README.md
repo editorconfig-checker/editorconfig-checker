@@ -19,14 +19,23 @@
 
 ## What?
 
+![Example Screenshot](https://raw.githubusercontent.com/editorconfig-checker/editorconfig-checker/master/docs/screenshot.png "Example Screenshot")
+
 This is a tool to check if your files consider your `.editorconfig`-rules. 
 Most tools - like linters for example - only test one filetype and need an extra configuration. 
 This tool only needs your `.editorconfig` to check all files.
 
 If you don't know about editorconfig already you can read about it here: [editorconfig.org](https://editorconfig.org/).
 
-![Example Screenshot](https://raw.githubusercontent.com/editorconfig-checker/editorconfig-checker/master/docs/screenshot.png "Example Screenshot")
+Currently implemented editorconfig features are:
+* `end_of_line`
+* `insert_final_newline`
+* `trim_trailing_whitespace`
+* `indent_style`
+* `indent_size`
 
+Unsupported features are:
+* `charset`
 
 ## Installation
 
