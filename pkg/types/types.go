@@ -3,9 +3,10 @@ package types
 
 // Params is a Struct which represents the cli-params
 type Params struct {
-	Version bool
-	Help    bool
-	Verbose bool
+	Version        bool
+	Help           bool
+	Verbose        bool
+	IgnoreDefaults bool
 	// directories and/or files which should be validated
 	RawFiles []string
 	Excludes string
