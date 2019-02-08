@@ -24,9 +24,6 @@ import (
 // version
 const version string = "0.0.3"
 
-// defaultExcludes
-const defaultExcludes string = "yarn\\.lock$|package-lock\\.json$|composer\\.lock$|min\\.css$|min\\.js$\\/"
-
 // Global variable to store the cli parameter
 // only the init function should write to this variable
 var params types.Params
@@ -36,6 +33,9 @@ func init() {
 	// define flags
 	flag.StringVar(&params.Excludes, "exclude", "", "a regex which files should be excluded from checking - needs to be a valid regular expression")
 	flag.StringVar(&params.Excludes, "e", "", "a regex which files should be excluded from checking - needs to be a valid regular expression")
+
+	flag.BoolVar(&params.IgnoreDefaults, "ignore", false, "ignore default excludes")
+	flag.BoolVar(&params.IgnoreDefaults, "i", false, "ignore default excludes")
 
 	flag.BoolVar(&params.Version, "version", false, "print the version number")
 
@@ -55,24 +55,43 @@ func init() {
 		rawFiles = []string{"."}
 	}
 
-	// if excludes are empty look for a `.ecrc` file in the current directory or use default excludes
-	if params.Excludes == "" {
-		excludes := defaultExcludes
-		if params.Excludes == "" && utils.PathExists(".ecrc") {
-			lines := readLineNumbersOfFile(".ecrc")
-			if len(lines) > 0 {
-				excludes = strings.Join(lines, "|")
-			}
-		}
+	excludes := ""
 
-		params.Excludes = excludes
+	if !params.IgnoreDefaults {
+		excludes = utils.DefaultExcludes
 	}
 
+	if utils.PathExists(".ecrc") {
+		lines := readLineNumbersOfFile(".ecrc")
+		if len(lines) > 0 {
+			if excludes != "" {
+				excludes = fmt.Sprintf("%s|%s", excludes, strings.Join(lines, "|"))
+			} else {
+				excludes = fmt.Sprintf("%s", strings.Join(lines, "|"))
+			}
+
+		}
+	}
+
+	if params.Excludes != "" {
+		if excludes != "" {
+			excludes = fmt.Sprintf("%s|%s", excludes, params.Excludes)
+		} else {
+			excludes = fmt.Sprintf("%s", params.Excludes)
+
+		}
+	}
+
+	params.Excludes = excludes
 	params.RawFiles = rawFiles
 }
 
 // Returns wether the file is inside an unwanted folder
 func isExcluded(filePath string) bool {
+	if params.Excludes == "" {
+		return false
+	}
+
 	relativeFilePath, err := utils.GetRelativePath(filePath)
 	if err != nil {
 		panic(err)
@@ -286,6 +305,10 @@ func main() {
 		logger.Output("USAGE:")
 		flag.PrintDefaults()
 		return
+	}
+
+	if params.Verbose {
+		logger.Output(fmt.Sprintf("Exclude Regexp: %s", params.Excludes))
 	}
 
 	// contains all files which should be checked

@@ -56,6 +56,9 @@ USAGE:
   -h    print the help
   -help
         print the help
+  -i    ignore default excludes
+  -ignore
+        ignore default excludes
   -v    print debugging information
   -verbose
         print debugging information
@@ -72,43 +75,68 @@ If you run this tool from a normal directory it will check all files which are t
 
 ### Default excludes
 
-If you don't manually exclude files these files are currently excluded automatic: `composer.lock`, `yarn.lock`, `*.min.css`, `*.min.js` and `package-lock.json`.
+If you don't pass the `i` or `ignore` flag to the binary these files are excluded automatically:
+```
+"yarn\\.lock$",
+"package-lock\\.json",
+"composer\\.lock$",
+"\\.snap$",
+"\\.otf$",
+"\\.woff$",
+"\\.woff2$",
+"\\.eot$",
+"\\.ttf$",
+"\\.gif$",
+"\\.png$",
+"\\.jpg$",
+"\\.jepg$",
+"\\.mp4$",
+"\\.wmv$",
+"\\.svg$",
+"\\.ico$",
+"\\.bak$",
+"\\.bin$",
+"\\.pdf$",
+"\\.zip$",
+"\\.gz$",
+"\\.tar$",
+"\\.7z$",
+"\\.bz2$",
+"\\.log$",
+"\\.css\\.map$",
+"\\.js\\.map$",
+"min\\.css$",
+"min\\.js$"
+```
 
 ### Manually excluding
 
 #### via ecrc
 
-You can create a file called `.ecrc` where you can put a regular expression on each line which files should be excluded. If you do this the default excludes will *not* be active anymore.
+You can create a file called `.ecrc` where you can put a regular expression on each line which files should be excluded. If you do this it will be merged with the default excludes.
 Remember to escape your regular expressions correctly. :)
 
 An `.ecrc` can look like this:
 
 ```
-\.spec\.js\.snap$
-yarn\.lock$
-\.spec\.tsx\.snap$
 LICENSE$
 slick-styles\.vanilla-css$
 banner\.js$
 react_crop\.vanilla-css$
 vanilla
-\.svg$
 Resources/Public/Plugins
 README\.md$
 ```
 
 #### via arguments
 
-If you want to play around how the tool would behave you can also pass the `--exclude|-e` argument to the binary. This will accept a regular expression as well. If you use this argument the default excludes as well as the excludes from the `.ecrc`-file will *not* be active anymore.
+If you want to play around how the tool would behave you can also pass the `--exclude|-e` argument to the binary. This will accept a regular expression as well. If you use this argument the default excludes as well as the excludes from the `.ecrc`-file will merged together.
 
 For example: `ec --exclude node_modules`
 
 #### Generally
 
-If nothing is set the default excludes are considered.
-If there is an `.ecrc`-file that will be considered and the default excludes will be ignored.
-If there are arguments passed directly to the binary it will ignore the default excludes as well as the `.ecrc`-file.
-
+Every exclude option is merged together.
 
 ## Support
 If you have any questions, suggestions, need a wrapper for a programming language or just want to chat join #editorconfig-checker on 
