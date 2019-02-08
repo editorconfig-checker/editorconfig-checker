@@ -22,7 +22,7 @@ import (
 )
 
 // version
-const version string = "0.0.3"
+const version string = "1.0.0"
 
 // Global variable to store the cli parameter
 // only the init function should write to this variable
