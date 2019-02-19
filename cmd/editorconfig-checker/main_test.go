@@ -17,6 +17,11 @@ func TestProcessValidation(t *testing.T) {
 	if len(processValidationResult) > 1 && len(processValidationResult[0].Errors) != 0 {
 		t.Error("Expected something, got", processValidationResult)
 	}
+
+	processValidationResult = processValidation([]string{"./../../testfiles/disabled-file.ext"}, true)
+	if len(processValidationResult) > 1 && len(processValidationResult[0].Errors) != 0 {
+		t.Error("Expected something, got", processValidationResult)
+	}
 }
 
 func BenchmarkMain(b *testing.B) {
