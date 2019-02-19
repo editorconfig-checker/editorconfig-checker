@@ -186,7 +186,7 @@ func validateFile(filePath string, verbose bool) []types.ValidationError {
 	lines := readLineNumbersOfFile(filePath)
 
 	// return if first line contains editorconfig-checker-disable-file
-	if strings.Contains(lines[0], "editorconfig-checker-disable-file") {
+	if len(lines) == 0 || strings.Contains(lines[0], "editorconfig-checker-disable-file") {
 		return errors
 	}
 

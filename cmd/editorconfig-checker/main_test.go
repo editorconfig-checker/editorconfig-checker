@@ -22,6 +22,12 @@ func TestProcessValidation(t *testing.T) {
 	if len(processValidationResult) > 1 && len(processValidationResult[0].Errors) != 0 {
 		t.Error("Expected something, got", processValidationResult)
 	}
+
+	// empty file should have no errors
+	processValidationResult = processValidation([]string{"./../../testfiles/empty-file.txt"}, true)
+	if len(processValidationResult) > 1 && len(processValidationResult[0].Errors) != 0 {
+		t.Error("Expected something, got", processValidationResult)
+	}
 }
 
 func BenchmarkMain(b *testing.B) {
