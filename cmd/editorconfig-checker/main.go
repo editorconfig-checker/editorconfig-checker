@@ -217,6 +217,10 @@ func validateFile(filePath string, verbose bool) []types.ValidationError {
 	}
 
 	for lineNumber, line := range lines {
+		if strings.Contains(line, "editorconfig-checker-disable-line") {
+			continue
+		}
+
 		if currentError := validators.TrailingWhitespace(
 			line,
 			editorconfig.Raw["trim_trailing_whitespace"] == "true"); currentError != nil {

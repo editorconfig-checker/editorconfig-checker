@@ -8,12 +8,14 @@
 1. [What](#what)  
 2. [Installation](#installation)  
 3. [Usage](#usage)  
-4. [Excluding Files](#excluding-files)  
-4.1. [Default Excludes](#default-excludes)  
-4.2. [Manually Excluding](#manually-excluding)  
-4.3. [via ecrc](#via-ecrc)  
-4.4. [via arguments](#via-arguments)  
-4.5. [Generally](#generally)  
+4. [Excluding](#excluding)
+4.1 [Excluding Lines](#excluding-lines)
+4.2 [Excluding Files](#excluding-files)  
+4.2.1. [Default Excludes](#default-excludes)  
+4.2.2. [Manually Excluding](#manually-excluding)  
+4.2.3. [via ecrc](#via-ecrc)  
+4.2.4. [via arguments](#via-arguments)  
+4.2.5. [Generally](#generally)  
 5. [Support](#support)
 
 
@@ -70,10 +72,21 @@ If you run this tool from a repository root it will check all files which are ad
 
 If you run this tool from a normal directory it will check all files which are text files. If the tool isn't able to determine a file type it will be added to be checked too.
 
+## Excluding
 
-## Excluding files
+### Excluding lines
 
-### Default excludes
+You can exclude single lines inline. To do that you need a comment on that line that says: `editorconfig-checker-disable-line`.
+
+```js
+const myTemplateString = `
+  first line 
+     wrongly indended line because it needs to be` // editorconfig-checker-disable-line
+```
+
+### Excluding files
+
+#### Default excludes
 
 If you don't pass the `i` or `ignore` flag to the binary these files are excluded automatically:
 ```
@@ -109,9 +122,9 @@ If you don't pass the `i` or `ignore` flag to the binary these files are exclude
 "min\\.js$"
 ```
 
-### Manually excluding
+#### Manually excluding
 
-#### via ecrc
+##### via ecrc
 
 You can create a file called `.ecrc` where you can put a regular expression on each line which files should be excluded. If you do this it will be merged with the default excludes.
 Remember to escape your regular expressions correctly. :)
@@ -128,13 +141,14 @@ Resources/Public/Plugins
 README\.md$
 ```
 
-#### via arguments
+##### via arguments
 
 If you want to play around how the tool would behave you can also pass the `--exclude|-e` argument to the binary. This will accept a regular expression as well. If you use this argument the default excludes as well as the excludes from the `.ecrc`-file will merged together.
 
 For example: `ec --exclude node_modules`
 
-#### Generally
+##### Generally
+
 
 Every exclude option is merged together.
 
