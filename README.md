@@ -8,14 +8,15 @@
 1. [What](#what)  
 2. [Installation](#installation)  
 3. [Usage](#usage)  
-4. [Excluding](#excluding)
-4.1 [Excluding Lines](#excluding-lines)
+4. [Excluding](#excluding)  
+4.1 [Excluding Lines](#excluding-lines)  
 4.2 [Excluding Files](#excluding-files)  
-4.2.1. [Default Excludes](#default-excludes)  
-4.2.2. [Manually Excluding](#manually-excluding)  
-4.2.3. [via ecrc](#via-ecrc)  
-4.2.4. [via arguments](#via-arguments)  
-4.2.5. [Generally](#generally)  
+4.2.1 [Inline](#inline)  
+4.2.2. [Default Excludes](#default-excludes)  
+4.2.3. [Manually Excluding](#manually-excluding)  
+4.2.4. [via ecrc](#via-ecrc)  
+4.2.5. [via arguments](#via-arguments)  
+4.2.6. [Generally](#generally)  
 5. [Support](#support)
 
 
@@ -85,6 +86,18 @@ const myTemplateString = `
 ```
 
 ### Excluding files
+
+#### Inline
+
+If you want to exclude a file inline you need a comment on the first line of the file that contains: `editorconfig-checker-disable-file`
+
+```hs 
+-- editorconfig-checker-disable-file
+add :: Int -> Int -> Int
+add x y =
+  let result = x + y -- falsy indentation would not report
+  in result -- falsy indentation would not report
+```
 
 #### Default excludes
 

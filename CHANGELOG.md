@@ -4,6 +4,7 @@
 ### Added
 * Changelog
 * disable lines inline with `editorconfig-checker-disable-line` see https://github.com/editorconfig-checker/editorconfig-checker/pull/43
+* disable files inline with `editorconfig-checker-disable-file` on first line see https://github.com/editorconfig-checker/editorconfig-checker/pull/43
 ### Changed
 ### Deprecated
 ### Removed
