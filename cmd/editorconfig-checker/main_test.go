@@ -6,6 +6,19 @@ import (
 	"testing"
 )
 
+func TestProcessValidation(t *testing.T) {
+	// Should not have errors when validating main.go
+	processValidationResult := processValidation([]string{"./main.go"}, false)
+	if len(processValidationResult) > 1 && len(processValidationResult[0].Errors) != 0 {
+		t.Error("Expected something, got", processValidationResult)
+	}
+
+	processValidationResult = processValidation([]string{"./main.go"}, true)
+	if len(processValidationResult) > 1 && len(processValidationResult[0].Errors) != 0 {
+		t.Error("Expected something, got", processValidationResult)
+	}
+}
+
 func BenchmarkMain(b *testing.B) {
 	// run the binary b.N times
 	for n := 0; n < b.N; n++ {
