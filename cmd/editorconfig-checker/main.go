@@ -184,6 +184,12 @@ func readLineNumbersOfFile(filePath string) []string {
 func validateFile(filePath string, verbose bool) []types.ValidationError {
 	var errors []types.ValidationError
 	lines := readLineNumbersOfFile(filePath)
+
+	// return if first line contains editorconfig-checker-disable-file
+	if strings.Contains(lines[0], "editorconfig-checker-disable-file") {
+		return errors
+	}
+
 	rawFileContent, err := ioutil.ReadFile(filePath)
 
 	if err != nil {
