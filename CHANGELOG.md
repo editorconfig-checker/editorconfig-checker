@@ -8,6 +8,10 @@
 ### Fixed
 ### Security
 
+## [1.1.1] - 2019-03-01
+### Fixed
+* Use `.exe` extension for windows binaries
+
 ## [1.1.0] - 2019-02-27
 ### Added
 * Changelog
