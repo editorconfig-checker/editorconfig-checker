@@ -8,6 +8,13 @@
 ### Fixed
 ### Security
 
+## [1.1.2] - 2019-03-16
+### Changed
+* use Go 1.12 in travis
+### Fixed
+* use `CGO_ENABLED=0` to let the binary run on alpine
+* correctly use go vet in travis
+
 ## [1.1.1] - 2019-03-01
 ### Fixed
 * Use `.exe` extension for windows binaries
