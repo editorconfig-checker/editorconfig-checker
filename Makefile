@@ -2,6 +2,9 @@ SRC_DIR = $(PWD)
 SOURCES = $(shell find $(SRC_DIR) -type f -name '*.go')
 BINARIES = $(wildcard bin/*)
 COMPILE_COMMAND = go build -o bin/ec ./cmd/editorconfig-checker/main.go
+GIT_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
+GIT_BRANCH_UP_TO_DATE = $(shell git remote show origin | tail -n1 | sed 's/.*(\(.*\))/\1/')
+CURRENT_VERSION = $(shell grep 'const version' cmd/editorconfig-checker/main.go | sed 's/.*"\(.*\)"/\1/')
 
 install-deps:
 	go get -u gopkg.in/editorconfig/editorconfig-core-go.v1
@@ -31,8 +34,25 @@ run: build
 run-verbose: build
 	@./bin/ec --verbose
 
-release: _tag_version _do_release
+release: _is_master_branch _git_branch_is_up_to_date current_version _tag_version _do_release
 	echo Release done. Go to Github and create a release.
+
+_is_master_branch:
+ifneq ($(GIT_BRANCH),master)
+	@echo You are not on the master branch.
+	@echo Please check out the master and try to release again
+	@false
+endif
+
+_git_branch_is_up_to_date:
+ifneq ($(GIT_BRANCH_UP_TO_DATE),up to date)
+	@echo Your master branch is not up to date.
+	@echo Please push your changes or pull changes from the remote.
+	@false
+endif
+
+current_version:
+	@echo the current version is: $(CURRENT_VERSION)
 
 _do_release: clean test build run _build-all-binaries _compress-all-binaries
 

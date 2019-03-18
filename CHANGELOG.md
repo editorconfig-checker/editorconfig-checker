@@ -6,6 +6,7 @@
 ### Deprecated
 ### Removed
 ### Fixed
+* Check if current branch is master and up to date with remote on release
 ### Security
 
 ## [1.1.2] - 2019-03-16
