@@ -1,17 +1,18 @@
 package utils
 
 import (
+	"fmt"
 	"os"
 	"strings"
 	"testing"
 )
 
 func TestPathExists(t *testing.T) {
-	if !PathExists(".") {
+	if PathExists(".") != nil {
 		t.Error("Expected . to be an existing path")
 	}
 
-	if PathExists("notexisting") {
+	if PathExists("notexisting") == nil {
 		t.Error("Expected \"notexisting\" to not exist")
 	}
 }
@@ -76,11 +77,22 @@ func TestGetRelativePath(t *testing.T) {
 
 	DIR := "/tmp/stuff"
 	os.Remove(DIR)
-	os.Mkdir(DIR, 0755)
-	os.Chdir(DIR)
-	os.Remove(DIR)
+	err := os.Mkdir(DIR, 0755)
+	if err != nil {
+		panic(fmt.Sprintf("ERROR: %s", err))
+	}
 
-	_, err := GetRelativePath(cwd + filePath)
+	err = os.Chdir(DIR)
+	if err != nil {
+		panic(fmt.Sprintf("ERROR: %s", err))
+	}
+
+	err = os.Remove(DIR)
+	if err != nil {
+		panic(fmt.Sprintf("ERROR: %s", err))
+	}
+
+	_, err = GetRelativePath(cwd + filePath)
 
 	if err == nil {
 		t.Error("Expected an error for a not existing directory")
