@@ -37,6 +37,10 @@ func BenchmarkMain(b *testing.B) {
 		cmd := exec.Command("make", "run")
 		// the test is executed where the `*_test.go` file is located
 		cmd.Dir = dir + "/../../"
-		cmd.Run()
+		err := cmd.Run()
+
+		if err != nil {
+			panic("Something went wrong")
+		}
 	}
 }

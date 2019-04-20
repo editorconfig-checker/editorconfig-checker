@@ -61,13 +61,13 @@ func init() {
 		excludes = utils.DefaultExcludes
 	}
 
-	if utils.PathExists(".ecrc") {
+	if utils.PathExists(".ecrc") == nil {
 		lines := readLineNumbersOfFile(".ecrc")
 		if len(lines) > 0 {
 			if excludes != "" {
 				excludes = fmt.Sprintf("%s|%s", excludes, strings.Join(lines, "|"))
 			} else {
-				excludes = fmt.Sprintf("%s", strings.Join(lines, "|"))
+				excludes = strings.Join(lines, "|")
 			}
 
 		}
@@ -77,7 +77,7 @@ func init() {
 		if excludes != "" {
 			excludes = fmt.Sprintf("%s|%s", excludes, params.Excludes)
 		} else {
-			excludes = fmt.Sprintf("%s", params.Excludes)
+			excludes = params.Excludes
 
 		}
 	}
@@ -205,7 +205,7 @@ func validateFile(filePath string, verbose bool) []types.ValidationError {
 
 	if currentError := validators.FinalNewline(
 		fileContent,
-		editorconfig.Raw["insert_final_newline"] == "true",
+		editorconfig.Raw["insert_final_newline"],
 		editorconfig.Raw["end_of_line"]); currentError != nil {
 		if verbose {
 			logger.Output(fmt.Sprintf("Final newline error found in %s", filePath))

@@ -62,15 +62,11 @@ func GetEolChar(endOfLine string) string {
 }
 
 // PathExists checks wether a path of a file or directory exists or not
-func PathExists(filePath string) bool {
+func PathExists(filePath string) error {
 	absolutePath, _ := filepath.Abs(filePath)
 	_, err := os.Stat(absolutePath)
 
-	if err == nil {
-		return true
-	}
-
-	return false
+	return err
 }
 
 // GetContentType returns the content type of a file
@@ -99,7 +95,10 @@ func GetContentType(path string) (string, error) {
 	}
 
 	// Reset the read pointer if necessary.
-	file.Seek(0, 0)
+	_, err = file.Seek(0, 0)
+	if err != nil {
+		panic(fmt.Sprintf("ERROR: %s", err))
+	}
 
 	// Always returns a valid content-type and "application/octet-stream" if no others seemed to match.
 	return http.DetectContentType(buffer), nil

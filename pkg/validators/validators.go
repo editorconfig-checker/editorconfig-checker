@@ -74,13 +74,20 @@ func TrailingWhitespace(line string, trimTrailingWhitespace bool) error {
 }
 
 // FinalNewline validates if a file has a final and correct newline
-func FinalNewline(fileContent string, insertFinalNewline bool, endOfLine string) error {
-	if insertFinalNewline {
+func FinalNewline(fileContent string, insertFinalNewline string, endOfLine string) error {
+	if insertFinalNewline == "true" {
 		regexpPattern := fmt.Sprintf("%s$", utils.GetEolChar(endOfLine))
 		matched, _ := regexp.MatchString(regexpPattern, fileContent)
 
 		if !matched {
 			return errors.New("Wrong line endings or new final newline")
+		}
+	} else if insertFinalNewline == "false" {
+		regexpPattern := "(\n|\r|\r\n)$"
+		matched, _ := regexp.MatchString(regexpPattern, fileContent)
+
+		if matched {
+			return errors.New("No final newline expected")
 		}
 	}
 

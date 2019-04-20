@@ -4,73 +4,158 @@ import (
 	"testing"
 )
 
-func TestFinalNewline(t *testing.T) {
-	if FinalNewline("x", false, "lf") != nil {
-		t.Error("Expected FinalNewline to be true if insertFinalNewline is set to false")
-	}
-
-	if FinalNewline("x\n", true, "lf") != nil {
+func TestFinalNewlineTrue(t *testing.T) {
+	if FinalNewline("x\n", "true", "lf") != nil {
 		t.Error("Expected FinalNewline to be true if insertFinalNewline is set to true and correct eol-char is used")
 	}
 
-	if FinalNewline("x\r", true, "cr") != nil {
+	if FinalNewline("x", "true", "lf") == nil {
+		t.Error("Expected FinalNewline to be false if insertFinalNewline is set to true and no eol-char is used")
+	}
+
+	if FinalNewline("x\r", "true", "cr") != nil {
 		t.Error("Expected FinalNewline to be true if insertFinalNewline is set to true and correct eol-char is used")
 	}
 
-	if FinalNewline("x\r\n", true, "crlf") != nil {
+	if FinalNewline("x", "true", "cr") == nil {
+		t.Error("Expected FinalNewline to be false if insertFinalNewline is set to true and no eol-char is used")
+	}
+
+	if FinalNewline("x\r\n", "true", "crlf") != nil {
 		t.Error("Expected FinalNewline to be true if insertFinalNewline is set to true and correct eol-char is used")
 	}
 
-	if FinalNewline("x\n", true, "cr") == nil {
+	if FinalNewline("x", "true", "crlf") == nil {
+		t.Error("Expected FinalNewline to be false if insertFinalNewline is set to true and no eol-char is used")
+	}
+
+	if FinalNewline("x\n", "true", "cr") == nil {
 		t.Error("Expected FinalNewline to be false if insertFinalNewline is set to true and the wrong eol-char is used")
 	}
 
-	if FinalNewline("x\n", true, "crlf") == nil {
+	if FinalNewline("x\n", "true", "crlf") == nil {
 		t.Error("Expected FinalNewline to be false if insertFinalNewline is set to true and the wrong eol-char is used")
 	}
 
-	if FinalNewline("x\r", true, "lf") == nil {
+	if FinalNewline("x\r", "true", "lf") == nil {
 		t.Error("Expected FinalNewline to be false if insertFinalNewline is set to true and the wrong eol-char is used")
 	}
 
-	if FinalNewline("x\r", true, "crlf") == nil {
+	if FinalNewline("x\r", "true", "crlf") == nil {
 		t.Error("Expected FinalNewline to be false if insertFinalNewline is set to true and the wrong eol-char is used")
 	}
 
 	// TODO: This needs to be fixed
-	// if FinalNewline("x\r\n", true, "lf")  == nil {
+	// if FinalNewline("x\r\n", "true", "lf") == nil {
 	// 	t.Error("Expected FinalNewline to be false if insertFinalNewline is set to true and the wrong eol-char is used")
 	// }
 
-	if FinalNewline("x\r\n", true, "cr") == nil {
+	if FinalNewline("x\r\n", "true", "cr") == nil {
 		t.Error("Expected FinalNewline to be false if insertFinalNewline is set to true and the wrong eol-char is used")
 	}
 }
 
-func TestLineEnding(t *testing.T) {
-	// Not existing
-	if LineEnding("x", "y") != nil {
-		t.Error("Expected to return true for not existing end of line char")
+func TestFinalNewlineFalse(t *testing.T) {
+	if FinalNewline("x", "false", "lf") != nil {
+		t.Error("Expected FinalNewline to be true if insertFinalNewline is set to false and no eol-char is used")
 	}
 
-	if LineEnding("x\n", "y") != nil {
-		t.Error("Expected to return true for not existing end of line char")
+	if FinalNewline("x\n", "false", "lf") == nil {
+		t.Error("Expected FinalNewline to be false if insertFinalNewline is set to false and lf is used as eol-char")
 	}
 
-	if LineEnding("x\r", "y") != nil {
-		t.Error("Expected to return true for not existing end of line char")
+	if FinalNewline("x\r", "false", "lf") == nil {
+		t.Error("Expected FinalNewline to be false if insertFinalNewline is set to false and cr is used as eol-char")
 	}
 
-	if LineEnding("x\r\n", "y") != nil {
-		t.Error("Expected to return true for not existing end of line char")
+	if FinalNewline("x\r\n", "false", "lf") == nil {
+		t.Error("Expected FinalNewline to be false if insertFinalNewline is set to false and crlf is used as eol-char")
 	}
 
-	lf(t)
-	cr(t)
-	crlf(t)
+	if FinalNewline("x", "false", "cr") != nil {
+		t.Error("Expected FinalNewline to be true if insertFinalNewline is set to false and no eol-char is used")
+	}
+
+	if FinalNewline("x\n", "false", "cr") == nil {
+		t.Error("Expected FinalNewline to be false if insertFinalNewline is set to false and lf is used as eol-char")
+	}
+
+	if FinalNewline("x\r", "false", "cr") == nil {
+		t.Error("Expected FinalNewline to be false if insertFinalNewline is set to false and cr is used as eol-char")
+	}
+
+	if FinalNewline("x\r\n", "false", "cr") == nil {
+		t.Error("Expected FinalNewline to be false if insertFinalNewline is set to false and crlf is used as eol-char")
+	}
+
+	if FinalNewline("x", "false", "crlf") != nil {
+		t.Error("Expected FinalNewline to be true if insertFinalNewline is set to false and no eol-char is used")
+	}
+
+	if FinalNewline("x\n", "false", "crlf") == nil {
+		t.Error("Expected FinalNewline to be false if insertFinalNewline is set to false and lf is used as eol-char")
+	}
+
+	if FinalNewline("x\r", "false", "crlf") == nil {
+		t.Error("Expected FinalNewline to be false if insertFinalNewline is set to false and cr is used as eol-char")
+	}
+
+	if FinalNewline("x\r\n", "false", "crlf") == nil {
+		t.Error("Expected FinalNewline to be false if insertFinalNewline is set to false and crlf is used as eol-char")
+	}
 }
 
-func lf(t *testing.T) {
+func TestFinalNewlineNothing(t *testing.T) {
+	if FinalNewline("x", "", "lf") != nil {
+		t.Error("Expected FinalNewline to be true if nothing is set for insert_final_newline")
+	}
+
+	if FinalNewline("x", "", "cr") != nil {
+		t.Error("Expected FinalNewline to be true if nothing is set for insert_final_newline")
+	}
+
+	if FinalNewline("x", "", "crlf") != nil {
+		t.Error("Expected FinalNewline to be true if nothing is set for insert_final_newline")
+	}
+
+	if FinalNewline("x\n", "", "lf") != nil {
+		t.Error("Expected FinalNewline to be true if nothing is set for insert_final_newline")
+	}
+
+	if FinalNewline("x\n", "", "cr") != nil {
+		t.Error("Expected FinalNewline to be true if nothing is set for insert_final_newline")
+	}
+
+	if FinalNewline("x\n", "", "crlf") != nil {
+		t.Error("Expected FinalNewline to be true if nothing is set for insert_final_newline")
+	}
+
+	if FinalNewline("x\r", "", "lf") != nil {
+		t.Error("Expected FinalNewline to be true if nothing is set for insert_final_newline")
+	}
+
+	if FinalNewline("x\r", "", "cr") != nil {
+		t.Error("Expected FinalNewline to be true if nothing is set for insert_final_newline")
+	}
+
+	if FinalNewline("x\r", "", "crlf") != nil {
+		t.Error("Expected FinalNewline to be true if nothing is set for insert_final_newline")
+	}
+
+	if FinalNewline("x\r\n", "", "lf") != nil {
+		t.Error("Expected FinalNewline to be true if nothing is set for insert_final_newline")
+	}
+
+	if FinalNewline("x\r\n", "", "cr") != nil {
+		t.Error("Expected FinalNewline to be true if nothing is set for insert_final_newline")
+	}
+
+	if FinalNewline("x\r\n", "", "crlf") != nil {
+		t.Error("Expected FinalNewline to be true if nothing is set for insert_final_newline")
+	}
+}
+
+func TestLineEndingLf(t *testing.T) {
 	if LineEnding("x", "lf") != nil {
 		t.Error("Expected to return true for line without linebreak")
 	}
@@ -92,7 +177,7 @@ func lf(t *testing.T) {
 	}
 }
 
-func cr(t *testing.T) {
+func TestLineEndingCr(t *testing.T) {
 	if LineEnding("x", "cr") != nil {
 		t.Error("Expected to return true for line without linebreak")
 	}
@@ -114,7 +199,7 @@ func cr(t *testing.T) {
 	}
 }
 
-func crlf(t *testing.T) {
+func TestLineEndingCrlf(t *testing.T) {
 	if LineEnding("x", "crlf") != nil {
 		t.Error("Expected to return true for line without linebreak")
 	}
