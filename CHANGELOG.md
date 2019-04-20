@@ -6,8 +6,12 @@
 ### Deprecated
 ### Removed
 ### Fixed
-* Check if current branch is master and up to date with remote on release
 ### Security
+
+## [1.1.3] - 2019-04-20
+### Fixed
+* `insert_final_newline` behaviour according to specification (https://github.com/editorconfig-checker/editorconfig-checker/pull/56)
+* Check if current branch is master and up to date with remote on release
 
 ## [1.1.2] - 2019-03-16
 ### Changed
