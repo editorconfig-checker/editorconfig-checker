@@ -13,7 +13,7 @@ import (
 	"strconv"
 	"strings"
 
-	"gopkg.in/editorconfig/editorconfig-core-go.v1"
+	"github.com/editorconfig/editorconfig-core-go"
 
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/logger"
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/types"

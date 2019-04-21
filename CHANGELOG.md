@@ -7,6 +7,8 @@
 ### Removed
 ### Fixed
 ### Security
+### Misc
+* Switch to `go mod`
 
 ## [1.1.3] - 2019-04-20
 ### Fixed
