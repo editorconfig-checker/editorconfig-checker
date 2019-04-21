@@ -1,0 +1,4 @@
+github.com/editorconfig/editorconfig-core-go v1.3.0 h1:j0LqN1qxZ/Y/4XKJEKZ79hjpl7jvo6mRBJYN4FJHSA4=
+github.com/editorconfig/editorconfig-core-go v1.3.0/go.mod h1:mKD0MftBwDlTgCHPeWiR5Mm9OxGdM9DekK2rySc7Iv4=
+gopkg.in/ini.v1 v1.42.0 h1:7N3gPTt50s8GuLortA00n8AqRTk75qOP98+mTPpgzRk=
+gopkg.in/ini.v1 v1.42.0/go.mod h1:pNLf8WUiyNEtQjuu5G5vTm06TEv9tsIgeAvK8hOrP4k=

@@ -3,8 +3,11 @@ language: go
 go:
   - 1.12
 
+env:
+  - GO111MODULE=on
+
 script:
-  - make setup
+  - make build
   - make test
   - make run
   - make bench
