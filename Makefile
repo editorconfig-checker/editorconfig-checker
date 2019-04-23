@@ -30,7 +30,8 @@ run-verbose: build
 	@./bin/ec --verbose
 
 release: _is_master_branch _git_branch_is_up_to_date current_version _tag_version _do_release
-	echo Release done. Go to Github and create a release.
+	@echo Release done. Go to Github and create a release.
+	@echo Remember to push a newer docker image
 
 _is_master_branch:
 ifneq ($(GIT_BRANCH),master)
@@ -97,7 +98,7 @@ _compress-all-binaries:
 	@rm $(BINARIES)
 
 docker-build:
-	docker  build -t editorconfig-checker .
+	docker  build -t mstruebing/editorconfig-checker:latest .
 
 docker-run:
-	docker run --rm --volume=$$PWD:/check editorconfig-checker
+	docker run --rm --volume=$$PWD:/check mstruebing/editorconfig-checker:1.1.3

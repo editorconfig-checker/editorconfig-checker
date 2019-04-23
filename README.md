@@ -17,7 +17,8 @@
 4.2.4. [via ecrc](#via-ecrc)  
 4.2.5. [via arguments](#via-arguments)  
 4.2.6. [Generally](#generally)  
-5. [Support](#support)
+5. [Docker](#docker)
+6. [Support](#support)
 
 
 ## What?
@@ -164,6 +165,14 @@ For example: `ec --exclude node_modules`
 
 
 Every exclude option is merged together.
+
+## Docker 
+
+You are able to run this tool inside a Docker container.
+To do this you need to have Docker installed and run this command in your repository root which you want to check:
+`docker run --rm --volume=$PWD:/check mstruebing/editorconfig-checker`
+
+Dockerhub: [mstruebing/editorconfig-checker](https://hub.docker.com/r/mstruebing/editorconfig-checker)
 
 ## Support
 If you have any questions, suggestions, need a wrapper for a programming language or just want to chat join #editorconfig-checker on 
