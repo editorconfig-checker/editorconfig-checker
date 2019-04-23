@@ -95,3 +95,9 @@ _compress-all-binaries:
 		tar czf $$f.tar.gz $$f;    \
 	done
 	@rm $(BINARIES)
+
+docker-build:
+	docker  build -t editorconfig-checker .
+
+docker-run:
+	docker run --rm --volume=$$PWD:/check editorconfig-checker
