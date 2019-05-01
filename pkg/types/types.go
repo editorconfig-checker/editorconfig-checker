@@ -10,6 +10,7 @@ type Params struct {
 	// directories and/or files which should be validated
 	RawFiles []string
 	Excludes string
+	DryRun   bool
 }
 
 // ValidationError represents one validation error

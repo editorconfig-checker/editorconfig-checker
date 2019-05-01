@@ -37,6 +37,9 @@ func init() {
 	flag.BoolVar(&params.IgnoreDefaults, "ignore", false, "ignore default excludes")
 	flag.BoolVar(&params.IgnoreDefaults, "i", false, "ignore default excludes")
 
+	flag.BoolVar(&params.DryRun, "dry-run", false, "show which files would be checked")
+	flag.BoolVar(&params.DryRun, "d", false, "show which files would be checked")
+
 	flag.BoolVar(&params.Version, "version", false, "print the version number")
 
 	flag.BoolVar(&params.Help, "help", false, "print the help")
@@ -323,6 +326,15 @@ func main() {
 
 	// contains all files which should be checked
 	files := getFiles(params.Verbose)
+
+	if params.DryRun {
+		for _, file := range files {
+			logger.Output(file)
+		}
+
+		os.Exit(0)
+	}
+
 	errors := processValidation(files, params.Verbose)
 	errorCount := getErrorCount(errors)
 
