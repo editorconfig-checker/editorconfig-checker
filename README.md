@@ -53,6 +53,9 @@ This will place a binary called `ec` into the `bin` directory.
 
 ```
 USAGE:
+  -d    show which files would be checked
+  -dry-run
+        show which files would be checked
   -e string
         a regex which files should be excluded from checking - needs to be a valid regular expression
   -exclude string
@@ -163,8 +166,9 @@ For example: `ec --exclude node_modules`
 
 ##### Generally
 
-
 Every exclude option is merged together.
+
+If you want to see which files the tool would check without checking them you can pass the `--dry-run` or `-d` flag.
 
 ## Docker 
 
