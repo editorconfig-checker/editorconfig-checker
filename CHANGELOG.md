@@ -2,6 +2,7 @@
 
 ## Unreleased
 ### Added
+* (`dry-run`-flag)[https://github.com/editorconfig-checker/editorconfig-checker/pull/60]
 ### Changed
 ### Deprecated
 ### Removed
