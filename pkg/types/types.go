@@ -7,6 +7,7 @@ type Params struct {
 	Help           bool
 	Verbose        bool
 	IgnoreDefaults bool
+	Fix            bool
 	// directories and/or files which should be validated
 	RawFiles []string
 	Excludes string

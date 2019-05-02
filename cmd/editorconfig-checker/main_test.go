@@ -8,23 +8,23 @@ import (
 
 func TestProcessValidation(t *testing.T) {
 	// Should not have errors when validating main.go
-	processValidationResult := processValidation([]string{"./main.go"}, false)
+	processValidationResult := processValidation([]string{"./main.go"}, false, false)
 	if len(processValidationResult) > 1 && len(processValidationResult[0].Errors) != 0 {
 		t.Error("Expected something, got", processValidationResult)
 	}
 
-	processValidationResult = processValidation([]string{"./main.go"}, true)
+	processValidationResult = processValidation([]string{"./main.go"}, true, false)
 	if len(processValidationResult) > 1 && len(processValidationResult[0].Errors) != 0 {
 		t.Error("Expected something, got", processValidationResult)
 	}
 
-	processValidationResult = processValidation([]string{"./../../testfiles/disabled-file.ext"}, true)
+	processValidationResult = processValidation([]string{"./../../testfiles/disabled-file.ext"}, true, false)
 	if len(processValidationResult) > 1 && len(processValidationResult[0].Errors) != 0 {
 		t.Error("Expected something, got", processValidationResult)
 	}
 
 	// empty file should have no errors
-	processValidationResult = processValidation([]string{"./../../testfiles/empty-file.txt"}, true)
+	processValidationResult = processValidation([]string{"./../../testfiles/empty-file.txt"}, true, false)
 	if len(processValidationResult) > 1 && len(processValidationResult[0].Errors) != 0 {
 		t.Error("Expected something, got", processValidationResult)
 	}

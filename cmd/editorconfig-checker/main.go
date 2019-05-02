@@ -37,6 +37,9 @@ func init() {
 	flag.BoolVar(&params.IgnoreDefaults, "ignore", false, "ignore default excludes")
 	flag.BoolVar(&params.IgnoreDefaults, "i", false, "ignore default excludes")
 
+	flag.BoolVar(&params.Fix, "fix", false, "try to fix issues")
+	flag.BoolVar(&params.Fix, "f", false, "try to fix issues")
+
 	flag.BoolVar(&params.Version, "version", false, "print the version number")
 
 	flag.BoolVar(&params.Help, "help", false, "print the help")
@@ -181,7 +184,7 @@ func readLineNumbersOfFile(filePath string) []string {
 }
 
 // Validates a single file and returns the errors
-func validateFile(filePath string, verbose bool) []types.ValidationError {
+func validateFile(filePath string, verbose bool, fix bool) []types.ValidationError {
 	var errors []types.ValidationError
 	lines := readLineNumbersOfFile(filePath)
 
@@ -210,6 +213,11 @@ func validateFile(filePath string, verbose bool) []types.ValidationError {
 		if verbose {
 			logger.Output(fmt.Sprintf("Final newline error found in %s", filePath))
 		}
+
+		if fix {
+			logger.Error("Fix Stuff")
+		}
+
 		errors = append(errors, types.ValidationError{LineNumber: -1, Message: currentError})
 	}
 
@@ -219,6 +227,11 @@ func validateFile(filePath string, verbose bool) []types.ValidationError {
 		if verbose {
 			logger.Output(fmt.Sprintf("Line ending error found in %s", filePath))
 		}
+
+		if fix {
+			logger.Error("Fix Stuff")
+		}
+
 		errors = append(errors, types.ValidationError{LineNumber: -1, Message: currentError})
 	}
 
@@ -233,6 +246,11 @@ func validateFile(filePath string, verbose bool) []types.ValidationError {
 			if verbose {
 				logger.Output(fmt.Sprintf("Trailing whitespace error found in %s on line %d", filePath, lineNumber))
 			}
+
+			if fix {
+				logger.Error("Fix Stuff")
+			}
+
 			errors = append(errors, types.ValidationError{LineNumber: lineNumber + 1, Message: currentError})
 		}
 
@@ -251,6 +269,11 @@ func validateFile(filePath string, verbose bool) []types.ValidationError {
 			if verbose {
 				logger.Output(fmt.Sprintf("Indentation error found in %s on line %d", filePath, lineNumber))
 			}
+
+			if fix {
+				logger.Error("Fix Stuff")
+			}
+
 			errors = append(errors, types.ValidationError{LineNumber: lineNumber + 1, Message: currentError})
 		}
 	}
@@ -259,14 +282,14 @@ func validateFile(filePath string, verbose bool) []types.ValidationError {
 }
 
 // Validates all files and returns an array of validation errors
-func processValidation(files []string, verbose bool) []types.ValidationErrors {
+func processValidation(files []string, verbose bool, fix bool) []types.ValidationErrors {
 	var validationErrors []types.ValidationErrors
 
 	for _, filePath := range files {
 		if verbose {
 			logger.Output(fmt.Sprintf("Validate %s", filePath))
 		}
-		validationErrors = append(validationErrors, types.ValidationErrors{FilePath: filePath, Errors: validateFile(filePath, verbose)})
+		validationErrors = append(validationErrors, types.ValidationErrors{FilePath: filePath, Errors: validateFile(filePath, verbose, fix)})
 	}
 
 	return validationErrors
@@ -323,7 +346,7 @@ func main() {
 
 	// contains all files which should be checked
 	files := getFiles(params.Verbose)
-	errors := processValidation(files, params.Verbose)
+	errors := processValidation(files, params.Verbose, params.Fix)
 	errorCount := getErrorCount(errors)
 
 	if errorCount != 0 {
