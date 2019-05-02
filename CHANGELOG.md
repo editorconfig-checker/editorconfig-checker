@@ -2,12 +2,16 @@
 
 ## Unreleased
 ### Added
-* (`dry-run`-flag)[https://github.com/editorconfig-checker/editorconfig-checker/pull/60]
 ### Changed
 ### Deprecated
 ### Removed
 ### Fixed
 ### Security
+### Misc
+
+## [1.2.0] - 2019-05-02
+### Added
+* (`dry-run`-flag)[https://github.com/editorconfig-checker/editorconfig-checker/pull/60]
 ### Misc
 * Switch to `go mod`
 
