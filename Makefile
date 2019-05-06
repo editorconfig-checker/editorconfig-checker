@@ -24,7 +24,7 @@ bench:
 	go test -bench=. ./**/*/
 
 run: build
-	@./bin/ec
+	@./bin/ec -v -f
 
 run-verbose: build
 	@./bin/ec --verbose

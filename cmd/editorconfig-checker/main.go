@@ -15,6 +15,7 @@ import (
 
 	"github.com/editorconfig/editorconfig-core-go"
 
+	"github.com/editorconfig-checker/editorconfig-checker/pkg/fix"
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/logger"
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/types"
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/utils"
@@ -184,7 +185,7 @@ func readLineNumbersOfFile(filePath string) []string {
 }
 
 // Validates a single file and returns the errors
-func validateFile(filePath string, verbose bool, fix bool) []types.ValidationError {
+func validateFile(filePath string, verbose bool, autofix bool) []types.ValidationError {
 	var errors []types.ValidationError
 	lines := readLineNumbersOfFile(filePath)
 
@@ -214,8 +215,12 @@ func validateFile(filePath string, verbose bool, fix bool) []types.ValidationErr
 			logger.Output(fmt.Sprintf("Final newline error found in %s", filePath))
 		}
 
-		if fix {
-			logger.Error("Fix Stuff")
+		if autofix {
+			logger.Error("autofix Stuff")
+			err := fix.FinalNewline(filePath, editorconfig.Raw["insert_final_newline"], editorconfig.Raw["end_of_line"])
+			if err != nil {
+				panic(err)
+			}
 		}
 
 		errors = append(errors, types.ValidationError{LineNumber: -1, Message: currentError})
@@ -228,8 +233,8 @@ func validateFile(filePath string, verbose bool, fix bool) []types.ValidationErr
 			logger.Output(fmt.Sprintf("Line ending error found in %s", filePath))
 		}
 
-		if fix {
-			logger.Error("Fix Stuff")
+		if autofix {
+			logger.Error("autofix Stuff")
 		}
 
 		errors = append(errors, types.ValidationError{LineNumber: -1, Message: currentError})
@@ -247,8 +252,12 @@ func validateFile(filePath string, verbose bool, fix bool) []types.ValidationErr
 				logger.Output(fmt.Sprintf("Trailing whitespace error found in %s on line %d", filePath, lineNumber))
 			}
 
-			if fix {
-				logger.Error("Fix Stuff")
+			if autofix {
+				err := fix.TrailingWhitespace(filePath, lineNumber-1, editorconfig.Raw["end_of_line"])
+				logger.Output(fmt.Sprintf("Fixing Trailing whitespace for file %s on line %d", filePath, lineNumber))
+				if err != nil {
+					panic(err)
+				}
 			}
 
 			errors = append(errors, types.ValidationError{LineNumber: lineNumber + 1, Message: currentError})
@@ -270,8 +279,8 @@ func validateFile(filePath string, verbose bool, fix bool) []types.ValidationErr
 				logger.Output(fmt.Sprintf("Indentation error found in %s on line %d", filePath, lineNumber))
 			}
 
-			if fix {
-				logger.Error("Fix Stuff")
+			if autofix {
+				logger.Error("autofix Stuff")
 			}
 
 			errors = append(errors, types.ValidationError{LineNumber: lineNumber + 1, Message: currentError})
