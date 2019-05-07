@@ -253,7 +253,7 @@ func validateFile(filePath string, verbose bool, autofix bool) []types.Validatio
 			}
 
 			if autofix {
-				err := fix.TrailingWhitespace(filePath, lineNumber-1, editorconfig.Raw["end_of_line"])
+				err := fix.TrailingWhitespace(filePath, lineNumber, editorconfig.Raw["end_of_line"])
 				logger.Output(fmt.Sprintf("Fixing Trailing whitespace for file %s on line %d", filePath, lineNumber))
 				if err != nil {
 					panic(err)

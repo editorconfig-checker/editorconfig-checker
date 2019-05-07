@@ -1,4 +1,4 @@
-// Package fix provides ...
+// Package fix provides functions to fix occured editorconfig issues
 package fix
 
 import (
@@ -40,7 +40,6 @@ func FinalNewline(filePath string, insert string, endOfLine string) error {
 		if err != nil {
 			return fmt.Errorf("Cant write file %s\n\n%s\n", filePath, err)
 		}
-
 	}
 
 	return nil
@@ -50,20 +49,20 @@ func LineEnding(filePath string, eolChar string) error {
 	return nil
 }
 
-func TrailingWhitespace(filePath string, lineNumber int, eolChar string) error {
-	// input, err := ioutil.ReadFile(filePath)
-	// if err != nil {
-	// 	return fmt.Errorf("Cant read file %s\n\n%s\n", filePath, err)
-	// }
+func TrailingWhitespace(filePath string, lineNumber int, endOfLine string) error {
+	input, err := ioutil.ReadFile(filePath)
+	if err != nil {
+		return fmt.Errorf("Cant read file %s\n\n%s\n", filePath, err)
+	}
 
-	// lines := strings.Split(string(input), eolChar)
-	// lines[lineNumber] = strings.TrimRight(lines[lineNumber], " \t")
-	// output := strings.Join(lines, "\n")
+	lines := strings.Split(string(input), utils.GetEolChar(endOfLine))
+	lines[lineNumber] = strings.TrimRight(lines[lineNumber], " \t")
+	output := strings.Join(lines, "\n")
 
-	// err = ioutil.WriteFile(filePath, []byte(output), 0644)
-	// if err != nil {
-	// 	return fmt.Errorf("Cant write file %s\n\n%s\n", filePath, err)
-	// }
+	err = ioutil.WriteFile(filePath, []byte(output), 0644)
+	if err != nil {
+		return fmt.Errorf("Cant write file %s\n\n%s\n", filePath, err)
+	}
 
 	return nil
 }
