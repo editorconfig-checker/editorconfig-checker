@@ -119,7 +119,7 @@ If you don't pass the `i` or `ignore` flag to the binary these files are exclude
 "\\.gif$",
 "\\.png$",
 "\\.jpg$",
-"\\.jepg$",
+"\\.jpeg$",
 "\\.mp4$",
 "\\.wmv$",
 "\\.svg$",
