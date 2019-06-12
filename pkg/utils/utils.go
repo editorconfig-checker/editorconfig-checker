@@ -26,7 +26,7 @@ var defaultExcludes = []string{
 	"\\.gif$",
 	"\\.png$",
 	"\\.jpg$",
-	"\\.jepg$",
+	"\\.jpeg$",
 	"\\.mp4$",
 	"\\.wmv$",
 	"\\.svg$",
