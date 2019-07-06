@@ -114,3 +114,7 @@ func GetRelativePath(filePath string) (string, error) {
 	relativePath := strings.Replace(filePath, cwd, ".", 1)
 	return relativePath, nil
 }
+
+func IsAllowedContentType(contentType string) bool {
+	return contentType == "application/octet-stream" || strings.Contains(contentType, "text/")
+}
