@@ -6,6 +6,8 @@
 ### Deprecated
 ### Removed
 ### Fixed
+* fix type to correctly ignore `jpeg` (`jepg` before)
+* allow every content type which contains `text/`
 ### Security
 ### Misc
 

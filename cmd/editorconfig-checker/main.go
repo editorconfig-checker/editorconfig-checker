@@ -118,7 +118,7 @@ func addToFiles(files []string, filePath string, verbose bool) []string {
 		logger.Error(err.Error())
 	}
 
-	if !isExcluded(filePath) && (contentType == "application/octet-stream" || strings.Contains(contentType, "text/plain")) {
+	if !isExcluded(filePath) && utils.IsAllowedContentType(contentType) {
 		if verbose {
 			logger.Output(fmt.Sprintf("Add %s to be checked", filePath))
 		}

@@ -106,3 +106,17 @@ func TestDefaultExcludes(t *testing.T) {
 		t.Error("Expected default excludes to match", result)
 	}
 }
+
+func TestIsAllowedContentType(t *testing.T) {
+	if IsAllowedContentType("bla") {
+		t.Error("Bla shouldn't be an allowed contentType")
+	}
+
+	if !IsAllowedContentType("text/") {
+		t.Error("text/ shouldn't be an allowed contentType")
+	}
+
+	if !IsAllowedContentType("text/xml abc") {
+		t.Error("text/xml shouldn't be an allowed contentType")
+	}
+}
