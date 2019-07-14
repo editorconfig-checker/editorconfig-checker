@@ -321,6 +321,14 @@ func TestTab(t *testing.T) {
 	if Tab("	 */") != nil {
 		t.Error("Expected tab indented block comment with indentation in the last line to return nil")
 	}
+
+	if Tab("	   bla") != nil {
+		t.Error("Expected tab indented and with spaces aligned line to return nil")
+	}
+
+	if Tab("	 bla") != nil {
+		t.Error("Expected tab indented and with spaces aligned line to return nil")
+	}
 }
 
 func TestTrailingWhitespace(t *testing.T) {
