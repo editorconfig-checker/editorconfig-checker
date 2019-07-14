@@ -8,6 +8,7 @@
 ### Fixed
 ### Security
 ### Misc
+* updated editorconfig-core version to v2 which uses go modules now
 
 ## [1.2.1] - 2019-07-06
 ### Fixed
