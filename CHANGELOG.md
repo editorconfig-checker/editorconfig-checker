@@ -3,12 +3,13 @@
 ## Unreleased
 ### Added
 ### Changed
+* (allow spaces after tabs)[https://github.com/editorconfig-checker/editorconfig-checker/pull/67]
 ### Deprecated
 ### Removed
 ### Fixed
 ### Security
 ### Misc
-* updated editorconfig-core version to v2 which uses go modules now
+* (updated editorconfig-core version to v2 which uses go modules now)[https://github.com/editorconfig-checker/editorconfig-checker/pull/68]
 
 ## [1.2.1] - 2019-07-06
 ### Fixed
