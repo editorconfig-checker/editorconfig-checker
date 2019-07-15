@@ -294,8 +294,8 @@ func TestTab(t *testing.T) {
 		t.Error("Expected correctly indented line to return true")
 	}
 
-	if Tab(" x") == nil {
-		t.Error("Expected falsy indented line to return false")
+	if Tab(" x") != nil {
+		t.Error("Expected char after space to return nil")
 	}
 
 	if Tab(" *") != nil {
@@ -328,6 +328,22 @@ func TestTab(t *testing.T) {
 
 	if Tab("	 bla") != nil {
 		t.Error("Expected tab indented and with spaces aligned line to return nil")
+	}
+
+	if (Tab("		  xx")) != nil {
+		t.Error("starting with tabs and trailing spaces with at least one character after the spaces")
+	}
+
+	if (Tab("		x")) != nil {
+		t.Error("starting with tabs and characters after that")
+	}
+
+	if (Tab("  	a")) == nil {
+		t.Error("Starting with two spaces, followed by a tab and followed by a non whitespace char should not return nil")
+	}
+
+	if (Tab(" *")) != nil {
+		t.Error("starting with a space and at leat one character after the space")
 	}
 }
 

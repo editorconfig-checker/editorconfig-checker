@@ -44,10 +44,13 @@ func Space(line string, indentSize int) error {
 // Tab validates if a line is indented with only tabs
 func Tab(line string) error {
 	if len(line) > 0 {
-		// match recurring tabs - this can be recurring or never
-		// match either a space followed by a * and maybe a space (block-comments)
-		// or match everything despite a space or tab-character
-		regexpPattern := "^(\t)*( \\* ?|[^ \t])"
+		// match starting with one or more tabs followed by a non-whitespace char
+		// OR
+		// match starting with one or more tabs, followed by one space and followed by at least one non-whitespace character
+		// OR
+		// match starting with a space followed by at least one non-whitespace character
+		regexpPattern := "(^(\t)*\\S)|(^(\t)+( )*\\S)|(^ \\S)"
+
 		matched, _ := regexp.MatchString(regexpPattern, line)
 
 		if !matched {
