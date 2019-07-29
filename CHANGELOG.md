@@ -3,7 +3,7 @@
 ## Unreleased
 ### Added
 ### Changed
-* (allow spaces after tabs)[https://github.com/editorconfig-checker/editorconfig-checker/pull/67]
+* (allow spaces after tabs)[https://github.com/editorconfig-checker/editorconfig-checker/pull/67] with flag `spaces-after-tabs`
 ### Deprecated
 ### Removed
 ### Fixed

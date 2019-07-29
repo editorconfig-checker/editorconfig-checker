@@ -48,6 +48,8 @@ func init() {
 	flag.BoolVar(&params.Verbose, "verbose", false, "print debugging information")
 	flag.BoolVar(&params.Verbose, "v", false, "print debugging information")
 
+	flag.BoolVar(&params.SpacesAfterTabs, "spaces-after-tabs", false, "allow spaces to be used as alignment after tabs")
+
 	// parse flags
 	flag.Parse()
 
@@ -184,7 +186,7 @@ func readLineNumbersOfFile(filePath string) []string {
 }
 
 // Validates a single file and returns the errors
-func validateFile(filePath string, verbose bool) []types.ValidationError {
+func validateFile(filePath string, verbose bool, spacesAfterTabsAllowed bool) []types.ValidationError {
 	var errors []types.ValidationError
 	lines := readLineNumbersOfFile(filePath)
 
@@ -250,7 +252,7 @@ func validateFile(filePath string, verbose bool) []types.ValidationError {
 		if currentError := validators.Indentation(
 			line,
 			editorconfig.Raw["indent_style"],
-			indentSize); currentError != nil {
+			indentSize, spacesAfterTabsAllowed); currentError != nil {
 			if verbose {
 				logger.Output(fmt.Sprintf("Indentation error found in %s on line %d", filePath, lineNumber))
 			}
@@ -262,14 +264,14 @@ func validateFile(filePath string, verbose bool) []types.ValidationError {
 }
 
 // Validates all files and returns an array of validation errors
-func processValidation(files []string, verbose bool) []types.ValidationErrors {
+func processValidation(files []string, verbose bool, spacesAfterTabsAllowed bool) []types.ValidationErrors {
 	var validationErrors []types.ValidationErrors
 
 	for _, filePath := range files {
 		if verbose {
 			logger.Output(fmt.Sprintf("Validate %s", filePath))
 		}
-		validationErrors = append(validationErrors, types.ValidationErrors{FilePath: filePath, Errors: validateFile(filePath, verbose)})
+		validationErrors = append(validationErrors, types.ValidationErrors{FilePath: filePath, Errors: validateFile(filePath, verbose, spacesAfterTabsAllowed)})
 	}
 
 	return validationErrors
@@ -335,7 +337,7 @@ func main() {
 		os.Exit(0)
 	}
 
-	errors := processValidation(files, params.Verbose)
+	errors := processValidation(files, params.Verbose, params.SpacesAfterTabs)
 	errorCount := getErrorCount(errors)
 
 	if errorCount != 0 {

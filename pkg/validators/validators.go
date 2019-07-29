@@ -11,11 +11,11 @@ import (
 )
 
 // Indentation validates a files indentation
-func Indentation(line string, indentStyle string, indentSize int) error {
+func Indentation(line string, indentStyle string, indentSize int, spacesAfterTabsAllowed bool) error {
 	if indentStyle == "space" {
 		return Space(line, indentSize)
 	} else if indentStyle == "tab" {
-		return Tab(line)
+		return Tab(line, spacesAfterTabsAllowed)
 	}
 
 	// if no indentStyle is given it should be valid
@@ -42,14 +42,19 @@ func Space(line string, indentSize int) error {
 }
 
 // Tab validates if a line is indented with only tabs
-func Tab(line string) error {
+func Tab(line string, spacesAfterTabsAllowed bool) error {
 	if len(line) > 0 {
 		// match starting with one or more tabs followed by a non-whitespace char
 		// OR
 		// match starting with one or more tabs, followed by one space and followed by at least one non-whitespace character
 		// OR
 		// match starting with a space followed by at least one non-whitespace character
-		regexpPattern := "(^(\t)*\\S)|(^(\t)+( )*\\S)|(^ \\S)"
+
+		regexpPattern := "^(\t)*( \\* ?|[^ \t])"
+
+		if spacesAfterTabsAllowed {
+			regexpPattern = "(^(\t)*\\S)|(^(\t)+( )*\\S)|(^ \\S)"
+		}
 
 		matched, _ := regexp.MatchString(regexpPattern, line)
 

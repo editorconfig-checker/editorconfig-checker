@@ -222,27 +222,27 @@ func TestLineEndingCrlf(t *testing.T) {
 }
 
 func TestIndentation(t *testing.T) {
-	if (Indentation("    x", "space", 4)) != nil {
+	if (Indentation("    x", "space", 4, false)) != nil {
 		t.Error("Expected correctly indented line to return an nil")
 	}
 
-	if (Indentation("   x", "space", 4)) == nil {
+	if (Indentation("   x", "space", 4, false)) == nil {
 		t.Error("Expected wrong indented line to return an error")
 	}
 
-	if (Indentation("	x", "tab", 0)) != nil {
+	if (Indentation("	x", "tab", 0, false)) != nil {
 		t.Error("Expected correctly indented line to return an nil")
 	}
 
-	if (Indentation("   x", "tab", 0)) == nil {
+	if (Indentation("   x", "tab", 0, false)) == nil {
 		t.Error("Expected wrong indented line to return an error")
 	}
 
-	if (Indentation("	x", "x", 0)) != nil {
+	if (Indentation("	x", "x", 0, false)) != nil {
 		t.Error("Expected unknown indentation to return nil")
 	}
 
-	if (Indentation("   x", "x", 0)) != nil {
+	if (Indentation("   x", "x", 0, false)) != nil {
 		t.Error("Expected unknown indentation to return nil")
 	}
 }
@@ -282,67 +282,67 @@ func TestSpace(t *testing.T) {
 }
 
 func TestTab(t *testing.T) {
-	if Tab("") != nil {
+	if Tab("", false) != nil {
 		t.Error("Expected empty line to return true regardless of parameter")
 	}
 
-	if Tab("x") != nil {
+	if Tab("x", false) != nil {
 		t.Error("Expected line which starts at the beginning to return true")
 	}
 
-	if Tab("	x") != nil {
+	if Tab("	x", false) != nil {
 		t.Error("Expected correctly indented line to return true")
 	}
 
-	if Tab(" x") != nil {
+	if Tab(" x", true) != nil {
 		t.Error("Expected char after space to return nil")
 	}
 
-	if Tab(" *") != nil {
+	if Tab(" *", false) != nil {
 		t.Error("Expected tab indented block comment without indentation to return nil")
 	}
 
-	if Tab(" * some comment") != nil {
+	if Tab(" * some comment", false) != nil {
 		t.Error("Expected tab indented block comment without indentation and with comment to return nil")
 	}
 
-	if Tab("	 *") != nil {
+	if Tab("	 *", false) != nil {
 		t.Error("Expected tab indented block comment with indentation and without comment to return nil")
 	}
 
-	if Tab("	 * some comment") != nil {
+	if Tab("	 * some comment", false) != nil {
 		t.Error("Expected tab indented block comment with indentation and with comment to return nil")
 	}
 
-	if Tab(" */") != nil {
+	if Tab(" */", false) != nil {
 		t.Error("Expected tab indented block comment without indentation in the last line to return nil")
 	}
 
-	if Tab("	 */") != nil {
+	if Tab("	 */", false) != nil {
 		t.Error("Expected tab indented block comment with indentation in the last line to return nil")
 	}
 
-	if Tab("	   bla") != nil {
+	if Tab("	   bla", true) != nil {
 		t.Error("Expected tab indented and with spaces aligned line to return nil")
 	}
 
-	if Tab("	 bla") != nil {
+	if Tab("	 bla", true) != nil {
 		t.Error("Expected tab indented and with spaces aligned line to return nil")
 	}
 
-	if (Tab("		  xx")) != nil {
+	if (Tab("		  xx", true)) != nil {
 		t.Error("starting with tabs and trailing spaces with at least one character after the spaces")
 	}
 
-	if (Tab("		x")) != nil {
+	if (Tab("		x", false)) != nil {
 		t.Error("starting with tabs and characters after that")
 	}
 
-	if (Tab("  	a")) == nil {
+	if (Tab("  	a", false)) == nil {
 		t.Error("Starting with two spaces, followed by a tab and followed by a non whitespace char should not return nil")
 	}
 
-	if (Tab(" *")) != nil {
+	if (Tab(" *", false)) != nil {
 		t.Error("starting with a space and at leat one character after the space")
 	}
 }
