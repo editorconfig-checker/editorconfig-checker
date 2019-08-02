@@ -5,6 +5,8 @@ import (
 	"os"
 	"strings"
 	"testing"
+
+	"github.com/editorconfig-checker/editorconfig-checker/pkg/types"
 )
 
 func TestGetContentType(t *testing.T) {
@@ -92,5 +94,13 @@ func TestGetRelativePath(t *testing.T) {
 
 	if err == nil {
 		t.Error("Expected an error for a not existing directory")
+	}
+}
+
+func TestIsExcluded(t *testing.T) {
+	result := IsExcluded("./cmd/editorconfig-checker/main.go", types.Params{})
+
+	if result {
+		t.Error("Should return true if no excludes are given, got", result)
 	}
 }

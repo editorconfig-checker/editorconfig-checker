@@ -33,7 +33,7 @@ func IsExcluded(filePath string, params types.Params) bool {
 	return result
 }
 
-// Adds a file to a slice if it isn't already in there
+// Adds a file to a slice if it isn't already in there and meets the requirements
 // and returns the new slice
 func AddToFiles(filePaths []string, filePath string, params types.Params) []string {
 	contentType, err := GetContentType(filePath)
@@ -43,6 +43,7 @@ func AddToFiles(filePaths []string, filePath string, params types.Params) []stri
 		logger.Error(err.Error())
 	}
 
+	logger.Error(fmt.Sprintf("%v\n", IsAllowedContentType(contentType)))
 	if !IsExcluded(filePath, params) && IsAllowedContentType(contentType) {
 		if params.Verbose {
 			logger.Output(fmt.Sprintf("Add %s to be checked", filePath))

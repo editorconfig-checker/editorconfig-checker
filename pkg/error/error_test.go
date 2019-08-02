@@ -111,3 +111,28 @@ func TestGetErrorCount(t *testing.T) {
 		t.Error("Expected three error slice to have exactly one erorr errors, got", count)
 	}
 }
+
+func TestPrintErrors(t *testing.T) {
+	input := []types.ValidationErrors{
+		{
+			FilePath: "some/path",
+			Errors:   []types.ValidationError{},
+		},
+		{
+			FilePath: "some/other/path",
+			Errors: []types.ValidationError{
+				{
+					LineNumber: 1,
+					Message:    errors.New("WRONG"),
+				},
+				{
+					LineNumber: 2,
+					Message:    errors.New("WRONG"),
+				},
+			},
+		},
+	}
+
+	// wannabe test
+	PrintErrors(input)
+}
