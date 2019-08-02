@@ -8,9 +8,9 @@ type Params struct {
 	Verbose         bool
 	IgnoreDefaults  bool
 	SpacesAfterTabs bool
-	RawFiles        []string
-	Excludes        string
 	DryRun          bool
+	Excludes        string
+	RawFiles        []string
 }
 
 // ValidationError represents one validation error

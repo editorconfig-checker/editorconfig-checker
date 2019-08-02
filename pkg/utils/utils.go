@@ -2,10 +2,6 @@
 package utils
 
 import (
-	"fmt"
-	"net/http"
-	"os"
-	"path/filepath"
 	"strings"
 )
 
@@ -59,62 +55,4 @@ func GetEolChar(endOfLine string) string {
 	}
 
 	return "\n"
-}
-
-// PathExists checks wether a path of a file or directory exists or not
-func PathExists(filePath string) error {
-	absolutePath, _ := filepath.Abs(filePath)
-	_, err := os.Stat(absolutePath)
-
-	return err
-}
-
-// GetContentType returns the content type of a file
-func GetContentType(path string) (string, error) {
-	fileStat, err := os.Stat(path)
-
-	if err != nil {
-		return "", err
-	}
-
-	if fileStat.Size() == 0 {
-		return "", nil
-	}
-
-	file, err := os.Open(path)
-	if err != nil {
-		return "", err
-	}
-	defer file.Close()
-
-	// Only the first 512 bytes are used to sniff the content type.
-	buffer := make([]byte, 512)
-	_, err = file.Read(buffer)
-	if err != nil {
-		return "", err
-	}
-
-	// Reset the read pointer if necessary.
-	_, err = file.Seek(0, 0)
-	if err != nil {
-		panic(fmt.Sprintf("ERROR: %s", err))
-	}
-
-	// Always returns a valid content-type and "application/octet-stream" if no others seemed to match.
-	return http.DetectContentType(buffer), nil
-}
-
-// GetRelativePath returns the relative path of a file from the current working directory
-func GetRelativePath(filePath string) (string, error) {
-	cwd, err := os.Getwd()
-	if err != nil {
-		return "", fmt.Errorf("Could not get the current working directly")
-	}
-
-	relativePath := strings.Replace(filePath, cwd, ".", 1)
-	return relativePath, nil
-}
-
-func IsAllowedContentType(contentType string) bool {
-	return contentType == "application/octet-stream" || strings.Contains(contentType, "text/")
 }

@@ -2,23 +2,17 @@
 package main
 
 import (
-	"bufio"
 	"flag"
 	"fmt"
-	"io/ioutil"
 	"os"
-	"os/exec"
-	"path/filepath"
-	"regexp"
-	"strconv"
 	"strings"
 
-	"github.com/editorconfig/editorconfig-core-go/v2"
-
+	"github.com/editorconfig-checker/editorconfig-checker/pkg/error"
+	"github.com/editorconfig-checker/editorconfig-checker/pkg/files"
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/logger"
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/types"
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/utils"
-	"github.com/editorconfig-checker/editorconfig-checker/pkg/validators"
+	"github.com/editorconfig-checker/editorconfig-checker/pkg/validation"
 )
 
 // version
@@ -66,8 +60,8 @@ func init() {
 		excludes = utils.DefaultExcludes
 	}
 
-	if utils.PathExists(".ecrc") == nil {
-		lines := readLineNumbersOfFile(".ecrc")
+	if files.PathExists(".ecrc") == nil {
+		lines := files.ReadLineNumbers(".ecrc")
 		if len(lines) > 0 {
 			if excludes != "" {
 				excludes = fmt.Sprintf("%s|%s", excludes, strings.Join(lines, "|"))
@@ -91,224 +85,6 @@ func init() {
 	params.RawFiles = rawFiles
 }
 
-// Returns wether the file is inside an unwanted folder
-func isExcluded(filePath string) bool {
-	if params.Excludes == "" {
-		return false
-	}
-
-	relativeFilePath, err := utils.GetRelativePath(filePath)
-	if err != nil {
-		panic(err)
-	}
-
-	result, err := regexp.MatchString(params.Excludes, relativeFilePath)
-	if err != nil {
-		panic(err)
-	}
-
-	return result
-}
-
-// Adds a file to a slice if it isn't already in there
-// and returns the new slice
-func addToFiles(files []string, filePath string, verbose bool) []string {
-	contentType, err := utils.GetContentType(filePath)
-
-	if err != nil {
-		logger.Error(fmt.Sprintf("Could not get the ContentType of file: %s", filePath))
-		logger.Error(err.Error())
-	}
-
-	if !isExcluded(filePath) && utils.IsAllowedContentType(contentType) {
-		if verbose {
-			logger.Output(fmt.Sprintf("Add %s to be checked", filePath))
-		}
-		return append(files, filePath)
-	}
-
-	if verbose {
-		logger.Output(fmt.Sprintf("Don't add %s to be checked", filePath))
-	}
-
-	return files
-}
-
-// Returns all files which should be checked
-func getFiles(verbose bool) []string {
-	var files []string
-
-	byteArray, err := exec.Command("git", "ls-tree", "-r", "--name-only", "HEAD").Output()
-	if err != nil {
-		// It is not a git repository.
-		cwd, err := os.Getwd()
-		if err != nil {
-			panic("Could not get the current working directly")
-		}
-
-		_ = filepath.Walk(cwd, func(path string, fi os.FileInfo, err error) error {
-			if fi.Mode().IsRegular() {
-				files = addToFiles(files, path, verbose)
-			}
-
-			return nil
-		})
-	}
-
-	filesSlice := strings.Split(string(byteArray[:]), "\n")
-
-	for _, filePath := range filesSlice {
-		if len(filePath) > 0 {
-			fi, err := os.Stat(filePath)
-
-			// The err would be a broken symlink for example,
-			// so we want to program to continue but the file should not be checked
-			if err == nil && fi.Mode().IsRegular() {
-				files = addToFiles(files, filePath, verbose)
-			}
-		}
-	}
-
-	return files
-}
-
-func readLineNumbersOfFile(filePath string) []string {
-	var lines []string
-	fileHandle, _ := os.Open(filePath)
-	defer fileHandle.Close()
-	fileScanner := bufio.NewScanner(fileHandle)
-
-	for fileScanner.Scan() {
-		lines = append(lines, fileScanner.Text())
-	}
-
-	return lines
-}
-
-// Validates a single file and returns the errors
-func validateFile(filePath string, verbose bool, spacesAfterTabsAllowed bool) []types.ValidationError {
-	var errors []types.ValidationError
-	lines := readLineNumbersOfFile(filePath)
-
-	// return if first line contains editorconfig-checker-disable-file
-	if len(lines) == 0 || strings.Contains(lines[0], "editorconfig-checker-disable-file") {
-		return errors
-	}
-
-	rawFileContent, err := ioutil.ReadFile(filePath)
-
-	if err != nil {
-		panic(err)
-	}
-
-	fileContent := string(rawFileContent)
-
-	editorconfig, err := editorconfig.GetDefinitionForFilename(filePath)
-	if err != nil {
-		panic(err)
-	}
-
-	if currentError := validators.FinalNewline(
-		fileContent,
-		editorconfig.Raw["insert_final_newline"],
-		editorconfig.Raw["end_of_line"]); currentError != nil {
-		if verbose {
-			logger.Output(fmt.Sprintf("Final newline error found in %s", filePath))
-		}
-		errors = append(errors, types.ValidationError{LineNumber: -1, Message: currentError})
-	}
-
-	if currentError := validators.LineEnding(
-		fileContent,
-		editorconfig.Raw["end_of_line"]); currentError != nil {
-		if verbose {
-			logger.Output(fmt.Sprintf("Line ending error found in %s", filePath))
-		}
-		errors = append(errors, types.ValidationError{LineNumber: -1, Message: currentError})
-	}
-
-	for lineNumber, line := range lines {
-		if strings.Contains(line, "editorconfig-checker-disable-line") {
-			continue
-		}
-
-		if currentError := validators.TrailingWhitespace(
-			line,
-			editorconfig.Raw["trim_trailing_whitespace"] == "true"); currentError != nil {
-			if verbose {
-				logger.Output(fmt.Sprintf("Trailing whitespace error found in %s on line %d", filePath, lineNumber))
-			}
-			errors = append(errors, types.ValidationError{LineNumber: lineNumber + 1, Message: currentError})
-		}
-
-		var indentSize int
-		indentSize, err = strconv.Atoi(editorconfig.Raw["indent_size"])
-
-		// Set indentSize to zero if there is no indentSize set
-		if err != nil {
-			indentSize = 0
-		}
-
-		if currentError := validators.Indentation(
-			line,
-			editorconfig.Raw["indent_style"],
-			indentSize, spacesAfterTabsAllowed); currentError != nil {
-			if verbose {
-				logger.Output(fmt.Sprintf("Indentation error found in %s on line %d", filePath, lineNumber))
-			}
-			errors = append(errors, types.ValidationError{LineNumber: lineNumber + 1, Message: currentError})
-		}
-	}
-
-	return errors
-}
-
-// Validates all files and returns an array of validation errors
-func processValidation(files []string, verbose bool, spacesAfterTabsAllowed bool) []types.ValidationErrors {
-	var validationErrors []types.ValidationErrors
-
-	for _, filePath := range files {
-		if verbose {
-			logger.Output(fmt.Sprintf("Validate %s", filePath))
-		}
-		validationErrors = append(validationErrors, types.ValidationErrors{FilePath: filePath, Errors: validateFile(filePath, verbose, spacesAfterTabsAllowed)})
-	}
-
-	return validationErrors
-}
-
-func getErrorCount(errors []types.ValidationErrors) int {
-	var errorCount = 0
-
-	for _, v := range errors {
-		errorCount += len(v.Errors)
-	}
-
-	return errorCount
-}
-
-func printErrors(errors []types.ValidationErrors) {
-	for _, fileErrors := range errors {
-		if len(fileErrors.Errors) > 0 {
-			relativeFilePath, err := utils.GetRelativePath(fileErrors.FilePath)
-
-			if err != nil {
-				logger.Error(err.Error())
-			}
-
-			logger.Print(fmt.Sprintf("%s:", relativeFilePath), logger.YELLOW, os.Stderr)
-			for _, singleError := range fileErrors.Errors {
-				if singleError.LineNumber != -1 {
-					logger.Error(fmt.Sprintf("\t%d: %s", singleError.LineNumber, singleError.Message))
-				} else {
-					logger.Error(fmt.Sprintf("\t%s", singleError.Message))
-				}
-
-			}
-		}
-	}
-}
-
 // Main function, dude
 func main() {
 	// Check for returnworthy params
@@ -327,26 +103,26 @@ func main() {
 	}
 
 	// contains all files which should be checked
-	files := getFiles(params.Verbose)
+	filePaths := files.GetFiles(params)
 
 	if params.DryRun {
-		for _, file := range files {
+		for _, file := range filePaths {
 			logger.Output(file)
 		}
 
 		os.Exit(0)
 	}
 
-	errors := processValidation(files, params.Verbose, params.SpacesAfterTabs)
-	errorCount := getErrorCount(errors)
+	errors := validation.ProcessValidation(filePaths, params)
+	errorCount := error.GetErrorCount(errors)
 
 	if errorCount != 0 {
-		printErrors(errors)
+		error.PrintErrors(errors)
 		logger.Error(fmt.Sprintf("\n%d errors found", errorCount))
 	}
 
 	if params.Verbose {
-		logger.Output(fmt.Sprintf("%d files checked", len(files)))
+		logger.Output(fmt.Sprintf("%d files checked", len(filePaths)))
 	}
 
 	if errorCount != 0 {
