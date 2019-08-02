@@ -43,7 +43,6 @@ func AddToFiles(filePaths []string, filePath string, params types.Params) []stri
 		logger.Error(err.Error())
 	}
 
-	logger.Error(fmt.Sprintf("%v\n", IsAllowedContentType(contentType)))
 	if !IsExcluded(filePath, params) && IsAllowedContentType(contentType) {
 		if params.Verbose {
 			logger.Output(fmt.Sprintf("Add %s to be checked", filePath))
