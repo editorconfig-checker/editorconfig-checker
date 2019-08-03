@@ -119,6 +119,15 @@ func TestPrintErrors(t *testing.T) {
 			Errors:   []types.ValidationError{},
 		},
 		{
+			FilePath: "/proc/cpuinfo",
+			Errors: []types.ValidationError{
+				{
+					LineNumber: 1,
+					Message:    errors.New("WRONG"),
+				},
+			},
+		},
+		{
 			FilePath: "some/other/path",
 			Errors: []types.ValidationError{
 				{
@@ -126,7 +135,7 @@ func TestPrintErrors(t *testing.T) {
 					Message:    errors.New("WRONG"),
 				},
 				{
-					LineNumber: 2,
+					LineNumber: -1,
 					Message:    errors.New("WRONG"),
 				},
 			},
