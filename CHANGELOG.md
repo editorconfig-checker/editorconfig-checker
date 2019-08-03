@@ -9,6 +9,7 @@
 ### Fixed
 ### Security
 ### Misc
+* Some code refactoring (together with (allow spaces after tabs)[https://github.com/editorconfig-checker/editorconfig-checker/pull/67])
 * (updated editorconfig-core version to v2 which uses go modules now)[https://github.com/editorconfig-checker/editorconfig-checker/pull/68]
 
 ## [1.2.1] - 2019-07-06
