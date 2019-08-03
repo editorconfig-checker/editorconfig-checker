@@ -1,2 +1,5 @@
 [*]
 indent_style = tab
+
+[trailing-whitespace.txt]
+trim_trailing_whitespace = true
