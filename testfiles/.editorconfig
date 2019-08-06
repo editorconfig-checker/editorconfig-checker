@@ -3,3 +3,14 @@ indent_style = tab
 
 [trailing-whitespace.txt]
 trim_trailing_whitespace = true
+
+[zero-indent.txt]
+indent_style = space
+indent_size =
+
+[final-newline-missing.txt]
+end_of_line = lf
+insert_final_newline = false
+
+[wrong-line-ending.txt]
+end_of_line = lf

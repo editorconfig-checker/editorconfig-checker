@@ -24,7 +24,6 @@ func ValidateFile(filePath string, params types.Params) []types.ValidationError 
 	}
 
 	rawFileContent, err := ioutil.ReadFile(filePath)
-
 	if err != nil {
 		panic(err)
 	}

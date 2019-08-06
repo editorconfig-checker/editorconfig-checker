@@ -50,6 +50,17 @@ func TestValidateFile(t *testing.T) {
 	}
 
 	params = types.Params{SpacesAfterTabs: false}
+	result = ValidateFile("./../../testfiles/zero-indent.txt", params)
+	if len(result) != 0 {
+		t.Error("Should have no errors when validating valid file, got", result)
+	}
+
+	result = ValidateFile("./../../testfiles/disabled-line.txt", params)
+	if len(result) != 0 {
+		t.Error("Should have no errors when validating valid file, got", result)
+	}
+
+	params = types.Params{SpacesAfterTabs: false}
 	result = ValidateFile("./../../testfiles/spaces-after-tabs.txt", params)
 	if len(result) != 1 {
 		t.Error("Should have one error, got", result)
@@ -59,5 +70,17 @@ func TestValidateFile(t *testing.T) {
 	result = ValidateFile("./../../testfiles/trailing-whitespace.txt", params)
 	if len(result) != 1 {
 		t.Error("Should have one error, got", result)
+	}
+
+	params = types.Params{Verbose: true}
+	result = ValidateFile("./../../testfiles/final-newline-missing.txt", params)
+	if len(result) != 1 {
+		t.Error("Should have no error, got", result)
+	}
+
+	params = types.Params{Verbose: true}
+	result = ValidateFile("./../../testfiles/wrong-line-ending.txt", params)
+	if len(result) == 0 {
+		t.Error("Should have no error, got", result)
 	}
 }
