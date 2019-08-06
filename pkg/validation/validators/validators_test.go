@@ -284,8 +284,27 @@ func TestSpace(t *testing.T) {
 	}
 }
 
-func TestTab(t *testing.T) {
+func TestTabSpacesAllowed(t *testing.T) {
 	spacesAllowed := types.Params{SpacesAfterTabs: true}
+
+	if Tab(" x", spacesAllowed) != nil {
+		t.Error("Expected char after space to return nil")
+	}
+
+	if Tab("	   bla", spacesAllowed) != nil {
+		t.Error("Expected tab indented and with spaces aligned line to return nil")
+	}
+
+	if Tab("	 bla", spacesAllowed) != nil {
+		t.Error("Expected tab indented and with spaces aligned line to return nil")
+	}
+
+	if (Tab("		  xx", spacesAllowed)) != nil {
+		t.Error("starting with tabs and trailing spaces with at least one character after the spaces")
+	}
+}
+
+func TestTabSpacesForbidden(t *testing.T) {
 	spacesForbidden := types.Params{SpacesAfterTabs: false}
 
 	if Tab("", spacesForbidden) != nil {
@@ -300,12 +319,16 @@ func TestTab(t *testing.T) {
 		t.Error("Expected correctly indented line to return true")
 	}
 
-	if Tab(" x", spacesAllowed) != nil {
-		t.Error("Expected char after space to return nil")
+	if (Tab("		x", spacesForbidden)) != nil {
+		t.Error("starting with tabs and characters after that")
 	}
 
-	if Tab(" *", spacesForbidden) != nil {
-		t.Error("Expected tab indented block comment without indentation to return nil")
+	if (Tab("  	a", spacesForbidden)) == nil {
+		t.Error("Starting with two spaces, followed by a tab and followed by a non whitespace char should not return nil")
+	}
+
+	if (Tab(" *", spacesForbidden)) != nil {
+		t.Error("starting with a space and at leat one character after the space")
 	}
 
 	if Tab(" * some comment", spacesForbidden) != nil {
@@ -328,28 +351,8 @@ func TestTab(t *testing.T) {
 		t.Error("Expected tab indented block comment with indentation in the last line to return nil")
 	}
 
-	if Tab("	   bla", spacesAllowed) != nil {
-		t.Error("Expected tab indented and with spaces aligned line to return nil")
-	}
-
-	if Tab("	 bla", spacesAllowed) != nil {
-		t.Error("Expected tab indented and with spaces aligned line to return nil")
-	}
-
-	if (Tab("		  xx", spacesAllowed)) != nil {
-		t.Error("starting with tabs and trailing spaces with at least one character after the spaces")
-	}
-
-	if (Tab("		x", spacesForbidden)) != nil {
-		t.Error("starting with tabs and characters after that")
-	}
-
-	if (Tab("  	a", spacesForbidden)) == nil {
-		t.Error("Starting with two spaces, followed by a tab and followed by a non whitespace char should not return nil")
-	}
-
-	if (Tab(" *", spacesForbidden)) != nil {
-		t.Error("starting with a space and at leat one character after the space")
+	if Tab(" *", spacesForbidden) != nil {
+		t.Error("Expected tab indented block comment without indentation to return nil")
 	}
 }
 
