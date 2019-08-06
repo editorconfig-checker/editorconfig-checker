@@ -32,7 +32,6 @@ func init() {
 	flag.BoolVar(&params.IgnoreDefaults, "i", false, "ignore default excludes")
 
 	flag.BoolVar(&params.DryRun, "dry-run", false, "show which files would be checked")
-	flag.BoolVar(&params.DryRun, "d", false, "show which files would be checked")
 
 	flag.BoolVar(&params.Version, "version", false, "print the version number")
 

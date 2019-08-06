@@ -2,6 +2,7 @@
 
 ## Unreleased
 ### Added
+* (disable specific checks)[https://github.com/editorconfig-checker/editorconfig-checker/pull/71]
 ### Changed
 ### Deprecated
 ### Removed
