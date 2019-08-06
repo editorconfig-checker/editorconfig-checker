@@ -3,12 +3,14 @@
 ## Unreleased
 ### Added
 ### Changed
+* (allow spaces after tabs)[https://github.com/editorconfig-checker/editorconfig-checker/pull/67] with flag `spaces-after-tabs`
 ### Deprecated
 ### Removed
 ### Fixed
 ### Security
 ### Misc
-* updated editorconfig-core version to v2 which uses go modules now
+* Some code refactoring (together with (allow spaces after tabs)[https://github.com/editorconfig-checker/editorconfig-checker/pull/67])
+* (updated editorconfig-core version to v2 which uses go modules now)[https://github.com/editorconfig-checker/editorconfig-checker/pull/68]
 
 ## [1.2.1] - 2019-07-06
 ### Fixed

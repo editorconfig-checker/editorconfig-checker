@@ -66,6 +66,8 @@ USAGE:
   -i    ignore default excludes
   -ignore
         ignore default excludes
+  -spaces-after-tabs
+        allow spaces to be used as alignment after tabs
   -v    print debugging information
   -verbose
         print debugging information
