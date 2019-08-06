@@ -38,7 +38,7 @@ func ValidateFile(filePath string, params types.Params) []types.ValidationError 
 	if currentError := validators.FinalNewline(
 		fileContent,
 		editorconfig.Raw["insert_final_newline"],
-		editorconfig.Raw["end_of_line"]); currentError != nil {
+		editorconfig.Raw["end_of_line"]); !params.Disabled.FinalNewline && currentError != nil {
 		if params.Verbose {
 			logger.Output(fmt.Sprintf("Final newline error found in %s", filePath))
 		}
@@ -47,7 +47,7 @@ func ValidateFile(filePath string, params types.Params) []types.ValidationError 
 
 	if currentError := validators.LineEnding(
 		fileContent,
-		editorconfig.Raw["end_of_line"]); currentError != nil {
+		editorconfig.Raw["end_of_line"]); !params.Disabled.LineEnding && currentError != nil {
 		if params.Verbose {
 			logger.Output(fmt.Sprintf("Line ending error found in %s", filePath))
 		}
@@ -61,7 +61,7 @@ func ValidateFile(filePath string, params types.Params) []types.ValidationError 
 
 		if currentError := validators.TrailingWhitespace(
 			line,
-			editorconfig.Raw["trim_trailing_whitespace"] == "true"); currentError != nil {
+			editorconfig.Raw["trim_trailing_whitespace"] == "true"); !params.Disabled.TrailingWhitspace && currentError != nil {
 			if params.Verbose {
 				logger.Output(fmt.Sprintf("Trailing whitespace error found in %s on line %d", filePath, lineNumber))
 			}
@@ -79,7 +79,7 @@ func ValidateFile(filePath string, params types.Params) []types.ValidationError 
 		if currentError := validators.Indentation(
 			line,
 			editorconfig.Raw["indent_style"],
-			indentSize, params); currentError != nil {
+			indentSize, params); !params.Disabled.Indentation && currentError != nil {
 			if params.Verbose {
 				logger.Output(fmt.Sprintf("Indentation error found in %s on line %d", filePath, lineNumber))
 			}

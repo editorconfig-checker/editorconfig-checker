@@ -11,6 +11,14 @@ type Params struct {
 	DryRun          bool
 	Excludes        string
 	RawFiles        []string
+	Disabled        DisabledChecks
+}
+
+type DisabledChecks struct {
+	TrailingWhitspace bool
+	LineEnding        bool
+	FinalNewline      bool
+	Indentation       bool
 }
 
 // ValidationError represents one validation error

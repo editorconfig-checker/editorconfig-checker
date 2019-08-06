@@ -53,7 +53,14 @@ This will place a binary called `ec` into the `bin` directory.
 
 ```
 USAGE:
-  -d    show which files would be checked
+  -disable-final-newline
+        disables the final newline check
+  -disable-indentation
+        disables the indentation check
+  -disable-line-ending
+        disables the trailing whitespace check
+  -disable-trailing-whitespace
+        disables the trailing whitespace check
   -dry-run
         show which files would be checked
   -e string
