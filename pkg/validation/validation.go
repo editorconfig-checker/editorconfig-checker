@@ -61,7 +61,7 @@ func ValidateFile(filePath string, params types.Params) []types.ValidationError 
 
 		if currentError := validators.TrailingWhitespace(
 			line,
-			editorconfig.Raw["trim_trailing_whitespace"] == "true"); currentError != nil {
+			editorconfig.Raw["trim_trailing_whitespace"] == "true"); !params.Disabled.TrailingWhitspace && currentError != nil {
 			if params.Verbose {
 				logger.Output(fmt.Sprintf("Trailing whitespace error found in %s on line %d", filePath, lineNumber))
 			}

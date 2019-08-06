@@ -44,6 +44,8 @@ func init() {
 
 	flag.BoolVar(&params.SpacesAfterTabs, "spaces-after-tabs", false, "allow spaces to be used as alignment after tabs")
 
+	flag.BoolVar(&params.Disabled.TrailingWhitspace, "disable-trailing-whitespace", false, "disables the trailing whitespace check")
+
 	// parse flags
 	flag.Parse()
 

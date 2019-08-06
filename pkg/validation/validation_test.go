@@ -73,6 +73,13 @@ func TestValidateFile(t *testing.T) {
 	}
 
 	params = types.Params{Verbose: true}
+	params.Disabled.TrailingWhitspace = true
+	result = ValidateFile("./../../testfiles/trailing-whitespace.txt", params)
+	if len(result) != 0 {
+		t.Error("Should have no error, got", result)
+	}
+
+	params = types.Params{Verbose: true}
 	result = ValidateFile("./../../testfiles/final-newline-missing.txt", params)
 	if len(result) != 1 {
 		t.Error("Should have no error, got", result)
