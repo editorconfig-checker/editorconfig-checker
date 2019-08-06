@@ -79,7 +79,7 @@ func ValidateFile(filePath string, params types.Params) []types.ValidationError 
 		if currentError := validators.Indentation(
 			line,
 			editorconfig.Raw["indent_style"],
-			indentSize, params); currentError != nil {
+			indentSize, params); !params.Disabled.Indentation && currentError != nil {
 			if params.Verbose {
 				logger.Output(fmt.Sprintf("Indentation error found in %s on line %d", filePath, lineNumber))
 			}

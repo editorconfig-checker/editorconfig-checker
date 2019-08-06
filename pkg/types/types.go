@@ -18,6 +18,7 @@ type DisabledChecks struct {
 	TrailingWhitspace bool
 	LineEnding        bool
 	FinalNewline      bool
+	Indentation       bool
 }
 
 // ValidationError represents one validation error
