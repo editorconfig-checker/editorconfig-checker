@@ -38,7 +38,7 @@ func ValidateFile(filePath string, params types.Params) []types.ValidationError 
 	if currentError := validators.FinalNewline(
 		fileContent,
 		editorconfig.Raw["insert_final_newline"],
-		editorconfig.Raw["end_of_line"]); currentError != nil {
+		editorconfig.Raw["end_of_line"]); !params.Disabled.FinalNewline && currentError != nil {
 		if params.Verbose {
 			logger.Output(fmt.Sprintf("Final newline error found in %s", filePath))
 		}

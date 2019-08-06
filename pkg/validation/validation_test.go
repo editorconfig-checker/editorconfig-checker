@@ -82,6 +82,13 @@ func TestValidateFile(t *testing.T) {
 	params = types.Params{Verbose: true}
 	result = ValidateFile("./../../testfiles/final-newline-missing.txt", params)
 	if len(result) != 1 {
+		t.Error("Should have one error, got", result)
+	}
+
+	params = types.Params{Verbose: true}
+	params.Disabled.FinalNewline = true
+	result = ValidateFile("./../../testfiles/final-newline-missing.txt", params)
+	if len(result) != 0 {
 		t.Error("Should have no error, got", result)
 	}
 
