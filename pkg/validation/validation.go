@@ -47,7 +47,7 @@ func ValidateFile(filePath string, params types.Params) []types.ValidationError 
 
 	if currentError := validators.LineEnding(
 		fileContent,
-		editorconfig.Raw["end_of_line"]); currentError != nil {
+		editorconfig.Raw["end_of_line"]); !params.Disabled.LineEnding && currentError != nil {
 		if params.Verbose {
 			logger.Output(fmt.Sprintf("Line ending error found in %s", filePath))
 		}

@@ -16,6 +16,7 @@ type Params struct {
 
 type DisabledChecks struct {
 	TrailingWhitspace bool
+	LineEnding        bool
 }
 
 // ValidationError represents one validation error

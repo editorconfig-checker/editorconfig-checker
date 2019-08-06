@@ -88,6 +88,13 @@ func TestValidateFile(t *testing.T) {
 	params = types.Params{Verbose: true}
 	result = ValidateFile("./../../testfiles/wrong-line-ending.txt", params)
 	if len(result) == 0 {
+		t.Error("Should have one error, got", result)
+	}
+
+	params = types.Params{Verbose: true}
+	params.Disabled.LineEnding = true
+	result = ValidateFile("./../../testfiles/wrong-line-ending.txt", params)
+	if len(result) != 0 {
 		t.Error("Should have no error, got", result)
 	}
 }
