@@ -16,7 +16,7 @@ import (
 // Validates a single file and returns the errors
 func ValidateFile(filePath string, params types.Params) []types.ValidationError {
 	var errors []types.ValidationError
-	lines := files.ReadLineNumbers(filePath)
+	lines := files.ReadLines(filePath)
 
 	// return if first line contains editorconfig-checker-disable-file
 	if len(lines) == 0 || strings.Contains(lines[0], "editorconfig-checker-disable-file") {

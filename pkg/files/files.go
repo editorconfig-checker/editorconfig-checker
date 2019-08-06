@@ -96,7 +96,7 @@ func GetFiles(params types.Params) []string {
 }
 
 // Returns the lines from a file as a slice
-func ReadLineNumbers(filePath string) []string {
+func ReadLines(filePath string) []string {
 	var lines []string
 	fileHandle, _ := os.Open(filePath)
 	defer fileHandle.Close()

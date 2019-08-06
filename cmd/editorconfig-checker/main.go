@@ -61,7 +61,7 @@ func init() {
 	}
 
 	if files.PathExists(".ecrc") == nil {
-		lines := files.ReadLineNumbers(".ecrc")
+		lines := files.ReadLines(".ecrc")
 		if len(lines) > 0 {
 			if excludes != "" {
 				excludes = fmt.Sprintf("%s|%s", excludes, strings.Join(lines, "|"))
