@@ -26,7 +26,7 @@ type DisabledChecks struct {
 	Indentation       bool
 }
 
-// FileInformation is a Struct wich represents some FileInformation
+// FileInformation is a Struct which represents some FileInformation
 type FileInformation struct {
 	Line         string
 	Content      string
