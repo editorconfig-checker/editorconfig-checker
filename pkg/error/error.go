@@ -9,6 +9,7 @@ import (
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/types"
 )
 
+// GetErrorCount returns the amount of errors
 func GetErrorCount(errors []types.ValidationErrors) int {
 	var errorCount = 0
 
@@ -19,6 +20,7 @@ func GetErrorCount(errors []types.ValidationErrors) int {
 	return errorCount
 }
 
+// PrintErrors prints the errors to the console
 func PrintErrors(errors []types.ValidationErrors) {
 	for _, fileErrors := range errors {
 		if len(fileErrors.Errors) > 0 {

@@ -2,10 +2,11 @@ package validation
 
 import (
 	"fmt"
-	"github.com/editorconfig/editorconfig-core-go/v2"
 	"io/ioutil"
 	"strconv"
 	"strings"
+
+	"github.com/editorconfig/editorconfig-core-go/v2"
 
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/files"
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/logger"
@@ -13,14 +14,14 @@ import (
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/validation/validators"
 )
 
-// Validates a single file and returns the errors
+// ValidateFile Validates a single file and returns the errors
 func ValidateFile(filePath string, params types.Params) []types.ValidationError {
-	var errors []types.ValidationError
+	var validationErrors []types.ValidationError
 	lines := files.ReadLines(filePath)
 
 	// return if first line contains editorconfig-checker-disable-file
 	if len(lines) == 0 || strings.Contains(lines[0], "editorconfig-checker-disable-file") {
-		return errors
+		return validationErrors
 	}
 
 	rawFileContent, err := ioutil.ReadFile(filePath)
@@ -35,23 +36,16 @@ func ValidateFile(filePath string, params types.Params) []types.ValidationError 
 		panic(err)
 	}
 
-	if currentError := validators.FinalNewline(
-		fileContent,
-		editorconfig.Raw["insert_final_newline"],
-		editorconfig.Raw["end_of_line"]); !params.Disabled.FinalNewline && currentError != nil {
-		if params.Verbose {
-			logger.Output(fmt.Sprintf("Final newline error found in %s", filePath))
-		}
-		errors = append(errors, types.ValidationError{LineNumber: -1, Message: currentError})
+	fileInformation := types.FileInformation{Content: fileContent, FilePath: filePath, Editorconfig: editorconfig}
+	validationError := ValidateFinalNewline(fileInformation, params)
+	if validationError.Message != nil {
+		validationErrors = append(validationErrors, validationError)
 	}
 
-	if currentError := validators.LineEnding(
-		fileContent,
-		editorconfig.Raw["end_of_line"]); !params.Disabled.LineEnding && currentError != nil {
-		if params.Verbose {
-			logger.Output(fmt.Sprintf("Line ending error found in %s", filePath))
-		}
-		errors = append(errors, types.ValidationError{LineNumber: -1, Message: currentError})
+	fileInformation = types.FileInformation{Content: fileContent, FilePath: filePath, Editorconfig: editorconfig}
+	validationError = ValidateLineEnding(fileInformation, params)
+	if validationError.Message != nil {
+		validationErrors = append(validationErrors, validationError)
 	}
 
 	for lineNumber, line := range lines {
@@ -59,38 +53,91 @@ func ValidateFile(filePath string, params types.Params) []types.ValidationError 
 			continue
 		}
 
-		if currentError := validators.TrailingWhitespace(
-			line,
-			editorconfig.Raw["trim_trailing_whitespace"] == "true"); !params.Disabled.TrailingWhitspace && currentError != nil {
-			if params.Verbose {
-				logger.Output(fmt.Sprintf("Trailing whitespace error found in %s on line %d", filePath, lineNumber))
-			}
-			errors = append(errors, types.ValidationError{LineNumber: lineNumber + 1, Message: currentError})
+		fileInformation = types.FileInformation{Line: line, FilePath: filePath, LineNumber: lineNumber, Editorconfig: editorconfig}
+		validationError = ValidateTrailingWhitespace(fileInformation, params)
+		if validationError.Message != nil {
+			validationErrors = append(validationErrors, validationError)
 		}
 
-		var indentSize int
-		indentSize, err = strconv.Atoi(editorconfig.Raw["indent_size"])
-
-		// Set indentSize to zero if there is no indentSize set
-		if err != nil {
-			indentSize = 0
+		validationError = ValidateIndentation(fileInformation, params)
+		if validationError.Message != nil {
+			validationErrors = append(validationErrors, validationError)
 		}
 
-		if currentError := validators.Indentation(
-			line,
-			editorconfig.Raw["indent_style"],
-			indentSize, params); !params.Disabled.Indentation && currentError != nil {
-			if params.Verbose {
-				logger.Output(fmt.Sprintf("Indentation error found in %s on line %d", filePath, lineNumber))
-			}
-			errors = append(errors, types.ValidationError{LineNumber: lineNumber + 1, Message: currentError})
-		}
 	}
 
-	return errors
+	return validationErrors
 }
 
-// Validates all files and returns an array of validation errors
+// ValidateFinalNewline runs the final newline validator and processes the error into the proper type
+func ValidateFinalNewline(fileInformation types.FileInformation, params types.Params) types.ValidationError {
+	if currentError := validators.FinalNewline(
+		fileInformation.Content,
+		fileInformation.Editorconfig.Raw["insert_final_newline"],
+		fileInformation.Editorconfig.Raw["end_of_line"]); !params.Disabled.FinalNewline && currentError != nil {
+		if params.Verbose {
+			logger.Output(fmt.Sprintf("Final newline error found in %s", fileInformation.FilePath))
+		}
+		return types.ValidationError{LineNumber: -1, Message: currentError}
+	}
+
+	return types.ValidationError{}
+}
+
+// ValidateLineEnding runs the line ending validator and processes the error into the proper type
+func ValidateLineEnding(fileInformation types.FileInformation, params types.Params) types.ValidationError {
+	if currentError := validators.LineEnding(
+		fileInformation.Content,
+		fileInformation.Editorconfig.Raw["end_of_line"]); !params.Disabled.LineEnding && currentError != nil {
+		if params.Verbose {
+			logger.Output(fmt.Sprintf("Line ending error found in %s", fileInformation.FilePath))
+		}
+
+		return types.ValidationError{LineNumber: -1, Message: currentError}
+	}
+
+	return types.ValidationError{}
+}
+
+// ValidateIndentation runs the Indentation validator and processes the error into the proper type
+func ValidateIndentation(fileInformation types.FileInformation, params types.Params) types.ValidationError {
+	var indentSize int
+	indentSize, err := strconv.Atoi(fileInformation.Editorconfig.Raw["indent_size"])
+
+	// Set indentSize to zero if there is no indentSize set
+	if err != nil {
+		indentSize = 0
+	}
+
+	if currentError := validators.Indentation(
+		fileInformation.Line,
+		fileInformation.Editorconfig.Raw["indent_style"],
+		indentSize, params); !params.Disabled.Indentation && currentError != nil {
+		if params.Verbose {
+			logger.Output(fmt.Sprintf("Indentation error found in %s on line %d", fileInformation.FilePath, fileInformation.LineNumber))
+		}
+
+		return types.ValidationError{LineNumber: fileInformation.LineNumber + 1, Message: currentError}
+	}
+
+	return types.ValidationError{}
+}
+
+// ValidateTrailingWhitespace runs the TrailingWhitespace validator and processes the error into the proper type
+func ValidateTrailingWhitespace(fileInformation types.FileInformation, params types.Params) types.ValidationError {
+	if currentError := validators.TrailingWhitespace(
+		fileInformation.Line,
+		fileInformation.Editorconfig.Raw["trim_trailing_whitespace"] == "true"); !params.Disabled.TrailingWhitspace && currentError != nil {
+		if params.Verbose {
+			logger.Output(fmt.Sprintf("Trailing whitespace error found in %s on line %d", fileInformation.FilePath, fileInformation.LineNumber))
+		}
+		return types.ValidationError{LineNumber: fileInformation.LineNumber + 1, Message: currentError}
+	}
+
+	return types.ValidationError{}
+}
+
+// ProcessValidation Validates all files and returns an array of validation errors
 func ProcessValidation(files []string, params types.Params) []types.ValidationErrors {
 	var validationErrors []types.ValidationErrors
 

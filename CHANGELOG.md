@@ -7,6 +7,7 @@
 ### Deprecated
 ### Removed
 ### Fixed
+* (fixed some golint and gocyclo issues)[https://github.com/editorconfig-checker/editorconfig-checker/pull/72]
 ### Security
 ### Misc
 

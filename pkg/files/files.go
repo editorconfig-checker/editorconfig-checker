@@ -14,7 +14,7 @@ import (
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/types"
 )
 
-// Returns wether the file is inside an unwanted folder
+// IsExcluded returns wether the file is excluded via arguments or config file
 func IsExcluded(filePath string, params types.Params) bool {
 	if params.Excludes == "" {
 		return false
@@ -33,8 +33,8 @@ func IsExcluded(filePath string, params types.Params) bool {
 	return result
 }
 
-// Adds a file to a slice if it isn't already in there and meets the requirements
-// and returns the new slice
+// AddToFiles adds a file to a slice if it isn't already in there
+// and meets the requirements and returns the new slice
 func AddToFiles(filePaths []string, filePath string, params types.Params) []string {
 	contentType, err := GetContentType(filePath)
 
@@ -57,7 +57,7 @@ func AddToFiles(filePaths []string, filePath string, params types.Params) []stri
 	return filePaths
 }
 
-// Returns all files which should be checked
+// GetFiles returns all files which should be checked
 func GetFiles(params types.Params) []string {
 	var filePaths []string
 
@@ -95,7 +95,7 @@ func GetFiles(params types.Params) []string {
 	return filePaths
 }
 
-// Returns the lines from a file as a slice
+// ReadLines returns the lines from a file as a slice
 func ReadLines(filePath string) []string {
 	var lines []string
 	fileHandle, _ := os.Open(filePath)
@@ -163,6 +163,8 @@ func GetRelativePath(filePath string) (string, error) {
 	return relativePath, nil
 }
 
+// IsAllowedContentType returns wether the contentType is
+// an allowed content type to check or not
 func IsAllowedContentType(contentType string) bool {
 	return contentType == "application/octet-stream" || strings.Contains(contentType, "text/")
 }
