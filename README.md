@@ -14,7 +14,7 @@
 4.2.1 [Inline](#inline)  
 4.2.2. [Default Excludes](#default-excludes)  
 4.2.3. [Manually Excluding](#manually-excluding)  
-4.2.4. [via ecrc](#via-ecrc)  
+4.2.4. [via ecignore](#via-ecignore)  
 4.2.5. [via arguments](#via-arguments)  
 4.2.6. [Generally](#generally)  
 5. [Docker](#docker)
@@ -150,12 +150,12 @@ If you don't pass the `i` or `ignore` flag to the binary these files are exclude
 
 #### Manually excluding
 
-##### via ecrc
+##### via ecignore
 
-You can create a file called `.ecrc` where you can put a regular expression on each line which files should be excluded. If you do this it will be merged with the default excludes.
+You can create a file called `.ecignore` where you can put a regular expression on each line which files should be excluded. If you do this it will be merged with the default excludes.
 Remember to escape your regular expressions correctly. :)
 
-An `.ecrc` can look like this:
+An `.ecignore` can look like this:
 
 ```
 LICENSE$
@@ -169,7 +169,7 @@ README\.md$
 
 ##### via arguments
 
-If you want to play around how the tool would behave you can also pass the `--exclude|-e` argument to the binary. This will accept a regular expression as well. If you use this argument the default excludes as well as the excludes from the `.ecrc`-file will merged together.
+If you want to play around how the tool would behave you can also pass the `--exclude|-e` argument to the binary. This will accept a regular expression as well. If you use this argument the default excludes as well as the excludes from the `.ecignore`-file will merged together.
 
 For example: `ec --exclude node_modules`
 

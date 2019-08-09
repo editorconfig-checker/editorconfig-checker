@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+### BREAKING
+* rename `.ecrc` to `.ecignore`
 ### Added
 * (disable specific checks)[https://github.com/editorconfig-checker/editorconfig-checker/pull/71]
 ### Changed

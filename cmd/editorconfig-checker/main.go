@@ -18,6 +18,8 @@ import (
 // version
 const version string = "1.3.0"
 
+const ignoreFile = ".ecignore"
+
 // Global variable to store the cli parameter
 // only the init function should write to this variable
 var params types.Params
@@ -64,8 +66,8 @@ func init() {
 		excludes = utils.DefaultExcludes
 	}
 
-	if files.PathExists(".ecrc") == nil {
-		lines := files.ReadLines(".ecrc")
+	if files.PathExists(ignoreFile) == nil {
+		lines := files.ReadLines(ignoreFile)
 		if len(lines) > 0 {
 			if excludes != "" {
 				excludes = fmt.Sprintf("%s|%s", excludes, strings.Join(lines, "|"))
