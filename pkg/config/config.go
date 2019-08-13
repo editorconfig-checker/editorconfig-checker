@@ -4,11 +4,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"os"
-	"path/filepath"
 	"strings"
 
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/logger"
+	"github.com/editorconfig-checker/editorconfig-checker/pkg/utils"
 )
 
 // DefaultExcludes is the regular expression for ignored files
@@ -49,22 +48,22 @@ var defaultExcludes = []string{
 
 type Config struct {
 	// CLI
-	Version bool
-	Help    bool
-	DryRun  bool
-
-	// UNDECIDED
-	RawFiles   []string
+	Version    bool
+	Help       bool
+	DryRun     bool
 	ConfigPath string
-	Debug      bool
-	Logger     logger.Logger
 
 	// CONFIG FILE
 	Verbose           bool
+	Debug             bool
 	Ignore_Defaults   bool
 	Spaces_After_tabs bool
 	Exclude           []string
+	PassedFiles       []string
 	Disable           DisabledChecks
+
+	// MISC
+	Logger logger.Logger
 }
 
 // DisabledChecks is a Struct which represents disabled checks
@@ -75,18 +74,10 @@ type DisabledChecks struct {
 	Indentation              bool
 }
 
-// TODO: EXTRACT THAT
-func isRegularFile(filePath string) bool {
-	absolutePath, _ := filepath.Abs(filePath)
-	fi, err := os.Stat(absolutePath)
-
-	return err == nil && fi.Mode().IsRegular()
-}
-
 func NewConfig(configPath string) (*Config, error) {
 	var config Config
 
-	if !isRegularFile(configPath) {
+	if !utils.IsRegularFile(configPath) {
 		return &config, fmt.Errorf("No file found at %s", configPath)
 	}
 

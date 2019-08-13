@@ -12,6 +12,7 @@ import (
 
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/config"
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/logger"
+	"github.com/editorconfig-checker/editorconfig-checker/pkg/utils"
 )
 
 // IsExcluded returns wether the file is excluded via arguments or config file
@@ -61,9 +62,23 @@ func AddToFiles(filePaths []string, filePath string, config config.Config) []str
 func GetFiles(config config.Config) []string {
 	var filePaths []string
 
-	if len(config.RawFiles) != 0 {
-		// TODO: Use RawFiles if there are some given
-		return []string{}
+	// Handle explicit passed files
+	if len(config.PassedFiles) != 0 {
+		for _, passedFile := range config.PassedFiles {
+			if utils.IsDirectory(passedFile) {
+				_ = filepath.Walk(passedFile, func(path string, fi os.FileInfo, err error) error {
+					if fi.Mode().IsRegular() {
+						filePaths = AddToFiles(filePaths, path, config)
+					}
+
+					return nil
+				})
+			} else {
+				filePaths = AddToFiles(filePaths, passedFile, config)
+			}
+		}
+
+		return filePaths
 	}
 
 	byteArray, err := exec.Command("git", "ls-tree", "-r", "--name-only", "HEAD").Output()

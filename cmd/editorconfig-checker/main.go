@@ -64,10 +64,14 @@ func init() {
 
 	flag.Parse()
 
-	c.Exclude = append(c.Exclude, tmpExclude)
-	c.Exclude = append(c.Exclude, tmpE)
+	if tmpExclude != "" {
+		c.Exclude = append(c.Exclude, tmpExclude)
+	}
+	if tmpE != "" {
+		c.Exclude = append(c.Exclude, tmpE)
+	}
 
-	c.RawFiles = flag.Args()
+	c.PassedFiles = flag.Args()
 	c.Logger = logger.Logger{Verbosee: c.Verbose, Debugg: c.Debug}
 
 	currentConfig = c
