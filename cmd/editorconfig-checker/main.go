@@ -5,113 +5,96 @@ import (
 	"flag"
 	"fmt"
 	"os"
-	"strings"
+	// "strings"
 
+	"github.com/editorconfig-checker/editorconfig-checker/pkg/config"
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/error"
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/files"
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/logger"
-	"github.com/editorconfig-checker/editorconfig-checker/pkg/types"
-	"github.com/editorconfig-checker/editorconfig-checker/pkg/utils"
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/validation"
 )
 
 // version
 const version string = "1.3.0"
 
-const ignoreFile = ".ecignore"
+const defaultConfigFilePath = ".ecrc"
 
-// Global variable to store the cli parameter
-// only the init function should write to this variable
-var params types.Params
+var currentConfig *config.Config
 
 // Init function, runs on start automagically
 func init() {
-	// define flags
-	flag.StringVar(&params.Excludes, "exclude", "", "a regex which files should be excluded from checking - needs to be a valid regular expression")
-	flag.StringVar(&params.Excludes, "e", "", "a regex which files should be excluded from checking - needs to be a valid regular expression")
+	var configFilePath string
+	flag.StringVar(&configFilePath, "config", "", "config")
+	flag.StringVar(&configFilePath, "c", "", "config")
 
-	flag.BoolVar(&params.IgnoreDefaults, "ignore", false, "ignore default excludes")
-	flag.BoolVar(&params.IgnoreDefaults, "i", false, "ignore default excludes")
+	if configFilePath == "" {
+		configFilePath = defaultConfigFilePath
+	}
 
-	flag.BoolVar(&params.DryRun, "dry-run", false, "show which files would be checked")
+	c, _ := config.NewConfig(configFilePath)
 
-	flag.BoolVar(&params.Version, "version", false, "print the version number")
+	err := c.Parse()
+	if err != nil {
+		panic(err)
+	}
 
-	flag.BoolVar(&params.Help, "help", false, "print the help")
-	flag.BoolVar(&params.Help, "h", false, "print the help")
+	var tmpExclude, tmpE string
+	flag.StringVar(&tmpExclude, "exclude", "", "a regex which files should be excluded from checking - needs to be a valid regular expression")
+	flag.StringVar(&tmpE, "e", "", "a regex which files should be excluded from checking - needs to be a valid regular expression")
 
-	flag.BoolVar(&params.Verbose, "verbose", false, "print debugging information")
-	flag.BoolVar(&params.Verbose, "v", false, "print debugging information")
+	flag.BoolVar(&c.Ignore_Defaults, "ignore", false, "ignore default excludes")
+	flag.BoolVar(&c.Ignore_Defaults, "i", false, "ignore default excludes")
 
-	flag.BoolVar(&params.SpacesAfterTabs, "spaces-after-tabs", false, "allow spaces to be used as alignment after tabs")
+	flag.BoolVar(&c.DryRun, "dry-run", false, "show which files would be checked")
 
-	flag.BoolVar(&params.Disabled.TrailingWhitspace, "disable-trailing-whitespace", false, "disables the trailing whitespace check")
-	flag.BoolVar(&params.Disabled.LineEnding, "disable-line-ending", false, "disables the trailing whitespace check")
-	flag.BoolVar(&params.Disabled.FinalNewline, "disable-final-newline", false, "disables the final newline check")
-	flag.BoolVar(&params.Disabled.Indentation, "disable-indentation", false, "disables the indentation check")
+	flag.BoolVar(&c.Version, "version", false, "print the version number")
 
-	// parse flags
+	flag.BoolVar(&c.Help, "help", false, "print the help")
+	flag.BoolVar(&c.Help, "h", false, "print the help")
+
+	flag.BoolVar(&c.Verbose, "verbose", false, "print debugging information")
+	flag.BoolVar(&c.Verbose, "v", false, "print debugging information")
+
+	flag.BoolVar(&c.Debug, "debug", false, "print debugging information")
+
+	flag.BoolVar(&c.Spaces_After_tabs, "spaces-after-tabs", false, "allow spaces to be used as alignment after tabs")
+	flag.BoolVar(&c.Disable.Trim_Trailing_Whitespace, "disable-trim-trailing-whitespace", false, "disables the trailing whitespace check")
+	flag.BoolVar(&c.Disable.End_Of_Line, "disable-end-of-line", false, "disables the trailing whitespace check")
+	flag.BoolVar(&c.Disable.Insert_Final_Newline, "disable-insert-final-newline", false, "disables the final newline check")
+	flag.BoolVar(&c.Disable.Indentation, "disable-indentation", false, "disables the indentation check")
+
 	flag.Parse()
 
-	// get remaining args as rawFiles
-	var rawFiles = flag.Args()
-	if len(rawFiles) == 0 {
-		// set rawFiles to . (current working directory) if no parameters are passed
-		rawFiles = []string{"."}
-	}
+	c.Exclude = append(c.Exclude, tmpExclude)
+	c.Exclude = append(c.Exclude, tmpE)
 
-	excludes := ""
+	c.RawFiles = flag.Args()
+	c.Logger = logger.Logger{Verbosee: c.Verbose, Debugg: c.Debug}
 
-	if !params.IgnoreDefaults {
-		excludes = utils.DefaultExcludes
-	}
-
-	if files.PathExists(ignoreFile) == nil {
-		lines := files.ReadLines(ignoreFile)
-		if len(lines) > 0 {
-			if excludes != "" {
-				excludes = fmt.Sprintf("%s|%s", excludes, strings.Join(lines, "|"))
-			} else {
-				excludes = strings.Join(lines, "|")
-			}
-
-		}
-	}
-
-	if params.Excludes != "" {
-		if excludes != "" {
-			excludes = fmt.Sprintf("%s|%s", excludes, params.Excludes)
-		} else {
-			excludes = params.Excludes
-
-		}
-	}
-
-	params.Excludes = excludes
-	params.RawFiles = rawFiles
+	currentConfig = c
 }
 
 // Main function, dude
 func main() {
 	// Check for returnworthy params
 	switch {
-	case params.Version:
+	case currentConfig.Version:
 		logger.Output(version)
 		return
-	case params.Help:
+	case currentConfig.Help:
 		logger.Output("USAGE:")
 		flag.PrintDefaults()
 		return
 	}
 
-	if params.Verbose {
-		logger.Output(fmt.Sprintf("Exclude Regexp: %s", params.Excludes))
+	if currentConfig.Verbose {
+		logger.Output(fmt.Sprintf("Exclude Regexp: %s", currentConfig.GetExcludesAsRegularExpression()))
 	}
 
 	// contains all files which should be checked
-	filePaths := files.GetFiles(params)
+	filePaths := files.GetFiles(*currentConfig)
 
-	if params.DryRun {
+	if currentConfig.DryRun {
 		for _, file := range filePaths {
 			logger.Output(file)
 		}
@@ -119,7 +102,7 @@ func main() {
 		os.Exit(0)
 	}
 
-	errors := validation.ProcessValidation(filePaths, params)
+	errors := validation.ProcessValidation(filePaths, *currentConfig)
 	errorCount := error.GetErrorCount(errors)
 
 	if errorCount != 0 {
@@ -127,7 +110,7 @@ func main() {
 		logger.Error(fmt.Sprintf("\n%d errors found", errorCount))
 	}
 
-	if params.Verbose {
+	if currentConfig.Verbose {
 		logger.Output(fmt.Sprintf("%d files checked", len(filePaths)))
 	}
 

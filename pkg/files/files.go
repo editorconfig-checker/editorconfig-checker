@@ -10,13 +10,13 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/editorconfig-checker/editorconfig-checker/pkg/config"
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/logger"
-	"github.com/editorconfig-checker/editorconfig-checker/pkg/types"
 )
 
 // IsExcluded returns wether the file is excluded via arguments or config file
-func IsExcluded(filePath string, params types.Params) bool {
-	if params.Excludes == "" {
+func IsExcluded(filePath string, config config.Config) bool {
+	if len(config.Exclude) == 0 {
 		return false
 	}
 
@@ -25,7 +25,7 @@ func IsExcluded(filePath string, params types.Params) bool {
 		panic(err)
 	}
 
-	result, err := regexp.MatchString(params.Excludes, relativeFilePath)
+	result, err := regexp.MatchString(config.GetExcludesAsRegularExpression(), relativeFilePath)
 	if err != nil {
 		panic(err)
 	}
@@ -35,7 +35,7 @@ func IsExcluded(filePath string, params types.Params) bool {
 
 // AddToFiles adds a file to a slice if it isn't already in there
 // and meets the requirements and returns the new slice
-func AddToFiles(filePaths []string, filePath string, params types.Params) []string {
+func AddToFiles(filePaths []string, filePath string, config config.Config) []string {
 	contentType, err := GetContentType(filePath)
 
 	if err != nil {
@@ -43,14 +43,14 @@ func AddToFiles(filePaths []string, filePath string, params types.Params) []stri
 		logger.Error(err.Error())
 	}
 
-	if !IsExcluded(filePath, params) && IsAllowedContentType(contentType) {
-		if params.Verbose {
+	if !IsExcluded(filePath, config) && IsAllowedContentType(contentType) {
+		if config.Verbose {
 			logger.Output(fmt.Sprintf("Add %s to be checked", filePath))
 		}
 		return append(filePaths, filePath)
 	}
 
-	if params.Verbose {
+	if config.Verbose {
 		logger.Output(fmt.Sprintf("Don't add %s to be checked", filePath))
 	}
 
@@ -58,8 +58,13 @@ func AddToFiles(filePaths []string, filePath string, params types.Params) []stri
 }
 
 // GetFiles returns all files which should be checked
-func GetFiles(params types.Params) []string {
+func GetFiles(config config.Config) []string {
 	var filePaths []string
+
+	if len(config.RawFiles) != 0 {
+		// TODO: Use RawFiles if there are some given
+		return []string{}
+	}
 
 	byteArray, err := exec.Command("git", "ls-tree", "-r", "--name-only", "HEAD").Output()
 	if err != nil {
@@ -71,7 +76,7 @@ func GetFiles(params types.Params) []string {
 
 		_ = filepath.Walk(cwd, func(path string, fi os.FileInfo, err error) error {
 			if fi.Mode().IsRegular() {
-				filePaths = AddToFiles(filePaths, path, params)
+				filePaths = AddToFiles(filePaths, path, config)
 			}
 
 			return nil
@@ -87,7 +92,7 @@ func GetFiles(params types.Params) []string {
 			// The err would be a broken symlink for example,
 			// so we want to program to continue but the file should not be checked
 			if err == nil && fi.Mode().IsRegular() {
-				filePaths = AddToFiles(filePaths, filePath, params)
+				filePaths = AddToFiles(filePaths, filePath, config)
 			}
 		}
 	}
@@ -145,11 +150,11 @@ func GetContentType(path string) (string, error) {
 }
 
 // PathExists checks wether a path of a file or directory exists or not
-func PathExists(filePath string) error {
+func PathExists(filePath string) bool {
 	absolutePath, _ := filepath.Abs(filePath)
 	_, err := os.Stat(absolutePath)
 
-	return err
+	return err == nil
 }
 
 // GetRelativePath returns the relative path of a file from the current working directory

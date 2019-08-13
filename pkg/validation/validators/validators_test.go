@@ -3,7 +3,7 @@ package validators
 import (
 	"testing"
 
-	"github.com/editorconfig-checker/editorconfig-checker/pkg/types"
+	"github.com/editorconfig-checker/editorconfig-checker/pkg/config"
 )
 
 func TestFinalNewlineTrue(t *testing.T) {
@@ -224,7 +224,7 @@ func TestLineEndingCrlf(t *testing.T) {
 }
 
 func TestIndentation(t *testing.T) {
-	params := types.Params{SpacesAfterTabs: false}
+	params := config.Config{Spaces_After_tabs: false}
 	if (Indentation("    x", "space", 4, params)) != nil {
 		t.Error("Expected correctly indented line to return an nil")
 	}
@@ -285,7 +285,7 @@ func TestSpace(t *testing.T) {
 }
 
 func TestTabSpacesAllowed(t *testing.T) {
-	spacesAllowed := types.Params{SpacesAfterTabs: true}
+	spacesAllowed := config.Config{Spaces_After_tabs: true}
 
 	if Tab(" x", spacesAllowed) != nil {
 		t.Error("Expected char after space to return nil")
@@ -305,7 +305,7 @@ func TestTabSpacesAllowed(t *testing.T) {
 }
 
 func TestTabSpacesForbidden(t *testing.T) {
-	spacesForbidden := types.Params{SpacesAfterTabs: false}
+	spacesForbidden := config.Config{Spaces_After_tabs: false}
 
 	if Tab("", spacesForbidden) != nil {
 		t.Error("Expected empty line to return true regardless of parameter")

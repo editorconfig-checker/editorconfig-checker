@@ -5,27 +5,6 @@ import (
 	"github.com/editorconfig/editorconfig-core-go/v2"
 )
 
-// Params is a Struct which represents the cli-params
-type Params struct {
-	Version         bool
-	Help            bool
-	Verbose         bool
-	IgnoreDefaults  bool
-	SpacesAfterTabs bool
-	DryRun          bool
-	Excludes        string
-	RawFiles        []string
-	Disabled        DisabledChecks
-}
-
-// DisabledChecks is a Struct which represents disabled checks
-type DisabledChecks struct {
-	TrailingWhitspace bool
-	LineEnding        bool
-	FinalNewline      bool
-	Indentation       bool
-}
-
 // FileInformation is a Struct which represents some FileInformation
 type FileInformation struct {
 	Line         string

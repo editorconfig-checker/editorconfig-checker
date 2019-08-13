@@ -7,16 +7,16 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/editorconfig-checker/editorconfig-checker/pkg/types"
+	"github.com/editorconfig-checker/editorconfig-checker/pkg/config"
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/utils"
 )
 
 // Indentation validates a files indentation
-func Indentation(line string, indentStyle string, indentSize int, params types.Params) error {
+func Indentation(line string, indentStyle string, indentSize int, config config.Config) error {
 	if indentStyle == "space" {
 		return Space(line, indentSize)
 	} else if indentStyle == "tab" {
-		return Tab(line, params)
+		return Tab(line, config)
 	}
 
 	// if no indentStyle is given it should be valid
@@ -43,7 +43,7 @@ func Space(line string, indentSize int) error {
 }
 
 // Tab validates if a line is indented with only tabs
-func Tab(line string, params types.Params) error {
+func Tab(line string, config config.Config) error {
 	if len(line) > 0 {
 		// match starting with one or more tabs followed by a non-whitespace char
 		// OR
@@ -53,7 +53,7 @@ func Tab(line string, params types.Params) error {
 
 		regexpPattern := "^(\t)*( \\* ?|[^ \t])"
 
-		if params.SpacesAfterTabs {
+		if config.Spaces_After_tabs {
 			regexpPattern = "(^(\t)*\\S)|(^(\t)+( )*\\S)|(^ \\S)"
 		}
 

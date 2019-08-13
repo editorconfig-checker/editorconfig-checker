@@ -1,0 +1,13 @@
+{
+    "verbose": true,
+    "ignore_defaults": true,
+    "exclude": ["testfiles"],
+    "spaces_after_tabs": true,
+    "disable": {
+        "end_of_line": false,
+        "trim_trailing_whitespace": false,
+        "insert_final_newline": false,
+        "indentation": false
+    }
+}
+
