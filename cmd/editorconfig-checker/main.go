@@ -5,7 +5,6 @@ import (
 	"flag"
 	"fmt"
 	"os"
-	// "strings"
 
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/config"
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/error"
