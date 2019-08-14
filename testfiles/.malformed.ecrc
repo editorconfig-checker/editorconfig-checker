@@ -1,0 +1,12 @@
+{
+    "verbose": alse,
+    "ignore_defaults": alse,
+    "exclude": [1],
+    "spaces_after_tabs": "false",
+    "disable": {
+        "end_of_line": "false",
+        "trim_trailing_whitespace": alse,
+        "insert_final_newline":
+        "indentation": false
+    }
+}

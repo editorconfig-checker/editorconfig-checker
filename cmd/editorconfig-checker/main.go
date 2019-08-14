@@ -78,7 +78,7 @@ func init() {
 	c.PassedFiles = flag.Args()
 	c.Logger = logger.Logger{Verbosee: c.Verbose, Debugg: c.Debug}
 
-	currentConfig.MergeConfigs(c)
+	currentConfig.Merge(c)
 }
 
 // Main function, dude

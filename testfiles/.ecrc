@@ -1,5 +1,6 @@
 {
     "verbose": true,
+	"debug": true,
     "ignore_defaults": true,
     "exclude": ["testfiles"],
     "spaces_after_tabs": true,

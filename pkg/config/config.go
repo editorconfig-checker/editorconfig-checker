@@ -68,10 +68,10 @@ type Config struct {
 
 // DisabledChecks is a Struct which represents disabled checks
 type DisabledChecks struct {
-	Trim_Trailing_Whitespace bool
 	End_Of_Line              bool
-	Insert_Final_Newline     bool
 	Indentation              bool
+	Insert_Final_Newline     bool
+	Trim_Trailing_Whitespace bool
 }
 
 func NewConfig(configPath string) (*Config, error) {
@@ -106,7 +106,7 @@ func (c *Config) Parse() error {
 	return nil
 }
 
-func (c *Config) MergeConfigs(config Config) {
+func (c *Config) Merge(config Config) {
 	if config.DryRun {
 		c.DryRun = config.DryRun
 	}
@@ -140,7 +140,7 @@ func (c *Config) MergeConfigs(config Config) {
 	}
 
 	if len(config.Exclude) != 0 {
-		c.Exclude = config.Exclude
+		c.Exclude = append(c.Exclude, config.Exclude...)
 	}
 
 	if len(config.PassedFiles) != 0 {
@@ -162,10 +162,6 @@ func (c *Config) MergeConfigs(config Config) {
 	if config.Disable.Indentation {
 		c.Disable.Indentation = config.Disable.Indentation
 	}
-}
-
-func (c *Config) Merge(config Config) error {
-	return nil
 }
 
 func (c Config) GetExcludesAsRegularExpression() string {
