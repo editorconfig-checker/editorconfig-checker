@@ -10,10 +10,21 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/editorconfig/editorconfig-core-go/v2"
+
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/config"
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/logger"
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/utils"
 )
+
+// FileInformation is a Struct which represents some FileInformation
+type FileInformation struct {
+	Line         string
+	Content      string
+	FilePath     string
+	LineNumber   int
+	Editorconfig *editorconfig.Definition
+}
 
 // IsExcluded returns wether the file is excluded via arguments or config file
 func IsExcluded(filePath string, config config.Config) bool {

@@ -3,20 +3,18 @@ package error
 import (
 	"errors"
 	"testing"
-
-	"github.com/editorconfig-checker/editorconfig-checker/pkg/types"
 )
 
 func TestGetErrorCount(t *testing.T) {
-	count := GetErrorCount([]types.ValidationErrors{})
+	count := GetErrorCount([]ValidationErrors{})
 	if count != 0 {
 		t.Error("Expected empty slice to have no errors, got", count)
 	}
 
-	input := []types.ValidationErrors{
+	input := []ValidationErrors{
 		{
 			FilePath: "some/path",
-			Errors: []types.ValidationError{
+			Errors: []ValidationError{
 				{
 					LineNumber: 1,
 					Message:    errors.New("WRONG"),
@@ -30,10 +28,10 @@ func TestGetErrorCount(t *testing.T) {
 		t.Error("Expected one error slice to have exactly one erorr errors, got", count)
 	}
 
-	input = []types.ValidationErrors{
+	input = []ValidationErrors{
 		{
 			FilePath: "some/path",
-			Errors: []types.ValidationError{
+			Errors: []ValidationError{
 				{
 					LineNumber: 1,
 					Message:    errors.New("WRONG"),
@@ -42,7 +40,7 @@ func TestGetErrorCount(t *testing.T) {
 		},
 		{
 			FilePath: "some/other/path",
-			Errors: []types.ValidationError{
+			Errors: []ValidationError{
 				{
 					LineNumber: 1,
 					Message:    errors.New("WRONG"),
@@ -56,10 +54,10 @@ func TestGetErrorCount(t *testing.T) {
 		t.Error("Expected two error slice to have exactly one erorr errors, got", count)
 	}
 
-	input = []types.ValidationErrors{
+	input = []ValidationErrors{
 		{
 			FilePath: "some/path",
-			Errors: []types.ValidationError{
+			Errors: []ValidationError{
 				{
 					LineNumber: 1,
 					Message:    errors.New("WRONG"),
@@ -68,7 +66,7 @@ func TestGetErrorCount(t *testing.T) {
 		},
 		{
 			FilePath: "some/other/path",
-			Errors: []types.ValidationError{
+			Errors: []ValidationError{
 				{
 					LineNumber: 1,
 					Message:    errors.New("WRONG"),
@@ -86,14 +84,14 @@ func TestGetErrorCount(t *testing.T) {
 		t.Error("Expected three error slice to have exactly one erorr errors, got", count)
 	}
 
-	input = []types.ValidationErrors{
+	input = []ValidationErrors{
 		{
 			FilePath: "some/path",
-			Errors:   []types.ValidationError{},
+			Errors:   []ValidationError{},
 		},
 		{
 			FilePath: "some/other/path",
-			Errors: []types.ValidationError{
+			Errors: []ValidationError{
 				{
 					LineNumber: 1,
 					Message:    errors.New("WRONG"),
@@ -113,14 +111,14 @@ func TestGetErrorCount(t *testing.T) {
 }
 
 func TestPrintErrors(t *testing.T) {
-	input := []types.ValidationErrors{
+	input := []ValidationErrors{
 		{
 			FilePath: "some/path",
-			Errors:   []types.ValidationError{},
+			Errors:   []ValidationError{},
 		},
 		{
 			FilePath: "/proc/cpuinfo",
-			Errors: []types.ValidationError{
+			Errors: []ValidationError{
 				{
 					LineNumber: 1,
 					Message:    errors.New("WRONG"),
@@ -129,7 +127,7 @@ func TestPrintErrors(t *testing.T) {
 		},
 		{
 			FilePath: "some/other/path",
-			Errors: []types.ValidationError{
+			Errors: []ValidationError{
 				{
 					LineNumber: 1,
 					Message:    errors.New("WRONG"),

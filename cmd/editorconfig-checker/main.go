@@ -13,11 +13,13 @@ import (
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/validation"
 )
 
-// version
+// version is used vor the help
 const version string = "1.3.0"
 
+// defaultConfigFilePath determines where the config is located
 const defaultConfigFilePath = ".ecrc"
 
+// currentConfig is the config used in this run
 var currentConfig *config.Config
 
 // Init function, runs on start automagically

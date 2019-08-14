@@ -9,15 +9,15 @@ import (
 	"github.com/editorconfig/editorconfig-core-go/v2"
 
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/config"
+	"github.com/editorconfig-checker/editorconfig-checker/pkg/error"
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/files"
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/logger"
-	"github.com/editorconfig-checker/editorconfig-checker/pkg/types"
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/validation/validators"
 )
 
 // ValidateFile Validates a single file and returns the errors
-func ValidateFile(filePath string, config config.Config) []types.ValidationError {
-	var validationErrors []types.ValidationError
+func ValidateFile(filePath string, config config.Config) []error.ValidationError {
+	var validationErrors []error.ValidationError
 	lines := files.ReadLines(filePath)
 
 	// return if first line contains editorconfig-checker-disable-file
@@ -37,13 +37,13 @@ func ValidateFile(filePath string, config config.Config) []types.ValidationError
 		panic(err)
 	}
 
-	fileInformation := types.FileInformation{Content: fileContent, FilePath: filePath, Editorconfig: editorconfig}
+	fileInformation := files.FileInformation{Content: fileContent, FilePath: filePath, Editorconfig: editorconfig}
 	validationError := ValidateFinalNewline(fileInformation, config)
 	if validationError.Message != nil {
 		validationErrors = append(validationErrors, validationError)
 	}
 
-	fileInformation = types.FileInformation{Content: fileContent, FilePath: filePath, Editorconfig: editorconfig}
+	fileInformation = files.FileInformation{Content: fileContent, FilePath: filePath, Editorconfig: editorconfig}
 	validationError = ValidateLineEnding(fileInformation, config)
 	if validationError.Message != nil {
 		validationErrors = append(validationErrors, validationError)
@@ -54,7 +54,7 @@ func ValidateFile(filePath string, config config.Config) []types.ValidationError
 			continue
 		}
 
-		fileInformation = types.FileInformation{Line: line, FilePath: filePath, LineNumber: lineNumber, Editorconfig: editorconfig}
+		fileInformation = files.FileInformation{Line: line, FilePath: filePath, LineNumber: lineNumber, Editorconfig: editorconfig}
 		validationError = ValidateTrailingWhitespace(fileInformation, config)
 		if validationError.Message != nil {
 			validationErrors = append(validationErrors, validationError)
@@ -71,7 +71,7 @@ func ValidateFile(filePath string, config config.Config) []types.ValidationError
 }
 
 // ValidateFinalNewline runs the final newline validator and processes the error into the proper type
-func ValidateFinalNewline(fileInformation types.FileInformation, config config.Config) types.ValidationError {
+func ValidateFinalNewline(fileInformation files.FileInformation, config config.Config) error.ValidationError {
 	if currentError := validators.FinalNewline(
 		fileInformation.Content,
 		fileInformation.Editorconfig.Raw["insert_final_newline"],
@@ -79,14 +79,14 @@ func ValidateFinalNewline(fileInformation types.FileInformation, config config.C
 		if config.Verbose {
 			logger.Output(fmt.Sprintf("Final newline error found in %s", fileInformation.FilePath))
 		}
-		return types.ValidationError{LineNumber: -1, Message: currentError}
+		return error.ValidationError{LineNumber: -1, Message: currentError}
 	}
 
-	return types.ValidationError{}
+	return error.ValidationError{}
 }
 
 // ValidateLineEnding runs the line ending validator and processes the error into the proper type
-func ValidateLineEnding(fileInformation types.FileInformation, config config.Config) types.ValidationError {
+func ValidateLineEnding(fileInformation files.FileInformation, config config.Config) error.ValidationError {
 	if currentError := validators.LineEnding(
 		fileInformation.Content,
 		fileInformation.Editorconfig.Raw["end_of_line"]); !config.Disable.End_Of_Line && currentError != nil {
@@ -94,14 +94,14 @@ func ValidateLineEnding(fileInformation types.FileInformation, config config.Con
 			logger.Output(fmt.Sprintf("Line ending error found in %s", fileInformation.FilePath))
 		}
 
-		return types.ValidationError{LineNumber: -1, Message: currentError}
+		return error.ValidationError{LineNumber: -1, Message: currentError}
 	}
 
-	return types.ValidationError{}
+	return error.ValidationError{}
 }
 
 // ValidateIndentation runs the Indentation validator and processes the error into the proper type
-func ValidateIndentation(fileInformation types.FileInformation, config config.Config) types.ValidationError {
+func ValidateIndentation(fileInformation files.FileInformation, config config.Config) error.ValidationError {
 	var indentSize int
 	indentSize, err := strconv.Atoi(fileInformation.Editorconfig.Raw["indent_size"])
 
@@ -118,35 +118,35 @@ func ValidateIndentation(fileInformation types.FileInformation, config config.Co
 			logger.Output(fmt.Sprintf("Indentation error found in %s on line %d", fileInformation.FilePath, fileInformation.LineNumber))
 		}
 
-		return types.ValidationError{LineNumber: fileInformation.LineNumber + 1, Message: currentError}
+		return error.ValidationError{LineNumber: fileInformation.LineNumber + 1, Message: currentError}
 	}
 
-	return types.ValidationError{}
+	return error.ValidationError{}
 }
 
 // ValidateTrailingWhitespace runs the TrailingWhitespace validator and processes the error into the proper type
-func ValidateTrailingWhitespace(fileInformation types.FileInformation, config config.Config) types.ValidationError {
+func ValidateTrailingWhitespace(fileInformation files.FileInformation, config config.Config) error.ValidationError {
 	if currentError := validators.TrailingWhitespace(
 		fileInformation.Line,
 		fileInformation.Editorconfig.Raw["trim_trailing_whitespace"] == "true"); !config.Disable.Trim_Trailing_Whitespace && currentError != nil {
 		if config.Verbose {
 			logger.Output(fmt.Sprintf("Trailing whitespace error found in %s on line %d", fileInformation.FilePath, fileInformation.LineNumber))
 		}
-		return types.ValidationError{LineNumber: fileInformation.LineNumber + 1, Message: currentError}
+		return error.ValidationError{LineNumber: fileInformation.LineNumber + 1, Message: currentError}
 	}
 
-	return types.ValidationError{}
+	return error.ValidationError{}
 }
 
 // ProcessValidation Validates all files and returns an array of validation errors
-func ProcessValidation(files []string, config config.Config) []types.ValidationErrors {
-	var validationErrors []types.ValidationErrors
+func ProcessValidation(files []string, config config.Config) []error.ValidationErrors {
+	var validationErrors []error.ValidationErrors
 
 	for _, filePath := range files {
 		if config.Verbose {
 			logger.Output(fmt.Sprintf("Validate %s", filePath))
 		}
-		validationErrors = append(validationErrors, types.ValidationErrors{FilePath: filePath, Errors: ValidateFile(filePath, config)})
+		validationErrors = append(validationErrors, error.ValidationErrors{FilePath: filePath, Errors: ValidateFile(filePath, config)})
 	}
 
 	return validationErrors
