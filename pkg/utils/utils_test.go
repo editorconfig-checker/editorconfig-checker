@@ -21,3 +21,31 @@ func TestGetEolChar(t *testing.T) {
 		t.Error("Expected end of line character to be \\n as a fallback")
 	}
 }
+
+func TestIsRegularFile(t *testing.T) {
+	if !IsRegularFile("./utils.go") {
+		t.Error("Expected utils.go to be a regular file")
+	}
+
+	if IsRegularFile("./notExisting.go") {
+		t.Error("Expected not existing file not to be a regular file")
+	}
+
+	if IsRegularFile(".") {
+		t.Error("Expected a directory not to be a regular file")
+	}
+}
+
+func TestIsDirectory(t *testing.T) {
+	if !IsDirectory(".") {
+		t.Error("Expected the current directory to be a directory")
+	}
+
+	if IsDirectory("./notExisting") {
+		t.Error("Expected not existing directory not to be a directory")
+	}
+
+	if IsDirectory("./utils.go") {
+		t.Error("Expected a file not to be a directory")
+	}
+}

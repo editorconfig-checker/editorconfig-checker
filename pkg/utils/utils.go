@@ -21,16 +21,17 @@ func GetEolChar(endOfLine string) string {
 
 	return "\n"
 }
-func IsRegularFile(filePath string) bool {
-	absolutePath, _ := filepath.Abs(filePath)
-	fi, err := os.Stat(absolutePath)
 
-	return err == nil && fi.Mode().IsRegular()
+// IsRegularFile returns wether a file is a regular file or not
+func IsRegularFile(filePath string) bool {
+	absolutePath, firstErr := filepath.Abs(filePath)
+	fi, secondErr := os.Stat(absolutePath)
+	return firstErr == nil && secondErr == nil && fi.Mode().IsRegular()
 }
 
+// IsDirectory returns wether a file is a directory or not
 func IsDirectory(filePath string) bool {
-	absolutePath, _ := filepath.Abs(filePath)
-	fi, err := os.Stat(absolutePath)
-
-	return err == nil && fi.Mode().IsDir()
+	absolutePath, firstErr := filepath.Abs(filePath)
+	fi, secondErr := os.Stat(absolutePath)
+	return firstErr == nil && secondErr == nil && fi.Mode().IsDir()
 }
