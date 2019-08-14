@@ -8,7 +8,6 @@ const rootConfigFilePath = "../../.ecrc"
 const configWithIgnoredDefaults = "../../testfiles/.ecrc"
 
 func TestNewConfig(t *testing.T) {
-	// TODO: Check deep equal object
 	actual, _ := NewConfig("abc")
 	var expected Config
 

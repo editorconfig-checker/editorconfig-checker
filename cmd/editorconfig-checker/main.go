@@ -26,8 +26,6 @@ func init() {
 	var tmpExclude, tmpE string
 	var c config.Config
 
-	// This gets the value at flag.Parse()
-	// TODO: FIX
 	flag.StringVar(&configFilePath, "config", "", "config")
 	flag.StringVar(&configFilePath, "c", "", "config")
 

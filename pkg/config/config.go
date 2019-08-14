@@ -97,10 +97,6 @@ func (c *Config) Parse() error {
 			return err
 		}
 
-		if !c.Ignore_Defaults {
-			c.Exclude = append(c.Exclude, defaultExcludes...)
-		}
-
 		if c.Debug {
 			// TODO Print Config
 			logger.Output("")
@@ -173,5 +169,9 @@ func (c *Config) Merge(config Config) error {
 }
 
 func (c Config) GetExcludesAsRegularExpression() string {
-	return strings.Join(c.Exclude, "|")
+	if c.Ignore_Defaults {
+		return strings.Join(c.Exclude, "|")
+	}
+
+	return strings.Join(append(c.Exclude, DefaultExcludes), "|")
 }
