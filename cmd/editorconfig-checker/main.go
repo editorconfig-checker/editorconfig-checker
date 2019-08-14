@@ -23,21 +23,14 @@ var currentConfig *config.Config
 // Init function, runs on start automagically
 func init() {
 	var configFilePath string
+	var tmpExclude, tmpE string
+	var c config.Config
+
+	// This gets the value at flag.Parse()
+	// TODO: FIX
 	flag.StringVar(&configFilePath, "config", "", "config")
 	flag.StringVar(&configFilePath, "c", "", "config")
 
-	if configFilePath == "" {
-		configFilePath = defaultConfigFilePath
-	}
-
-	c, _ := config.NewConfig(configFilePath)
-
-	err := c.Parse()
-	if err != nil {
-		panic(err)
-	}
-
-	var tmpExclude, tmpE string
 	flag.StringVar(&tmpExclude, "exclude", "", "a regex which files should be excluded from checking - needs to be a valid regular expression")
 	flag.StringVar(&tmpE, "e", "", "a regex which files should be excluded from checking - needs to be a valid regular expression")
 
@@ -64,6 +57,17 @@ func init() {
 
 	flag.Parse()
 
+	if configFilePath == "" {
+		configFilePath = defaultConfigFilePath
+	}
+
+	currentConfig, _ = config.NewConfig(configFilePath)
+
+	err := currentConfig.Parse()
+	if err != nil {
+		panic(err)
+	}
+
 	if tmpExclude != "" {
 		c.Exclude = append(c.Exclude, tmpExclude)
 	}
@@ -74,7 +78,7 @@ func init() {
 	c.PassedFiles = flag.Args()
 	c.Logger = logger.Logger{Verbosee: c.Verbose, Debugg: c.Debug}
 
-	currentConfig = c
+	currentConfig.MergeConfigs(c)
 }
 
 // Main function, dude

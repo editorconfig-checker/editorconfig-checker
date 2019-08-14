@@ -110,6 +110,64 @@ func (c *Config) Parse() error {
 	return nil
 }
 
+func (c *Config) MergeConfigs(config Config) {
+	if config.DryRun {
+		c.DryRun = config.DryRun
+	}
+
+	if config.Version {
+		c.Version = config.Version
+	}
+
+	if config.Help {
+		c.Help = config.Help
+	}
+
+	if config.Verbose {
+		c.Verbose = config.Verbose
+	}
+
+	if config.Debug {
+		c.Debug = config.Debug
+	}
+
+	if config.Ignore_Defaults {
+		c.Ignore_Defaults = config.Ignore_Defaults
+	}
+
+	if config.Spaces_After_tabs {
+		c.Spaces_After_tabs = config.Spaces_After_tabs
+	}
+
+	if config.ConfigPath != "" {
+		c.ConfigPath = config.ConfigPath
+	}
+
+	if len(config.Exclude) != 0 {
+		c.Exclude = config.Exclude
+	}
+
+	if len(config.PassedFiles) != 0 {
+		c.PassedFiles = config.PassedFiles
+	}
+
+	if config.Disable.End_Of_Line {
+		c.Disable.End_Of_Line = config.Disable.End_Of_Line
+	}
+
+	if config.Disable.Trim_Trailing_Whitespace {
+		c.Disable.Trim_Trailing_Whitespace = config.Disable.Trim_Trailing_Whitespace
+	}
+
+	if config.Disable.Insert_Final_Newline {
+		c.Disable.Insert_Final_Newline = config.Disable.Insert_Final_Newline
+	}
+
+	if config.Disable.Indentation {
+		c.Disable.Indentation = config.Disable.Indentation
+	}
+}
+
 func (c *Config) Merge(config Config) error {
 	return nil
 }
