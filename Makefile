@@ -7,7 +7,7 @@ GIT_BRANCH_UP_TO_DATE = $(shell git remote show origin | tail -n1 | sed 's/.*(\(
 CURRENT_VERSION = $(shell grep 'const version' cmd/editorconfig-checker/main.go | sed 's/.*"\(.*\)"/\1/')
 
 clean:
-	rm ./bin/*
+	rm -f ./bin/*
 
 bin/ec: $(SOURCES)
 	$(COMPILE_COMMAND)
