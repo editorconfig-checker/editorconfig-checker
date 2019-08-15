@@ -47,6 +47,7 @@ var defaultExcludes = []string{
 	"min\\.css$",
 	"min\\.js$"}
 
+// Config struct, contains everything a config can contain
 type Config struct {
 	// CLI
 	Version    bool
@@ -75,6 +76,7 @@ type DisabledChecks struct {
 	Trim_Trailing_Whitespace bool
 }
 
+// NewConfig initializes a new config
 func NewConfig(configPath string) (*Config, error) {
 	var config Config
 
@@ -86,6 +88,7 @@ func NewConfig(configPath string) (*Config, error) {
 	return &config, nil
 }
 
+// Parse parses a config at a given path
 func (c *Config) Parse() error {
 	if c.ConfigPath != "" {
 		configString, err := ioutil.ReadFile(c.ConfigPath)
@@ -107,6 +110,7 @@ func (c *Config) Parse() error {
 	return nil
 }
 
+// Merge merges a provided config with a config
 func (c *Config) Merge(config Config) {
 	if config.DryRun {
 		c.DryRun = config.DryRun
@@ -167,6 +171,7 @@ func (c *Config) Merge(config Config) {
 	c.Logger = config.Logger
 }
 
+// GetExcludesAsRegularExpression returns the excludes as a combined regular expression
 func (c Config) GetExcludesAsRegularExpression() string {
 	if c.Ignore_Defaults {
 		return strings.Join(c.Exclude, "|")
