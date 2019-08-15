@@ -1,3 +1,4 @@
+// package config contains functions and structs related to config
 package config
 
 import (
@@ -99,7 +100,7 @@ func (c *Config) Parse() error {
 
 		if c.Debug {
 			// TODO Print Config
-			logger.Output("")
+			logger.Print("Config")
 		}
 	}
 
@@ -162,6 +163,8 @@ func (c *Config) Merge(config Config) {
 	if config.Disable.Indentation {
 		c.Disable.Indentation = config.Disable.Indentation
 	}
+
+	c.Logger = config.Logger
 }
 
 func (c Config) GetExcludesAsRegularExpression() string {

@@ -86,24 +86,22 @@ func main() {
 	// Check for returnworthy params
 	switch {
 	case currentConfig.Version:
-		logger.Output(version)
+		currentConfig.Logger.Output(version)
 		return
 	case currentConfig.Help:
-		logger.Output("USAGE:")
+		currentConfig.Logger.Output("USAGE:")
 		flag.PrintDefaults()
 		return
 	}
 
-	if currentConfig.Verbose {
-		logger.Output(fmt.Sprintf("Exclude Regexp: %s", currentConfig.GetExcludesAsRegularExpression()))
-	}
+	currentConfig.Logger.Verbose("Exclude Regexp: %s", currentConfig.GetExcludesAsRegularExpression())
 
 	// contains all files which should be checked
 	filePaths := files.GetFiles(*currentConfig)
 
 	if currentConfig.DryRun {
 		for _, file := range filePaths {
-			logger.Output(file)
+			currentConfig.Logger.Output(file)
 		}
 
 		os.Exit(0)
@@ -118,7 +116,7 @@ func main() {
 	}
 
 	if currentConfig.Verbose {
-		logger.Output(fmt.Sprintf("%d files checked", len(filePaths)))
+		currentConfig.Logger.Output(fmt.Sprintf("%d files checked", len(filePaths)))
 	}
 
 	if errorCount != 0 {

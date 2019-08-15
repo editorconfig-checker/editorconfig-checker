@@ -1,26 +1,60 @@
 package logger
 
 import (
-// "os"
-// "testing"
+	"testing"
 )
 
 // Wannbe tests
 
-// func TestWarning(t *testing.T) {
-// 	Warning("Hello")
-// }
+func TestLoggerDebug(t *testing.T) {
+	logger := Logger{}
 
-// func TestError(t *testing.T) {
-// 	Error("Hello")
-// }
+	logger.Debug("hello")
 
-// func TestOutput(t *testing.T) {
-// 	Output("Hello")
-// }
+	logger = Logger{Debugg: true}
+	logger.Debug("hello")
+}
 
-// func TestPrint(t *testing.T) {
-// 	Print("Hello", RED, os.Stdout)
-// 	Print("Hello", GREEN, os.Stdout)
-// 	Print("Hello", YELLOW, os.Stdout)
-// }
+func TestLoggerVerbose(t *testing.T) {
+	logger := Logger{}
+
+	logger.Verbose("hello")
+
+	logger = Logger{Verbosee: true}
+	logger.Verbose("hello")
+}
+
+func TestLoggerWarning(t *testing.T) {
+	logger := Logger{}
+	logger.Warning("bla%s", "hey")
+}
+
+func TestWarning(t *testing.T) {
+	Warning("bla%s", "hey")
+}
+
+func TestLoggerOutput(t *testing.T) {
+	logger := Logger{}
+	logger.Output("bla%s", "hey")
+}
+
+func TestOutput(t *testing.T) {
+	Output("bla%s", "hey")
+}
+
+func TestLoggerError(t *testing.T) {
+	logger := Logger{}
+	logger.Error("bla%s", "hey")
+}
+
+func TestError(t *testing.T) {
+	Error("bla%s", "hey")
+}
+
+func TestPrintColor(t *testing.T) {
+	PrintColor("Hello", RED)
+}
+
+func TestPrint(t *testing.T) {
+	Print("Hello")
+}

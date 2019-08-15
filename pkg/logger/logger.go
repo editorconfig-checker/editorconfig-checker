@@ -1,8 +1,8 @@
+// Package logger provides functions that are logging related
 package logger
 
 import (
 	"fmt"
-	"os"
 )
 
 // Colors which can be used
@@ -13,48 +13,80 @@ const (
 	RESET  = "\x1b[33;0m"
 )
 
+// Logger struct
 type Logger struct {
 	Verbosee bool
 	Debugg   bool
 }
 
-func (l Logger) Debug(message string) {
+// Debug prints a message when Debugg is set to true on the Logger
+func (l Logger) Debug(format string, a ...interface{}) {
 	if l.Debugg {
-		Print(message, RESET, os.Stdout)
+		message := fmt.Sprintf(format, a...)
+		Println(message)
 	}
 }
 
-func (l Logger) Verbose(message string) {
+// Verbose prints a message when Verbosee is set to true on the Logger
+func (l Logger) Verbose(format string, a ...interface{}) {
 	if l.Verbosee {
-		Print(message, RESET, os.Stdout)
+		message := fmt.Sprintf(format, a...)
+		Println(message)
 	}
 }
 
 // Warning prints a warning message to Stdout in yellow
-func (l Logger) Warning(message string) {
-	Print(message, YELLOW, os.Stdout)
+func (l Logger) Warning(format string, a ...interface{}) {
+	message := fmt.Sprintf(format, a...)
+	PrintlnColor(message, YELLOW)
+}
+
+// Warning prints a warning message to Stdout in yellow
+func Warning(format string, a ...interface{}) {
+	message := fmt.Sprintf(format, a...)
+	PrintlnColor(message, YELLOW)
 }
 
 // Output prints a message on Stdout in 'normal' color
-func (l Logger) Output(message string) {
-	Print(message, RESET, os.Stdout)
+func (l Logger) Output(format string, a ...interface{}) {
+	message := fmt.Sprintf(format, a...)
+	Println(message)
 }
 
-// Output prints a message on Stdout in 'normal' color
-func Output(message string) {
-	Print(message, RESET, os.Stdout)
+// Error prints an error message to Stdout in red
+func Output(format string, a ...interface{}) {
+	message := fmt.Sprintf(format, a...)
+	Println(message)
 }
 
-// Error prints an error message to Stderr in red
-func (l Logger) Error(message string) {
-	Print(message, RED, os.Stderr)
+// Error prints an error message to Stdout in red
+func (l Logger) Error(format string, a ...interface{}) {
+	message := fmt.Sprintf(format, a...)
+	PrintlnColor(message, RED)
 }
 
-func Error(message string) {
-	Print(message, RED, os.Stderr)
+// Error prints an error message to Stdout in red
+func Error(format string, a ...interface{}) {
+	message := fmt.Sprintf(format, a...)
+	PrintlnColor(message, RED)
 }
 
-// Print prints a message to a given stream in a defined color
-func Print(message string, color string, stream *os.File) {
-	fmt.Fprintf(stream, "%s%s%s\n", color, message, RESET)
+// Print prints a message
+func Print(message string) {
+	fmt.Printf("%s", message)
+}
+
+// Println prints a message with a trailing newline
+func Println(message string) {
+	fmt.Printf("%s\n", message)
+}
+
+// PrintColor prints a message in a given ANSI-color
+func PrintColor(message string, color string) {
+	fmt.Printf("%s%s%s", color, message, RESET)
+}
+
+// PrintlnColor prints a message in a given ANSI-color with a trailing newline
+func PrintlnColor(message string, color string) {
+	fmt.Printf("%s%s%s\n", color, message, RESET)
 }

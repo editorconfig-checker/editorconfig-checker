@@ -1,8 +1,8 @@
+// package error contains fucntions and structs related to errors
 package error
 
 import (
 	"fmt"
-	"os"
 
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/files"
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/logger"
@@ -41,7 +41,7 @@ func PrintErrors(errors []ValidationErrors) {
 				logger.Error(err.Error())
 			}
 
-			logger.Print(fmt.Sprintf("%s:", relativeFilePath), logger.YELLOW, os.Stderr)
+			logger.PrintColor(fmt.Sprintf("%s:", relativeFilePath), logger.YELLOW)
 			for _, singleError := range fileErrors.Errors {
 				if singleError.LineNumber != -1 {
 					logger.Error(fmt.Sprintf("\t%d: %s", singleError.LineNumber, singleError.Message))

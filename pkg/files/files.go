@@ -1,3 +1,4 @@
+// package files contains functions and structs related to files
 package files
 
 import (
@@ -13,7 +14,6 @@ import (
 	"github.com/editorconfig/editorconfig-core-go/v2"
 
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/config"
-	"github.com/editorconfig-checker/editorconfig-checker/pkg/logger"
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/utils"
 )
 
@@ -51,19 +51,19 @@ func AddToFiles(filePaths []string, filePath string, config config.Config) []str
 	contentType, err := GetContentType(filePath)
 
 	if err != nil {
-		logger.Error(fmt.Sprintf("Could not get the ContentType of file: %s", filePath))
-		logger.Error(err.Error())
+		config.Logger.Error(fmt.Sprintf("Could not get the ContentType of file: %s", filePath))
+		config.Logger.Error(err.Error())
 	}
 
 	if !IsExcluded(filePath, config) && IsAllowedContentType(contentType) {
 		if config.Verbose {
-			logger.Output(fmt.Sprintf("Add %s to be checked", filePath))
+			config.Logger.Output(fmt.Sprintf("Add %s to be checked", filePath))
 		}
 		return append(filePaths, filePath)
 	}
 
 	if config.Verbose {
-		logger.Output(fmt.Sprintf("Don't add %s to be checked", filePath))
+		config.Logger.Output(fmt.Sprintf("Don't add %s to be checked", filePath))
 	}
 
 	return filePaths
