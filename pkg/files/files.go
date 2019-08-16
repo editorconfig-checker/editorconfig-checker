@@ -56,16 +56,11 @@ func AddToFiles(filePaths []string, filePath string, config config.Config) []str
 	}
 
 	if !IsExcluded(filePath, config) && IsAllowedContentType(contentType) {
-		if config.Verbose {
-			config.Logger.Output(fmt.Sprintf("Add %s to be checked", filePath))
-		}
+		config.Logger.Verbose("Add %s to be checked", filePath)
 		return append(filePaths, filePath)
 	}
 
-	if config.Verbose {
-		config.Logger.Output(fmt.Sprintf("Don't add %s to be checked", filePath))
-	}
-
+	config.Logger.Verbose("Don't add %s to be checked", filePath)
 	return filePaths
 }
 

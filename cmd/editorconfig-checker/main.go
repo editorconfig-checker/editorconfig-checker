@@ -25,31 +25,21 @@ var currentConfig *config.Config
 // Init function, runs on start automagically
 func init() {
 	var configFilePath string
-	var tmpExclude, tmpE string
+	var tmpExclude string
 	var c config.Config
 
 	flag.StringVar(&configFilePath, "config", "", "config")
 	flag.StringVar(&configFilePath, "c", "", "config")
 
 	flag.StringVar(&tmpExclude, "exclude", "", "a regex which files should be excluded from checking - needs to be a valid regular expression")
-	flag.StringVar(&tmpE, "e", "", "a regex which files should be excluded from checking - needs to be a valid regular expression")
-
-	flag.BoolVar(&c.Ignore_Defaults, "ignore", false, "ignore default excludes")
-	flag.BoolVar(&c.Ignore_Defaults, "i", false, "ignore default excludes")
-
+	flag.BoolVar(&c.Ignore_Defaults, "ignore-defaults", false, "ignore default excludes")
 	flag.BoolVar(&c.DryRun, "dry-run", false, "show which files would be checked")
-
 	flag.BoolVar(&c.Version, "version", false, "print the version number")
-
 	flag.BoolVar(&c.Help, "help", false, "print the help")
 	flag.BoolVar(&c.Help, "h", false, "print the help")
-
 	flag.BoolVar(&c.Verbose, "verbose", false, "print debugging information")
 	flag.BoolVar(&c.Verbose, "v", false, "print debugging information")
-
 	flag.BoolVar(&c.Debug, "debug", false, "print debugging information")
-
-	flag.BoolVar(&c.Spaces_After_tabs, "spaces-after-tabs", false, "allow spaces to be used as alignment after tabs")
 	flag.BoolVar(&c.Disable.Trim_Trailing_Whitespace, "disable-trim-trailing-whitespace", false, "disables the trailing whitespace check")
 	flag.BoolVar(&c.Disable.End_Of_Line, "disable-end-of-line", false, "disables the trailing whitespace check")
 	flag.BoolVar(&c.Disable.Insert_Final_Newline, "disable-insert-final-newline", false, "disables the final newline check")
@@ -70,9 +60,6 @@ func init() {
 
 	if tmpExclude != "" {
 		c.Exclude = append(c.Exclude, tmpExclude)
-	}
-	if tmpE != "" {
-		c.Exclude = append(c.Exclude, tmpE)
 	}
 
 	c.PassedFiles = flag.Args()
@@ -115,9 +102,7 @@ func main() {
 		logger.Error(fmt.Sprintf("\n%d errors found", errorCount))
 	}
 
-	if currentConfig.Verbose {
-		currentConfig.Logger.Output(fmt.Sprintf("%d files checked", len(filePaths)))
-	}
+	currentConfig.Logger.Verbose("%d files checked", len(filePaths))
 
 	if errorCount != 0 {
 		os.Exit(1)
