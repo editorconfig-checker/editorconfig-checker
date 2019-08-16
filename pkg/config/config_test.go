@@ -1,6 +1,9 @@
 package config
 
 import (
+	"io/ioutil"
+	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 )
@@ -132,5 +135,19 @@ func TestParse(t *testing.T) {
 		c.Disable.Insert_Final_Newline != false ||
 		c.Disable.Indentation != false {
 		t.Errorf("Expected config to have values from test file, got %v", c)
+	}
+}
+
+func TestSave(t *testing.T) {
+	dir, _ := ioutil.TempDir("", "example")
+	defer os.RemoveAll(dir)
+	configFile := filepath.Join(dir, "config")
+	c, _ := NewConfig(configFile)
+	if c.Save() != nil {
+		t.Error("Should create the config")
+	}
+
+	if c.Save() == nil {
+		t.Error("Should produce an error")
 	}
 }
