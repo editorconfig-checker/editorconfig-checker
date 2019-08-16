@@ -79,7 +79,7 @@ func TestMerge(t *testing.T) {
 		Version:           true,
 		Help:              true,
 		DryRun:            true,
-		ConfigPath:        "some-other-path",
+		Path:              "some-other-path",
 		Verbose:           true,
 		Debug:             true,
 		Ignore_Defaults:   true,
@@ -103,14 +103,14 @@ func TestMerge(t *testing.T) {
 		t.Errorf("Expected, got %v and %v", c1, &expected)
 	}
 
-	config := Config{ConfigPath: "./.ecrc"}
+	config := Config{Path: "./.ecrc"}
 	err = config.Parse()
 
 	if err == nil {
 		t.Errorf("Expected an error to happen when parsing an unexisting file, got %v", err)
 	}
 
-	config = Config{ConfigPath: "./../../testfiles/.malformed.ecrc"}
+	config = Config{Path: "./../../testfiles/.malformed.ecrc"}
 	err = config.Parse()
 
 	if err == nil {

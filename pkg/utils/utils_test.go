@@ -49,3 +49,13 @@ func TestIsDirectory(t *testing.T) {
 		t.Error("Expected a file not to be a directory")
 	}
 }
+
+func TestFileExists(t *testing.T) {
+	if !FileExists("./utils.go") {
+		t.Error("./utils.go should exist")
+	}
+
+	if FileExists("./notExisting.go") {
+		t.Error("./notExisting.go should not exist")
+	}
+}

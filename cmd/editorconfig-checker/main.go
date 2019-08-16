@@ -27,10 +27,10 @@ func init() {
 	var configFilePath string
 	var tmpExclude string
 	var c config.Config
+	var init bool
 
+	flag.BoolVar(&init, "init", false, "creates an initial configuration")
 	flag.StringVar(&configFilePath, "config", "", "config")
-	flag.StringVar(&configFilePath, "c", "", "config")
-
 	flag.StringVar(&tmpExclude, "exclude", "", "a regex which files should be excluded from checking - needs to be a valid regular expression")
 	flag.BoolVar(&c.Ignore_Defaults, "ignore-defaults", false, "ignore default excludes")
 	flag.BoolVar(&c.DryRun, "dry-run", false, "show which files would be checked")
@@ -52,6 +52,16 @@ func init() {
 	}
 
 	currentConfig, _ = config.NewConfig(configFilePath)
+
+	if init {
+		err := currentConfig.Save()
+		if err != nil {
+			logger.Error(err.Error())
+			os.Exit(1)
+		}
+
+		os.Exit(0)
+	}
 
 	err := currentConfig.Parse()
 	if err != nil {

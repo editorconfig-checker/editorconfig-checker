@@ -50,10 +50,10 @@ var defaultExcludes = []string{
 // Config struct, contains everything a config can contain
 type Config struct {
 	// CLI
-	Version    bool
-	Help       bool
-	DryRun     bool
-	ConfigPath string
+	Version bool
+	Help    bool
+	DryRun  bool
+	Path    string
 
 	// CONFIG FILE
 	Verbose           bool
@@ -79,19 +79,19 @@ type DisabledChecks struct {
 // NewConfig initializes a new config
 func NewConfig(configPath string) (*Config, error) {
 	var config Config
+	config.Path = configPath
 
 	if !utils.IsRegularFile(configPath) {
 		return &config, fmt.Errorf("No file found at %s", configPath)
 	}
 
-	config.ConfigPath = configPath
 	return &config, nil
 }
 
 // Parse parses a config at a given path
 func (c *Config) Parse() error {
-	if c.ConfigPath != "" {
-		configString, err := ioutil.ReadFile(c.ConfigPath)
+	if c.Path != "" {
+		configString, err := ioutil.ReadFile(c.Path)
 		if err != nil {
 			return err
 		}
@@ -140,8 +140,8 @@ func (c *Config) Merge(config Config) {
 		c.Spaces_After_tabs = config.Spaces_After_tabs
 	}
 
-	if config.ConfigPath != "" {
-		c.ConfigPath = config.ConfigPath
+	if config.Path != "" {
+		c.Path = config.Path
 	}
 
 	if len(config.Exclude) != 0 {
@@ -178,4 +178,15 @@ func (c Config) GetExcludesAsRegularExpression() string {
 	}
 
 	return strings.Join(append(c.Exclude, DefaultExcludes), "|")
+}
+
+func (c Config) Save() error {
+	if utils.IsRegularFile(c.Path) {
+		return fmt.Errorf("File `%v` already exists", c.Path)
+	}
+
+	configJson, _ := json.MarshalIndent(c, "", "  ")
+	err := ioutil.WriteFile(c.Path, configJson, 0644)
+
+	return err
 }
