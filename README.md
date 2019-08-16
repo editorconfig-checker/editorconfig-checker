@@ -57,6 +57,8 @@ This will place a binary called `ec` into the `bin` directory.
 USAGE:
   -config string
         config
+  -init
+        creates an initial configuration
   -debug
         print debugging information
   -disable-end-of-line
@@ -111,6 +113,8 @@ A sample `.ecrc` file can look like this and will be used from your current work
 ```
 
 You could also specify command line arguments and they will get merged with the configuration file, the command line arguments have a higher precedence than the configuration.
+
+You can create a configuration with the `init`-flag. If you specify an `config`-path it will be created there.
 
 ## Excluding
 
