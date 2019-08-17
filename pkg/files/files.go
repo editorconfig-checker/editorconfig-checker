@@ -1,4 +1,4 @@
-// package files contains functions and structs related to files
+// Package files contains functions and structs related to files
 package files
 
 import (

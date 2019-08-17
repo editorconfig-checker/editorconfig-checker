@@ -58,7 +58,7 @@ func (l Logger) Output(format string, a ...interface{}) {
 	Println(message)
 }
 
-// Error prints an error message to Stdout in red
+// Output prints an error message to Stdout in 'normal' color
 func Output(format string, a ...interface{}) {
 	message := fmt.Sprintf(format, a...)
 	Println(message)

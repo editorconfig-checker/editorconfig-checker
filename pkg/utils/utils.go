@@ -36,6 +36,7 @@ func IsDirectory(filePath string) bool {
 	return firstErr == nil && secondErr == nil && fi.Mode().IsDir()
 }
 
+// FileExists returns wether a file exists or not
 func FileExists(filePath string) bool {
 	absolutePath, _ := filepath.Abs(filePath)
 	fi, secondErr := os.Stat(absolutePath)

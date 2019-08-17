@@ -1,4 +1,4 @@
-// package error contains fucntions and structs related to errors
+// Package error contains functions and structs related to errors
 package error
 
 import (

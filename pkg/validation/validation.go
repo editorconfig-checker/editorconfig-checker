@@ -1,4 +1,4 @@
-// validation contains all validation functions
+// Package validation contains all validation functions
 package validation
 
 import (

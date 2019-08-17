@@ -1,4 +1,4 @@
-// package config contains functions and structs related to config
+// Package config contains functions and structs related to config
 package config
 
 import (
