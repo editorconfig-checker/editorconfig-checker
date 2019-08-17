@@ -7,20 +7,21 @@
 ![Logo](https://raw.githubusercontent.com/editorconfig-checker/editorconfig-checker/master/docs/logo.png "Logo")
 
 1. [What](#what)  
-2. [Installation](#installation)  
-3. [Usage](#usage)  
-4. [Configuration](#configuration)  
-5. [Excluding](#excluding)  
-5.1 [Excluding Lines](#excluding-lines)  
-5.2 [Excluding Files](#excluding-files)  
-5.2.1 [Inline](#inline)  
-5.2.2 [Default Excludes](#default-excludes)  
-5.2.3 [Manually Excluding](#manually-excluding)  
-5.2.4 [via configuration](#via-configuration)  
-5.2.5 [via arguments](#via-arguments)  
-5.2.6 [Generally](#generally)  
-6. [Docker](#docker)
-7. [Support](#support)
+2. [Quickstart](#quickstart)  
+3. [Installation](#installation)  
+4. [Usage](#usage)  
+5. [Configuration](#configuration)  
+6. [Excluding](#excluding)  
+6.1 [Excluding Lines](#excluding-lines)  
+6.2 [Excluding Files](#excluding-files)  
+6.2.1 [Inline](#inline)  
+6.2.2 [Default Excludes](#default-excludes)  
+6.2.3 [Manually Excluding](#manually-excluding)  
+6.2.4 [via configuration](#via-configuration)  
+6.2.5 [via arguments](#via-arguments)  
+6.2.6 [Generally](#generally)  
+7. [Docker](#docker)
+8. [Support](#support)
 
 
 ## What?
@@ -42,6 +43,17 @@ Currently implemented editorconfig features are:
 
 Unsupported features are:
 * `charset`
+
+## Quickstart
+
+```sh
+VERSION="1.3.0"
+OS="linux"
+ARCH=amd64
+curl -O -L -C - https://github.com/editorconfig-checker/editorconfig-checker/releases/download/$VERSION/ec-$OS-$ARCH.tar.gz && \
+tar xzf ex-$OS-$ARCH-tar.gz && \
+./bin/ec-$OS-$ARCH
+```
 
 ## Installation
 
