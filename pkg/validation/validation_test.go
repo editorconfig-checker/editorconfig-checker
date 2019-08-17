@@ -49,13 +49,13 @@ func TestValidateFile(t *testing.T) {
 		t.Error("Should have no errors, got", result)
 	}
 
-	params = config.Config{Spaces_After_tabs: true}
+	params = config.Config{SpacesAftertabs: true}
 	result = ValidateFile("./../../testfiles/spaces-after-tabs.txt", params)
 	if len(result) != 0 {
 		t.Error("Should have no errors when validating valid file, got", result)
 	}
 
-	params = config.Config{Spaces_After_tabs: false}
+	params = config.Config{SpacesAftertabs: false}
 	result = ValidateFile("./../../testfiles/zero-indent.txt", params)
 	if len(result) != 0 {
 		t.Error("Should have no errors when validating valid file, got", result)
@@ -66,7 +66,7 @@ func TestValidateFile(t *testing.T) {
 		t.Error("Should have no errors when validating valid file, got", result)
 	}
 
-	params = config.Config{Spaces_After_tabs: false}
+	params = config.Config{SpacesAftertabs: false}
 	result = ValidateFile("./../../testfiles/spaces-after-tabs.txt", params)
 	if len(result) != 1 {
 		t.Error("Should have one error, got", result)
@@ -79,7 +79,7 @@ func TestValidateFile(t *testing.T) {
 	}
 
 	params = config.Config{Verbose: true}
-	params.Disable.Trim_Trailing_Whitespace = true
+	params.Disable.TrimTrailingWhitespace = true
 	result = ValidateFile("./../../testfiles/trailing-whitespace.txt", params)
 	if len(result) != 0 {
 		t.Error("Should have no error, got", result)
@@ -92,7 +92,7 @@ func TestValidateFile(t *testing.T) {
 	}
 
 	params = config.Config{Verbose: true}
-	params.Disable.Insert_Final_Newline = true
+	params.Disable.InsertFinalNewline = true
 	result = ValidateFile("./../../testfiles/final-newline-missing.txt", params)
 	if len(result) != 0 {
 		t.Error("Should have no error, got", result)
@@ -105,7 +105,7 @@ func TestValidateFile(t *testing.T) {
 	}
 
 	params = config.Config{Verbose: true}
-	params.Disable.End_Of_Line = true
+	params.Disable.EndOfLine = true
 	result = ValidateFile("./../../testfiles/wrong-line-ending.txt", params)
 	if len(result) != 0 {
 		t.Error("Should have no error, got", result)

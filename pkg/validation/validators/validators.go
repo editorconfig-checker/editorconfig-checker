@@ -53,7 +53,7 @@ func Tab(line string, config config.Config) error {
 
 		regexpPattern := "^(\t)*( \\* ?|[^ \t])"
 
-		if config.Spaces_After_tabs {
+		if config.SpacesAftertabs {
 			regexpPattern = "(^(\t)*\\S)|(^(\t)+( )*\\S)|(^ \\S)"
 		}
 

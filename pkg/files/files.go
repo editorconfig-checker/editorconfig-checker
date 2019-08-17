@@ -196,7 +196,7 @@ func GetRelativePath(filePath string) (string, error) {
 func IsAllowedContentType(contentType string, config config.Config) bool {
 	result := false
 
-	for _, allowedContentType := range config.Allowed_Content_Types {
+	for _, allowedContentType := range config.AllowedContentTypes {
 		result = result || strings.Contains(contentType, allowedContentType)
 	}
 

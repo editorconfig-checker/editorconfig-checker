@@ -62,15 +62,15 @@ type Config struct {
 	Path    string
 
 	// CONFIG FILE
-	Verbose               bool
-	Debug                 bool
-	Ignore_Defaults       bool
-	Spaces_After_tabs     bool
-	No_Color              bool
-	Exclude               []string
-	Allowed_Content_Types []string
-	PassedFiles           []string
-	Disable               DisabledChecks
+	Verbose             bool
+	Debug               bool
+	IgnoreDefaults      bool
+	SpacesAftertabs     bool
+	NoColor             bool
+	Exclude             []string
+	AllowedContentTypes []string
+	PassedFiles         []string
+	Disable             DisabledChecks
 
 	// MISC
 	Logger logger.Logger
@@ -78,10 +78,10 @@ type Config struct {
 
 // DisabledChecks is a Struct which represents disabled checks
 type DisabledChecks struct {
-	End_Of_Line              bool
-	Indentation              bool
-	Insert_Final_Newline     bool
-	Trim_Trailing_Whitespace bool
+	EndOfLine              bool
+	Indentation            bool
+	InsertFinalNewline     bool
+	TrimTrailingWhitespace bool
 }
 
 // NewConfig initializes a new config
@@ -94,7 +94,7 @@ func NewConfig(configPath string) (*Config, error) {
 	}
 
 	config.Exclude = []string{}
-	config.Allowed_Content_Types = []string{}
+	config.AllowedContentTypes = []string{}
 	config.PassedFiles = []string{}
 
 	return &config, nil
@@ -113,7 +113,7 @@ func (c *Config) Parse() error {
 			return err
 		}
 
-		c.Allowed_Content_Types = append(defaultAllowedContentTypes, c.Allowed_Content_Types...)
+		c.AllowedContentTypes = append(defaultAllowedContentTypes, c.AllowedContentTypes...)
 	}
 
 	return nil
@@ -141,12 +141,12 @@ func (c *Config) Merge(config Config) {
 		c.Debug = config.Debug
 	}
 
-	if config.Ignore_Defaults {
-		c.Ignore_Defaults = config.Ignore_Defaults
+	if config.IgnoreDefaults {
+		c.IgnoreDefaults = config.IgnoreDefaults
 	}
 
-	if config.Spaces_After_tabs {
-		c.Spaces_After_tabs = config.Spaces_After_tabs
+	if config.SpacesAftertabs {
+		c.SpacesAftertabs = config.SpacesAftertabs
 	}
 
 	if config.Path != "" {
@@ -157,8 +157,8 @@ func (c *Config) Merge(config Config) {
 		c.Exclude = append(c.Exclude, config.Exclude...)
 	}
 
-	if len(config.Allowed_Content_Types) != 0 {
-		c.Allowed_Content_Types = append(c.Allowed_Content_Types, config.Allowed_Content_Types...)
+	if len(config.AllowedContentTypes) != 0 {
+		c.AllowedContentTypes = append(c.AllowedContentTypes, config.AllowedContentTypes...)
 	}
 
 	if len(config.PassedFiles) != 0 {
@@ -172,16 +172,16 @@ func (c *Config) Merge(config Config) {
 // mergeDisabled merges the disabled checks into the config
 // This is here because cyclomatic complexity of gocyclo was about 15 :/
 func (c *Config) mergeDisabled(disabled DisabledChecks) {
-	if disabled.End_Of_Line {
-		c.Disable.End_Of_Line = disabled.End_Of_Line
+	if disabled.EndOfLine {
+		c.Disable.EndOfLine = disabled.EndOfLine
 	}
 
-	if disabled.Trim_Trailing_Whitespace {
-		c.Disable.Trim_Trailing_Whitespace = disabled.Trim_Trailing_Whitespace
+	if disabled.TrimTrailingWhitespace {
+		c.Disable.TrimTrailingWhitespace = disabled.TrimTrailingWhitespace
 	}
 
-	if disabled.Insert_Final_Newline {
-		c.Disable.Insert_Final_Newline = disabled.Insert_Final_Newline
+	if disabled.InsertFinalNewline {
+		c.Disable.InsertFinalNewline = disabled.InsertFinalNewline
 	}
 
 	if disabled.Indentation {
@@ -191,7 +191,7 @@ func (c *Config) mergeDisabled(disabled DisabledChecks) {
 
 // GetExcludesAsRegularExpression returns the excludes as a combined regular expression
 func (c Config) GetExcludesAsRegularExpression() string {
-	if c.Ignore_Defaults {
+	if c.IgnoreDefaults {
 		return strings.Join(c.Exclude, "|")
 	}
 
@@ -205,15 +205,15 @@ func (c Config) Save() error {
 	}
 
 	type writtenConfig struct {
-		Verbose               bool
-		Debug                 bool
-		Ignore_Defaults       bool
-		Spaces_After_tabs     bool
-		No_Color              bool
-		Exclude               []string
-		Allowed_Content_Types []string
-		PassedFiles           []string
-		Disable               DisabledChecks
+		Verbose             bool
+		Debug               bool
+		IgnoreDefaults      bool
+		SpacesAftertabs     bool
+		NoColor             bool
+		Exclude             []string
+		AllowedContentTypes []string
+		PassedFiles         []string
+		Disable             DisabledChecks
 	}
 
 	configJSON, _ := json.MarshalIndent(writtenConfig{}, "", "  ")

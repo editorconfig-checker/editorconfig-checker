@@ -109,51 +109,51 @@ func TestFinalNewlineFalse(t *testing.T) {
 
 func TestFinalNewlineNothing(t *testing.T) {
 	if FinalNewline("x", "", "lf") != nil {
-		t.Error("Expected FinalNewline to be true if nothing is set for insert_final_newline")
+		t.Error("Expected FinalNewline to be true if nothing is set for insertfinalnewline")
 	}
 
 	if FinalNewline("x", "", "cr") != nil {
-		t.Error("Expected FinalNewline to be true if nothing is set for insert_final_newline")
+		t.Error("Expected FinalNewline to be true if nothing is set for insertfinalnewline")
 	}
 
 	if FinalNewline("x", "", "crlf") != nil {
-		t.Error("Expected FinalNewline to be true if nothing is set for insert_final_newline")
+		t.Error("Expected FinalNewline to be true if nothing is set for insertfinalnewline")
 	}
 
 	if FinalNewline("x\n", "", "lf") != nil {
-		t.Error("Expected FinalNewline to be true if nothing is set for insert_final_newline")
+		t.Error("Expected FinalNewline to be true if nothing is set for insertfinalnewline")
 	}
 
 	if FinalNewline("x\n", "", "cr") != nil {
-		t.Error("Expected FinalNewline to be true if nothing is set for insert_final_newline")
+		t.Error("Expected FinalNewline to be true if nothing is set for insertfinalnewline")
 	}
 
 	if FinalNewline("x\n", "", "crlf") != nil {
-		t.Error("Expected FinalNewline to be true if nothing is set for insert_final_newline")
+		t.Error("Expected FinalNewline to be true if nothing is set for insertfinalnewline")
 	}
 
 	if FinalNewline("x\r", "", "lf") != nil {
-		t.Error("Expected FinalNewline to be true if nothing is set for insert_final_newline")
+		t.Error("Expected FinalNewline to be true if nothing is set for insertfinalnewline")
 	}
 
 	if FinalNewline("x\r", "", "cr") != nil {
-		t.Error("Expected FinalNewline to be true if nothing is set for insert_final_newline")
+		t.Error("Expected FinalNewline to be true if nothing is set for insertfinalnewline")
 	}
 
 	if FinalNewline("x\r", "", "crlf") != nil {
-		t.Error("Expected FinalNewline to be true if nothing is set for insert_final_newline")
+		t.Error("Expected FinalNewline to be true if nothing is set for insertfinalnewline")
 	}
 
 	if FinalNewline("x\r\n", "", "lf") != nil {
-		t.Error("Expected FinalNewline to be true if nothing is set for insert_final_newline")
+		t.Error("Expected FinalNewline to be true if nothing is set for insertfinalnewline")
 	}
 
 	if FinalNewline("x\r\n", "", "cr") != nil {
-		t.Error("Expected FinalNewline to be true if nothing is set for insert_final_newline")
+		t.Error("Expected FinalNewline to be true if nothing is set for insertfinalnewline")
 	}
 
 	if FinalNewline("x\r\n", "", "crlf") != nil {
-		t.Error("Expected FinalNewline to be true if nothing is set for insert_final_newline")
+		t.Error("Expected FinalNewline to be true if nothing is set for insertfinalnewline")
 	}
 }
 
@@ -224,7 +224,7 @@ func TestLineEndingCrlf(t *testing.T) {
 }
 
 func TestIndentation(t *testing.T) {
-	params := config.Config{Spaces_After_tabs: false}
+	params := config.Config{SpacesAftertabs: false}
 	if (Indentation("    x", "space", 4, params)) != nil {
 		t.Error("Expected correctly indented line to return an nil")
 	}
@@ -285,7 +285,7 @@ func TestSpace(t *testing.T) {
 }
 
 func TestTabSpacesAllowed(t *testing.T) {
-	spacesAllowed := config.Config{Spaces_After_tabs: true}
+	spacesAllowed := config.Config{SpacesAftertabs: true}
 
 	if Tab(" x", spacesAllowed) != nil {
 		t.Error("Expected char after space to return nil")
@@ -305,7 +305,7 @@ func TestTabSpacesAllowed(t *testing.T) {
 }
 
 func TestTabSpacesForbidden(t *testing.T) {
-	spacesForbidden := config.Config{Spaces_After_tabs: false}
+	spacesForbidden := config.Config{SpacesAftertabs: false}
 
 	if Tab("", spacesForbidden) != nil {
 		t.Error("Expected empty line to return true regardless of parameter")

@@ -17,7 +17,7 @@ func TestGetContentType(t *testing.T) {
 
 	contentType, _ = GetContentType("./../../docs/logo.png")
 	if !strings.Contains(contentType, "image/png") {
-		t.Error("Expected getContentType_test.go to be of type application/octet-stream")
+		t.Error("Expected getContentTypetest.go to be of type application/octet-stream")
 	}
 
 	_, err := GetContentType(".")
@@ -41,7 +41,7 @@ func TestGetContentType(t *testing.T) {
 }
 
 func TestIsAllowedContentType(t *testing.T) {
-	config := config.Config{Allowed_Content_Types: []string{"text/", "application/octet-stream"}}
+	config := config.Config{AllowedContentTypes: []string{"text/", "application/octet-stream"}}
 
 	if IsAllowedContentType("bla", config) {
 		t.Error("Bla shouldn't be an allowed contentType")

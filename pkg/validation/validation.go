@@ -75,7 +75,7 @@ func ValidateFinalNewline(fileInformation files.FileInformation, config config.C
 	if currentError := validators.FinalNewline(
 		fileInformation.Content,
 		fileInformation.Editorconfig.Raw["insert_final_newline"],
-		fileInformation.Editorconfig.Raw["end_of_line"]); !config.Disable.Insert_Final_Newline && currentError != nil {
+		fileInformation.Editorconfig.Raw["end_of_line"]); !config.Disable.InsertFinalNewline && currentError != nil {
 		config.Logger.Verbose(fmt.Sprintf("Final newline error found in %s", fileInformation.FilePath))
 		return error.ValidationError{LineNumber: -1, Message: currentError}
 	}
@@ -87,7 +87,7 @@ func ValidateFinalNewline(fileInformation files.FileInformation, config config.C
 func ValidateLineEnding(fileInformation files.FileInformation, config config.Config) error.ValidationError {
 	if currentError := validators.LineEnding(
 		fileInformation.Content,
-		fileInformation.Editorconfig.Raw["end_of_line"]); !config.Disable.End_Of_Line && currentError != nil {
+		fileInformation.Editorconfig.Raw["end_of_line"]); !config.Disable.EndOfLine && currentError != nil {
 		config.Logger.Verbose(fmt.Sprintf("Line ending error found in %s", fileInformation.FilePath))
 		return error.ValidationError{LineNumber: -1, Message: currentError}
 	}
@@ -120,7 +120,7 @@ func ValidateIndentation(fileInformation files.FileInformation, config config.Co
 func ValidateTrailingWhitespace(fileInformation files.FileInformation, config config.Config) error.ValidationError {
 	if currentError := validators.TrailingWhitespace(
 		fileInformation.Line,
-		fileInformation.Editorconfig.Raw["trim_trailing_whitespace"] == "true"); !config.Disable.Trim_Trailing_Whitespace && currentError != nil {
+		fileInformation.Editorconfig.Raw["trim_trailing_whitespace"] == "true"); !config.Disable.TrimTrailingWhitespace && currentError != nil {
 		config.Logger.Verbose(fmt.Sprintf("Trailing whitespace error found in %s on line %d", fileInformation.FilePath, fileInformation.LineNumber))
 		return error.ValidationError{LineNumber: fileInformation.LineNumber + 1, Message: currentError}
 	}

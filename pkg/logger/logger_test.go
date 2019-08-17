@@ -28,7 +28,7 @@ func TestLoggerWarning(t *testing.T) {
 	logger := Logger{}
 	logger.Warning("bla%s", "hey")
 
-	logger.No_Color = true
+	logger.NoColor = true
 	logger.Warning("bla%s", "hey")
 }
 
@@ -49,7 +49,7 @@ func TestLoggerError(t *testing.T) {
 	logger := Logger{}
 	logger.Error("bla%s", "hey")
 
-	logger.No_Color = true
+	logger.NoColor = true
 	logger.Error("bla%s", "hey")
 }
 

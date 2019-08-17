@@ -79,28 +79,28 @@ func TestMerge(t *testing.T) {
 	}
 
 	mergeConfig = Config{
-		Version:               true,
-		Help:                  true,
-		DryRun:                true,
-		Path:                  "some-other",
-		Verbose:               true,
-		Debug:                 true,
-		Ignore_Defaults:       true,
-		Spaces_After_tabs:     true,
-		Exclude:               []string{"some-other"},
-		PassedFiles:           []string{"src"},
-		Allowed_Content_Types: []string{"xml/"},
+		Version:             true,
+		Help:                true,
+		DryRun:              true,
+		Path:                "some-other",
+		Verbose:             true,
+		Debug:               true,
+		IgnoreDefaults:      true,
+		SpacesAftertabs:     true,
+		Exclude:             []string{"some-other"},
+		PassedFiles:         []string{"src"},
+		AllowedContentTypes: []string{"xml/"},
 		Disable: DisabledChecks{
-			Trim_Trailing_Whitespace: true,
-			End_Of_Line:              true,
-			Insert_Final_Newline:     true,
-			Indentation:              true,
+			TrimTrailingWhitespace: true,
+			EndOfLine:              true,
+			InsertFinalNewline:     true,
+			Indentation:            true,
 		},
 	}
 
 	c1.Merge(mergeConfig)
 
-	mergeConfig.Allowed_Content_Types = []string{"text/", "application/octet-stream", "xml/"}
+	mergeConfig.AllowedContentTypes = []string{"text/", "application/octet-stream", "xml/"}
 	mergeConfig.Exclude = []string{"testfiles", "some-other"}
 
 	expected := mergeConfig
@@ -130,15 +130,15 @@ func TestParse(t *testing.T) {
 
 	if c.Verbose != true ||
 		c.Debug != true ||
-		c.Ignore_Defaults != true ||
+		c.IgnoreDefaults != true ||
 		!reflect.DeepEqual(c.Exclude, []string{"testfiles"}) ||
-		!reflect.DeepEqual(c.Allowed_Content_Types, []string{"text/", "application/octet-stream", "hey"}) ||
-		c.Spaces_After_tabs != true ||
-		c.Disable.End_Of_Line != false ||
-		c.Disable.Trim_Trailing_Whitespace != false ||
-		c.Disable.Insert_Final_Newline != false ||
+		!reflect.DeepEqual(c.AllowedContentTypes, []string{"text/", "application/octet-stream", "hey"}) ||
+		c.SpacesAftertabs != true ||
+		c.Disable.EndOfLine != false ||
+		c.Disable.TrimTrailingWhitespace != false ||
+		c.Disable.InsertFinalNewline != false ||
 		c.Disable.Indentation != false {
-		t.Error(c.Allowed_Content_Types)
+		t.Error(c.AllowedContentTypes)
 		t.Errorf("Expected config to have values from test file, got %v", c)
 	}
 }
@@ -162,7 +162,7 @@ func TestGetAsString(t *testing.T) {
 	_ = c.Parse()
 
 	actual := c.GetAsString()
-	expected := "Config: {Version:false Help:false DryRun:false Path:../../.ecrc Verbose:false Debug:false Ignore_Defaults:false Spaces_After_tabs:false No_Color:false Exclude:[testfiles] Allowed_Content_Types:[text/ application/octet-stream] PassedFiles:[] Disable:{End_Of_Line:false Indentation:false Insert_Final_Newline:false Trim_Trailing_Whitespace:false} Logger:{Verbosee:false Debugg:false No_Color:false}}"
+	expected := "Config: {Version:false Help:false DryRun:false Path:../../.ecrc Verbose:false Debug:false IgnoreDefaults:false SpacesAftertabs:false NoColor:false Exclude:[testfiles] AllowedContentTypes:[text/ application/octet-stream] PassedFiles:[] Disable:{EndOfLine:false Indentation:false InsertFinalNewline:false TrimTrailingWhitespace:false} Logger:{Verbosee:false Debugg:false NoColor:false}}"
 
 	if actual != expected {
 		t.Errorf("Expected: %v, got: %v ", expected, actual)

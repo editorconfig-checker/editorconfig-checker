@@ -1,12 +1,16 @@
 {
-    "verbose": false,
-    "ignore_defaults": false,
-    "exclude": ["testfiles"],
-    "spaces_after_tabs": false,
-    "disable": {
-        "end_of_line": false,
-        "trim_trailing_whitespace": false,
-        "insert_final_newline": false,
-        "indentation": false
-    }
+  "Verbose": false,
+  "Debug": false,
+  "IgnoreDefaults": false,
+  "SpacesAftertabs": false,
+  "NoColor": false,
+  "exclude": ["testfiles"],
+  "AllowedContentTypes": [],
+  "PassedFiles": [],
+  "Disable": {
+    "EndOfLine": false,
+    "Indentation": false,
+    "InsertFinalNewline": false,
+    "TrimTrailingWhitespace": false
+  }
 }

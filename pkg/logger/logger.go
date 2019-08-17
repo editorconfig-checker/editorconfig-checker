@@ -17,7 +17,7 @@ const (
 type Logger struct {
 	Verbosee bool
 	Debugg   bool
-	No_Color bool
+	NoColor  bool
 }
 
 // Debug prints a message when Debugg is set to true on the Logger
@@ -39,7 +39,7 @@ func (l Logger) Verbose(format string, a ...interface{}) {
 // Warning prints a warning message to Stdout in yellow
 func (l Logger) Warning(format string, a ...interface{}) {
 	message := fmt.Sprintf(format, a...)
-	if l.No_Color {
+	if l.NoColor {
 		Println(message)
 	} else {
 		PrintlnColor(message, YELLOW)
@@ -67,7 +67,7 @@ func Output(format string, a ...interface{}) {
 // Error prints an error message to Stdout in red
 func (l Logger) Error(format string, a ...interface{}) {
 	message := fmt.Sprintf(format, a...)
-	if l.No_Color {
+	if l.NoColor {
 		Println(message)
 	} else {
 		PrintlnColor(message, RED)
