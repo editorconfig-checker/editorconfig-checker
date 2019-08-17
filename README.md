@@ -57,8 +57,6 @@ This will place a binary called `ec` into the `bin` directory.
 USAGE:
   -config string
         config
-  -init
-        creates an initial configuration
   -debug
         print debugging information
   -disable-end-of-line
@@ -78,8 +76,10 @@ USAGE:
         print the help
   -ignore-defaults
         ignore default excludes
-  -spaces-after-tabs
-        allow spaces to be used as alignment after tabs
+  -init
+        creates an initial configuration
+  -no-color
+        dont print colors
   -v    print debugging information
   -verbose
         print debugging information
