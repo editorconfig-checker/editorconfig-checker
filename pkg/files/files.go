@@ -1,3 +1,4 @@
+// package files contains functions and structs related to files
 package files
 
 import (
@@ -10,13 +11,24 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/editorconfig-checker/editorconfig-checker/pkg/logger"
-	"github.com/editorconfig-checker/editorconfig-checker/pkg/types"
+	"github.com/editorconfig/editorconfig-core-go/v2"
+
+	"github.com/editorconfig-checker/editorconfig-checker/pkg/config"
+	"github.com/editorconfig-checker/editorconfig-checker/pkg/utils"
 )
 
+// FileInformation is a Struct which represents some FileInformation
+type FileInformation struct {
+	Line         string
+	Content      string
+	FilePath     string
+	LineNumber   int
+	Editorconfig *editorconfig.Definition
+}
+
 // IsExcluded returns wether the file is excluded via arguments or config file
-func IsExcluded(filePath string, params types.Params) bool {
-	if params.Excludes == "" {
+func IsExcluded(filePath string, config config.Config) bool {
+	if len(config.Exclude) == 0 {
 		return false
 	}
 
@@ -25,7 +37,7 @@ func IsExcluded(filePath string, params types.Params) bool {
 		panic(err)
 	}
 
-	result, err := regexp.MatchString(params.Excludes, relativeFilePath)
+	result, err := regexp.MatchString(config.GetExcludesAsRegularExpression(), relativeFilePath)
 	if err != nil {
 		panic(err)
 	}
@@ -35,31 +47,45 @@ func IsExcluded(filePath string, params types.Params) bool {
 
 // AddToFiles adds a file to a slice if it isn't already in there
 // and meets the requirements and returns the new slice
-func AddToFiles(filePaths []string, filePath string, params types.Params) []string {
+func AddToFiles(filePaths []string, filePath string, config config.Config) []string {
 	contentType, err := GetContentType(filePath)
 
 	if err != nil {
-		logger.Error(fmt.Sprintf("Could not get the ContentType of file: %s", filePath))
-		logger.Error(err.Error())
+		config.Logger.Error(fmt.Sprintf("Could not get the ContentType of file: %s", filePath))
+		config.Logger.Error(err.Error())
 	}
 
-	if !IsExcluded(filePath, params) && IsAllowedContentType(contentType) {
-		if params.Verbose {
-			logger.Output(fmt.Sprintf("Add %s to be checked", filePath))
-		}
+	if !IsExcluded(filePath, config) && IsAllowedContentType(contentType, config) {
+		config.Logger.Verbose("Add %s to be checked", filePath)
 		return append(filePaths, filePath)
 	}
 
-	if params.Verbose {
-		logger.Output(fmt.Sprintf("Don't add %s to be checked", filePath))
-	}
-
+	config.Logger.Verbose("Don't add %s to be checked", filePath)
 	return filePaths
 }
 
 // GetFiles returns all files which should be checked
-func GetFiles(params types.Params) []string {
+func GetFiles(config config.Config) []string {
 	var filePaths []string
+
+	// Handle explicit passed files
+	if len(config.PassedFiles) != 0 {
+		for _, passedFile := range config.PassedFiles {
+			if utils.IsDirectory(passedFile) {
+				_ = filepath.Walk(passedFile, func(path string, fi os.FileInfo, err error) error {
+					if fi.Mode().IsRegular() {
+						filePaths = AddToFiles(filePaths, path, config)
+					}
+
+					return nil
+				})
+			} else {
+				filePaths = AddToFiles(filePaths, passedFile, config)
+			}
+		}
+
+		return filePaths
+	}
 
 	byteArray, err := exec.Command("git", "ls-tree", "-r", "--name-only", "HEAD").Output()
 	if err != nil {
@@ -71,7 +97,7 @@ func GetFiles(params types.Params) []string {
 
 		_ = filepath.Walk(cwd, func(path string, fi os.FileInfo, err error) error {
 			if fi.Mode().IsRegular() {
-				filePaths = AddToFiles(filePaths, path, params)
+				filePaths = AddToFiles(filePaths, path, config)
 			}
 
 			return nil
@@ -87,7 +113,7 @@ func GetFiles(params types.Params) []string {
 			// The err would be a broken symlink for example,
 			// so we want to program to continue but the file should not be checked
 			if err == nil && fi.Mode().IsRegular() {
-				filePaths = AddToFiles(filePaths, filePath, params)
+				filePaths = AddToFiles(filePaths, filePath, config)
 			}
 		}
 	}
@@ -145,11 +171,11 @@ func GetContentType(path string) (string, error) {
 }
 
 // PathExists checks wether a path of a file or directory exists or not
-func PathExists(filePath string) error {
+func PathExists(filePath string) bool {
 	absolutePath, _ := filepath.Abs(filePath)
 	_, err := os.Stat(absolutePath)
 
-	return err
+	return err == nil
 }
 
 // GetRelativePath returns the relative path of a file from the current working directory
@@ -165,6 +191,12 @@ func GetRelativePath(filePath string) (string, error) {
 
 // IsAllowedContentType returns wether the contentType is
 // an allowed content type to check or not
-func IsAllowedContentType(contentType string) bool {
-	return contentType == "application/octet-stream" || strings.Contains(contentType, "text/")
+func IsAllowedContentType(contentType string, config config.Config) bool {
+	result := false
+
+	for _, allowedContentType := range config.Allowed_Content_Types {
+		result = result || strings.Contains(contentType, allowedContentType)
+	}
+
+	return result
 }

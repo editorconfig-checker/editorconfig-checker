@@ -3,11 +3,11 @@ package validation
 import (
 	"testing"
 
-	"github.com/editorconfig-checker/editorconfig-checker/pkg/types"
+	"github.com/editorconfig-checker/editorconfig-checker/pkg/config"
 )
 
 func TestProcessValidation(t *testing.T) {
-	params := types.Params{Verbose: true}
+	params := config.Config{Verbose: true}
 
 	processValidationResult := ProcessValidation([]string{"./main.go"}, params)
 	if len(processValidationResult) > 1 || len(processValidationResult[0].Errors) != 0 {
@@ -31,7 +31,7 @@ func TestProcessValidation(t *testing.T) {
 }
 
 func TestValidateFile(t *testing.T) {
-	params := types.Params{Verbose: true}
+	params := config.Config{Verbose: true}
 
 	result := ValidateFile("./main.go", params)
 	if len(result) != 0 {
@@ -43,19 +43,19 @@ func TestValidateFile(t *testing.T) {
 		t.Error("Should have errors when validating file with one error, got", result)
 	}
 
-	params.Disabled.Indentation = true
+	params.Disable.Indentation = true
 	result = ValidateFile("./../../testfiles/wrong-file.txt", params)
 	if len(result) != 0 {
 		t.Error("Should have no errors, got", result)
 	}
 
-	params = types.Params{SpacesAfterTabs: true}
+	params = config.Config{Spaces_After_tabs: true}
 	result = ValidateFile("./../../testfiles/spaces-after-tabs.txt", params)
 	if len(result) != 0 {
 		t.Error("Should have no errors when validating valid file, got", result)
 	}
 
-	params = types.Params{SpacesAfterTabs: false}
+	params = config.Config{Spaces_After_tabs: false}
 	result = ValidateFile("./../../testfiles/zero-indent.txt", params)
 	if len(result) != 0 {
 		t.Error("Should have no errors when validating valid file, got", result)
@@ -66,46 +66,46 @@ func TestValidateFile(t *testing.T) {
 		t.Error("Should have no errors when validating valid file, got", result)
 	}
 
-	params = types.Params{SpacesAfterTabs: false}
+	params = config.Config{Spaces_After_tabs: false}
 	result = ValidateFile("./../../testfiles/spaces-after-tabs.txt", params)
 	if len(result) != 1 {
 		t.Error("Should have one error, got", result)
 	}
 
-	params = types.Params{Verbose: true}
+	params = config.Config{Verbose: true}
 	result = ValidateFile("./../../testfiles/trailing-whitespace.txt", params)
 	if len(result) != 1 {
 		t.Error("Should have one error, got", result)
 	}
 
-	params = types.Params{Verbose: true}
-	params.Disabled.TrailingWhitspace = true
+	params = config.Config{Verbose: true}
+	params.Disable.Trim_Trailing_Whitespace = true
 	result = ValidateFile("./../../testfiles/trailing-whitespace.txt", params)
 	if len(result) != 0 {
 		t.Error("Should have no error, got", result)
 	}
 
-	params = types.Params{Verbose: true}
+	params = config.Config{Verbose: true}
 	result = ValidateFile("./../../testfiles/final-newline-missing.txt", params)
 	if len(result) != 1 {
 		t.Error("Should have one error, got", result)
 	}
 
-	params = types.Params{Verbose: true}
-	params.Disabled.FinalNewline = true
+	params = config.Config{Verbose: true}
+	params.Disable.Insert_Final_Newline = true
 	result = ValidateFile("./../../testfiles/final-newline-missing.txt", params)
 	if len(result) != 0 {
 		t.Error("Should have no error, got", result)
 	}
 
-	params = types.Params{Verbose: true}
+	params = config.Config{Verbose: true}
 	result = ValidateFile("./../../testfiles/wrong-line-ending.txt", params)
 	if len(result) == 0 {
 		t.Error("Should have one error, got", result)
 	}
 
-	params = types.Params{Verbose: true}
-	params.Disabled.LineEnding = true
+	params = config.Config{Verbose: true}
+	params.Disable.End_Of_Line = true
 	result = ValidateFile("./../../testfiles/wrong-line-ending.txt", params)
 	if len(result) != 0 {
 		t.Error("Should have no error, got", result)

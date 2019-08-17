@@ -2,44 +2,9 @@
 package utils
 
 import (
-	"strings"
+	"os"
+	"path/filepath"
 )
-
-// DefaultExcludes is the regular expression for ignored files
-var DefaultExcludes = strings.Join(defaultExcludes, "|")
-
-// defaultExcludes are an array to produce the correct string from
-var defaultExcludes = []string{
-	"yarn\\.lock$",
-	"package-lock\\.json",
-	"composer\\.lock$",
-	"\\.snap$",
-	"\\.otf$",
-	"\\.woff$",
-	"\\.woff2$",
-	"\\.eot$",
-	"\\.ttf$",
-	"\\.gif$",
-	"\\.png$",
-	"\\.jpg$",
-	"\\.jpeg$",
-	"\\.mp4$",
-	"\\.wmv$",
-	"\\.svg$",
-	"\\.ico$",
-	"\\.bak$",
-	"\\.bin$",
-	"\\.pdf$",
-	"\\.zip$",
-	"\\.gz$",
-	"\\.tar$",
-	"\\.7z$",
-	"\\.bz2$",
-	"\\.log$",
-	"\\.css\\.map$",
-	"\\.js\\.map$",
-	"min\\.css$",
-	"min\\.js$"}
 
 // GetEolChar returns the end of line character used in regexp
 // depending on the end_of_line parameter
@@ -55,4 +20,24 @@ func GetEolChar(endOfLine string) string {
 	}
 
 	return "\n"
+}
+
+// IsRegularFile returns wether a file is a regular file or not
+func IsRegularFile(filePath string) bool {
+	absolutePath, firstErr := filepath.Abs(filePath)
+	fi, secondErr := os.Stat(absolutePath)
+	return firstErr == nil && secondErr == nil && fi.Mode().IsRegular()
+}
+
+// IsDirectory returns wether a file is a directory or not
+func IsDirectory(filePath string) bool {
+	absolutePath, firstErr := filepath.Abs(filePath)
+	fi, secondErr := os.Stat(absolutePath)
+	return firstErr == nil && secondErr == nil && fi.Mode().IsDir()
+}
+
+func FileExists(filePath string) bool {
+	absolutePath, _ := filepath.Abs(filePath)
+	fi, secondErr := os.Stat(absolutePath)
+	return fi != nil && secondErr == nil
 }

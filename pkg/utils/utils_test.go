@@ -4,14 +4,6 @@ import (
 	"testing"
 )
 
-func TestDefaultExcludes(t *testing.T) {
-	result := "yarn\\.lock$|package-lock\\.json|composer\\.lock$|\\.snap$|\\.otf$|\\.woff$|\\.woff2$|\\.eot$|\\.ttf$|\\.gif$|\\.png$|\\.jpg$|\\.jpeg$|\\.mp4$|\\.wmv$|\\.svg$|\\.ico$|\\.bak$|\\.bin$|\\.pdf$|\\.zip$|\\.gz$|\\.tar$|\\.7z$|\\.bz2$|\\.log$|\\.css\\.map$|\\.js\\.map$|min\\.css$|min\\.js$"
-
-	if DefaultExcludes != result {
-		t.Error("Expected default excludes to match", result)
-	}
-}
-
 func TestGetEolChar(t *testing.T) {
 	if GetEolChar("lf") != "\n" {
 		t.Error("Expected end of line character to be \\n for \"lf\"")
@@ -27,5 +19,43 @@ func TestGetEolChar(t *testing.T) {
 
 	if GetEolChar("") != "\n" {
 		t.Error("Expected end of line character to be \\n as a fallback")
+	}
+}
+
+func TestIsRegularFile(t *testing.T) {
+	if !IsRegularFile("./utils.go") {
+		t.Error("Expected utils.go to be a regular file")
+	}
+
+	if IsRegularFile("./notExisting.go") {
+		t.Error("Expected not existing file not to be a regular file")
+	}
+
+	if IsRegularFile(".") {
+		t.Error("Expected a directory not to be a regular file")
+	}
+}
+
+func TestIsDirectory(t *testing.T) {
+	if !IsDirectory(".") {
+		t.Error("Expected the current directory to be a directory")
+	}
+
+	if IsDirectory("./notExisting") {
+		t.Error("Expected not existing directory not to be a directory")
+	}
+
+	if IsDirectory("./utils.go") {
+		t.Error("Expected a file not to be a directory")
+	}
+}
+
+func TestFileExists(t *testing.T) {
+	if !FileExists("./utils.go") {
+		t.Error("./utils.go should exist")
+	}
+
+	if FileExists("./notExisting.go") {
+		t.Error("./notExisting.go should not exist")
 	}
 }

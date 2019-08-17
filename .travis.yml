@@ -9,6 +9,7 @@ env:
 script:
   - make build
   - make test
+  - ./bin/ec -config stuff.json -init && diff stuff.json ./testfiles/generated-config.json && rm stuff.json
   - make run
   - make bench
 

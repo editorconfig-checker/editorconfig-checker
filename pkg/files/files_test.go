@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/editorconfig-checker/editorconfig-checker/pkg/types"
+	"github.com/editorconfig-checker/editorconfig-checker/pkg/config"
 )
 
 func TestGetContentType(t *testing.T) {
@@ -41,25 +41,27 @@ func TestGetContentType(t *testing.T) {
 }
 
 func TestIsAllowedContentType(t *testing.T) {
-	if IsAllowedContentType("bla") {
+	config := config.Config{Allowed_Content_Types: []string{"text/", "application/octet-stream"}}
+
+	if IsAllowedContentType("bla", config) {
 		t.Error("Bla shouldn't be an allowed contentType")
 	}
 
-	if !IsAllowedContentType("text/") {
+	if !IsAllowedContentType("text/", config) {
 		t.Error("text/ shouldn't be an allowed contentType")
 	}
 
-	if !IsAllowedContentType("text/xml abc") {
+	if !IsAllowedContentType("text/xml abc", config) {
 		t.Error("text/xml shouldn't be an allowed contentType")
 	}
 }
 
 func TestPathExists(t *testing.T) {
-	if PathExists(".") != nil {
+	if !PathExists(".") {
 		t.Error("Expected . to be an existing path")
 	}
 
-	if PathExists("notexisting") == nil {
+	if PathExists("notexisting") {
 		t.Error("Expected \"notexisting\" to not exist")
 	}
 }
@@ -98,7 +100,7 @@ func TestGetRelativePath(t *testing.T) {
 }
 
 func TestIsExcluded(t *testing.T) {
-	result := IsExcluded("./cmd/editorconfig-checker/main.go", types.Params{})
+	result := IsExcluded("./cmd/editorconfig-checker/main.go", config.Config{})
 
 	if result {
 		t.Error("Should return true if no excludes are given, got", result)

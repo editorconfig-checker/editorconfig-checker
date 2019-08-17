@@ -1,16 +1,27 @@
+// package error contains fucntions and structs related to errors
 package error
 
 import (
 	"fmt"
-	"os"
 
+	"github.com/editorconfig-checker/editorconfig-checker/pkg/config"
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/files"
-	"github.com/editorconfig-checker/editorconfig-checker/pkg/logger"
-	"github.com/editorconfig-checker/editorconfig-checker/pkg/types"
 )
 
+// ValidationError represents one validation error
+type ValidationError struct {
+	LineNumber int
+	Message    error
+}
+
+// ValidationErrors represents which errors occurred in a file
+type ValidationErrors struct {
+	FilePath string
+	Errors   []ValidationError
+}
+
 // GetErrorCount returns the amount of errors
-func GetErrorCount(errors []types.ValidationErrors) int {
+func GetErrorCount(errors []ValidationErrors) int {
 	var errorCount = 0
 
 	for _, v := range errors {
@@ -21,21 +32,22 @@ func GetErrorCount(errors []types.ValidationErrors) int {
 }
 
 // PrintErrors prints the errors to the console
-func PrintErrors(errors []types.ValidationErrors) {
+func PrintErrors(errors []ValidationErrors, config config.Config) {
 	for _, fileErrors := range errors {
 		if len(fileErrors.Errors) > 0 {
 			relativeFilePath, err := files.GetRelativePath(fileErrors.FilePath)
 
 			if err != nil {
-				logger.Error(err.Error())
+				config.Logger.Error(err.Error())
+				continue
 			}
 
-			logger.Print(fmt.Sprintf("%s:", relativeFilePath), logger.YELLOW, os.Stderr)
+			config.Logger.Warning(fmt.Sprintf("%s:", relativeFilePath))
 			for _, singleError := range fileErrors.Errors {
 				if singleError.LineNumber != -1 {
-					logger.Error(fmt.Sprintf("\t%d: %s", singleError.LineNumber, singleError.Message))
+					config.Logger.Error(fmt.Sprintf("\t%d: %s", singleError.LineNumber, singleError.Message))
 				} else {
-					logger.Error(fmt.Sprintf("\t%s", singleError.Message))
+					config.Logger.Error(fmt.Sprintf("\t%s", singleError.Message))
 				}
 
 			}

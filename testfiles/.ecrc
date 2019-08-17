@@ -1,8 +1,10 @@
 {
-    "verbose": false,
-    "ignore_defaults": false,
+    "verbose": true,
+	"debug": true,
+    "ignore_defaults": true,
     "exclude": ["testfiles"],
-    "spaces_after_tabs": false,
+	"allowed_content_types": ["hey"],
+    "spaces_after_tabs": true,
     "disable": {
         "end_of_line": false,
         "trim_trailing_whitespace": false,
@@ -10,3 +12,4 @@
         "indentation": false
     }
 }
+

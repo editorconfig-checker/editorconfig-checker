@@ -1,24 +1,27 @@
 # editorconfig-checker
 [![Build Status](https://travis-ci.org/editorconfig-checker/editorconfig-checker.svg?branch=master)](https://travis-ci.org/editorconfig-checker/editorconfig-checker) 
 [![codecov](https://codecov.io/gh/editorconfig-checker/editorconfig-checker/branch/master/graph/badge.svg)](https://codecov.io/gh/editorconfig-checker/editorconfig-checker)
+[![Hits-of-Code](https://hitsofcode.com/github/editorconfig-checker/editorconfig-checker)](https://hitsofcode.com/view/github/editorconfig-checker/editorconfig-checker)
 [![Go Report Card](https://goreportcard.com/badge/github.com/editorconfig-checker/editorconfig-checker)](https://goreportcard.com/report/github.com/editorconfig-checker/editorconfig-checker)
 
 ![Logo](https://raw.githubusercontent.com/editorconfig-checker/editorconfig-checker/master/docs/logo.png "Logo")
 
 1. [What](#what)  
-2. [Installation](#installation)  
-3. [Usage](#usage)  
-4. [Excluding](#excluding)  
-4.1 [Excluding Lines](#excluding-lines)  
-4.2 [Excluding Files](#excluding-files)  
-4.2.1 [Inline](#inline)  
-4.2.2. [Default Excludes](#default-excludes)  
-4.2.3. [Manually Excluding](#manually-excluding)  
-4.2.4. [via ecrc](#via-ecrc)  
-4.2.5. [via arguments](#via-arguments)  
-4.2.6. [Generally](#generally)  
-5. [Docker](#docker)
-6. [Support](#support)
+2. [Quickstart](#quickstart)  
+3. [Installation](#installation)  
+4. [Usage](#usage)  
+5. [Configuration](#configuration)  
+6. [Excluding](#excluding)  
+6.1 [Excluding Lines](#excluding-lines)  
+6.2 [Excluding Files](#excluding-files)  
+6.2.1 [Inline](#inline)  
+6.2.2 [Default Excludes](#default-excludes)  
+6.2.3 [Manually Excluding](#manually-excluding)  
+6.2.4 [via configuration](#via-configuration)  
+6.2.5 [via arguments](#via-arguments)  
+6.2.6 [Generally](#generally)  
+7. [Docker](#docker)
+8. [Support](#support)
 
 
 ## What?
@@ -41,6 +44,17 @@ Currently implemented editorconfig features are:
 Unsupported features are:
 * `charset`
 
+## Quickstart
+
+```sh
+VERSION="1.3.0"
+OS="linux"
+ARCH=amd64
+curl -O -L -C - https://github.com/editorconfig-checker/editorconfig-checker/releases/download/$VERSION/ec-$OS-$ARCH.tar.gz && \
+tar xzf ex-$OS-$ARCH-tar.gz && \
+./bin/ec-$OS-$ARCH
+```
+
 ## Installation
 
 Grab a binary from the [release page](https://github.com/editorconfig-checker/editorconfig-checker/releases). 
@@ -53,28 +67,31 @@ This will place a binary called `ec` into the `bin` directory.
 
 ```
 USAGE:
-  -disable-final-newline
-        disables the final newline check
+  -config string
+        config
+  -debug
+        print debugging information
+  -disable-end-of-line
+        disables the trailing whitespace check
   -disable-indentation
         disables the indentation check
-  -disable-line-ending
-        disables the trailing whitespace check
-  -disable-trailing-whitespace
+  -disable-insert-final-newline
+        disables the final newline check
+  -disable-trim-trailing-whitespace
         disables the trailing whitespace check
   -dry-run
         show which files would be checked
-  -e string
-        a regex which files should be excluded from checking - needs to be a valid regular expression
   -exclude string
         a regex which files should be excluded from checking - needs to be a valid regular expression
   -h    print the help
   -help
         print the help
-  -i    ignore default excludes
-  -ignore
+  -ignore-defaults
         ignore default excludes
-  -spaces-after-tabs
-        allow spaces to be used as alignment after tabs
+  -init
+        creates an initial configuration
+  -no-color
+        dont print colors
   -v    print debugging information
   -verbose
         print debugging information
@@ -85,6 +102,34 @@ USAGE:
 If you run this tool from a repository root it will check all files which are added to the git repository and are text files. If the tool isn't able to determine a file type it will be added to be checked too.
 
 If you run this tool from a normal directory it will check all files which are text files. If the tool isn't able to determine a file type it will be added to be checked too.
+
+## Configuration
+
+The configuration is done via arguments or an `.ecrc` file.
+
+A sample `.ecrc` file can look like this and will be used from your current working directory if not specified via the `--config` argument:
+
+```json
+{
+    "verbose": false,
+    "ignore_defaults": false,
+    "exclude": ["testfiles"],
+    "spaces_after_tabs": false,
+    "allowed_content_types": ["xml/"],
+    "disable": {
+        "end_of_line": false,
+        "trim_trailing_whitespace": false,
+        "insert_final_newline": false,
+        "indentation": false
+    }
+}
+```
+
+You could also specify command line arguments and they will get merged with the configuration file, the command line arguments have a higher precedence than the configuration.
+
+You can create a configuration with the `init`-flag. If you specify an `config`-path it will be created there.
+
+By default the allowed_content_types are `text/` and `application/octet-stream`(needed as a fallback when no content type could be determined). You can add additional accepted content types with the `allowed_content_types` key. But the default ones doesn't get removed.
 
 ## Excluding
 
@@ -114,7 +159,7 @@ add x y =
 
 #### Default excludes
 
-If you don't pass the `i` or `ignore` flag to the binary these files are excluded automatically:
+If you don't pass the `ignore-defaults` flag to the binary these files are excluded automatically:
 ```
 "yarn\\.lock$",
 "package-lock\\.json",
@@ -150,26 +195,31 @@ If you don't pass the `i` or `ignore` flag to the binary these files are exclude
 
 #### Manually excluding
 
-##### via ecrc
+##### via configuration
 
-You can create a file called `.ecrc` where you can put a regular expression on each line which files should be excluded. If you do this it will be merged with the default excludes.
-Remember to escape your regular expressions correctly. :)
+In your `.ecrc` file you can exclude files with the `"exclude"` key which takes an array of regular expressions.
+This will get merged with the default excludes (if not ignored). You should remember to escape your regular expressions correctly. ;)
 
-An `.ecrc` can look like this:
+An `.ecrc` which would ignore all test files and all markdown files can look like this:
 
 ```
-LICENSE$
-slick-styles\.vanilla-css$
-banner\.js$
-react_crop\.vanilla-css$
-vanilla
-Resources/Public/Plugins
-README\.md$
+{
+    "verbose": false,
+    "ignore_defaults": false,
+    "exclude": ["testfiles", "\\.md$"],
+    "spaces_after_tabs": false,
+    "disable": {
+        "end_of_line": false,
+        "trim_trailing_whitespace": false,
+        "insert_final_newline": false,
+        "indentation": false
+    }
+}
 ```
 
 ##### via arguments
 
-If you want to play around how the tool would behave you can also pass the `--exclude|-e` argument to the binary. This will accept a regular expression as well. If you use this argument the default excludes as well as the excludes from the `.ecrc`-file will merged together.
+If you want to play around how the tool would behave you can also pass the `--exclude` argument to the binary. This will accept a regular expression as well. If you use this argument the default excludes as well as the excludes from the `.ecrc`-file will merged together.
 
 For example: `ec --exclude node_modules`
 
@@ -177,7 +227,7 @@ For example: `ec --exclude node_modules`
 
 Every exclude option is merged together.
 
-If you want to see which files the tool would check without checking them you can pass the `--dry-run` or `-d` flag.
+If you want to see which files the tool would check without checking them you can pass the `--dry-run` flag.
 
 ## Docker 
 
