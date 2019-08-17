@@ -55,7 +55,7 @@ func AddToFiles(filePaths []string, filePath string, config config.Config) []str
 		config.Logger.Error(err.Error())
 	}
 
-	if !IsExcluded(filePath, config) && IsAllowedContentType(contentType) {
+	if !IsExcluded(filePath, config) && IsAllowedContentType(contentType, config) {
 		config.Logger.Verbose("Add %s to be checked", filePath)
 		return append(filePaths, filePath)
 	}
@@ -191,6 +191,12 @@ func GetRelativePath(filePath string) (string, error) {
 
 // IsAllowedContentType returns wether the contentType is
 // an allowed content type to check or not
-func IsAllowedContentType(contentType string) bool {
-	return contentType == "application/octet-stream" || strings.Contains(contentType, "text/")
+func IsAllowedContentType(contentType string, config config.Config) bool {
+	result := false
+
+	for _, allowedContentType := range config.Allowed_Content_Types {
+		result = result || strings.Contains(contentType, allowedContentType)
+	}
+
+	return result
 }

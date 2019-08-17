@@ -45,7 +45,13 @@ var defaultExcludes = []string{
 	"\\.css\\.map$",
 	"\\.js\\.map$",
 	"min\\.css$",
-	"min\\.js$"}
+	"min\\.js$",
+}
+
+var defaultAllowedContentTypes = []string{
+	"text/",
+	"application/octet-stream",
+}
 
 // Config struct, contains everything a config can contain
 type Config struct {
@@ -56,13 +62,14 @@ type Config struct {
 	Path    string
 
 	// CONFIG FILE
-	Verbose           bool
-	Debug             bool
-	Ignore_Defaults   bool
-	Spaces_After_tabs bool
-	Exclude           []string
-	PassedFiles       []string
-	Disable           DisabledChecks
+	Verbose               bool
+	Debug                 bool
+	Ignore_Defaults       bool
+	Spaces_After_tabs     bool
+	Exclude               []string
+	Allowed_Content_Types []string
+	PassedFiles           []string
+	Disable               DisabledChecks
 
 	// MISC
 	Logger logger.Logger
@@ -85,6 +92,8 @@ func NewConfig(configPath string) (*Config, error) {
 		return &config, fmt.Errorf("No file found at %s", configPath)
 	}
 
+	config.Allowed_Content_Types = defaultAllowedContentTypes
+
 	return &config, nil
 }
 
@@ -99,11 +108,6 @@ func (c *Config) Parse() error {
 		err = json.Unmarshal(configString, c)
 		if err != nil {
 			return err
-		}
-
-		if c.Debug {
-			// TODO Print Config
-			logger.Print("Config")
 		}
 	}
 
@@ -146,6 +150,10 @@ func (c *Config) Merge(config Config) {
 
 	if len(config.Exclude) != 0 {
 		c.Exclude = append(c.Exclude, config.Exclude...)
+	}
+
+	if len(config.Allowed_Content_Types) != 0 {
+		c.Allowed_Content_Types = append(c.Allowed_Content_Types, config.Allowed_Content_Types...)
 	}
 
 	if len(config.PassedFiles) != 0 {

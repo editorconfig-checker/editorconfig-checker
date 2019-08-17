@@ -3,6 +3,7 @@
 	"debug": true,
     "ignore_defaults": true,
     "exclude": ["testfiles"],
+	"allowed_content_types": ["hey"],
     "spaces_after_tabs": true,
     "disable": {
         "end_of_line": false,

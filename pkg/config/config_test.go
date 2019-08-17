@@ -79,16 +79,17 @@ func TestMerge(t *testing.T) {
 	}
 
 	mergeConfig = Config{
-		Version:           true,
-		Help:              true,
-		DryRun:            true,
-		Path:              "some-other-path",
-		Verbose:           true,
-		Debug:             true,
-		Ignore_Defaults:   true,
-		Spaces_After_tabs: true,
-		Exclude:           []string{"some-other"},
-		PassedFiles:       []string{"src"},
+		Version:               true,
+		Help:                  true,
+		DryRun:                true,
+		Path:                  "some-other",
+		Verbose:               true,
+		Debug:                 true,
+		Ignore_Defaults:       true,
+		Spaces_After_tabs:     true,
+		Exclude:               []string{"some-other"},
+		PassedFiles:           []string{"src"},
+		Allowed_Content_Types: []string{"xml/"},
 		Disable: DisabledChecks{
 			Trim_Trailing_Whitespace: true,
 			End_Of_Line:              true,
@@ -99,8 +100,10 @@ func TestMerge(t *testing.T) {
 
 	c1.Merge(mergeConfig)
 
+	mergeConfig.Allowed_Content_Types = []string{"text/", "application/octet-stream", "xml/"}
+	mergeConfig.Exclude = []string{"testfiles", "some-other"}
+
 	expected := mergeConfig
-	expected.Exclude = []string{"testfiles", "some-other"}
 
 	if !reflect.DeepEqual(c1, &expected) {
 		t.Errorf("Expected, got %v and %v", c1, &expected)
@@ -128,7 +131,8 @@ func TestParse(t *testing.T) {
 	if c.Verbose != true ||
 		c.Debug != true ||
 		c.Ignore_Defaults != true ||
-		reflect.DeepEqual(c.Exclude, []string{"../../testfiles"}) ||
+		!reflect.DeepEqual(c.Exclude, []string{"testfiles"}) ||
+		!reflect.DeepEqual(c.Allowed_Content_Types, []string{"hey"}) ||
 		c.Spaces_After_tabs != true ||
 		c.Disable.End_Of_Line != false ||
 		c.Disable.Trim_Trailing_Whitespace != false ||
