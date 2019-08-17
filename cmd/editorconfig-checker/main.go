@@ -64,11 +64,7 @@ func init() {
 		os.Exit(0)
 	}
 
-	err := currentConfig.Parse()
-	if err != nil {
-		panic(err)
-	}
-
+	_ = currentConfig.Parse()
 	if tmpExclude != "" {
 		c.Exclude = append(c.Exclude, tmpExclude)
 	}

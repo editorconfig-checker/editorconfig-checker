@@ -50,8 +50,10 @@ func IsExcluded(filePath string, config config.Config) bool {
 func AddToFiles(filePaths []string, filePath string, config config.Config) []string {
 	contentType, err := GetContentType(filePath)
 
+	config.Logger.Debug("AddToFiles: filePath: %s, contentType: %s", filePath, contentType)
+
 	if err != nil {
-		config.Logger.Error(fmt.Sprintf("Could not get the ContentType of file: %s", filePath))
+		config.Logger.Error("Could not get the ContentType of file: %s", filePath)
 		config.Logger.Error(err.Error())
 	}
 
