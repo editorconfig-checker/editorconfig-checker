@@ -165,23 +165,28 @@ func (c *Config) Merge(config Config) {
 		c.PassedFiles = config.PassedFiles
 	}
 
-	if config.Disable.End_Of_Line {
-		c.Disable.End_Of_Line = config.Disable.End_Of_Line
-	}
-
-	if config.Disable.Trim_Trailing_Whitespace {
-		c.Disable.Trim_Trailing_Whitespace = config.Disable.Trim_Trailing_Whitespace
-	}
-
-	if config.Disable.Insert_Final_Newline {
-		c.Disable.Insert_Final_Newline = config.Disable.Insert_Final_Newline
-	}
-
-	if config.Disable.Indentation {
-		c.Disable.Indentation = config.Disable.Indentation
-	}
-
+	c.mergeDisabled(config.Disable)
 	c.Logger = config.Logger
+}
+
+// mergeDisabled merges the disabled checks into the config
+// This is here because cyclomatic complexity of gocyclo was about 15 :/
+func (c *Config) mergeDisabled(disabled DisabledChecks) {
+	if disabled.End_Of_Line {
+		c.Disable.End_Of_Line = disabled.End_Of_Line
+	}
+
+	if disabled.Trim_Trailing_Whitespace {
+		c.Disable.Trim_Trailing_Whitespace = disabled.Trim_Trailing_Whitespace
+	}
+
+	if disabled.Insert_Final_Newline {
+		c.Disable.Insert_Final_Newline = disabled.Insert_Final_Newline
+	}
+
+	if disabled.Indentation {
+		c.Disable.Indentation = disabled.Indentation
+	}
 }
 
 // GetExcludesAsRegularExpression returns the excludes as a combined regular expression
@@ -211,8 +216,8 @@ func (c Config) Save() error {
 		Disable               DisabledChecks
 	}
 
-	configJson, _ := json.MarshalIndent(writtenConfig{}, "", "  ")
-	configString := strings.Replace(string(configJson[:]), "null", "[]", -1)
+	configJSON, _ := json.MarshalIndent(writtenConfig{}, "", "  ")
+	configString := strings.Replace(string(configJSON[:]), "null", "[]", -1)
 	err := ioutil.WriteFile(c.Path, []byte(configString), 0644)
 
 	return err
