@@ -4,8 +4,8 @@ package error
 import (
 	"fmt"
 
+	"github.com/editorconfig-checker/editorconfig-checker/pkg/config"
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/files"
-	"github.com/editorconfig-checker/editorconfig-checker/pkg/logger"
 )
 
 // ValidationError represents one validation error
@@ -32,21 +32,22 @@ func GetErrorCount(errors []ValidationErrors) int {
 }
 
 // PrintErrors prints the errors to the console
-func PrintErrors(errors []ValidationErrors) {
+func PrintErrors(errors []ValidationErrors, config config.Config) {
 	for _, fileErrors := range errors {
 		if len(fileErrors.Errors) > 0 {
 			relativeFilePath, err := files.GetRelativePath(fileErrors.FilePath)
 
 			if err != nil {
-				logger.Error(err.Error())
+				config.Logger.Error(err.Error())
+				continue
 			}
 
-			logger.PrintColor(fmt.Sprintf("%s:", relativeFilePath), logger.YELLOW)
+			config.Logger.Warning(fmt.Sprintf("%s:", relativeFilePath))
 			for _, singleError := range fileErrors.Errors {
 				if singleError.LineNumber != -1 {
-					logger.Error(fmt.Sprintf("\t%d: %s", singleError.LineNumber, singleError.Message))
+					config.Logger.Error(fmt.Sprintf("\t%d: %s", singleError.LineNumber, singleError.Message))
 				} else {
-					logger.Error(fmt.Sprintf("\t%s", singleError.Message))
+					config.Logger.Error(fmt.Sprintf("\t%s", singleError.Message))
 				}
 
 			}

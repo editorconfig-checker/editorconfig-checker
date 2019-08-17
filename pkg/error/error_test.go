@@ -3,6 +3,8 @@ package error
 import (
 	"errors"
 	"testing"
+
+	"github.com/editorconfig-checker/editorconfig-checker/pkg/config"
 )
 
 func TestGetErrorCount(t *testing.T) {
@@ -126,6 +128,15 @@ func TestPrintErrors(t *testing.T) {
 			},
 		},
 		{
+			FilePath: "/proc/cpuinfoNOT",
+			Errors: []ValidationError{
+				{
+					LineNumber: 1,
+					Message:    errors.New("WRONG"),
+				},
+			},
+		},
+		{
 			FilePath: "some/other/path",
 			Errors: []ValidationError{
 				{
@@ -141,5 +152,6 @@ func TestPrintErrors(t *testing.T) {
 	}
 
 	// wannabe test
-	PrintErrors(input)
+	config := config.Config{}
+	PrintErrors(input, config)
 }

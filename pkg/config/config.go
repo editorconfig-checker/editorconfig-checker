@@ -66,6 +66,7 @@ type Config struct {
 	Debug                 bool
 	Ignore_Defaults       bool
 	Spaces_After_tabs     bool
+	No_Color              bool
 	Exclude               []string
 	Allowed_Content_Types []string
 	PassedFiles           []string

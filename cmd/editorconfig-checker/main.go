@@ -40,6 +40,7 @@ func init() {
 	flag.BoolVar(&c.Verbose, "verbose", false, "print debugging information")
 	flag.BoolVar(&c.Verbose, "v", false, "print debugging information")
 	flag.BoolVar(&c.Debug, "debug", false, "print debugging information")
+	flag.BoolVar(&c.No_Color, "no-color", false, "dont print colors")
 	flag.BoolVar(&c.Disable.Trim_Trailing_Whitespace, "disable-trim-trailing-whitespace", false, "disables the trailing whitespace check")
 	flag.BoolVar(&c.Disable.End_Of_Line, "disable-end-of-line", false, "disables the trailing whitespace check")
 	flag.BoolVar(&c.Disable.Insert_Final_Newline, "disable-insert-final-newline", false, "disables the final newline check")
@@ -73,7 +74,7 @@ func init() {
 	}
 
 	c.PassedFiles = flag.Args()
-	c.Logger = logger.Logger{Verbosee: c.Verbose, Debugg: c.Debug}
+	c.Logger = logger.Logger{Verbosee: c.Verbose, Debugg: c.Debug, No_Color: c.No_Color}
 
 	currentConfig.Merge(c)
 }
@@ -109,7 +110,7 @@ func main() {
 	errorCount := error.GetErrorCount(errors)
 
 	if errorCount != 0 {
-		error.PrintErrors(errors)
+		error.PrintErrors(errors, *currentConfig)
 		logger.Error(fmt.Sprintf("\n%d errors found", errorCount))
 	}
 

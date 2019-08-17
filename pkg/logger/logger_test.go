@@ -27,6 +27,9 @@ func TestLoggerVerbose(t *testing.T) {
 func TestLoggerWarning(t *testing.T) {
 	logger := Logger{}
 	logger.Warning("bla%s", "hey")
+
+	logger.No_Color = true
+	logger.Warning("bla%s", "hey")
 }
 
 func TestWarning(t *testing.T) {
@@ -44,6 +47,9 @@ func TestOutput(t *testing.T) {
 
 func TestLoggerError(t *testing.T) {
 	logger := Logger{}
+	logger.Error("bla%s", "hey")
+
+	logger.No_Color = true
 	logger.Error("bla%s", "hey")
 }
 

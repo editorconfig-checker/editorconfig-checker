@@ -162,7 +162,7 @@ func TestGetAsString(t *testing.T) {
 	_ = c.Parse()
 
 	actual := c.GetAsString()
-	expected := "Config: {Version:false Help:false DryRun:false Path:../../.ecrc Verbose:false Debug:false Ignore_Defaults:false Spaces_After_tabs:false Exclude:[testfiles] Allowed_Content_Types:[text/ application/octet-stream] PassedFiles:[] Disable:{End_Of_Line:false Indentation:false Insert_Final_Newline:false Trim_Trailing_Whitespace:false} Logger:{Verbosee:false Debugg:false}}"
+	expected := "Config: {Version:false Help:false DryRun:false Path:../../.ecrc Verbose:false Debug:false Ignore_Defaults:false Spaces_After_tabs:false No_Color:false Exclude:[testfiles] Allowed_Content_Types:[text/ application/octet-stream] PassedFiles:[] Disable:{End_Of_Line:false Indentation:false Insert_Final_Newline:false Trim_Trailing_Whitespace:false} Logger:{Verbosee:false Debugg:false No_Color:false}}"
 
 	if actual != expected {
 		t.Errorf("Expected: %v, got: %v ", expected, actual)
