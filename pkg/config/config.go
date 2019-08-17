@@ -93,6 +93,10 @@ func NewConfig(configPath string) (*Config, error) {
 		return &config, fmt.Errorf("No file found at %s", configPath)
 	}
 
+	config.Exclude = []string{}
+	config.Allowed_Content_Types = []string{}
+	config.PassedFiles = []string{}
+
 	return &config, nil
 }
 
@@ -189,17 +193,32 @@ func (c Config) GetExcludesAsRegularExpression() string {
 	return strings.Join(append(c.Exclude, DefaultExcludes), "|")
 }
 
+// Save saves the config to it's Path
 func (c Config) Save() error {
 	if utils.IsRegularFile(c.Path) {
 		return fmt.Errorf("File `%v` already exists", c.Path)
 	}
 
-	configJson, _ := json.MarshalIndent(c, "", "  ")
-	err := ioutil.WriteFile(c.Path, configJson, 0644)
+	type writtenConfig struct {
+		Verbose               bool
+		Debug                 bool
+		Ignore_Defaults       bool
+		Spaces_After_tabs     bool
+		No_Color              bool
+		Exclude               []string
+		Allowed_Content_Types []string
+		PassedFiles           []string
+		Disable               DisabledChecks
+	}
+
+	configJson, _ := json.MarshalIndent(writtenConfig{}, "", "  ")
+	configString := strings.Replace(string(configJson[:]), "null", "[]", -1)
+	err := ioutil.WriteFile(c.Path, []byte(configString), 0644)
 
 	return err
 }
 
+// GetAsString returns the config in a readable form
 func (c Config) GetAsString() string {
 	return fmt.Sprintf("Config: %+v", c)
 }
