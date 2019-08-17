@@ -1,15 +1,15 @@
 {
-    "verbose": true,
+  "verbose": true,
 	"debug": true,
-    "ignoreDefaults": true,
-    "exclude": ["testfiles"],
+  "ignoreDefaults": true,
+  "exclude": ["testfiles"],
 	"allowedContentTypes": ["hey"],
-    "spacesAfterTabs": true,
-    "disable": {
-        "endOfLine": false,
-        "trimTrailingWhitespace": false,
-        "insertFinalNewline": false,
-        "indentation": false
-    }
+  "spacesAfterTabs": true,
+  "disable": {
+    "endOfLine": false,
+    "trimTrailingWhitespace": false,
+    "insertFinalNewline": false,
+    "indentation": false
+  }
 }
 
