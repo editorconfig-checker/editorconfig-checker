@@ -91,7 +91,7 @@ func main() {
 		return
 	}
 
-	currentConfig.Logger.Debug(fmt.Sprintf("Config: %v", currentConfig))
+	currentConfig.Logger.Debug(currentConfig.GetAsString())
 	currentConfig.Logger.Verbose("Exclude Regexp: %s", currentConfig.GetExcludesAsRegularExpression())
 
 	// contains all files which should be checked

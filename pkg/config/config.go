@@ -92,8 +92,6 @@ func NewConfig(configPath string) (*Config, error) {
 		return &config, fmt.Errorf("No file found at %s", configPath)
 	}
 
-	config.Allowed_Content_Types = defaultAllowedContentTypes
-
 	return &config, nil
 }
 
@@ -109,6 +107,8 @@ func (c *Config) Parse() error {
 		if err != nil {
 			return err
 		}
+
+		c.Allowed_Content_Types = append(defaultAllowedContentTypes, c.Allowed_Content_Types...)
 	}
 
 	return nil
@@ -197,4 +197,8 @@ func (c Config) Save() error {
 	err := ioutil.WriteFile(c.Path, configJson, 0644)
 
 	return err
+}
+
+func (c Config) GetAsString() string {
+	return fmt.Sprintf("Config: %+v", c)
 }

@@ -103,6 +103,7 @@ A sample `.ecrc` file can look like this and will be used from your current work
     "ignore_defaults": false,
     "exclude": ["testfiles"],
     "spaces_after_tabs": false,
+    "allowed_content_types": ["xml/"],
     "disable": {
         "end_of_line": false,
         "trim_trailing_whitespace": false,
@@ -115,6 +116,8 @@ A sample `.ecrc` file can look like this and will be used from your current work
 You could also specify command line arguments and they will get merged with the configuration file, the command line arguments have a higher precedence than the configuration.
 
 You can create a configuration with the `init`-flag. If you specify an `config`-path it will be created there.
+
+By default the allowed_content_types are `text/` and `application/octet-stream`(needed as a fallback when no content type could be determined). You can add additional accepted content types with the `allowed_content_types` key. But the default ones doesn't get removed.
 
 ## Excluding
 

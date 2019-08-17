@@ -132,12 +132,13 @@ func TestParse(t *testing.T) {
 		c.Debug != true ||
 		c.Ignore_Defaults != true ||
 		!reflect.DeepEqual(c.Exclude, []string{"testfiles"}) ||
-		!reflect.DeepEqual(c.Allowed_Content_Types, []string{"hey"}) ||
+		!reflect.DeepEqual(c.Allowed_Content_Types, []string{"text/", "application/octet-stream", "hey"}) ||
 		c.Spaces_After_tabs != true ||
 		c.Disable.End_Of_Line != false ||
 		c.Disable.Trim_Trailing_Whitespace != false ||
 		c.Disable.Insert_Final_Newline != false ||
 		c.Disable.Indentation != false {
+		t.Error(c.Allowed_Content_Types)
 		t.Errorf("Expected config to have values from test file, got %v", c)
 	}
 }
@@ -153,5 +154,17 @@ func TestSave(t *testing.T) {
 
 	if c.Save() == nil {
 		t.Error("Should produce an error")
+	}
+}
+
+func TestGetAsString(t *testing.T) {
+	c, _ := NewConfig("../../.ecrc")
+	_ = c.Parse()
+
+	actual := c.GetAsString()
+	expected := "Config: {Version:false Help:false DryRun:false Path:../../.ecrc Verbose:false Debug:false Ignore_Defaults:false Spaces_After_tabs:false Exclude:[testfiles] Allowed_Content_Types:[text/ application/octet-stream] PassedFiles:[] Disable:{End_Of_Line:false Indentation:false Insert_Final_Newline:false Trim_Trailing_Whitespace:false} Logger:{Verbosee:false Debugg:false}}"
+
+	if actual != expected {
+		t.Errorf("Expected: %v, got: %v ", expected, actual)
 	}
 }
