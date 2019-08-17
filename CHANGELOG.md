@@ -10,6 +10,7 @@
 * (Files can be passed with `ec [<file>|<directory>]`)[https://github.com/editorconfig-checker/editorconfig-checker/pull/76]
 * (Added `debug` flag (more debug output will be added while debugging))[https://github.com/editorconfig-checker/editorconfig-checker/pull/76]
 ### Changed
+* (Print most output on `stdout` instead of `stderr` now for `grepability`)[https://github.com/editorconfig-checker/editorconfig-checker/pull/76]
 ### Deprecated
 ### Removed
 ### Fixed
