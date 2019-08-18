@@ -111,17 +111,20 @@ A sample `.ecrc` file can look like this and will be used from your current work
 
 ```json
 {
-    "verbose": false,
-    "ignore_defaults": false,
-    "exclude": ["testfiles"],
-    "spaces_after_tabs": false,
-    "allowed_content_types": ["xml/"],
-    "disable": {
-        "end_of_line": false,
-        "trim_trailing_whitespace": false,
-        "insert_final_newline": false,
-        "indentation": false
-    }
+  "Verbose": false,
+  "Debug": false,
+  "IgnoreDefaults": false,
+  "SpacesAftertabs": false,
+  "NoColor": false,
+  "Exclude": [],
+  "AllowedContentTypes": [],
+  "PassedFiles": [],
+  "Disable": {
+    "EndOfLine": false,
+    "Indentation": false,
+    "InsertFinalNewline": false,
+    "TrimTrailingWhitespace": false
+  }
 }
 ```
 
