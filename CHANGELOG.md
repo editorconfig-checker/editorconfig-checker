@@ -9,6 +9,9 @@
 ### Security
 ### Misc
 
+## [2.0.1] - 2019-08-18
+* (Make allowed content types behave correctly)[https://github.com/editorconfig-checker/editorconfig-checker/pull/81]
+
 ## [2.0.0] - 2019-08-18
 ### BREAKING
 * (Introduce `.ecrc` as a config file and not only to ignore files.)[https://github.com/editorconfig-checker/editorconfig-checker/pull/76]
