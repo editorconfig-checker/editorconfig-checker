@@ -77,6 +77,9 @@ func init() {
 
 // Main function, dude
 func main() {
+	currentConfig.Logger.Debug(currentConfig.GetAsString())
+	currentConfig.Logger.Verbose("Exclude Regexp: %s", currentConfig.GetExcludesAsRegularExpression())
+
 	// Check for returnworthy params
 	switch {
 	case currentConfig.Version:
@@ -87,9 +90,6 @@ func main() {
 		flag.PrintDefaults()
 		return
 	}
-
-	currentConfig.Logger.Debug(currentConfig.GetAsString())
-	currentConfig.Logger.Verbose("Exclude Regexp: %s", currentConfig.GetExcludesAsRegularExpression())
 
 	// contains all files which should be checked
 	filePaths := files.GetFiles(*currentConfig)
