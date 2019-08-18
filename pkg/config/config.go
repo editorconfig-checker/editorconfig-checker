@@ -87,15 +87,15 @@ type DisabledChecks struct {
 // NewConfig initializes a new config
 func NewConfig(configPath string) (*Config, error) {
 	var config Config
+
 	config.Path = configPath
+	config.AllowedContentTypes = defaultAllowedContentTypes
+	config.Exclude = []string{}
+	config.PassedFiles = []string{}
 
 	if !utils.IsRegularFile(configPath) {
 		return &config, fmt.Errorf("No file found at %s", configPath)
 	}
-
-	config.Exclude = []string{}
-	config.AllowedContentTypes = []string{}
-	config.PassedFiles = []string{}
 
 	return &config, nil
 }
@@ -108,12 +108,13 @@ func (c *Config) Parse() error {
 			return err
 		}
 
-		err = json.Unmarshal(configString, c)
+		tmpConfg := Config{}
+		err = json.Unmarshal(configString, &tmpConfg)
 		if err != nil {
 			return err
 		}
 
-		c.AllowedContentTypes = append(defaultAllowedContentTypes, c.AllowedContentTypes...)
+		c.Merge(tmpConfg)
 	}
 
 	return nil
