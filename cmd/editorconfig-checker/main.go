@@ -81,14 +81,9 @@ func main() {
 	currentConfig.Logger.Verbose("Exclude Regexp: %s", currentConfig.GetExcludesAsRegularExpression())
 
 	// Check for returnworthy params
-	switch {
-	case currentConfig.Version:
-		currentConfig.Logger.Output(version)
-		return
-	case currentConfig.Help:
-		currentConfig.Logger.Output("USAGE:")
-		flag.PrintDefaults()
-		return
+	shouldExit := ReturnableFlags(*currentConfig)
+	if shouldExit {
+		os.Exit(0)
 	}
 
 	// contains all files which should be checked
@@ -117,4 +112,17 @@ func main() {
 	}
 
 	os.Exit(0)
+}
+
+// ReturnableFlags returns wether a flag passed should exit the program
+func ReturnableFlags(config config.Config) bool {
+	switch {
+	case config.Version:
+		config.Logger.Output(version)
+	case config.Help:
+		config.Logger.Output("USAGE:")
+		flag.PrintDefaults()
+	}
+
+	return config.Version || config.Help
 }
