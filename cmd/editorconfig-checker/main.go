@@ -77,17 +77,18 @@ func init() {
 
 // Main function, dude
 func main() {
+	config := *currentConfig
 	currentConfig.Logger.Debug(currentConfig.GetAsString())
 	currentConfig.Logger.Verbose("Exclude Regexp: %s", currentConfig.GetExcludesAsRegularExpression())
 
 	// Check for returnworthy params
-	shouldExit := ReturnableFlags(*currentConfig)
+	shouldExit := ReturnableFlags(config)
 	if shouldExit {
 		os.Exit(0)
 	}
 
 	// contains all files which should be checked
-	filePaths := files.GetFiles(*currentConfig)
+	filePaths := files.GetFiles(config)
 
 	if currentConfig.DryRun {
 		for _, file := range filePaths {
@@ -97,11 +98,11 @@ func main() {
 		os.Exit(0)
 	}
 
-	errors := validation.ProcessValidation(filePaths, *currentConfig)
+	errors := validation.ProcessValidation(filePaths, config)
 	errorCount := error.GetErrorCount(errors)
 
 	if errorCount != 0 {
-		error.PrintErrors(errors, *currentConfig)
+		error.PrintErrors(errors, config)
 		logger.Error(fmt.Sprintf("\n%d errors found", errorCount))
 	}
 

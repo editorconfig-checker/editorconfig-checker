@@ -1,6 +1,7 @@
 package main
 
 import (
+	"os"
 	"os/exec"
 	"testing"
 
@@ -47,6 +48,13 @@ func TestReturnableFlagsExitValue(t *testing.T) {
 
 	cmd = exec.Command("go", "run", "./main.go", "-help")
 	err = cmd.Run()
+	if err != nil {
+		t.Errorf("process ran with err %v, want exit status 0", err)
+	}
+
+	cmd = exec.Command("go", "run", "./main.go", "-init", "-config", "stuff.json")
+	err = cmd.Run()
+	os.Remove("stuff.json")
 	if err != nil {
 		t.Errorf("process ran with err %v, want exit status 0", err)
 	}
