@@ -2,22 +2,12 @@
 
 ## Unreleased
 ### BREAKING
-* (Introduce `.ecrc` as a config file and not only to ignore files.)[https://github.com/editorconfig-checker/editorconfig-checker/pull/76]
-* (Removed shorthand flags for clarity)[https://github.com/editorconfig-checker/editorconfig-checker/pull/76]
 ### Added
-* (disable specific checks)[https://github.com/editorconfig-checker/editorconfig-checker/pull/71]
-* (A config can be generated with the `init`-flag)[https://github.com/editorconfig-checker/editorconfig-checker/pull/76]
-* (Files can be passed with `ec [<file>|<directory>]`)[https://github.com/editorconfig-checker/editorconfig-checker/pull/76]
-* (Added `debug` flag (more debug output will be added while debugging))[https://github.com/editorconfig-checker/editorconfig-checker/pull/76]
-### Changed
-* (Print most output on `stdout` instead of `stderr` now for `grepability`)[https://github.com/editorconfig-checker/editorconfig-checker/pull/76]
 ### Deprecated
 ### Removed
 ### Fixed
-* (fixed some golint and gocyclo issues)[https://github.com/editorconfig-checker/editorconfig-checker/pull/72]
 ### Security
 ### Misc
-* (Put more structure into packages and rewrite most of internals.)[https://github.com/editorconfig-checker/editorconfig-checker/pull/76]
 
 ## [2.0.0] - 2019-08-18
 ### BREAKING
