@@ -62,6 +62,15 @@ Grab a binary from the [release page](https://github.com/editorconfig-checker/ed
 If you have go installed you can run `go get github.com/editorconfig-checker/editorconfig-checker` and run `make build` inside the project folder. 
 This will place a binary called `ec` into the `bin` directory.
 
+If you are using Arch Linux you can use:
+
+```
+<favourite-aur-helper> <install-command> editorconfig-checker-git
+
+# i.e.
+trizen -S editorconfig-checker-git
+```
+
 
 ## Usage
 
