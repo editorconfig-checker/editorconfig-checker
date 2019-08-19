@@ -8,6 +8,7 @@
 ### Fixed
 ### Security
 ### Misc
+* (Update editorconfig-core-go to v2.1.1)[https://github.com/editorconfig-checker/editorconfig-checker/pull/77]
 
 ## [2.0.1] - 2019-08-18
 * (Make allowed content types behave correctly)[https://github.com/editorconfig-checker/editorconfig-checker/pull/81]
