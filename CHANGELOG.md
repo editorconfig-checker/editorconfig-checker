@@ -8,6 +8,8 @@
 ### Fixed
 ### Security
 ### Misc
+
+## [2.0.2] - 2019-08-19
 * (Update editorconfig-core-go to v2.1.1)[https://github.com/editorconfig-checker/editorconfig-checker/pull/77]
 
 ## [2.0.1] - 2019-08-18
