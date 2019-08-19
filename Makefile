@@ -28,7 +28,7 @@ run: build
 run-verbose: build
 	@./bin/ec --verbose
 
-release: _is_master_branch _git_branch_is_up_to_date current_version _tag_version _do_release _release_dockerfile
+release: _is_master_branch _git_branch_is_up_to_date current_version _tag_version _do_release
 	@echo Release done. Go to Github and create a release.
 
 _is_master_branch:
@@ -95,12 +95,6 @@ _compress-all-binaries:
 		tar czf $$f.tar.gz $$f;    \
 	done
 	@rm $(BINARIES)
-
-docker-build:
-	docker  build -t mstruebing/editorconfig-checker:latest .
-
-docker-run:
-	docker run --rm --volume=$$PWD:/check mstruebing/editorconfig-checker:1.1.3
 
 _release_dockerfile: _build_dockerfile _push_dockerfile
 
