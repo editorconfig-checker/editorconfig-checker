@@ -5,57 +5,73 @@ import (
 )
 
 func TestGetEolChar(t *testing.T) {
-	if GetEolChar("lf") != "\n" {
-		t.Error("Expected end of line character to be \\n for \"lf\"")
+	getEolCharTests := []struct {
+		input    string
+		expected string
+	}{
+		{"lf", "\n"},
+		{"cr", "\r"},
+		{"crlf", "\r\n"},
+		{"", "\n"},
 	}
 
-	if GetEolChar("cr") != "\r" {
-		t.Error("Expected end of line character to be \\r for \"cr\"")
-	}
-
-	if GetEolChar("crlf") != "\r\n" {
-		t.Error("Expected end of line character to be \\r\\n for \"crlf\"")
-	}
-
-	if GetEolChar("") != "\n" {
-		t.Error("Expected end of line character to be \\n as a fallback")
+	for _, tt := range getEolCharTests {
+		actual := GetEolChar(tt.input)
+		if actual != tt.expected {
+			t.Errorf("GetEolChar(%s): expected: %v, got: %v", tt.input, tt.expected, actual)
+		}
 	}
 }
 
 func TestIsRegularFile(t *testing.T) {
-	if !IsRegularFile("./utils.go") {
-		t.Error("Expected utils.go to be a regular file")
+	isRegularFileTests := []struct {
+		input    string
+		expected bool
+	}{
+		{"./utils.go", true},
+		{"./notExisting.go", false},
+		{".", false},
 	}
 
-	if IsRegularFile("./notExisting.go") {
-		t.Error("Expected not existing file not to be a regular file")
-	}
-
-	if IsRegularFile(".") {
-		t.Error("Expected a directory not to be a regular file")
+	for _, tt := range isRegularFileTests {
+		actual := IsRegularFile(tt.input)
+		if actual != tt.expected {
+			t.Errorf("IsRegularFile(%s): expected: %v, got: %v", tt.input, tt.expected, actual)
+		}
 	}
 }
 
 func TestIsDirectory(t *testing.T) {
-	if !IsDirectory(".") {
-		t.Error("Expected the current directory to be a directory")
+	isDirectoryTests := []struct {
+		input    string
+		expected bool
+	}{
+		{".", true},
+		{"./notExisting", false},
+		{"./utils.go", false},
 	}
 
-	if IsDirectory("./notExisting") {
-		t.Error("Expected not existing directory not to be a directory")
-	}
-
-	if IsDirectory("./utils.go") {
-		t.Error("Expected a file not to be a directory")
+	for _, tt := range isDirectoryTests {
+		actual := IsDirectory(tt.input)
+		if actual != tt.expected {
+			t.Errorf("IsDirectory(%s): expected: %v, got: %v", tt.input, tt.expected, actual)
+		}
 	}
 }
 
 func TestFileExists(t *testing.T) {
-	if !FileExists("./utils.go") {
-		t.Error("./utils.go should exist")
+	fileExistsTests := []struct {
+		input    string
+		expected bool
+	}{
+		{"./utils.go", true},
+		{"./notExisting.go", false},
 	}
 
-	if FileExists("./notExisting.go") {
-		t.Error("./notExisting.go should not exist")
+	for _, tt := range fileExistsTests {
+		actual := FileExists(tt.input)
+		if actual != tt.expected {
+			t.Errorf("FileExists(%s): expected: %v, got: %v", tt.input, tt.expected, actual)
+		}
 	}
 }
