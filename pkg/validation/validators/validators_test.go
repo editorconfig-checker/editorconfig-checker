@@ -106,7 +106,7 @@ func TestLineEnding(t *testing.T) {
 }
 
 func TestIndentation(t *testing.T) {
-	params := config.Config{SpacesAftertabs: false}
+	configuration := config.Config{SpacesAftertabs: false}
 
 	indentationTests := []struct {
 		line        string
@@ -123,9 +123,9 @@ func TestIndentation(t *testing.T) {
 	}
 
 	for _, tt := range indentationTests {
-		actual := Indentation(tt.line, tt.indentStyle, tt.indenSize, params)
+		actual := Indentation(tt.line, tt.indentStyle, tt.indenSize, configuration)
 		if !reflect.DeepEqual(actual, tt.expected) {
-			t.Errorf("Indentation(%s, %s, %d, %+v): expected: %v, got: %v", tt.line, tt.indentStyle, tt.indenSize, params, tt.expected, actual)
+			t.Errorf("Indentation(%s, %s, %d, %+v): expected: %v, got: %v", tt.line, tt.indentStyle, tt.indenSize, configuration, tt.expected, actual)
 		}
 	}
 }

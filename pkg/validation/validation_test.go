@@ -7,106 +7,106 @@ import (
 )
 
 func TestProcessValidation(t *testing.T) {
-	params := config.Config{Verbose: true}
+	configuration := config.Config{Verbose: true}
 
-	processValidationResult := ProcessValidation([]string{"./main.go"}, params)
+	processValidationResult := ProcessValidation([]string{"./main.go"}, configuration)
 	if len(processValidationResult) > 1 || len(processValidationResult[0].Errors) != 0 {
 		t.Error("Should not have errors when validating main.go, got", processValidationResult)
 	}
 
-	processValidationResult = ProcessValidation([]string{"./../../testfiles/disabled-file.ext"}, params)
+	processValidationResult = ProcessValidation([]string{"./../../testfiles/disabled-file.ext"}, configuration)
 	if len(processValidationResult) > 1 || len(processValidationResult[0].Errors) != 0 {
 		t.Error("Disabled file should have no errors, got", processValidationResult)
 	}
 
-	processValidationResult = ProcessValidation([]string{"./../../testfiles/empty-file.txt"}, params)
+	processValidationResult = ProcessValidation([]string{"./../../testfiles/empty-file.txt"}, configuration)
 	if len(processValidationResult) > 1 || len(processValidationResult[0].Errors) != 0 {
 		t.Error("Empty file should have no errors, got", processValidationResult)
 	}
 
-	processValidationResult = ProcessValidation([]string{"./../../testfiles/wrong-file.txt"}, params)
+	processValidationResult = ProcessValidation([]string{"./../../testfiles/wrong-file.txt"}, configuration)
 	if (len(processValidationResult) > 1) || (len(processValidationResult[0].Errors) != 1) {
 		t.Error("Wrong file should have errors, got", processValidationResult)
 	}
 }
 
 func TestValidateFile(t *testing.T) {
-	params := config.Config{Verbose: true}
+	configuration := config.Config{Verbose: true}
 
-	result := ValidateFile("./main.go", params)
+	result := ValidateFile("./main.go", configuration)
 	if len(result) != 0 {
 		t.Error("Should not have errors when validating main.go, got", result)
 	}
 
-	result = ValidateFile("./../../testfiles/wrong-file.txt", params)
+	result = ValidateFile("./../../testfiles/wrong-file.txt", configuration)
 	if len(result) != 1 {
 		t.Error("Should have errors when validating file with one error, got", result)
 	}
 
-	params.Disable.Indentation = true
-	result = ValidateFile("./../../testfiles/wrong-file.txt", params)
+	configuration.Disable.Indentation = true
+	result = ValidateFile("./../../testfiles/wrong-file.txt", configuration)
 	if len(result) != 0 {
 		t.Error("Should have no errors, got", result)
 	}
 
-	params = config.Config{SpacesAftertabs: true}
-	result = ValidateFile("./../../testfiles/spaces-after-tabs.txt", params)
+	configuration = config.Config{SpacesAftertabs: true}
+	result = ValidateFile("./../../testfiles/spaces-after-tabs.txt", configuration)
 	if len(result) != 0 {
 		t.Error("Should have no errors when validating valid file, got", result)
 	}
 
-	params = config.Config{SpacesAftertabs: false}
-	result = ValidateFile("./../../testfiles/zero-indent.txt", params)
+	configuration = config.Config{SpacesAftertabs: false}
+	result = ValidateFile("./../../testfiles/zero-indent.txt", configuration)
 	if len(result) != 0 {
 		t.Error("Should have no errors when validating valid file, got", result)
 	}
 
-	result = ValidateFile("./../../testfiles/disabled-line.txt", params)
+	result = ValidateFile("./../../testfiles/disabled-line.txt", configuration)
 	if len(result) != 0 {
 		t.Error("Should have no errors when validating valid file, got", result)
 	}
 
-	params = config.Config{SpacesAftertabs: false}
-	result = ValidateFile("./../../testfiles/spaces-after-tabs.txt", params)
+	configuration = config.Config{SpacesAftertabs: false}
+	result = ValidateFile("./../../testfiles/spaces-after-tabs.txt", configuration)
 	if len(result) != 1 {
 		t.Error("Should have one error, got", result)
 	}
 
-	params = config.Config{Verbose: true}
-	result = ValidateFile("./../../testfiles/trailing-whitespace.txt", params)
+	configuration = config.Config{Verbose: true}
+	result = ValidateFile("./../../testfiles/trailing-whitespace.txt", configuration)
 	if len(result) != 1 {
 		t.Error("Should have one error, got", result)
 	}
 
-	params = config.Config{Verbose: true}
-	params.Disable.TrimTrailingWhitespace = true
-	result = ValidateFile("./../../testfiles/trailing-whitespace.txt", params)
+	configuration = config.Config{Verbose: true}
+	configuration.Disable.TrimTrailingWhitespace = true
+	result = ValidateFile("./../../testfiles/trailing-whitespace.txt", configuration)
 	if len(result) != 0 {
 		t.Error("Should have no error, got", result)
 	}
 
-	params = config.Config{Verbose: true}
-	result = ValidateFile("./../../testfiles/final-newline-missing.txt", params)
+	configuration = config.Config{Verbose: true}
+	result = ValidateFile("./../../testfiles/final-newline-missing.txt", configuration)
 	if len(result) != 1 {
 		t.Error("Should have one error, got", result)
 	}
 
-	params = config.Config{Verbose: true}
-	params.Disable.InsertFinalNewline = true
-	result = ValidateFile("./../../testfiles/final-newline-missing.txt", params)
+	configuration = config.Config{Verbose: true}
+	configuration.Disable.InsertFinalNewline = true
+	result = ValidateFile("./../../testfiles/final-newline-missing.txt", configuration)
 	if len(result) != 0 {
 		t.Error("Should have no error, got", result)
 	}
 
-	params = config.Config{Verbose: true}
-	result = ValidateFile("./../../testfiles/wrong-line-ending.txt", params)
+	configuration = config.Config{Verbose: true}
+	result = ValidateFile("./../../testfiles/wrong-line-ending.txt", configuration)
 	if len(result) == 0 {
 		t.Error("Should have one error, got", result)
 	}
 
-	params = config.Config{Verbose: true}
-	params.Disable.EndOfLine = true
-	result = ValidateFile("./../../testfiles/wrong-line-ending.txt", params)
+	configuration = config.Config{Verbose: true}
+	configuration.Disable.EndOfLine = true
+	result = ValidateFile("./../../testfiles/wrong-line-ending.txt", configuration)
 	if len(result) != 0 {
 		t.Error("Should have no error, got", result)
 	}

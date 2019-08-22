@@ -81,7 +81,7 @@ func main() {
 	currentConfig.Logger.Debug(currentConfig.GetAsString())
 	currentConfig.Logger.Verbose("Exclude Regexp: %s", currentConfig.GetExcludesAsRegularExpression())
 
-	// Check for returnworthy params
+	// Check for returnworthy arguments
 	shouldExit := ReturnableFlags(config)
 	if shouldExit {
 		os.Exit(0)
