@@ -88,7 +88,12 @@ func main() {
 	}
 
 	// contains all files which should be checked
-	filePaths := files.GetFiles(config)
+	filePaths, err := files.GetFiles(config)
+
+	if err != nil {
+		currentConfig.Logger.Error(err.Error())
+		os.Exit(1)
+	}
 
 	if currentConfig.DryRun {
 		for _, file := range filePaths {

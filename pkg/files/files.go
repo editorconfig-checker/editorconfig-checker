@@ -27,22 +27,22 @@ type FileInformation struct {
 }
 
 // IsExcluded returns wether the file is excluded via arguments or config file
-func IsExcluded(filePath string, config config.Config) bool {
+func IsExcluded(filePath string, config config.Config) (bool, error) {
 	if len(config.Exclude) == 0 {
-		return false
+		return false, nil
 	}
 
 	relativeFilePath, err := GetRelativePath(filePath)
 	if err != nil {
-		panic(err)
+		return true, err
 	}
 
 	result, err := regexp.MatchString(config.GetExcludesAsRegularExpression(), relativeFilePath)
 	if err != nil {
-		panic(err)
+		return true, err
 	}
 
-	return result
+	return result, nil
 }
 
 // AddToFiles adds a file to a slice if it isn't already in there
@@ -57,7 +57,9 @@ func AddToFiles(filePaths []string, filePath string, config config.Config) []str
 		config.Logger.Error(err.Error())
 	}
 
-	if !IsExcluded(filePath, config) && IsAllowedContentType(contentType, config) {
+	isExcluded, err := IsExcluded(filePath, config)
+
+	if err == nil && !isExcluded && IsAllowedContentType(contentType, config) {
 		config.Logger.Verbose("Add %s to be checked", filePath)
 		return append(filePaths, filePath)
 	}
@@ -67,7 +69,7 @@ func AddToFiles(filePaths []string, filePath string, config config.Config) []str
 }
 
 // GetFiles returns all files which should be checked
-func GetFiles(config config.Config) []string {
+func GetFiles(config config.Config) ([]string, error) {
 	var filePaths []string
 
 	// Handle explicit passed files
@@ -86,7 +88,7 @@ func GetFiles(config config.Config) []string {
 			}
 		}
 
-		return filePaths
+		return filePaths, nil
 	}
 
 	byteArray, err := exec.Command("git", "ls-tree", "-r", "--name-only", "HEAD").Output()
@@ -94,7 +96,7 @@ func GetFiles(config config.Config) []string {
 		// It is not a git repository.
 		cwd, err := os.Getwd()
 		if err != nil {
-			panic("Could not get the current working directly")
+			return filePaths, err
 		}
 
 		_ = filepath.Walk(cwd, func(path string, fi os.FileInfo, err error) error {
@@ -120,7 +122,7 @@ func GetFiles(config config.Config) []string {
 		}
 	}
 
-	return filePaths
+	return filePaths, nil
 }
 
 // ReadLines returns the lines from a file as a slice
@@ -165,7 +167,7 @@ func GetContentType(path string) (string, error) {
 	// Reset the read pointer if necessary.
 	_, err = file.Seek(0, 0)
 	if err != nil {
-		panic(fmt.Sprintf("ERROR: %s", err))
+		panic(err)
 	}
 
 	// Always returns a valid content-type and "application/octet-stream" if no others seemed to match.
@@ -184,7 +186,7 @@ func PathExists(filePath string) bool {
 func GetRelativePath(filePath string) (string, error) {
 	cwd, err := os.Getwd()
 	if err != nil {
-		return "", fmt.Errorf("Could not get the current working directly")
+		return "", fmt.Errorf("Could not get the current working directory")
 	}
 
 	relativePath := strings.Replace(filePath, cwd, ".", 1)
