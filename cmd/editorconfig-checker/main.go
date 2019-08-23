@@ -81,14 +81,19 @@ func main() {
 	currentConfig.Logger.Debug(currentConfig.GetAsString())
 	currentConfig.Logger.Verbose("Exclude Regexp: %s", currentConfig.GetExcludesAsRegularExpression())
 
-	// Check for returnworthy params
+	// Check for returnworthy arguments
 	shouldExit := ReturnableFlags(config)
 	if shouldExit {
 		os.Exit(0)
 	}
 
 	// contains all files which should be checked
-	filePaths := files.GetFiles(config)
+	filePaths, err := files.GetFiles(config)
+
+	if err != nil {
+		currentConfig.Logger.Error(err.Error())
+		os.Exit(1)
+	}
 
 	if currentConfig.DryRun {
 		for _, file := range filePaths {

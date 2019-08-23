@@ -1,409 +1,224 @@
 package validators
 
 import (
+	"errors"
+	"reflect"
 	"testing"
 
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/config"
 )
 
-func TestFinalNewlineTrue(t *testing.T) {
-	if FinalNewline("x\n", "true", "lf") != nil {
-		t.Error("Expected FinalNewline to be true if insertFinalNewline is set to true and correct eol-char is used")
+func TestFinalNewline(t *testing.T) {
+	finalNewlineTests := []struct {
+		line               string
+		insertFinalNewline string
+		lineEnding         string
+		expected           error
+	}{
+		{"x\n", "true", "lf", nil},
+		{"x\r", "true", "cr", nil},
+		{"x\r\n", "true", "crlf", nil},
+
+		{"x", "true", "lf", errors.New("Wrong line endings or new final newline")},
+		{"x", "true", "cr", errors.New("Wrong line endings or new final newline")},
+		{"x", "true", "crlf", errors.New("Wrong line endings or new final newline")},
+
+		{"x\n", "true", "cr", errors.New("Wrong line endings or new final newline")},
+		{"x\n", "true", "crlf", errors.New("Wrong line endings or new final newline")},
+
+		{"x\r", "true", "lf", errors.New("Wrong line endings or new final newline")},
+		{"x\r", "true", "crlf", errors.New("Wrong line endings or new final newline")},
+
+		// TODO: Needs a fix (\n is the last char so it somehow matches)
+		// {"x\r\n", "true", "lf", errors.New("Wrong line endings or new final newline")},
+		{"x\r\n", "true", "cr", errors.New("Wrong line endings or new final newline")},
+
+		// insert_final_newline false
+		{"x", "false", "lf", nil},
+		{"x\n", "false", "lf", errors.New("No final newline expected")},
+		{"x\r", "false", "lf", errors.New("No final newline expected")},
+		{"x\r\n", "false", "lf", errors.New("No final newline expected")},
+
+		{"x", "false", "cr", nil},
+		{"x\n", "false", "cr", errors.New("No final newline expected")},
+		{"x\r", "false", "cr", errors.New("No final newline expected")},
+		{"x\r\n", "false", "cr", errors.New("No final newline expected")},
+
+		{"x", "false", "crlf", nil},
+		{"x\n", "false", "crlf", errors.New("No final newline expected")},
+		{"x\r", "false", "crlf", errors.New("No final newline expected")},
+		{"x\r\n", "false", "crlf", errors.New("No final newline expected")},
+
+		// insert_final_newline not set
+		{"x", "", "lf", nil},
+		{"x", "", "cr", nil},
+		{"x", "", "crlf", nil},
+		{"x\n", "", "lf", nil},
+		{"x\n", "", "cr", nil},
+		{"x\n", "", "crlf", nil},
+		{"x\r", "", "lf", nil},
+		{"x\r", "", "cr", nil},
+		{"x\r", "", "crlf", nil},
+		{"x\r\n", "", "lf", nil},
+		{"x\r\n", "", "cr", nil},
+		{"x\r\n", "", "crlf", nil},
 	}
 
-	if FinalNewline("x", "true", "lf") == nil {
-		t.Error("Expected FinalNewline to be false if insertFinalNewline is set to true and no eol-char is used")
-	}
-
-	if FinalNewline("x\r", "true", "cr") != nil {
-		t.Error("Expected FinalNewline to be true if insertFinalNewline is set to true and correct eol-char is used")
-	}
-
-	if FinalNewline("x", "true", "cr") == nil {
-		t.Error("Expected FinalNewline to be false if insertFinalNewline is set to true and no eol-char is used")
-	}
-
-	if FinalNewline("x\r\n", "true", "crlf") != nil {
-		t.Error("Expected FinalNewline to be true if insertFinalNewline is set to true and correct eol-char is used")
-	}
-
-	if FinalNewline("x", "true", "crlf") == nil {
-		t.Error("Expected FinalNewline to be false if insertFinalNewline is set to true and no eol-char is used")
-	}
-
-	if FinalNewline("x\n", "true", "cr") == nil {
-		t.Error("Expected FinalNewline to be false if insertFinalNewline is set to true and the wrong eol-char is used")
-	}
-
-	if FinalNewline("x\n", "true", "crlf") == nil {
-		t.Error("Expected FinalNewline to be false if insertFinalNewline is set to true and the wrong eol-char is used")
-	}
-
-	if FinalNewline("x\r", "true", "lf") == nil {
-		t.Error("Expected FinalNewline to be false if insertFinalNewline is set to true and the wrong eol-char is used")
-	}
-
-	if FinalNewline("x\r", "true", "crlf") == nil {
-		t.Error("Expected FinalNewline to be false if insertFinalNewline is set to true and the wrong eol-char is used")
-	}
-
-	// TODO: This needs to be fixed
-	// if FinalNewline("x\r\n", "true", "lf") == nil {
-	// 	t.Error("Expected FinalNewline to be false if insertFinalNewline is set to true and the wrong eol-char is used")
-	// }
-
-	if FinalNewline("x\r\n", "true", "cr") == nil {
-		t.Error("Expected FinalNewline to be false if insertFinalNewline is set to true and the wrong eol-char is used")
-	}
-}
-
-func TestFinalNewlineFalse(t *testing.T) {
-	if FinalNewline("x", "false", "lf") != nil {
-		t.Error("Expected FinalNewline to be true if insertFinalNewline is set to false and no eol-char is used")
-	}
-
-	if FinalNewline("x\n", "false", "lf") == nil {
-		t.Error("Expected FinalNewline to be false if insertFinalNewline is set to false and lf is used as eol-char")
-	}
-
-	if FinalNewline("x\r", "false", "lf") == nil {
-		t.Error("Expected FinalNewline to be false if insertFinalNewline is set to false and cr is used as eol-char")
-	}
-
-	if FinalNewline("x\r\n", "false", "lf") == nil {
-		t.Error("Expected FinalNewline to be false if insertFinalNewline is set to false and crlf is used as eol-char")
-	}
-
-	if FinalNewline("x", "false", "cr") != nil {
-		t.Error("Expected FinalNewline to be true if insertFinalNewline is set to false and no eol-char is used")
-	}
-
-	if FinalNewline("x\n", "false", "cr") == nil {
-		t.Error("Expected FinalNewline to be false if insertFinalNewline is set to false and lf is used as eol-char")
-	}
-
-	if FinalNewline("x\r", "false", "cr") == nil {
-		t.Error("Expected FinalNewline to be false if insertFinalNewline is set to false and cr is used as eol-char")
-	}
-
-	if FinalNewline("x\r\n", "false", "cr") == nil {
-		t.Error("Expected FinalNewline to be false if insertFinalNewline is set to false and crlf is used as eol-char")
-	}
-
-	if FinalNewline("x", "false", "crlf") != nil {
-		t.Error("Expected FinalNewline to be true if insertFinalNewline is set to false and no eol-char is used")
-	}
-
-	if FinalNewline("x\n", "false", "crlf") == nil {
-		t.Error("Expected FinalNewline to be false if insertFinalNewline is set to false and lf is used as eol-char")
-	}
-
-	if FinalNewline("x\r", "false", "crlf") == nil {
-		t.Error("Expected FinalNewline to be false if insertFinalNewline is set to false and cr is used as eol-char")
-	}
-
-	if FinalNewline("x\r\n", "false", "crlf") == nil {
-		t.Error("Expected FinalNewline to be false if insertFinalNewline is set to false and crlf is used as eol-char")
+	for _, tt := range finalNewlineTests {
+		actual := FinalNewline(tt.line, tt.insertFinalNewline, tt.lineEnding)
+		if !reflect.DeepEqual(actual, tt.expected) {
+			t.Errorf("FinalNewline(%s, %s, %s): expected: %v, got: %v", tt.line, tt.insertFinalNewline, tt.lineEnding, tt.expected, actual)
+		}
 	}
 }
 
-func TestFinalNewlineNothing(t *testing.T) {
-	if FinalNewline("x", "", "lf") != nil {
-		t.Error("Expected FinalNewline to be true if nothing is set for insertfinalnewline")
+func TestLineEnding(t *testing.T) {
+	linedEndingTests := []struct {
+		line       string
+		lineEnding string
+		expected   error
+	}{
+		{"x", "lf", nil},
+		{"x\n", "lf", nil},
+		{"x\r", "lf", errors.New("Not all lines have the correct end of line character")},
+		{"x\r\n", "lf", errors.New("Not all lines have the correct end of line character")},
+		{"x\ry\nz\n", "lf", errors.New("Not all lines have the correct end of line character")},
+
+		{"x", "cr", nil},
+		{"x\r", "cr", nil},
+		{"x\n", "cr", errors.New("Not all lines have the correct end of line character")},
+		{"x\r\n", "cr", errors.New("Not all lines have the correct end of line character")},
+		{"x\ry\nz\n", "cr", errors.New("Not all lines have the correct end of line character")},
+
+		{"x", "crlf", nil},
+		{"x\r\n", "crlf", nil},
+		{"x\r", "crlf", errors.New("Not all lines have the correct end of line character")},
+		{"x\n", "crlf", errors.New("Not all lines have the correct end of line character")},
+		{"x\ry\nz\n", "crlf", errors.New("Not all lines have the correct end of line character")},
 	}
 
-	if FinalNewline("x", "", "cr") != nil {
-		t.Error("Expected FinalNewline to be true if nothing is set for insertfinalnewline")
-	}
-
-	if FinalNewline("x", "", "crlf") != nil {
-		t.Error("Expected FinalNewline to be true if nothing is set for insertfinalnewline")
-	}
-
-	if FinalNewline("x\n", "", "lf") != nil {
-		t.Error("Expected FinalNewline to be true if nothing is set for insertfinalnewline")
-	}
-
-	if FinalNewline("x\n", "", "cr") != nil {
-		t.Error("Expected FinalNewline to be true if nothing is set for insertfinalnewline")
-	}
-
-	if FinalNewline("x\n", "", "crlf") != nil {
-		t.Error("Expected FinalNewline to be true if nothing is set for insertfinalnewline")
-	}
-
-	if FinalNewline("x\r", "", "lf") != nil {
-		t.Error("Expected FinalNewline to be true if nothing is set for insertfinalnewline")
-	}
-
-	if FinalNewline("x\r", "", "cr") != nil {
-		t.Error("Expected FinalNewline to be true if nothing is set for insertfinalnewline")
-	}
-
-	if FinalNewline("x\r", "", "crlf") != nil {
-		t.Error("Expected FinalNewline to be true if nothing is set for insertfinalnewline")
-	}
-
-	if FinalNewline("x\r\n", "", "lf") != nil {
-		t.Error("Expected FinalNewline to be true if nothing is set for insertfinalnewline")
-	}
-
-	if FinalNewline("x\r\n", "", "cr") != nil {
-		t.Error("Expected FinalNewline to be true if nothing is set for insertfinalnewline")
-	}
-
-	if FinalNewline("x\r\n", "", "crlf") != nil {
-		t.Error("Expected FinalNewline to be true if nothing is set for insertfinalnewline")
-	}
-}
-
-func TestLineEndingLf(t *testing.T) {
-	if LineEnding("x", "lf") != nil {
-		t.Error("Expected to return true for line without linebreak")
-	}
-
-	if LineEnding("x\n", "lf") != nil {
-		t.Error("Expected to return true for a valid file(lf)")
-	}
-
-	if LineEnding("x\r", "lf") == nil {
-		t.Error("Expected to return false for an invalid file(lf) with \\r")
-	}
-
-	if LineEnding("x\r\n", "lf") == nil {
-		t.Error("Expected to return false for an invalid file(lf) with \\r\\n")
-	}
-
-	if LineEnding("x\ry\nz\n", "lf") == nil {
-		t.Error("Expected to return false for mixed file(lf)")
-	}
-}
-
-func TestLineEndingCr(t *testing.T) {
-	if LineEnding("x", "cr") != nil {
-		t.Error("Expected to return true for line without linebreak")
-	}
-
-	if LineEnding("x\r", "cr") != nil {
-		t.Error("Expected to return true for a valid file(cr)")
-	}
-
-	if LineEnding("x\n", "cr") == nil {
-		t.Error("Expected to return false for an invalid file(cr) with \\n")
-	}
-
-	if LineEnding("x\r\n", "cr") == nil {
-		t.Error("Expected to return false for an invalid file(cr) with \\r\\n")
-	}
-
-	if LineEnding("x\ry\nz\n", "cr") == nil {
-		t.Error("Expected to return false for mixed file(lf)")
-	}
-}
-
-func TestLineEndingCrlf(t *testing.T) {
-	if LineEnding("x", "crlf") != nil {
-		t.Error("Expected to return true for line without linebreak")
-	}
-
-	if LineEnding("x\r\n", "crlf") != nil {
-		t.Error("Expected to return true for a valid file(crlf)")
-	}
-
-	if LineEnding("x\n", "crlf") == nil {
-		t.Error("Expected to return false for an invalid file(crlf) with \\n")
-	}
-
-	if LineEnding("x\r", "crlf") == nil {
-		t.Error("Expected to return false for an invalid file(crlf) with \\r")
-	}
-
-	if LineEnding("x\ry\nz\n", "crlf") == nil {
-		t.Error("Expected to return false for mixed file(crlf)")
+	for _, tt := range linedEndingTests {
+		actual := LineEnding(tt.line, tt.lineEnding)
+		if !reflect.DeepEqual(actual, tt.expected) {
+			t.Errorf("LineEnding(%s, %s): expected: %v, got: %v", tt.line, tt.lineEnding, tt.expected, actual)
+		}
 	}
 }
 
 func TestIndentation(t *testing.T) {
-	params := config.Config{SpacesAftertabs: false}
-	if (Indentation("    x", "space", 4, params)) != nil {
-		t.Error("Expected correctly indented line to return an nil")
+	configuration := config.Config{SpacesAftertabs: false}
+
+	indentationTests := []struct {
+		line        string
+		indentStyle string
+		indenSize   int
+		expected    error
+	}{
+		{"    x", "space", 4, nil},
+		{"   x", "space", 4, errors.New("Wrong amount of left-padding spaces(want multiple of 4)")},
+		{"	x", "tab", 0, nil},
+		{"   x", "tab", 0, errors.New("Wrong indentation type(spaces instead of tabs)")},
+		{"	x", "x", 0, nil},
+		{"   x", "x", 0, nil},
 	}
 
-	if (Indentation("   x", "space", 4, params)) == nil {
-		t.Error("Expected wrong indented line to return an error")
-	}
-
-	if (Indentation("	x", "tab", 0, params)) != nil {
-		t.Error("Expected correctly indented line to return an nil")
-	}
-
-	if (Indentation("   x", "tab", 0, params)) == nil {
-		t.Error("Expected wrong indented line to return an error")
-	}
-
-	if (Indentation("	x", "x", 0, params)) != nil {
-		t.Error("Expected unknown indentation to return nil")
-	}
-
-	if (Indentation("   x", "x", 0, params)) != nil {
-		t.Error("Expected unknown indentation to return nil")
+	for _, tt := range indentationTests {
+		actual := Indentation(tt.line, tt.indentStyle, tt.indenSize, configuration)
+		if !reflect.DeepEqual(actual, tt.expected) {
+			t.Errorf("Indentation(%s, %s, %d, %+v): expected: %v, got: %v", tt.line, tt.indentStyle, tt.indenSize, configuration, tt.expected, actual)
+		}
 	}
 }
 
 func TestSpace(t *testing.T) {
-	if Space("", 4) != nil {
-		t.Error("Expected empty line to return true regardless of parameter")
+	spaceTests := []struct {
+		line       string
+		indentSize int
+		expected   error
+	}{
+		{"", 4, nil},
+		{"x", 0, nil},
+		{"x", 4, nil},
+		{"    x", 4, nil},
+		// 5 spaces
+		{"     x", 4, errors.New("Wrong amount of left-padding spaces(want multiple of 4)")},
+		// 3 spaces
+		{"   x", 4, errors.New("Wrong amount of left-padding spaces(want multiple of 4)")},
+		// correct indented block comment, empty and non empty
+		{"     *", 4, nil},
+		{"     * some comment", 4, nil},
 	}
 
-	if Space("x", 0) != nil {
-		t.Error("Expected call with indentSize 0 to always return nil")
-	}
-
-	if Space("x", 4) != nil {
-		t.Error("Expected line which starts at the beginning to return true")
-	}
-
-	if Space("    x", 4) != nil {
-		t.Error("Expected correctly indented line to return true")
-	}
-
-	if Space("     x", 4) == nil {
-		t.Error("Expected falsy indented line to return false")
-	}
-
-	if Space("   x", 4) == nil {
-		t.Error("Expected falsy indented line to return false")
-	}
-
-	if Space("     *", 4) != nil {
-		t.Error("Expected correctly indented line to be true with empty block comment line")
-	}
-
-	if Space("     * some comment", 4) != nil {
-		t.Error("Expected correctly indented line to be true with block comment")
+	for _, tt := range spaceTests {
+		actual := Space(tt.line, tt.indentSize)
+		if !reflect.DeepEqual(actual, tt.expected) {
+			t.Errorf("Space(%s, %d): expected: %v, got: %v", tt.line, tt.indentSize, tt.expected, actual)
+		}
 	}
 }
 
-func TestTabSpacesAllowed(t *testing.T) {
+func TestTab(t *testing.T) {
 	spacesAllowed := config.Config{SpacesAftertabs: true}
-
-	if Tab(" x", spacesAllowed) != nil {
-		t.Error("Expected char after space to return nil")
-	}
-
-	if Tab("	   bla", spacesAllowed) != nil {
-		t.Error("Expected tab indented and with spaces aligned line to return nil")
-	}
-
-	if Tab("	 bla", spacesAllowed) != nil {
-		t.Error("Expected tab indented and with spaces aligned line to return nil")
-	}
-
-	if (Tab("		  xx", spacesAllowed)) != nil {
-		t.Error("starting with tabs and trailing spaces with at least one character after the spaces")
-	}
-}
-
-func TestTabSpacesForbidden(t *testing.T) {
 	spacesForbidden := config.Config{SpacesAftertabs: false}
+	tabTests := []struct {
+		line     string
+		config   config.Config
+		expected error
+	}{
+		{" x", spacesAllowed, nil},
+		{"	   bla", spacesAllowed, nil},
+		{"	 bla", spacesAllowed, nil},
+		{"		  xx", spacesAllowed, nil},
 
-	if Tab("", spacesForbidden) != nil {
-		t.Error("Expected empty line to return true regardless of parameter")
+		{"", spacesForbidden, nil},
+		{"x", spacesForbidden, nil},
+		{"	x", spacesForbidden, nil},
+		{"		x", spacesForbidden, nil},
+		{"  	a", spacesForbidden, errors.New("Wrong indentation type(spaces instead of tabs)")},
+		{" *", spacesForbidden, nil},
+		{"	 *", spacesForbidden, nil},
+		{"	 * some comment", spacesForbidden, nil},
+		{" */", spacesForbidden, nil},
+		{"	 */", spacesForbidden, nil},
+		{" *", spacesForbidden, nil},
 	}
 
-	if Tab("x", spacesForbidden) != nil {
-		t.Error("Expected line which starts at the beginning to return true")
-	}
-
-	if Tab("	x", spacesForbidden) != nil {
-		t.Error("Expected correctly indented line to return true")
-	}
-
-	if (Tab("		x", spacesForbidden)) != nil {
-		t.Error("starting with tabs and characters after that")
-	}
-
-	if (Tab("  	a", spacesForbidden)) == nil {
-		t.Error("Starting with two spaces, followed by a tab and followed by a non whitespace char should not return nil")
-	}
-
-	if (Tab(" *", spacesForbidden)) != nil {
-		t.Error("starting with a space and at leat one character after the space")
-	}
-
-	if Tab(" * some comment", spacesForbidden) != nil {
-		t.Error("Expected tab indented block comment without indentation and with comment to return nil")
-	}
-
-	if Tab("	 *", spacesForbidden) != nil {
-		t.Error("Expected tab indented block comment with indentation and without comment to return nil")
-	}
-
-	if Tab("	 * some comment", spacesForbidden) != nil {
-		t.Error("Expected tab indented block comment with indentation and with comment to return nil")
-	}
-
-	if Tab(" */", spacesForbidden) != nil {
-		t.Error("Expected tab indented block comment without indentation in the last line to return nil")
-	}
-
-	if Tab("	 */", spacesForbidden) != nil {
-		t.Error("Expected tab indented block comment with indentation in the last line to return nil")
-	}
-
-	if Tab(" *", spacesForbidden) != nil {
-		t.Error("Expected tab indented block comment without indentation to return nil")
+	for _, tt := range tabTests {
+		actual := Tab(tt.line, tt.config)
+		if !reflect.DeepEqual(actual, tt.expected) {
+			t.Errorf("Tab(%s, %+v): expected: %v, got: %v", tt.line, tt.config, tt.expected, actual)
+		}
 	}
 }
 
 func TestTrailingWhitespace(t *testing.T) {
-	if TrailingWhitespace("", true) != nil {
-		t.Error("Expected empty line to return true regardless of trimTrailingWhitespace parameter")
+	trailingWhitespaceTests := []struct {
+		line                   string
+		trimTrailingWhitespace bool
+		expected               error
+	}{
+		{"", true, nil},
+		{"", false, nil},
+		{"x", true, nil},
+		{"x", false, nil},
+
+		// Spaces
+		{"x ", true, errors.New("Trailing whitespace")},
+		{"x ", false, nil},
+		{"x .", true, nil},
+		{"x .", false, nil},
+
+		// Tabs
+		{"x	", true, errors.New("Trailing whitespace")},
+		{"x	", false, nil},
+		{"x	.", true, nil},
+		{"x	.", false, nil},
 	}
 
-	if TrailingWhitespace("", false) != nil {
-		t.Error("Expected empty line to return true regardless of trimTrailingWhitespace parameter")
-	}
-
-	if TrailingWhitespace("x", true) != nil {
-		t.Error("Expected line with no trailing space and trimTrailingWhitespace set to true to return true")
-	}
-
-	if TrailingWhitespace("x", false) != nil {
-		t.Error("Expected line with no trailing space and trimTrailingWhitespace set to false to return true")
-	}
-
-	// Spaces
-	if TrailingWhitespace("x ", true) == nil {
-		t.Error("Expected line with trailing space and trimTrailingWhitespace set to true to return false")
-	}
-
-	if TrailingWhitespace("x ", false) != nil {
-		t.Error("Expected line with trailing space and trimTrailingWhitespace set to false to return true")
-	}
-
-	if TrailingWhitespace("x .", true) != nil {
-		t.Error("Expected line with no trailing space and trimTrailingWhitespace set to true to return true")
-	}
-
-	if TrailingWhitespace("x .", false) != nil {
-		t.Error("Expected line with no trailing space and trimTrailingWhitespace set to false to return true")
-	}
-
-	// Tabs
-	if TrailingWhitespace("x	", true) == nil {
-		t.Error("Expected line with trailing space and trimTrailingWhitespace set to true to return false")
-	}
-
-	if TrailingWhitespace("x	", false) != nil {
-		t.Error("Expected line with trailing space and trimTrailingWhitespace set to false to return true")
-	}
-
-	if TrailingWhitespace("x	.", true) != nil {
-		t.Error("Expected line with no trailing space and trimTrailingWhitespace set to true to return true")
-	}
-
-	if TrailingWhitespace("x	.", false) != nil {
-		t.Error("Expected line with no trailing space and trimTrailingWhitespace set to false to return true")
+	for _, tt := range trailingWhitespaceTests {
+		actual := TrailingWhitespace(tt.line, tt.trimTrailingWhitespace)
+		if !reflect.DeepEqual(actual, tt.expected) {
+			t.Errorf("TrailingWhitespace(%s, %v): expected: %v, got: %v", tt.line, tt.trimTrailingWhitespace, tt.expected, actual)
+		}
 	}
 }
