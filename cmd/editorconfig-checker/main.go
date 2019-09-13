@@ -114,7 +114,7 @@ func main() {
 
 	if errorCount != 0 {
 		error.PrintErrors(errors, config)
-		logger.Error(fmt.Sprintf("\n%d errors found", errorCount))
+		config.Logger.Error(fmt.Sprintf("\n%d errors found", errorCount))
 	}
 
 	config.Logger.Verbose("%d files checked", len(filePaths))
