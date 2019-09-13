@@ -6,12 +6,16 @@
 ### Deprecated
 ### Removed
 ### Fixed
+### Security
+### Misc
+
+## [2.0.3] - 2019-09-13
+### Fixed
 * (Only care for not empty stringish passed files)[https://github.com/editorconfig-checker/editorconfig-checker/pull/88]
     Can lead to not correctly checking and aborting the program
 * (Correctly initialize logger)[https://github.com/editorconfig-checker/editorconfig-checker/pull/90]
 * (Correctly parse `--no-color`-flag)[https://github.com/editorconfig-checker/editorconfig-checker/pull/90]
 * Make `--no-color`-flag remove leftover color
-### Security
 ### Misc
 * (Use go 1.13 in ci)[https://github.com/editorconfig-checker/editorconfig-checker/pull/89]
 
