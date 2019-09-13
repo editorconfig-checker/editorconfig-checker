@@ -142,6 +142,10 @@ func (c *Config) Merge(config Config) {
 		c.Debug = config.Debug
 	}
 
+	if config.NoColor {
+		c.NoColor = config.NoColor
+	}
+
 	if config.IgnoreDefaults {
 		c.IgnoreDefaults = config.IgnoreDefaults
 	}
@@ -167,7 +171,10 @@ func (c *Config) Merge(config Config) {
 	}
 
 	c.mergeDisabled(config.Disable)
-	c.Logger = config.Logger
+	c.Logger = logger.Logger{
+		Verbosee: c.Verbose || config.Verbose,
+		Debugg:   c.Debug || config.Debug,
+		NoColor:  c.NoColor || config.NoColor}
 }
 
 // mergeDisabled merges the disabled checks into the config

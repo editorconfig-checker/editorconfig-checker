@@ -78,8 +78,6 @@ func init() {
 		}
 	}
 
-	c.Logger = logger.Logger{Verbosee: c.Verbose, Debugg: c.Debug, NoColor: c.NoColor}
-
 	currentConfig.Merge(c)
 }
 

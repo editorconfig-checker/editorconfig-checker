@@ -85,6 +85,7 @@ func TestMerge(t *testing.T) {
 		Path:                "some-other",
 		Verbose:             true,
 		Debug:               true,
+		NoColor:             true,
 		IgnoreDefaults:      true,
 		SpacesAftertabs:     true,
 		Exclude:             []string{"some-other"},
@@ -104,9 +105,14 @@ func TestMerge(t *testing.T) {
 	mergeConfig.Exclude = []string{"testfiles", "some-other"}
 
 	expected := mergeConfig
+	expected.Logger.Verbosee = true
+	expected.Logger.Debugg = true
+	expected.Logger.NoColor = true
 
 	if !reflect.DeepEqual(c1, &expected) {
-		t.Errorf("Expected, got %v and %v", c1, &expected)
+		t.Errorf("%#v", &expected)
+		t.Errorf("%#v", c1)
+		t.Errorf("Expected, got %#v and %#v", c1, &expected)
 	}
 
 	config := Config{Path: "./.ecrc"}
