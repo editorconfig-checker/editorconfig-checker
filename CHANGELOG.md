@@ -9,6 +9,7 @@
 * (Only care for not empty stringish passed files)[https://github.com/editorconfig-checker/editorconfig-checker/pull/88]
     Can lead to not correctly checking and aborting the program
 * (Correctly initialize logger)[https://github.com/editorconfig-checker/editorconfig-checker/pull/90]
+* (Correctly parse `--no-color`-flag)[https://github.com/editorconfig-checker/editorconfig-checker/pull/90]
 ### Security
 ### Misc
 * (Use go 1.13 in ci)[https://github.com/editorconfig-checker/editorconfig-checker/pull/89]

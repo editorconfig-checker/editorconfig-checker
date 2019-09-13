@@ -142,6 +142,10 @@ func (c *Config) Merge(config Config) {
 		c.Debug = config.Debug
 	}
 
+	if config.NoColor {
+		c.NoColor = config.NoColor
+	}
+
 	if config.IgnoreDefaults {
 		c.IgnoreDefaults = config.IgnoreDefaults
 	}
