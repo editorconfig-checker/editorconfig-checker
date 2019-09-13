@@ -8,10 +8,10 @@
 ### Fixed
 * (Only care for not empty stringish passed files)[https://github.com/editorconfig-checker/editorconfig-checker/pull/88]
     Can lead to not correctly checking and aborting the program
+* (Correctly initialize logger)[https://github.com/editorconfig-checker/editorconfig-checker/pull/90]
 ### Security
 ### Misc
 * (Use go 1.13 in ci)[https://github.com/editorconfig-checker/editorconfig-checker/pull/89]
-
 
 ## [2.0.2] - 2019-08-19
 * (Update editorconfig-core-go to v2.1.1)[https://github.com/editorconfig-checker/editorconfig-checker/pull/77]
