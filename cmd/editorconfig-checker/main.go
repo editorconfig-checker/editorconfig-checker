@@ -69,7 +69,15 @@ func init() {
 		c.Exclude = append(c.Exclude, tmpExclude)
 	}
 
-	c.PassedFiles = flag.Args()
+	// Some wrapping tools pass an empty string as arguments so
+	// our file searching algorithm will break because it thinks there are
+	// empty files and will cause the program to crash
+	for _, arg := range flag.Args() {
+		if arg != "" {
+			c.PassedFiles = append(c.PassedFiles, arg)
+		}
+	}
+
 	c.Logger = logger.Logger{Verbosee: c.Verbose, Debugg: c.Debug, NoColor: c.NoColor}
 
 	currentConfig.Merge(c)
@@ -78,8 +86,8 @@ func init() {
 // Main function, dude
 func main() {
 	config := *currentConfig
-	currentConfig.Logger.Debug(currentConfig.GetAsString())
-	currentConfig.Logger.Verbose("Exclude Regexp: %s", currentConfig.GetExcludesAsRegularExpression())
+	config.Logger.Debug(config.GetAsString())
+	config.Logger.Verbose("Exclude Regexp: %s", config.GetExcludesAsRegularExpression())
 
 	// Check for returnworthy arguments
 	shouldExit := ReturnableFlags(config)
@@ -87,17 +95,19 @@ func main() {
 		os.Exit(0)
 	}
 
+	logger.Output("%+v", config)
+
 	// contains all files which should be checked
 	filePaths, err := files.GetFiles(config)
 
 	if err != nil {
-		currentConfig.Logger.Error(err.Error())
+		config.Logger.Error(err.Error())
 		os.Exit(1)
 	}
 
-	if currentConfig.DryRun {
+	if config.DryRun {
 		for _, file := range filePaths {
-			currentConfig.Logger.Output(file)
+			config.Logger.Output(file)
 		}
 
 		os.Exit(0)
@@ -111,7 +121,7 @@ func main() {
 		logger.Error(fmt.Sprintf("\n%d errors found", errorCount))
 	}
 
-	currentConfig.Logger.Verbose("%d files checked", len(filePaths))
+	config.Logger.Verbose("%d files checked", len(filePaths))
 
 	if errorCount != 0 {
 		os.Exit(1)

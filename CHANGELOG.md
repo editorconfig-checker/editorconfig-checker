@@ -6,6 +6,8 @@
 ### Deprecated
 ### Removed
 ### Fixed
+* (Only care for not empty stringish passed files)(https://github.com/editorconfig-checker/editorconfig-checker/pull/88)
+    Can lead to not correctly checking and aborting the program
 ### Security
 ### Misc
 
