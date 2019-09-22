@@ -51,7 +51,7 @@ VERSION="2.0.3"
 OS="linux"
 ARCH="amd64"
 curl -O -L -C - https://github.com/editorconfig-checker/editorconfig-checker/releases/download/$VERSION/ec-$OS-$ARCH.tar.gz && \
-tar xzf ex-$OS-$ARCH-tar.gz && \
+tar xzf ec-$OS-$ARCH.tar.gz && \
 ./bin/ec-$OS-$ARCH
 ```
 
