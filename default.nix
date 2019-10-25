@@ -2,8 +2,19 @@
 with pkgs;
 
 buildGoPackage rec {
+  # load version from file
+  versionPath = toString ./VERSION;
+  versionData = builtins.readFile versionPath;
+  versionLen = lib.stringLength versionData;
+  # trim trailing newline
+  version = lib.substring 0 (versionLen - 1) versionData;
+
+  # set the version dynamically at build time
+  buildFlagsArray = ''
+    -ldflags=-X main.version=${version}
+  '';
+
   name = "editorconfig-checker-${version}";
-  version = "2.0.3";
 
   goPackagePath = "github.com/editorconfig-checker/editorconfig-checker";
 
