@@ -3,7 +3,7 @@ SOURCES = $(shell find $(SRC_DIR) -type f -name '*.go')
 BINARIES = $(wildcard bin/*)
 GIT_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
 GIT_BRANCH_UP_TO_DATE = $(shell git remote show origin | tail -n1 | sed 's/.*(\(.*\))/\1/')
-CURRENT_VERSION = $(shell cat VERSION)
+CURRENT_VERSION = $(shell cat VERSION | tr -d '\n')
 COMPILE_COMMAND = go build -ldflags "-X main.version=$(CURRENT_VERSION)" -o bin/ec ./cmd/editorconfig-checker/main.go
 
 clean:
