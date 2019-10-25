@@ -104,4 +104,11 @@ _build_dockerfile:
 _push_dockerfile:
 	docker push mstruebing/editorconfig-checker:$(shell grep 'const version' cmd/editorconfig-checker/main.go | sed 's/.*"\(.*\)"/\1/')
 
+nix-build:
+	nix-build -E 'with import <nixpkgs> { }; callPackage ./default.nix {}'
 
+nix-install:
+	nix-env -i -f install.nix
+
+nix-update-dependencies:
+	nix-shell -p vgo2nix --run vgo2nix
