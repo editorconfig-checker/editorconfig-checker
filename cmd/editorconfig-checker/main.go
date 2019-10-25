@@ -14,7 +14,8 @@ import (
 )
 
 // version is used vor the help
-const version string = "2.0.3"
+// version is dynamically set at compiletime
+var version string
 
 // defaultConfigFilePath determines where the config is located
 const defaultConfigFilePath = ".ecrc"
