@@ -14,6 +14,11 @@ buildGoPackage rec {
     -ldflags=-X main.version=${version}
   '';
 
+  # create link so the tool can also be executed as `ec`
+  postInstall = ''
+    ln -s $bin/bin/editorconfig-checker $bin/bin/ec
+  '';
+
   name = "editorconfig-checker-${version}";
 
   goPackagePath = "github.com/editorconfig-checker/editorconfig-checker";
