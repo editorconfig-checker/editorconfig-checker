@@ -18,5 +18,5 @@ indent_style = tab
 [Makefile]
 indent_style = tab
 
-[*{.yml,.ecrc}]
+[*{.yml,.ecrc,.nix}]
 indent_size = 2

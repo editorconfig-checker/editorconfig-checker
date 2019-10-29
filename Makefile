@@ -1,15 +1,15 @@
 SRC_DIR = $(PWD)
 SOURCES = $(shell find $(SRC_DIR) -type f -name '*.go')
 BINARIES = $(wildcard bin/*)
-COMPILE_COMMAND = go build -o bin/ec ./cmd/editorconfig-checker/main.go
 GIT_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
 GIT_BRANCH_UP_TO_DATE = $(shell git remote show origin | tail -n1 | sed 's/.*(\(.*\))/\1/')
-CURRENT_VERSION = $(shell grep 'const version' cmd/editorconfig-checker/main.go | sed 's/.*"\(.*\)"/\1/')
+CURRENT_VERSION = $(shell cat VERSION | tr -d '\n')
+COMPILE_COMMAND = go build -ldflags "-X main.version=$(CURRENT_VERSION)" -o bin/ec ./cmd/editorconfig-checker/main.go
 
 clean:
 	rm -f ./bin/*
 
-bin/ec: $(SOURCES)
+bin/ec: $(SOURCES) VERSION
 	$(COMPILE_COMMAND)
 
 build: bin/ec
@@ -52,7 +52,7 @@ _do_release: clean test build run _build-all-binaries _compress-all-binaries
 
 _tag_version:
 	@read -p "Enter version to release: " version && \
-	sed -i "s/const version string = \".*\"/const version string = \"$${version}\"/" ./cmd/editorconfig-checker/main.go && \
+	echo $${version} > VERSION && \
 	sed -i "s/VERSION=".*"/VERSION=\"$${version}\"/" ./README.md && \
 	git add . && git commit -m "chore(release): $${version}" && git tag "$${version}" && \
 	git push origin master && git push origin master --tags
@@ -104,4 +104,11 @@ _build_dockerfile:
 _push_dockerfile:
 	docker push mstruebing/editorconfig-checker:$(shell grep 'const version' cmd/editorconfig-checker/main.go | sed 's/.*"\(.*\)"/\1/')
 
+nix-build:
+	nix-build -E 'with import <nixpkgs> { }; callPackage ./default.nix {}'
 
+nix-install:
+	nix-env -i -f install.nix
+
+nix-update-dependencies:
+	nix-shell -p vgo2nix --run vgo2nix

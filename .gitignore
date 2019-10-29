@@ -2,3 +2,5 @@
 editorconfig-checker.test
 coverage.txt
 empty.txt
+result-bin
+path

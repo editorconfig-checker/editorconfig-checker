@@ -1,0 +1,11 @@
+name: "Nix Build"
+on:
+  pull_request:
+  push:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: cachix/install-nix-action@v3
+    - run: nix-build -E 'with import <nixpkgs> { }; callPackage ./default.nix {}'
