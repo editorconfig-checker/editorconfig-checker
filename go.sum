@@ -1,9 +1,13 @@
+github.com/blang/semver v3.5.1+incompatible h1:cQNTCjp13qL8KC3Nbxr/y2Bqb63oX6wdnnjpJbkM4JQ=
+github.com/blang/semver v3.5.1+incompatible/go.mod h1:kRBLl5iJ+tD4TcOOxsy/0fnwebNt5EWlYSAyrTnjyyk=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/editorconfig/editorconfig-core-go/v2 v2.1.1 h1:mhPg/0hGebcpiiQLqJD2PWWyoHRLEdZ3sXKaEvT1EQU=
 github.com/editorconfig/editorconfig-core-go/v2 v2.1.1/go.mod h1:/LuhWJiQ9Gvo1DhVpa4ssm5qeg8rrztdtI7j/iCie2k=
 github.com/editorconfig/editorconfig-core-go/v2 v2.2.0 h1:Gn1PqdLRUQy8nvWxbLPUCEPeWNpwtkwe0fRKAyd7+uo=
 github.com/editorconfig/editorconfig-core-go/v2 v2.2.0/go.mod h1:/LuhWJiQ9Gvo1DhVpa4ssm5qeg8rrztdtI7j/iCie2k=
+github.com/editorconfig/editorconfig-core-go/v2 v2.2.1 h1:jY5PCRQf4V0oqpim/Ympl6MwHcb9+nBHEnHOPXqNZ/A=
+github.com/editorconfig/editorconfig-core-go/v2 v2.2.1/go.mod h1:6XDmqAZsQu8ikS+onLRJfLZvTP3RWTVT8ROX6qcdkio=
 github.com/gopherjs/gopherjs v0.0.0-20181017120253-0766667cb4d1/go.mod h1:wJfORRmW1u3UXTncJ5qlYoELFm8eSnnEO6hX4iZ3EWY=
 github.com/gopherjs/gopherjs v0.0.0-20190812055157-5d271430af9f/go.mod h1:wJfORRmW1u3UXTncJ5qlYoELFm8eSnnEO6hX4iZ3EWY=
 github.com/jtolds/gls v4.20.0+incompatible/go.mod h1:QJZ7F/aHp+rZTRtaJ1ow/lLfFfVYBRgL+9YlvaHOwJU=
