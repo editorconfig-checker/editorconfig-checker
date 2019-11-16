@@ -29,7 +29,7 @@ func Space(line string, indentSize int) error {
 		// match recurring spaces indentSize times - this can be recurring or never
 		// match either a space followed by a * and maybe a space (block-comments)
 		// or match everything despite a space or tab-character
-		regexpPattern := fmt.Sprintf("^( {%d})*( \\* ?|[^ \t])", indentSize)
+		regexpPattern := fmt.Sprintf("^( {%d})*( \\* ?|[^ \t]|$)", indentSize)
 
 		matched, _ := regexp.MatchString(regexpPattern, line)
 
@@ -51,7 +51,7 @@ func Tab(line string, config config.Config) error {
 		// OR
 		// match starting with a space followed by at least one non-whitespace character
 
-		regexpPattern := "^(\t)*( \\* ?|[^ \t])"
+		regexpPattern := "^(\t)*( \\* ?|[^ \t]|$)"
 
 		if config.SpacesAftertabs {
 			regexpPattern = "(^(\t)*\\S)|(^(\t)+( )*\\S)|(^ \\S)"
