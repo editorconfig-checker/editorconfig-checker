@@ -147,6 +147,7 @@ func TestSpace(t *testing.T) {
 		// correct indented block comment, empty and non empty
 		{"     *", 4, nil},
 		{"     * some comment", 4, nil},
+		{"    ", 4, nil},
 	}
 
 	for _, tt := range spaceTests {
@@ -173,6 +174,7 @@ func TestTab(t *testing.T) {
 		{"", spacesForbidden, nil},
 		{"x", spacesForbidden, nil},
 		{"	x", spacesForbidden, nil},
+		{"	", spacesForbidden, nil},
 		{"		x", spacesForbidden, nil},
 		{"  	a", spacesForbidden, errors.New("Wrong indentation type(spaces instead of tabs)")},
 		{" *", spacesForbidden, nil},
