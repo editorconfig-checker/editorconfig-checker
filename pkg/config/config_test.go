@@ -96,6 +96,7 @@ func TestMerge(t *testing.T) {
 			EndOfLine:              true,
 			InsertFinalNewline:     true,
 			Indentation:            true,
+			IndentSize:             true,
 		},
 	}
 
