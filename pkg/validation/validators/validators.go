@@ -14,7 +14,7 @@ import (
 // Indentation validates a files indentation
 func Indentation(line string, indentStyle string, indentSize int, config config.Config) error {
 	if indentStyle == "space" {
-		return Space(line, indentSize)
+		return Space(line, indentSize, config)
 	} else if indentStyle == "tab" {
 		return Tab(line, config)
 	}
@@ -24,17 +24,26 @@ func Indentation(line string, indentStyle string, indentSize int, config config.
 }
 
 // Space validates if a line is indented correctly respecting the indentSize
-func Space(line string, indentSize int) error {
+func Space(line string, indentSize int, config config.Config) error {
 	if len(line) > 0 && indentSize > 0 {
-		// match recurring spaces indentSize times - this can be recurring or never
-		// match either a space followed by a * and maybe a space (block-comments)
-		// or match everything despite a space or tab-character
-		regexpPattern := fmt.Sprintf("^( {%d})*( \\* ?|[^ \t]|$)", indentSize)
+		// TODO: Adjust test
+		if !config.Disable.IndentSize {
+			// match recurring spaces indentSize times - this can be recurring or never
+			// match either a space followed by a * and maybe a space (block-comments)
+			// or match everything despite a space or tab-character
+			regexpPattern := fmt.Sprintf("^( {%d})*( \\* ?|[^ \t]|$)", indentSize)
+			matched, _ := regexp.MatchString(regexpPattern, line)
 
-		matched, _ := regexp.MatchString(regexpPattern, line)
+			if !matched {
+				return fmt.Errorf("Wrong amount of left-padding spaces(want multiple of %d)", indentSize)
+			}
+		} else {
+			regexpPattern := fmt.Sprintf("^( )*( \\* ?|[^ \t]|$)")
+			matched, _ := regexp.MatchString(regexpPattern, line)
 
-		if !matched {
-			return fmt.Errorf("Wrong amount of left-padding spaces(want multiple of %d)", indentSize)
+			if !matched {
+				return fmt.Errorf("Wrong indent style found (tabs instead of spaces)")
+			}
 		}
 
 	}

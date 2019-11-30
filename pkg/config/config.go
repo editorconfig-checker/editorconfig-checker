@@ -82,6 +82,7 @@ type DisabledChecks struct {
 	Indentation            bool
 	InsertFinalNewline     bool
 	TrimTrailingWhitespace bool
+	IndentSize             bool
 }
 
 // NewConfig initializes a new config
@@ -194,6 +195,10 @@ func (c *Config) mergeDisabled(disabled DisabledChecks) {
 
 	if disabled.Indentation {
 		c.Disable.Indentation = disabled.Indentation
+	}
+
+	if disabled.IndentSize {
+		c.Disable.IndentSize = disabled.IndentSize
 	}
 }
 

@@ -46,6 +46,7 @@ func init() {
 	flag.BoolVar(&c.Disable.EndOfLine, "disable-end-of-line", false, "disables the trailing whitespace check")
 	flag.BoolVar(&c.Disable.InsertFinalNewline, "disable-insert-final-newline", false, "disables the final newline check")
 	flag.BoolVar(&c.Disable.Indentation, "disable-indentation", false, "disables the indentation check")
+	flag.BoolVar(&c.Disable.IndentSize, "disable-indent-size", false, "disables only the indent-size check")
 
 	flag.Parse()
 
