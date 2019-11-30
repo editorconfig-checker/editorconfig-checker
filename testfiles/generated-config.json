@@ -11,6 +11,7 @@
     "EndOfLine": false,
     "Indentation": false,
     "InsertFinalNewline": false,
-    "TrimTrailingWhitespace": false
+    "TrimTrailingWhitespace": false,
+    "IndentSize": false
   }
 }

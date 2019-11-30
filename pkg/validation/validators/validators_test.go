@@ -131,27 +131,42 @@ func TestIndentation(t *testing.T) {
 }
 
 func TestSpace(t *testing.T) {
+	enabledIndentSizeConfig := config.Config{}
+	disabled := config.DisabledChecks{IndentSize: true}
+	disabledIndentSizeConfig := config.Config{
+		Disable: disabled,
+	}
+
 	spaceTests := []struct {
 		line       string
 		indentSize int
+		config     config.Config
 		expected   error
 	}{
-		{"", 4, nil},
-		{"x", 0, nil},
-		{"x", 4, nil},
-		{"    x", 4, nil},
+		{"", 4, enabledIndentSizeConfig, nil},
+		{"x", 0, enabledIndentSizeConfig, nil},
+		{"x", 4, enabledIndentSizeConfig, nil},
+		{"    x", 4, enabledIndentSizeConfig, nil},
 		// 5 spaces
-		{"     x", 4, errors.New("Wrong amount of left-padding spaces(want multiple of 4)")},
+		{"     x", 4, enabledIndentSizeConfig, errors.New("Wrong amount of left-padding spaces(want multiple of 4)")},
 		// 3 spaces
-		{"   x", 4, errors.New("Wrong amount of left-padding spaces(want multiple of 4)")},
+		{"   x", 4, enabledIndentSizeConfig, errors.New("Wrong amount of left-padding spaces(want multiple of 4)")},
 		// correct indented block comment, empty and non empty
-		{"     *", 4, nil},
-		{"     * some comment", 4, nil},
-		{"    ", 4, nil},
+		{"     *", 4, enabledIndentSizeConfig, nil},
+		{"     * some comment", 4, enabledIndentSizeConfig, nil},
+		{"    ", 4, enabledIndentSizeConfig, nil},
+		// disabled indent size
+		{"", 4, disabledIndentSizeConfig, nil},
+		{" x ", 4, disabledIndentSizeConfig, nil},
+		{"  x ", 4, disabledIndentSizeConfig, nil},
+		{"    x ", 4, disabledIndentSizeConfig, nil},
+		{"     x ", 4, disabledIndentSizeConfig, nil},
+		{"	x ", 4, disabledIndentSizeConfig, errors.New("Wrong indent style found (tabs instead of spaces)")},
+		{"    		x a", 4, disabledIndentSizeConfig, errors.New("Wrong indent style found (tabs instead of spaces)")},
 	}
 
 	for _, tt := range spaceTests {
-		actual := Space(tt.line, tt.indentSize)
+		actual := Space(tt.line, tt.indentSize, tt.config)
 		if !reflect.DeepEqual(actual, tt.expected) {
 			t.Errorf("Space(%s, %d): expected: %v, got: %v", tt.line, tt.indentSize, tt.expected, actual)
 		}
