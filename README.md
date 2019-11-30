@@ -82,6 +82,8 @@ USAGE:
         print debugging information
   -disable-end-of-line
         disables the trailing whitespace check
+  -disable-indent-size
+        disables only the indent-size check
   -disable-indentation
         disables the indentation check
   -disable-insert-final-newline
@@ -132,7 +134,8 @@ A sample `.ecrc` file can look like this and will be used from your current work
     "EndOfLine": false,
     "Indentation": false,
     "InsertFinalNewline": false,
-    "TrimTrailingWhitespace": false
+    "TrimTrailingWhitespace": false,
+    "IndentSize": false
   }
 }
 ```
