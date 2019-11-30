@@ -157,12 +157,12 @@ func TestSpace(t *testing.T) {
 		{"    ", 4, enabledIndentSizeConfig, nil},
 		// disabled indent size
 		{"", 4, disabledIndentSizeConfig, nil},
-		{" ", 4, disabledIndentSizeConfig, nil},
-		{"  ", 4, disabledIndentSizeConfig, nil},
-		{"    ", 4, disabledIndentSizeConfig, nil},
-		{"     ", 4, disabledIndentSizeConfig, nil},
-		{"	x", 4, disabledIndentSizeConfig, errors.New("Wrong indent style found (tabs instead of spaces)")},
-		{"    		x", 4, disabledIndentSizeConfig, errors.New("Wrong indent style found (tabs instead of spaces)")},
+		{" x ", 4, disabledIndentSizeConfig, nil},
+		{"  x ", 4, disabledIndentSizeConfig, nil},
+		{"    x ", 4, disabledIndentSizeConfig, nil},
+		{"     x ", 4, disabledIndentSizeConfig, nil},
+		{"	x ", 4, disabledIndentSizeConfig, errors.New("Wrong indent style found (tabs instead of spaces)")},
+		{"    		x a", 4, disabledIndentSizeConfig, errors.New("Wrong indent style found (tabs instead of spaces)")},
 	}
 
 	for _, tt := range spaceTests {

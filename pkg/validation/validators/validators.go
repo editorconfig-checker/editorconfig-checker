@@ -26,7 +26,6 @@ func Indentation(line string, indentStyle string, indentSize int, config config.
 // Space validates if a line is indented correctly respecting the indentSize
 func Space(line string, indentSize int, config config.Config) error {
 	if len(line) > 0 && indentSize > 0 {
-		// TODO: Adjust test
 		if !config.Disable.IndentSize {
 			// match recurring spaces indentSize times - this can be recurring or never
 			// match either a space followed by a * and maybe a space (block-comments)
@@ -38,7 +37,8 @@ func Space(line string, indentSize int, config config.Config) error {
 				return fmt.Errorf("Wrong amount of left-padding spaces(want multiple of %d)", indentSize)
 			}
 		} else {
-			regexpPattern := fmt.Sprintf("^( )*( \\* ?|[^ \t]|$)")
+			// match recurring spaces and everything except tab characters
+			regexpPattern := fmt.Sprintf("^( )*([^ \t]|$)")
 			matched, _ := regexp.MatchString(regexpPattern, line)
 
 			if !matched {
