@@ -10,6 +10,8 @@ github.com/editorconfig/editorconfig-core-go/v2 v2.2.1 h1:jY5PCRQf4V0oqpim/Ympl6
 github.com/editorconfig/editorconfig-core-go/v2 v2.2.1/go.mod h1:6XDmqAZsQu8ikS+onLRJfLZvTP3RWTVT8ROX6qcdkio=
 github.com/editorconfig/editorconfig-core-go/v2 v2.2.2 h1:YxX780vTBs/L8H35kpFwsGkZTczOgIPT98yb20I7/oc=
 github.com/editorconfig/editorconfig-core-go/v2 v2.2.2/go.mod h1:RNdPfKd9PliYEUZ3r+GxbDsSHNnEluC1wdkQJc3jD4k=
+github.com/editorconfig/editorconfig-core-go/v2 v2.3.0 h1:QD1YB/rbntMEQIKM42kQOaqGdS13UvGsl9c8m/nFNWY=
+github.com/editorconfig/editorconfig-core-go/v2 v2.3.0/go.mod h1:RNdPfKd9PliYEUZ3r+GxbDsSHNnEluC1wdkQJc3jD4k=
 github.com/gopherjs/gopherjs v0.0.0-20181017120253-0766667cb4d1/go.mod h1:wJfORRmW1u3UXTncJ5qlYoELFm8eSnnEO6hX4iZ3EWY=
 github.com/gopherjs/gopherjs v0.0.0-20190812055157-5d271430af9f/go.mod h1:wJfORRmW1u3UXTncJ5qlYoELFm8eSnnEO6hX4iZ3EWY=
 github.com/jtolds/gls v4.20.0+incompatible/go.mod h1:QJZ7F/aHp+rZTRtaJ1ow/lLfFfVYBRgL+9YlvaHOwJU=
