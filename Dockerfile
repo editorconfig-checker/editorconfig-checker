@@ -11,6 +11,6 @@ FROM alpine:latest
 
 RUN apk add --no-cache git
 WORKDIR /check/
-COPY --from=build /ec/bin/ec /
+COPY --from=build /ec/bin/ec /usr/bin
 
-CMD ["/ec"]
+CMD ["ec"]
