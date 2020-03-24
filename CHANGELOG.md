@@ -6,6 +6,7 @@
 ### Deprecated
 ### Removed
 ### Fixed
+* Change `Dockerfile` `CMD` to allow the usage of `ec` everywhere inside the image [#105](https://github.com/editorconfig-checker/editorconfig-checker/pull/105) ([@chambo-e](https://github.com/chambo-e))
 ### Security
 ### Misc
 
