@@ -14,6 +14,8 @@ github.com/editorconfig/editorconfig-core-go/v2 v2.3.0 h1:QD1YB/rbntMEQIKM42kQOa
 github.com/editorconfig/editorconfig-core-go/v2 v2.3.0/go.mod h1:RNdPfKd9PliYEUZ3r+GxbDsSHNnEluC1wdkQJc3jD4k=
 github.com/editorconfig/editorconfig-core-go/v2 v2.3.1 h1:8+L7G4cCtuYprGaNawfTBq20m8+VpPCH2O0vwKS7r84=
 github.com/editorconfig/editorconfig-core-go/v2 v2.3.1/go.mod h1:mJYZ8yC2PWr+pabYXwHMfcEe45fh2w2sxk8cudJdLPM=
+github.com/editorconfig/editorconfig-core-go/v2 v2.3.2 h1:j9GLz0kWF9+1T3IX0MOhhvzLtqhFOvIKLhZFxtY95Qc=
+github.com/editorconfig/editorconfig-core-go/v2 v2.3.2/go.mod h1:+u4rFiKVvlbukHyJM76GYXqQcnHScxvQCuKpMLRtJVw=
 github.com/google/go-cmp v0.4.0/go.mod h1:v8dTdLbMG2kIc/vJvl+f65V22dbkXbowE6jgT/gNBxE=
 github.com/gopherjs/gopherjs v0.0.0-20181017120253-0766667cb4d1/go.mod h1:wJfORRmW1u3UXTncJ5qlYoELFm8eSnnEO6hX4iZ3EWY=
 github.com/gopherjs/gopherjs v0.0.0-20190812055157-5d271430af9f/go.mod h1:wJfORRmW1u3UXTncJ5qlYoELFm8eSnnEO6hX4iZ3EWY=
@@ -50,5 +52,7 @@ gopkg.in/ini.v1 v1.51.1 h1:GyboHr4UqMiLUybYjd22ZjQIKEJEpgtLXtuGbR21Oho=
 gopkg.in/ini.v1 v1.51.1/go.mod h1:pNLf8WUiyNEtQjuu5G5vTm06TEv9tsIgeAvK8hOrP4k=
 gopkg.in/ini.v1 v1.54.0 h1:oM5ElzbIi7gwLnNbPX2M25ED1vSAK3B6dex50eS/6Fs=
 gopkg.in/ini.v1 v1.54.0/go.mod h1:pNLf8WUiyNEtQjuu5G5vTm06TEv9tsIgeAvK8hOrP4k=
+gopkg.in/ini.v1 v1.55.0 h1:E8yzL5unfpW3M6fz/eB7Cb5MQAYSZ7GKo4Qth+N2sgQ=
+gopkg.in/ini.v1 v1.55.0/go.mod h1:pNLf8WUiyNEtQjuu5G5vTm06TEv9tsIgeAvK8hOrP4k=
 gopkg.in/yaml.v2 v2.2.2/go.mod h1:hI93XBmqTisBFMUTm0b8Fm+jr3Dg1NNxqwp+5A1VGuI=
 gopkg.in/yaml.v2 v2.2.7/go.mod h1:hI93XBmqTisBFMUTm0b8Fm+jr3Dg1NNxqwp+5A1VGuI=
