@@ -8,6 +8,7 @@ COMPILE_COMMAND = go build -ldflags "-X main.version=$(CURRENT_VERSION)" -o bin/
 
 prefix = /usr/local
 bindir = /bin
+mandir = /share/man
 
 all: build
 
@@ -21,9 +22,11 @@ build: bin/ec
 
 install: build
 	install -D bin/ec $(DESTDIR)$(prefix)$(bindir)/editorconfig-checker
+	install -D docs/editorconfig-checker.1 $(DESTDIR)$(prefix)$(mandir)/man1/editorconfig-checker.1
 
 uninstall:
 	rm -f $(DESTDIR)$(prefix)$(bindir)/editorconfig-checker
+	rm -f $(DESTDIR)$(prefix)$(mandir)/man1/editorconfig-checker.1
 
 test:
 	@go test -race -coverprofile=coverage.txt -covermode=atomic ./...

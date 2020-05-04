@@ -4,6 +4,7 @@
 ### BREAKING
 ### Added
 * all, install and uninstall targets in the Makefile
+* man page
 ### Deprecated
 ### Removed
 ### Fixed
