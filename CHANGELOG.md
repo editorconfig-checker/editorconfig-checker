@@ -3,6 +3,7 @@
 ## Unreleased
 ### BREAKING
 ### Added
+* all, install and uninstall targets in the Makefile
 ### Deprecated
 ### Removed
 ### Fixed

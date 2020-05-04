@@ -6,6 +6,11 @@ GIT_BRANCH_UP_TO_DATE = $(shell git remote show origin | tail -n1 | sed 's/.*(\(
 CURRENT_VERSION = $(shell cat VERSION | tr -d '\n')
 COMPILE_COMMAND = go build -ldflags "-X main.version=$(CURRENT_VERSION)" -o bin/ec ./cmd/editorconfig-checker/main.go
 
+prefix = /usr/local
+bindir = /bin
+
+all: build
+
 clean:
 	rm -f ./bin/*
 
@@ -13,6 +18,12 @@ bin/ec: $(SOURCES) VERSION
 	$(COMPILE_COMMAND)
 
 build: bin/ec
+
+install: build
+	install -D bin/ec $(DESTDIR)$(prefix)$(bindir)/editorconfig-checker
+
+uninstall:
+	rm -f $(DESTDIR)$(prefix)$(bindir)/editorconfig-checker
 
 test:
 	@go test -race -coverprofile=coverage.txt -covermode=atomic ./...
