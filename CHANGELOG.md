@@ -10,6 +10,7 @@
 * Change `Dockerfile` `CMD` to allow the usage of `ec` everywhere inside the image [#105](https://github.com/editorconfig-checker/editorconfig-checker/pull/105) ([@chambo-e](https://github.com/chambo-e))
 ### Security
 ### Misc
+* Marked non-build targets in the Makefile as phony
 
 ## [2.0.3] - 2019-09-13
 ### Fixed

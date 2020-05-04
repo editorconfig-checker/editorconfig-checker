@@ -123,3 +123,5 @@ nix-install:
 
 nix-update-dependencies:
 	nix-shell -p vgo2nix --run vgo2nix
+
+.PHONY: clean build install uninstall test bench run run-verbose release _is_master_branch _git_branch_is_up_to_date current_version _do_release _tag_version _build-all-binaries _compress-all-binaries _release_dockerfile _build_dockerfile _push_dockerfile nix-build nix-install nix-update-dependencies
