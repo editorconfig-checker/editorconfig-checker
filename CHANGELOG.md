@@ -3,15 +3,15 @@
 ## Unreleased
 ### BREAKING
 ### Added
-* all, install and uninstall targets in the Makefile
-* man page
+* all, install and uninstall targets in the Makefile [#107](https://github.com/editorconfig-checker/editorconfig-checker/pull/107) ([@stephanlachnit](https://github.com/stephanlachnit))
+* man page [#107](https://github.com/editorconfig-checker/editorconfig-checker/pull/107) ([@stephanlachnit](https://github.com/stephanlachnit))
 ### Deprecated
 ### Removed
 ### Fixed
 * Change `Dockerfile` `CMD` to allow the usage of `ec` everywhere inside the image [#105](https://github.com/editorconfig-checker/editorconfig-checker/pull/105) ([@chambo-e](https://github.com/chambo-e))
 ### Security
 ### Misc
-* Marked non-build targets in the Makefile as phony
+* Marked non-build targets in the Makefile as phony [#107](https://github.com/editorconfig-checker/editorconfig-checker/pull/107) ([@stephanlachnit](https://github.com/stephanlachnit))
 
 ## [2.0.3] - 2019-09-13
 ### Fixed
