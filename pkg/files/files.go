@@ -28,7 +28,7 @@ type FileInformation struct {
 
 // IsExcluded returns wether the file is excluded via arguments or config file
 func IsExcluded(filePath string, config config.Config) (bool, error) {
-	if len(config.Exclude) == 0 {
+	if len(config.Exclude) == 0 && config.IgnoreDefaults {
 		return false, nil
 	}
 
