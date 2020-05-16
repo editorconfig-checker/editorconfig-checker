@@ -110,25 +110,6 @@ func TestGetRelativePath(t *testing.T) {
 	}
 }
 
-func TestIsExcluded(t *testing.T) {
-	isExcludedTests := []struct {
-		file          string
-		config        config.Config
-		expected      bool
-		errorExpected bool
-	}{
-		{"./cmd/editorconfig-checker/main.go", config.Config{}, false, false},
-		{"./cmd/editorconfig-checker/main.go", config.Config{Exclude: []string{"main"}}, true, true},
-	}
-
-	for _, tt := range isExcludedTests {
-		actual, err := IsExcluded(tt.file, tt.config)
-		if actual != tt.expected || (tt.errorExpected && err == nil || !tt.errorExpected && err != nil) {
-			t.Errorf("IsExcluded(%s, %+v): expected: %v, got: %v", tt.file, tt.config, tt.expected, actual)
-		}
-	}
-}
-
 func TestAddToFiles(t *testing.T) {
 	configuration := config.Config{}
 	excludedFileConfiguration := config.Config{Exclude: []string{"files"}}

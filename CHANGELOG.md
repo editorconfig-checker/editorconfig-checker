@@ -8,6 +8,7 @@
 ### Deprecated
 ### Removed
 ### Fixed
+* check if default excludes are ignored in `IsExcluded` [#109](https://github.com/editorconfig-checker/editorconfig-checker/pull/108) ([@mstruebing](https://github.com/mstruebing))
 * Change `Dockerfile` `CMD` to allow the usage of `ec` everywhere inside the image [#105](https://github.com/editorconfig-checker/editorconfig-checker/pull/105) ([@chambo-e](https://github.com/chambo-e))
 ### Security
 ### Misc
