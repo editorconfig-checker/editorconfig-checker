@@ -3,16 +3,22 @@
 ## Unreleased
 ### BREAKING
 ### Added
-* all, install and uninstall targets in the Makefile [#107](https://github.com/editorconfig-checker/editorconfig-checker/pull/107) ([@stephanlachnit](https://github.com/stephanlachnit))
-* man page [#107](https://github.com/editorconfig-checker/editorconfig-checker/pull/107) ([@stephanlachnit](https://github.com/stephanlachnit))
 ### Deprecated
 ### Removed
 ### Fixed
-* check if default excludes are ignored in `IsExcluded` [#109](https://github.com/editorconfig-checker/editorconfig-checker/pull/108) ([@mstruebing](https://github.com/mstruebing))
-* Change `Dockerfile` `CMD` to allow the usage of `ec` everywhere inside the image [#105](https://github.com/editorconfig-checker/editorconfig-checker/pull/105) ([@chambo-e](https://github.com/chambo-e))
 ### Security
 ### Misc
+
+## [2.0.4] - 2020-05-18
+### Added
+* all, install and uninstall targets in the Makefile [#107](https://github.com/editorconfig-checker/editorconfig-checker/pull/107) ([@stephanlachnit](https://github.com/stephanlachnit))
+* man page [#107](https://github.com/editorconfig-checker/editorconfig-checker/pull/107) ([@stephanlachnit](https://github.com/stephanlachnit))
+### Fixed
+* check if default excludes are ignored in `IsExcluded` to correctly check if files should be checked [#109](https://github.com/editorconfig-checker/editorconfig-checker/pull/108) ([@mstruebing](https://github.com/mstruebing))
+* Change `Dockerfile` `CMD` to allow the usage of `ec` everywhere inside the image [#105](https://github.com/editorconfig-checker/editorconfig-checker/pull/105) ([@chambo-e](https://github.com/chambo-e))
+### Misc
 * Marked non-build targets in the Makefile as phony [#107](https://github.com/editorconfig-checker/editorconfig-checker/pull/107) ([@stephanlachnit](https://github.com/stephanlachnit))
+
 
 ## [2.0.3] - 2019-09-13
 ### Fixed
