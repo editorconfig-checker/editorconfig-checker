@@ -1,4 +1,7 @@
 # editorconfig-checker
+
+<a href="https://www.buymeacoffee.com/mstruebing" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
+
 [![Build Status](https://travis-ci.org/editorconfig-checker/editorconfig-checker.svg?branch=master)](https://travis-ci.org/editorconfig-checker/editorconfig-checker) 
 [![codecov](https://codecov.io/gh/editorconfig-checker/editorconfig-checker/branch/master/graph/badge.svg)](https://codecov.io/gh/editorconfig-checker/editorconfig-checker)
 [![Hits-of-Code](https://hitsofcode.com/github/editorconfig-checker/editorconfig-checker)](https://hitsofcode.com/view/github/editorconfig-checker/editorconfig-checker)
