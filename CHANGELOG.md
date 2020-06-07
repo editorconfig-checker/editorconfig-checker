@@ -3,6 +3,7 @@
 ## Unreleased
 ### BREAKING
 ### Added
+* `max_line_length` support [#1l2](https://github.com/editorconfig-checker/editorconfig-checker/pull/112) ([@mstruebing](https://github.com/mstruebing))
 ### Deprecated
 ### Removed
 ### Fixed
