@@ -239,3 +239,23 @@ func TestTrailingWhitespace(t *testing.T) {
 		}
 	}
 }
+
+func TestMaxLineLength(t *testing.T) {
+	maxLineLengthTest := []struct {
+		line          string
+		maxLineLength int
+		expected      error
+	}{
+		{"", 80, nil},
+		{"abc", 2, errors.New("Line to long (3 instead of 2)")},
+		{"   ", 2, errors.New("Line to long (3 instead of 2)")},
+		{"xx", 2, nil},
+	}
+
+	for _, tt := range maxLineLengthTest {
+		actual := MaxLineLength(tt.line, tt.maxLineLength)
+		if !reflect.DeepEqual(actual, tt.expected) {
+			t.Errorf("Max(%s, %v): expected: %v, got: %v", tt.line, tt.maxLineLength, tt.expected, actual)
+		}
+	}
+}
