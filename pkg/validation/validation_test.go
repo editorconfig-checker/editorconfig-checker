@@ -110,4 +110,17 @@ func TestValidateFile(t *testing.T) {
 	if len(result) != 0 {
 		t.Error("Should have no error, got", result)
 	}
+
+	configuration = config.Config{Verbose: true}
+	result = ValidateFile("./../../testfiles/line-to-long.txt", configuration)
+	if len(result) != 1 {
+		t.Error("Should have no error, got", result)
+	}
+
+	configuration = config.Config{Verbose: true}
+	configuration.Disable.MaxLineLength = true
+	result = ValidateFile("./../../testfiles/line-to-long.txt", configuration)
+	if len(result) != 0 {
+		t.Error("Should have no error, got", result)
+	}
 }

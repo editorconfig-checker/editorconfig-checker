@@ -140,3 +140,12 @@ func LineEnding(fileContent string, endOfLine string) error {
 
 	return nil
 }
+
+func MaxLineLength(line string, maxLineLength int) error {
+	length := len(line)
+	if length > maxLineLength {
+		return fmt.Errorf("Line to long (%d instead of %d)", length, maxLineLength)
+	}
+
+	return nil
+}

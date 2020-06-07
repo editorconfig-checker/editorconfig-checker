@@ -47,6 +47,7 @@ func init() {
 	flag.BoolVar(&c.Disable.InsertFinalNewline, "disable-insert-final-newline", false, "disables the final newline check")
 	flag.BoolVar(&c.Disable.Indentation, "disable-indentation", false, "disables the indentation check")
 	flag.BoolVar(&c.Disable.IndentSize, "disable-indent-size", false, "disables only the indent-size check")
+	flag.BoolVar(&c.Disable.MaxLineLength, "disable-max-line-length", false, "disables only the max-line-length check")
 
 	flag.Parse()
 

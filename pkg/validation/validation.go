@@ -65,6 +65,10 @@ func ValidateFile(filePath string, config config.Config) []error.ValidationError
 			validationErrors = append(validationErrors, validationError)
 		}
 
+		validationError = ValidateMaxLineLength(fileInformation, config)
+		if validationError.Message != nil {
+			validationErrors = append(validationErrors, validationError)
+		}
 	}
 
 	return validationErrors
@@ -123,6 +127,21 @@ func ValidateTrailingWhitespace(fileInformation files.FileInformation, config co
 		fileInformation.Editorconfig.Raw["trim_trailing_whitespace"] == "true"); !config.Disable.TrimTrailingWhitespace && currentError != nil {
 		config.Logger.Verbose(fmt.Sprintf("Trailing whitespace error found in %s on line %d", fileInformation.FilePath, fileInformation.LineNumber))
 		return error.ValidationError{LineNumber: fileInformation.LineNumber + 1, Message: currentError}
+	}
+
+	return error.ValidationError{}
+}
+
+// ValidateMaxLineLength runs the max line length validator and processes the error into the proper type
+func ValidateMaxLineLength(fileInformation files.FileInformation, config config.Config) error.ValidationError {
+	maxLineLength, err := strconv.Atoi(fileInformation.Editorconfig.Raw["max_line_length"])
+	if err != nil {
+		return error.ValidationError{}
+	}
+
+	if currentError := validators.MaxLineLength(fileInformation.Line, maxLineLength); !config.Disable.MaxLineLength && currentError != nil {
+		config.Logger.Verbose(fmt.Sprintf("Max line length error found in %s on %d", fileInformation.FilePath, fileInformation.LineNumber))
+		return error.ValidationError{LineNumber: -1, Message: currentError}
 	}
 
 	return error.ValidationError{}

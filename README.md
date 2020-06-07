@@ -40,6 +40,7 @@ Currently implemented editorconfig features are:
 * `trim_trailing_whitespace`
 * `indent_style`
 * `indent_size`
+* `max_line_length`
 
 Unsupported features are:
 * `charset`
@@ -135,7 +136,8 @@ A sample `.ecrc` file can look like this and will be used from your current work
     "Indentation": false,
     "InsertFinalNewline": false,
     "TrimTrailingWhitespace": false,
-    "IndentSize": false
+    "IndentSize": false,
+    "MaxLineLength": false
   }
 }
 ```
