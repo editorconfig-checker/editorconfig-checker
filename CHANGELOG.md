@@ -3,12 +3,13 @@
 ## Unreleased
 ### BREAKING
 ### Added
-* `max_line_length` support [#1l2](https://github.com/editorconfig-checker/editorconfig-checker/pull/112) ([@mstruebing](https://github.com/mstruebing))
+* `max_line_length` support [#112](https://github.com/editorconfig-checker/editorconfig-checker/pull/112) ([@mstruebing](https://github.com/mstruebing))
 ### Deprecated
 ### Removed
 ### Fixed
 ### Security
 ### Misc
+* switched to Github-actions from TravisCI [#113](https://github.com/editorconfig-checker/editorconfig-checker/pull/113) ([@mstruebing](https://github.com/mstruebing))
 
 ## [2.0.4] - 2020-05-18
 ### Added
