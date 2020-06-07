@@ -83,6 +83,7 @@ type DisabledChecks struct {
 	InsertFinalNewline     bool
 	TrimTrailingWhitespace bool
 	IndentSize             bool
+	MaxLineLength          bool
 }
 
 // NewConfig initializes a new config
@@ -199,6 +200,10 @@ func (c *Config) mergeDisabled(disabled DisabledChecks) {
 
 	if disabled.IndentSize {
 		c.Disable.IndentSize = disabled.IndentSize
+	}
+
+	if disabled.MaxLineLength {
+		c.Disable.MaxLineLength = disabled.MaxLineLength
 	}
 }
 
