@@ -46,6 +46,7 @@ var defaultExcludes = []string{
 	"\\.js\\.map$",
 	"min\\.css$",
 	"min\\.js$",
+	"\\.yml\\.enc$",
 }
 
 var defaultAllowedContentTypes = []string{
