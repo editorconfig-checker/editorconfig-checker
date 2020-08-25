@@ -22,6 +22,8 @@ github.com/editorconfig/editorconfig-core-go/v2 v2.3.4 h1:QHbqSHm4s4EWDpp8t5WG8r
 github.com/editorconfig/editorconfig-core-go/v2 v2.3.4/go.mod h1:bdA83jeFDLHpr6Apmoz3axMacczjyAt6GXbFK3PSjFg=
 github.com/editorconfig/editorconfig-core-go/v2 v2.3.5 h1:HxHdfD6iDNTJxCXOE8hM++7IjMddzoDoAgA9aTnMDcI=
 github.com/editorconfig/editorconfig-core-go/v2 v2.3.5/go.mod h1:TtPDwEkbXNs/uBM45YIkz041dFUCI2Hs8dlrXKdFcDg=
+github.com/editorconfig/editorconfig-core-go/v2 v2.3.6 h1:sJDkoFZCazT2lhtyUXKgzzf/05NtHnpJ8Lz1FmN5GTM=
+github.com/editorconfig/editorconfig-core-go/v2 v2.3.6/go.mod h1:keiVCwWAotcoxvCkHCtJbGWoV7/oNgCmRjB5+LvuEE0=
 github.com/google/go-cmp v0.4.0/go.mod h1:v8dTdLbMG2kIc/vJvl+f65V22dbkXbowE6jgT/gNBxE=
 github.com/google/go-cmp v0.4.1/go.mod h1:v8dTdLbMG2kIc/vJvl+f65V22dbkXbowE6jgT/gNBxE=
 github.com/google/go-cmp v0.5.0/go.mod h1:v8dTdLbMG2kIc/vJvl+f65V22dbkXbowE6jgT/gNBxE=
@@ -34,6 +36,7 @@ github.com/smartystreets/assertions v0.0.0-20180927180507-b2de0cb4f26d/go.mod h1
 github.com/smartystreets/assertions v1.0.1/go.mod h1:kHHU4qYBaI3q23Pp3VPrmWhuIUrLW/7eUrw0BU5VaoM=
 github.com/smartystreets/goconvey v0.0.0-20190330032615-68dc04aab96a/go.mod h1:syvi0/a8iFYH4r/RixwvyeAJjdLS9QV7WQ/tjFTllLA=
 github.com/smartystreets/goconvey v0.0.0-20190731233626-505e41936337/go.mod h1:syvi0/a8iFYH4r/RixwvyeAJjdLS9QV7WQ/tjFTllLA=
+github.com/smartystreets/goconvey v1.6.4/go.mod h1:syvi0/a8iFYH4r/RixwvyeAJjdLS9QV7WQ/tjFTllLA=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/testify v1.3.0/go.mod h1:M5WIy9Dh21IEIfnGCwXGc5bZfKNJtfHm1UVUgZn+9EI=
 github.com/stretchr/testify v1.4.0/go.mod h1:j7eGeouHqKxXV5pUuKE4zz7dFj8WfuZ+81PSLYec5m4=
@@ -71,5 +74,7 @@ gopkg.in/ini.v1 v1.57.0 h1:9unxIsFcTt4I55uWluz+UmL95q4kdJ0buvQ1ZIqVQww=
 gopkg.in/ini.v1 v1.57.0/go.mod h1:pNLf8WUiyNEtQjuu5G5vTm06TEv9tsIgeAvK8hOrP4k=
 gopkg.in/ini.v1 v1.58.0 h1:VdDvTzv/005R8vEFyQ56bpEnOKTNPbpJhL0VCohxlQw=
 gopkg.in/ini.v1 v1.58.0/go.mod h1:pNLf8WUiyNEtQjuu5G5vTm06TEv9tsIgeAvK8hOrP4k=
+gopkg.in/ini.v1 v1.60.1 h1:P5y5shSkb0CFe44qEeMBgn8JLow09MP17jlJHanke5g=
+gopkg.in/ini.v1 v1.60.1/go.mod h1:pNLf8WUiyNEtQjuu5G5vTm06TEv9tsIgeAvK8hOrP4k=
 gopkg.in/yaml.v2 v2.2.2/go.mod h1:hI93XBmqTisBFMUTm0b8Fm+jr3Dg1NNxqwp+5A1VGuI=
 gopkg.in/yaml.v2 v2.2.7/go.mod h1:hI93XBmqTisBFMUTm0b8Fm+jr3Dg1NNxqwp+5A1VGuI=
