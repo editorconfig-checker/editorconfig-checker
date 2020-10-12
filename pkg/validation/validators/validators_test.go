@@ -247,8 +247,8 @@ func TestMaxLineLength(t *testing.T) {
 		expected      error
 	}{
 		{"", 80, nil},
-		{"abc", 2, errors.New("Line to long (3 instead of 2)")},
-		{"   ", 2, errors.New("Line to long (3 instead of 2)")},
+		{"abc", 2, errors.New("Line too long (3 instead of 2)")},
+		{"   ", 2, errors.New("Line too long (3 instead of 2)")},
 		{"xx", 2, nil},
 	}
 
