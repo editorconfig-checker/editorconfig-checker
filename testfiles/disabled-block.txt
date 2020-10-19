@@ -1,0 +1,6 @@
+hello
+<!-- editorconfig-checker-disable -->
+	 world
+		 world2
+<!-- editorconfig-checker-enable -->
+test
