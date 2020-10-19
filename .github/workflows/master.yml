@@ -1,0 +1,14 @@
+name: "master"
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  master:
+    steps:
+      - name: Add changelog
+        uses: heinrichreimer/github-changelog-generator-action@v2.1.1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
