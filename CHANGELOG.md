@@ -6,6 +6,7 @@
 ### Deprecated
 ### Removed
 ### Fixed
+* Fix file path corruption [#121](https://github.com/editorconfig-checker/editorconfig-checker/issues/121)
 ### Security
 ### Misc
 
