@@ -6,6 +6,7 @@
 ### Deprecated
 ### Removed
 ### Fixed
+* Fix `insert_final_newline=true` validation when file ends with CRLF [#130](https://github.com/editorconfig-checker/editorconfig-checker/pull/130)
 ### Security
 ### Misc
 
