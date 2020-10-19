@@ -29,8 +29,7 @@ func TestFinalNewline(t *testing.T) {
 		{"x\r", "true", "lf", errors.New("Wrong line endings or new final newline")},
 		{"x\r", "true", "crlf", errors.New("Wrong line endings or new final newline")},
 
-		// TODO: Needs a fix (\n is the last char so it somehow matches)
-		// {"x\r\n", "true", "lf", errors.New("Wrong line endings or new final newline")},
+		{"x\r\n", "true", "lf", errors.New("Wrong line endings or new final newline")},
 		{"x\r\n", "true", "cr", errors.New("Wrong line endings or new final newline")},
 
 		// insert_final_newline false
