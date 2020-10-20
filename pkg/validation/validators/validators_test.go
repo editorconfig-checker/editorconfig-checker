@@ -29,8 +29,7 @@ func TestFinalNewline(t *testing.T) {
 		{"x\r", "true", "lf", errors.New("Wrong line endings or new final newline")},
 		{"x\r", "true", "crlf", errors.New("Wrong line endings or new final newline")},
 
-		// TODO: Needs a fix (\n is the last char so it somehow matches)
-		// {"x\r\n", "true", "lf", errors.New("Wrong line endings or new final newline")},
+		{"x\r\n", "true", "lf", errors.New("Wrong line endings or new final newline")},
 		{"x\r\n", "true", "cr", errors.New("Wrong line endings or new final newline")},
 
 		// insert_final_newline false
@@ -244,16 +243,21 @@ func TestMaxLineLength(t *testing.T) {
 	maxLineLengthTest := []struct {
 		line          string
 		maxLineLength int
+		charSet       string
 		expected      error
 	}{
-		{"", 80, nil},
-		{"abc", 2, errors.New("Line too long (3 instead of 2)")},
-		{"   ", 2, errors.New("Line too long (3 instead of 2)")},
-		{"xx", 2, nil},
+		{"検索は次の", 5, "utf-8", nil},
+		{"検索は次の", 2, "utf-8", errors.New("Line too long (5 instead of 2)")},
+		{"\xEF\xBB\xBF検索は次の", 5, "utf-8-bom", nil},
+		{"検索は次の", 5, "latin1", errors.New("Line too long (15 instead of 5)")},
+		{"", 80, "latin1", nil},
+		{"abc", 2, "latin1", errors.New("Line too long (3 instead of 2)")},
+		{"   ", 2, "latin1", errors.New("Line too long (3 instead of 2)")},
+		{"xx", 2, "latin1", nil},
 	}
 
 	for _, tt := range maxLineLengthTest {
-		actual := MaxLineLength(tt.line, tt.maxLineLength)
+		actual := MaxLineLength(tt.line, tt.maxLineLength, tt.charSet)
 		if !reflect.DeepEqual(actual, tt.expected) {
 			t.Errorf("Max(%s, %v): expected: %v, got: %v", tt.line, tt.maxLineLength, tt.expected, actual)
 		}

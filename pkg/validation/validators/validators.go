@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"regexp"
 	"strings"
+	"unicode/utf8"
 
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/config"
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/utils"
@@ -94,10 +95,8 @@ func TrailingWhitespace(line string, trimTrailingWhitespace bool) error {
 // FinalNewline validates if a file has a final and correct newline
 func FinalNewline(fileContent string, insertFinalNewline string, endOfLine string) error {
 	if insertFinalNewline == "true" {
-		regexpPattern := fmt.Sprintf("%s$", utils.GetEolChar(endOfLine))
-		matched, _ := regexp.MatchString(regexpPattern, fileContent)
-
-		if !matched {
+		expectedEolChar := utils.GetEolChar(endOfLine)
+		if !strings.HasSuffix(fileContent, expectedEolChar) || (expectedEolChar == "\n" && strings.HasSuffix(fileContent, "\r\n")) {
 			return errors.New("Wrong line endings or new final newline")
 		}
 	} else if insertFinalNewline == "false" {
@@ -141,8 +140,19 @@ func LineEnding(fileContent string, endOfLine string) error {
 	return nil
 }
 
-func MaxLineLength(line string, maxLineLength int) error {
-	length := len(line)
+func MaxLineLength(line string, maxLineLength int, charSet string) error {
+	var length int
+	if charSet == "utf-8" || charSet == "utf-8-bom" {
+		if charSet == "utf-8-bom" && strings.HasPrefix(line, "\xEF\xBB\xBF") {
+			line = line[3:] //strip BOM
+		}
+		length = utf8.RuneCountInString(line)
+	} else {
+		// TODO: Handle utf-16be and utf-16le properly. Unfortunately, Go doesn't provide a utf16.RuneCountinString() function
+		// Just go with byte count
+		length = len(line)
+	}
+
 	if length > maxLineLength {
 		return fmt.Errorf("Line too long (%d instead of %d)", length, maxLineLength)
 	}

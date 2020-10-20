@@ -106,6 +106,7 @@ func TestValidateFile(t *testing.T) {
 
 	configuration = config.Config{Verbose: true}
 	configuration.Disable.EndOfLine = true
+	configuration.Disable.InsertFinalNewline = true
 	result = ValidateFile("./../../testfiles/wrong-line-ending.txt", configuration)
 	if len(result) != 0 {
 		t.Error("Should have no error, got", result)
