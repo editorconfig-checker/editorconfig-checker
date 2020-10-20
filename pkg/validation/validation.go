@@ -17,11 +17,18 @@ import (
 
 // ValidateFile Validates a single file and returns the errors
 func ValidateFile(filePath string, config config.Config) []error.ValidationError {
+	const directivePrefix = "editorconfig-checker-"
+	const directiveDisable = directivePrefix + "disable"
+	const directiveDisableFile = directivePrefix + "disable-file"
+	const directiveDisableLine = directivePrefix + "disable-line"
+	const directiveEnable = directivePrefix + "enable"
+
 	var validationErrors []error.ValidationError
+	var isDisabled bool = false
 	lines := files.ReadLines(filePath)
 
 	// return if first line contains editorconfig-checker-disable-file
-	if len(lines) == 0 || strings.Contains(lines[0], "editorconfig-checker-disable-file") {
+	if len(lines) == 0 || strings.Contains(lines[0], directiveDisableFile) {
 		return validationErrors
 	}
 
@@ -50,7 +57,18 @@ func ValidateFile(filePath string, config config.Config) []error.ValidationError
 	}
 
 	for lineNumber, line := range lines {
-		if strings.Contains(line, "editorconfig-checker-disable-line") {
+		if strings.Contains(line, directiveEnable) {
+			isDisabled = false
+		} else if directiveIndex := strings.Index(line, directiveDisable); directiveIndex != -1 {
+			if strings.HasPrefix(line[directiveIndex:], directiveDisableLine) {
+				// found editorconfig-checker-disable-line, so just skip current line
+				continue
+			} else {
+				isDisabled = true
+			}
+		}
+
+		if isDisabled {
 			continue
 		}
 

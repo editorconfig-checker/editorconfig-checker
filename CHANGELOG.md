@@ -3,6 +3,7 @@
 ## Unreleased
 ### BREAKING
 ### Added
+* Add support for disabling validation via `editorconfig-checker-disable` and re-enabling with `editorconfig-checker-enable` [#126](https://github.com/editorconfig-checker/editorconfig-checker/pull/126)
 ### Deprecated
 ### Removed
 ### Fixed

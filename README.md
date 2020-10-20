@@ -163,6 +163,19 @@ const myTemplateString = `
      wrongly indended line because it needs to be` // editorconfig-checker-disable-line
 ```
 
+### Excluding blocks
+
+To temporarily disable all checks, add a comment containing `editorconfig-checker-disable`. Re-enable with a comment containing `editorconfig-checker-enable`
+
+```js
+// editorconfig-checker-disable
+const myTemplateString = `
+  first line 
+     wrongly indended line because it needs to be
+`
+// editorconfig-checker-enable
+```
+
 ### Excluding files
 
 #### Inline
