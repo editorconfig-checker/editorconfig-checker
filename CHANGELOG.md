@@ -6,6 +6,7 @@
 ### Deprecated
 ### Removed
 ### Fixed
+* Fix file path corruption [#121](https://github.com/editorconfig-checker/editorconfig-checker/issues/121)
 * Fix `insert_final_newline=true` validation when file ends with CRLF [#130](https://github.com/editorconfig-checker/editorconfig-checker/pull/130)
 * Fix `max_line_length` validation for UTF-8 [#115](https://github.com/editorconfig-checker/editorconfig-checker/issues/115)
 ### Security

@@ -184,13 +184,17 @@ func PathExists(filePath string) bool {
 
 // GetRelativePath returns the relative path of a file from the current working directory
 func GetRelativePath(filePath string) (string, error) {
+	if !filepath.IsAbs(filePath) {
+		// Path is already relative. No changes needed
+		return filePath, nil
+	}
+
 	cwd, err := os.Getwd()
 	if err != nil {
 		return "", fmt.Errorf("Could not get the current working directory")
 	}
 
-	relativePath := strings.Replace(filePath, cwd, ".", 1)
-	return relativePath, nil
+	return filepath.Rel(cwd, filePath)
 }
 
 // IsAllowedContentType returns wether the contentType is

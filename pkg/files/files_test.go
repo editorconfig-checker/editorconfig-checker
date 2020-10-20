@@ -78,12 +78,19 @@ func TestPathExists(t *testing.T) {
 }
 
 func TestGetRelativePath(t *testing.T) {
+	// Should return paths that are already relative unchanged
+	relativeFilePath, _ := GetRelativePath("bin/ec")
+	if relativeFilePath != "bin/ec" {
+		t.Errorf("GetRelativePath(%s): expected: %v, got: %v", "bin/ec", "bin/ec", relativeFilePath)
+	}
+
+	// Should convert absolute paths to be relative to current directory
 	cwd, _ := os.Getwd()
 	filePath := "/bin/ec"
-	relativeFilePath, _ := GetRelativePath(cwd + filePath)
+	relativeFilePath, _ = GetRelativePath(cwd + filePath)
 
-	if relativeFilePath != "."+filePath {
-		t.Error("Expected the relative filePath to match")
+	if relativeFilePath != "bin/ec" {
+		t.Errorf("GetRelativePath(%s): expected: %v, got: %v", cwd+filePath, "bin/ec", relativeFilePath)
 	}
 
 	DIR := "/tmp/stuff"
@@ -96,6 +103,12 @@ func TestGetRelativePath(t *testing.T) {
 	err = os.Chdir(DIR)
 	if err != nil {
 		panic(err)
+	}
+
+	// Check with the current directory ("/tmp/stuff") in the middle of the given file path
+	relativeFilePath, _ = GetRelativePath("/foo" + DIR + filePath)
+	if relativeFilePath != "../../foo"+DIR+filePath {
+		t.Errorf("GetRelativePath(%s): expected: %v, got: %v", "/foo"+DIR+filePath, "../../foo"+DIR+filePath, relativeFilePath)
 	}
 
 	err = os.Remove(DIR)
