@@ -6,6 +6,7 @@
 ### Deprecated
 ### Removed
 ### Fixed
+* Fix `max_line_length` validation for UTF-8 [#115](https://github.com/editorconfig-checker/editorconfig-checker/issues/115)
 ### Security
 ### Misc
 
