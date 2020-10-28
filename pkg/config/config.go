@@ -42,6 +42,7 @@ var defaultExcludes = []string{
 	"\\.7z$",
 	"\\.bz2$",
 	"\\.log$",
+	"\\.patch$",
 	"\\.css\\.map$",
 	"\\.js\\.map$",
 	"min\\.css$",
