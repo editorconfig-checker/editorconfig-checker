@@ -220,6 +220,7 @@ If you don't pass the `ignore-defaults` flag to the binary these files are exclu
 "\\.7z$",
 "\\.bz2$",
 "\\.log$",
+"\\.patch$",
 "\\.css\\.map$",
 "\\.js\\.map$",
 "min\\.css$",
