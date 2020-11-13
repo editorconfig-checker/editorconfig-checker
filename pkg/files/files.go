@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"net/http"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"regexp"
 	"strings"
@@ -91,35 +90,24 @@ func GetFiles(config config.Config) ([]string, error) {
 		return filePaths, nil
 	}
 
-	byteArray, err := exec.Command("git", "ls-tree", "-r", "--name-only", "HEAD").Output()
-	if err != nil {
-		// It is not a git repository.
-		cwd, err := os.Getwd()
-		if err != nil {
-			return filePaths, err
-		}
-
-		_ = filepath.Walk(cwd, func(path string, fi os.FileInfo, err error) error {
-			if fi.Mode().IsRegular() {
-				filePaths = AddToFiles(filePaths, path, config)
+	err := filepath.Walk(".",
+		func(path string, info os.FileInfo, err error) error {
+			if err != nil {
+				return err
 			}
-
-			return nil
-		})
-	}
-
-	filesSlice := strings.Split(string(byteArray[:]), "\n")
-
-	for _, filePath := range filesSlice {
-		if len(filePath) > 0 {
-			fi, err := os.Stat(filePath)
+			fi, err := os.Stat(path)
 
 			// The err would be a broken symlink for example,
 			// so we want to program to continue but the file should not be checked
 			if err == nil && fi.Mode().IsRegular() {
-				filePaths = AddToFiles(filePaths, filePath, config)
+				filePaths = AddToFiles(filePaths, path, config)
 			}
-		}
+			return nil
+		},
+	)
+
+	if err != nil {
+		return filePaths, err
 	}
 
 	return filePaths, nil

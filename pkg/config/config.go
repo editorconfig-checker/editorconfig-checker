@@ -47,6 +47,8 @@ var defaultExcludes = []string{
 	"\\.js\\.map$",
 	"min\\.css$",
 	"min\\.js$",
+	"(^|/)\\.git($|/)",
+	"(^|/)node_modules($|/)",
 }
 
 var defaultAllowedContentTypes = []string{
