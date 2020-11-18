@@ -12,6 +12,8 @@
 
 ### Fixed
 
+- Extended validation to staged and unadded files [#135](https://github.com/editorconfig-checker/editorconfig-checker/pull/135)
+
 ### Security
 
 ### Misc
