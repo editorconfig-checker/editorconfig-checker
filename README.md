@@ -24,6 +24,7 @@
 6.2.5 [via arguments](#via-arguments)  
 6.2.6 [Generally](#generally)  
 7. [Docker](#docker)
+8. [Continuous Integration](#continous-integration)
 8. [Support](#support)
 
 
@@ -270,6 +271,21 @@ To do this you need to have Docker installed and run this command in your reposi
 `docker run --rm --volume=$PWD:/check mstruebing/editorconfig-checker`
 
 Dockerhub: [mstruebing/editorconfig-checker](https://hub.docker.com/r/mstruebing/editorconfig-checker)
+
+## Continuous Integration
+
+### Mega-Linter
+
+Instead of installing and configuring `editorconfig-checker` and all other linters in your project CI workflows (GitHub Actions & others), you can use [Mega-Linter](https://nvuillam.github.io/mega-linter/) which does all that for you with a single [assisted installation](https://nvuillam.github.io/mega-linter/installation/)
+
+Mega-Linter embeds [editorconfig-checker](https://nvuillam.github.io/mega-linter/descriptors/editorconfig_editorconfig_checker/) by default in all its [flavors](https://nvuillam.github.io/mega-linter/flavors/), meaning that it will be run at each commit or Pull Request to detect any issue related to .`editorconfig`
+
+If you want to use only `editorconfig-checker` and not the 70+ other linters, you can use the following `.mega-linter.yml` configuration file
+
+```yaml
+ENABLE:
+- EDITORCONFIG
+```
 
 ## Support
 If you have any questions, suggestions, need a wrapper for a programming language or just want to chat join #editorconfig-checker on 
