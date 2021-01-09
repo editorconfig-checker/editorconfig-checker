@@ -35,7 +35,7 @@ func init() {
 	flag.StringVar(&tmpExclude, "exclude", "", "a regex which files should be excluded from checking - needs to be a valid regular expression")
 	flag.BoolVar(&c.IgnoreDefaults, "ignore-defaults", false, "ignore default excludes")
 	flag.BoolVar(&c.DryRun, "dry-run", false, "show which files would be checked")
-	flag.BoolVar(&c.Version, "version", false, "print the version number")
+	flag.BoolVar(&c.ShowVersion, "version", false, "print the version number")
 	flag.BoolVar(&c.Help, "help", false, "print the help")
 	flag.BoolVar(&c.Help, "h", false, "print the help")
 	flag.BoolVar(&c.Verbose, "verbose", false, "print debugging information")
@@ -58,7 +58,7 @@ func init() {
 	currentConfig, _ = config.NewConfig(configFilePath)
 
 	if init {
-		err := currentConfig.Save()
+		err := currentConfig.Save(version)
 		if err != nil {
 			logger.Error(err.Error())
 			os.Exit(1)
@@ -89,6 +89,12 @@ func main() {
 	config := *currentConfig
 	config.Logger.Debug(config.GetAsString())
 	config.Logger.Verbose("Exclude Regexp: %s", config.GetExcludesAsRegularExpression())
+
+	if config.Version != version {
+		config.Logger.Error("Version from config file is not the same as the version of the binary")
+		config.Logger.Error(fmt.Sprintf("Binary: %s, Config %s", version, config.Version))
+		os.Exit(1)
+	}
 
 	// Check for returnworthy arguments
 	shouldExit := ReturnableFlags(config)
@@ -132,12 +138,12 @@ func main() {
 // ReturnableFlags returns wether a flag passed should exit the program
 func ReturnableFlags(config config.Config) bool {
 	switch {
-	case config.Version:
+	case config.ShowVersion:
 		config.Logger.Output(version)
 	case config.Help:
 		config.Logger.Output("USAGE:")
 		flag.PrintDefaults()
 	}
 
-	return config.Version || config.Help
+	return config.ShowVersion || config.Help
 }

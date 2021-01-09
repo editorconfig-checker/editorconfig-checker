@@ -79,7 +79,8 @@ func TestMerge(t *testing.T) {
 	}
 
 	mergeConfig = Config{
-		Version:             true,
+		ShowVersion:         true,
+		Version:             "2.3.0",
 		Help:                true,
 		DryRun:              true,
 		Path:                "some-other",
@@ -156,11 +157,11 @@ func TestSave(t *testing.T) {
 	defer os.RemoveAll(dir)
 	configFile := filepath.Join(dir, "config")
 	c, _ := NewConfig(configFile)
-	if c.Save() != nil {
+	if c.Save("VERSION") != nil {
 		t.Error("Should create the config")
 	}
 
-	if c.Save() == nil {
+	if c.Save("VERSION") == nil {
 		t.Error("Should produce an error")
 	}
 }
@@ -170,7 +171,7 @@ func TestGetAsString(t *testing.T) {
 	_ = c.Parse()
 
 	actual := c.GetAsString()
-	expected := "Config: {Version:false Help:false DryRun:false Path:../../.ecrc Verbose:false Debug:false IgnoreDefaults:false SpacesAftertabs:false NoColor:false Exclude:[testfiles] AllowedContentTypes:[text/ application/octet-stream] PassedFiles:[] Disable:{EndOfLine:false Indentation:false InsertFinalNewline:false TrimTrailingWhitespace:false IndentSize:false MaxLineLength:false} Logger:{Verbosee:false Debugg:false NoColor:false}}"
+	expected := "Config: {ShowVersion:false Help:false DryRun:false Path:../../.ecrc Version:2.3.0 Verbose:false Debug:false IgnoreDefaults:false SpacesAftertabs:false NoColor:false Exclude:[testfiles] AllowedContentTypes:[text/ application/octet-stream] PassedFiles:[] Disable:{EndOfLine:false Indentation:false InsertFinalNewline:false TrimTrailingWhitespace:false IndentSize:false MaxLineLength:false} Logger:{Verbosee:false Debugg:false NoColor:false}}"
 
 	if actual != expected {
 		t.Errorf("Expected: %v, got: %v ", expected, actual)

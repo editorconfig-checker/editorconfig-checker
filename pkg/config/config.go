@@ -57,12 +57,13 @@ var defaultAllowedContentTypes = []string{
 // Config struct, contains everything a config can contain
 type Config struct {
 	// CLI
-	Version bool
-	Help    bool
-	DryRun  bool
-	Path    string
+	ShowVersion bool
+	Help        bool
+	DryRun      bool
+	Path        string
 
 	// CONFIG FILE
+	Version             string
 	Verbose             bool
 	Debug               bool
 	IgnoreDefaults      bool
@@ -129,7 +130,11 @@ func (c *Config) Merge(config Config) {
 		c.DryRun = config.DryRun
 	}
 
-	if config.Version {
+	if config.ShowVersion {
+		c.ShowVersion = config.ShowVersion
+	}
+
+	if len(config.Version) > 0 {
 		c.Version = config.Version
 	}
 
@@ -218,12 +223,13 @@ func (c Config) GetExcludesAsRegularExpression() string {
 }
 
 // Save saves the config to it's Path
-func (c Config) Save() error {
+func (c Config) Save(version string) error {
 	if utils.IsRegularFile(c.Path) {
 		return fmt.Errorf("File `%v` already exists", c.Path)
 	}
 
 	type writtenConfig struct {
+		Version             string
 		Verbose             bool
 		Debug               bool
 		IgnoreDefaults      bool
@@ -235,7 +241,7 @@ func (c Config) Save() error {
 		Disable             DisabledChecks
 	}
 
-	configJSON, _ := json.MarshalIndent(writtenConfig{}, "", "  ")
+	configJSON, _ := json.MarshalIndent(writtenConfig{Version: version}, "", "  ")
 	configString := strings.Replace(string(configJSON[:]), "null", "[]", -1)
 	err := ioutil.WriteFile(c.Path, []byte(configString), 0644)
 

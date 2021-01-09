@@ -6,6 +6,8 @@
 
 ### Added
 
+- Add `version` field on config [#140](https://github.com/editorconfig-checker/editorconfig-checker/pull/140)
+
 ### Deprecated
 
 ### Removed

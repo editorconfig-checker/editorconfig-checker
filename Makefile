@@ -68,6 +68,7 @@ _tag_version:
 	@read -p "Enter version to release: " version && \
 	echo $${version} > VERSION && \
 	sed -i "s/VERSION=".*"/VERSION=\"$${version}\"/" ./README.md && \
+	sed -i "s/\"Version\": \".*\",/\"Version\": \"$${version}\",/" .ecrc && \
 	git add . && git commit -m "chore(release): $${version}" && git tag "$${version}" && \
 	git push origin master && git push origin master --tags
 
