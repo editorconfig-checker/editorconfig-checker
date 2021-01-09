@@ -12,11 +12,13 @@
 
 ### Fixed
 
-- Only check config version when config is available [#142](https://github.com/editorconfig-checker/editorconfig-checker/pull/142)
-
 ### Security
 
 ### Misc
+
+## [2.3.1] - 2021-01-09
+
+- Only check config version when config is available [#142](https://github.com/editorconfig-checker/editorconfig-checker/pull/142)
 
 ## [2.3.0] - 2021-01-09
 
