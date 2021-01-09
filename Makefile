@@ -69,6 +69,7 @@ _tag_version:
 	echo $${version} > VERSION && \
 	sed -i "s/VERSION=".*"/VERSION=\"$${version}\"/" ./README.md && \
 	sed -i "s/\"Version\": \".*\",/\"Version\": \"$${version}\",/" .ecrc && \
+	sed -i "s/\"Version\": \".*\",/\"Version\": \"$${version}\",/" testfiles/generated-config.json && \
 	git add . && git commit -m "chore(release): $${version}" && git tag "$${version}" && \
 	git push origin master && git push origin master --tags
 
