@@ -6,19 +6,20 @@
 
 ### Added
 
-- Add `version` field on config [#140](https://github.com/editorconfig-checker/editorconfig-checker/pull/140)
-
 ### Deprecated
 
 ### Removed
 
 ### Fixed
 
-- Extended validation to staged and unadded files [#135](https://github.com/editorconfig-checker/editorconfig-checker/pull/135)
-
 ### Security
 
 ### Misc
+
+## [2.3.0] - 2021-01-09
+
+- Add `version` field on config [#140](https://github.com/editorconfig-checker/editorconfig-checker/pull/140)
+- Extended validation to staged and unadded files [#135](https://github.com/editorconfig-checker/editorconfig-checker/pull/135)
 
 ## [2.2.0] - 2020-10-20
 
