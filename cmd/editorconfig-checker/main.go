@@ -10,6 +10,7 @@ import (
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/error"
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/files"
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/logger"
+	"github.com/editorconfig-checker/editorconfig-checker/pkg/utils"
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/validation"
 )
 
@@ -90,7 +91,7 @@ func main() {
 	config.Logger.Debug(config.GetAsString())
 	config.Logger.Verbose("Exclude Regexp: %s", config.GetExcludesAsRegularExpression())
 
-	if config.Version != version {
+	if utils.FileExists(config.Path) && config.Version != version {
 		config.Logger.Error("Version from config file is not the same as the version of the binary")
 		config.Logger.Error(fmt.Sprintf("Binary: %s, Config %s", version, config.Version))
 		os.Exit(1)

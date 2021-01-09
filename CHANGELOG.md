@@ -12,6 +12,8 @@
 
 ### Fixed
 
+- Only check config version when config is available [#142](https://github.com/editorconfig-checker/editorconfig-checker/pull/142)
+
 ### Security
 
 ### Misc
