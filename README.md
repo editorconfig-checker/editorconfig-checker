@@ -136,6 +136,7 @@ A sample `.ecrc` file can look like this and will be used from your current work
   "AllowedContentTypes": [],
   "PassedFiles": [],
   "Disable": {
+    // set these options to true to disable specific checks
     "EndOfLine": false,
     "Indentation": false,
     "InsertFinalNewline": false,
