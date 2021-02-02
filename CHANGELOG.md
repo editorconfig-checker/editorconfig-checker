@@ -16,6 +16,10 @@
 
 ### Misc
 
+## [2.3.2] - 2021-02-02
+
+- Allow version to be empty in config [#146](https://github.com/editorconfig-checker/editorconfig-checker/pull/146)
+
 ## [2.3.1] - 2021-01-09
 
 - Only check config version when config is available [#142](https://github.com/editorconfig-checker/editorconfig-checker/pull/142)
