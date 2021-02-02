@@ -91,7 +91,7 @@ func main() {
 	config.Logger.Debug(config.GetAsString())
 	config.Logger.Verbose("Exclude Regexp: %s", config.GetExcludesAsRegularExpression())
 
-	if utils.FileExists(config.Path) && config.Version != version {
+	if utils.FileExists(config.Path) && config.Version != "" && config.Version != version {
 		config.Logger.Error("Version from config file is not the same as the version of the binary")
 		config.Logger.Error(fmt.Sprintf("Binary: %s, Config %s", version, config.Version))
 		os.Exit(1)
