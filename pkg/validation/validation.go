@@ -161,7 +161,7 @@ func ValidateMaxLineLength(fileInformation files.FileInformation, config config.
 
 	if currentError := validators.MaxLineLength(fileInformation.Line, maxLineLength, charSet); !config.Disable.MaxLineLength && currentError != nil {
 		config.Logger.Verbose(fmt.Sprintf("Max line length error found in %s on %d", fileInformation.FilePath, fileInformation.LineNumber))
-		return error.ValidationError{LineNumber: -1, Message: currentError}
+		return error.ValidationError{LineNumber: fileInformation.LineNumber + 1, Message: currentError}
 	}
 
 	return error.ValidationError{}
