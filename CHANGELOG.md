@@ -12,6 +12,8 @@
 
 ### Fixed
 
+- Show line number in `max_line_length` error [#155](https://github.com/editorconfig-checker/editorconfig-checker/pull/155)
+
 ### Security
 
 ### Misc
