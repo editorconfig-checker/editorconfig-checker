@@ -42,10 +42,7 @@ run: build
 run-verbose: build
 	@./bin/ec --verbose
 
-release: _is_master_branch _git_branch_is_up_to_date current_version _tag_version _do_release
-	@echo Release done. Go to Github and create a release.
-
-release2: _is_master_branch _git_branch_is_up_to_date _do_release
+release: _is_master_branch _git_branch_is_up_to_date _do_release
 	@echo Release done. Go to Github and create a release.
 
 _is_master_branch:
