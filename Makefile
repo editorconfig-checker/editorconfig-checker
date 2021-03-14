@@ -45,6 +45,9 @@ run-verbose: build
 release: _is_master_branch _git_branch_is_up_to_date current_version _tag_version _do_release
 	@echo Release done. Go to Github and create a release.
 
+release2: _is_master_branch _git_branch_is_up_to_date _do_release
+	@echo Release done. Go to Github and create a release.
+
 _is_master_branch:
 ifneq ($(GIT_BRANCH),master)
 	@echo You are not on the master branch.
@@ -62,16 +65,22 @@ endif
 current_version:
 	@echo the current version is: $(CURRENT_VERSION)
 
-_do_release: clean test build run _build-all-binaries _compress-all-binaries
+_do_release: _checkout clean _tag_version test build run _build-all-binaries _compress-all-binaries
+	git checkout master
+	git merge --no-ff release
+	git push origin master && git push origin master --tags
 
-_tag_version:
+_checkout:
+	git branch -D release; git checkout -b release
+
+_tag_version: current_version
 	@read -p "Enter version to release: " version && \
 	echo $${version} > VERSION && \
 	sed -i "s/VERSION=".*"/VERSION=\"$${version}\"/" ./README.md && \
 	sed -i "s/\"Version\": \".*\",/\"Version\": \"$${version}\",/" .ecrc && \
 	sed -i "s/\"Version\": \".*\",/\"Version\": \"$${version}\",/" testfiles/generated-config.json && \
-	git add . && git commit -m "chore(release): $${version}" && git tag "$${version}" && \
-	git push origin master && git push origin master --tags
+	sed -i "s/${CURRENT_VERSION}/$${version}/" ./pkg/config/config_test.go && \
+	git add . && git commit -m "chore(release): $${version}" && git tag "$${version}"
 
 _build-all-binaries:
 	# doesn't work on my machine and not in travis, see: https://github.com/golang/go/wiki/GoArm

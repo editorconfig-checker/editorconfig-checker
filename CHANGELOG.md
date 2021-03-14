@@ -12,11 +12,15 @@
 
 ### Fixed
 
-- Show line number in `max_line_length` error [#155](https://github.com/editorconfig-checker/editorconfig-checker/pull/155)
-
 ### Security
 
 ### Misc
+
+## [2.3.4] - 2021-03-11
+
+### Fixed
+
+- Show line number in `max_line_length` error [#155](https://github.com/editorconfig-checker/editorconfig-checker/pull/155)
 
 ## [2.3.2] - 2021-02-02
 
