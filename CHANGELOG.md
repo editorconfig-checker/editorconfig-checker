@@ -6,6 +6,8 @@
 
 ### Added
 
+- Add WebP and AVIF to default excludes [#159](https://github.com/editorconfig-checker/editorconfig-checker/pull/159)
+
 ### Deprecated
 
 ### Removed
