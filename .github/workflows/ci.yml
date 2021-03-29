@@ -8,6 +8,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: wagoid/commitlint-github-action@v2.0.3
+        if: ${{ github.ref != 'refs/heads/master' }}
       - uses: actions/setup-go@v1
         with:
           go-version: "1.13"
@@ -17,9 +18,11 @@ jobs:
       - run: make run
       - run: make bench
       - uses: heinrichreimer/github-changelog-generator-action@v2.1.1
+        if: ${{ github.ref != 'refs/heads/master' }}
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
       - uses: EndBug/add-and-commit@v7
+        if: ${{ github.ref != 'refs/heads/master' }}
         with:
           add: "CHANGELOG.md"
           message: "docs: add changelog [skip-ci]"
