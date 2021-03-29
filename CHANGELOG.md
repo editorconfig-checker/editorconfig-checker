@@ -1,14 +1,25 @@
 # Changelog
 
+## [2.3.5](https://github.com/editorconfig-checker/editorconfig-checker/tree/2.3.5) (2021-03-29)
+
+**Fixed bugs:**
+
+- Rate limiting: causing TypeError: json.map is not a function [\#156](https://github.com/editorconfig-checker/editorconfig-checker/issues/156)
+
+**Closed issues:**
+
+- Add automatic changelog generation [\#149](https://github.com/editorconfig-checker/editorconfig-checker/issues/149)
+- Add commitlint [\#148](https://github.com/editorconfig-checker/editorconfig-checker/issues/148)
+
 ## [2.3.4](https://github.com/editorconfig-checker/editorconfig-checker/tree/2.3.4) (2021-03-15)
 
 **Fixed bugs:**
 
 - Specify line number for "Line too long" error? [\#154](https://github.com/editorconfig-checker/editorconfig-checker/issues/154)
 
-## [2.3.2](https://github.com/editorconfig-checker/editorconfig-checker/tree/2.3.2) (2021-02-02)
-
 ## [2.3.3](https://github.com/editorconfig-checker/editorconfig-checker/tree/2.3.3) (2021-02-02)
+
+## [2.3.2](https://github.com/editorconfig-checker/editorconfig-checker/tree/2.3.2) (2021-02-02)
 
 **Closed issues:**
 
