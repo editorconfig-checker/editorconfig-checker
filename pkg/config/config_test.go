@@ -80,7 +80,7 @@ func TestMerge(t *testing.T) {
 
 	mergeConfig = Config{
 		ShowVersion:         true,
-		Version:             "2.3.4",
+		Version:             "2.3.5",
 		Help:                true,
 		DryRun:              true,
 		Path:                "some-other",
@@ -171,7 +171,7 @@ func TestGetAsString(t *testing.T) {
 	_ = c.Parse()
 
 	actual := c.GetAsString()
-	expected := "Config: {ShowVersion:false Help:false DryRun:false Path:../../.ecrc Version:2.3.4 Verbose:false Debug:false IgnoreDefaults:false SpacesAftertabs:false NoColor:false Exclude:[testfiles] AllowedContentTypes:[text/ application/octet-stream] PassedFiles:[] Disable:{EndOfLine:false Indentation:false InsertFinalNewline:false TrimTrailingWhitespace:false IndentSize:false MaxLineLength:false} Logger:{Verbosee:false Debugg:false NoColor:false}}"
+	expected := "Config: {ShowVersion:false Help:false DryRun:false Path:../../.ecrc Version:2.3.5 Verbose:false Debug:false IgnoreDefaults:false SpacesAftertabs:false NoColor:false Exclude:[testfiles] AllowedContentTypes:[text/ application/octet-stream] PassedFiles:[] Disable:{EndOfLine:false Indentation:false InsertFinalNewline:false TrimTrailingWhitespace:false IndentSize:false MaxLineLength:false} Logger:{Verbosee:false Debugg:false NoColor:false}}"
 
 	if actual != expected {
 		t.Errorf("Expected: %v, got: %v ", expected, actual)
