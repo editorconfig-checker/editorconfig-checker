@@ -29,6 +29,8 @@ var defaultExcludes = []string{
 	"\\.png$",
 	"\\.jpg$",
 	"\\.jpeg$",
+	"\\.webp$",
+	"\\.avif$",
 	"\\.mp4$",
 	"\\.wmv$",
 	"\\.svg$",
