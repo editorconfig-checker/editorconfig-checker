@@ -18,6 +18,8 @@
 
 ### Misc
 
+- Added commitlint running in CI [#160](https://github.com/editorconfig-checker/editorconfig-checker/pull/160)
+
 ## [2.3.4] - 2021-03-11
 
 ### Fixed
