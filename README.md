@@ -209,6 +209,8 @@ If you don't pass the `ignore-defaults` flag to the binary these files are exclu
 "\\.png$",
 "\\.jpg$",
 "\\.jpeg$",
+"\\.webp$",
+"\\.avif",
 "\\.mp4$",
 "\\.wmv$",
 "\\.svg$",
