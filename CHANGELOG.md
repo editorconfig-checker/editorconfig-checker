@@ -1,190 +1,159 @@
 # Changelog
 
-## Unreleased
+## [2.3.4](https://github.com/editorconfig-checker/editorconfig-checker/tree/2.3.4) (2021-03-15)
 
-### BREAKING
+**Fixed bugs:**
 
-### Added
+- Specify line number for "Line too long" error? [\#154](https://github.com/editorconfig-checker/editorconfig-checker/issues/154)
 
-- Add WebP and AVIF to default excludes [#159](https://github.com/editorconfig-checker/editorconfig-checker/pull/159)
+## [2.3.2](https://github.com/editorconfig-checker/editorconfig-checker/tree/2.3.2) (2021-02-02)
 
-### Deprecated
+## [2.3.3](https://github.com/editorconfig-checker/editorconfig-checker/tree/2.3.3) (2021-02-02)
 
-### Removed
+**Closed issues:**
 
-### Fixed
+- .ecrc disable is unclear [\#143](https://github.com/editorconfig-checker/editorconfig-checker/issues/143)
 
-### Security
+## [2.3.1](https://github.com/editorconfig-checker/editorconfig-checker/tree/2.3.1) (2021-01-09)
 
-### Misc
+**Fixed bugs:**
 
-- Added commitlint running in CI [#160](https://github.com/editorconfig-checker/editorconfig-checker/pull/160)
+- \[v2.3.0\] ec --version returns error [\#141](https://github.com/editorconfig-checker/editorconfig-checker/issues/141)
 
-## [2.3.4] - 2021-03-11
+## [2.3.0](https://github.com/editorconfig-checker/editorconfig-checker/tree/2.3.0) (2021-01-09)
 
-### Fixed
+**Fixed bugs:**
 
-- Show line number in `max_line_length` error [#155](https://github.com/editorconfig-checker/editorconfig-checker/pull/155)
+- editorconfig-checker ignores multiple files with brace expansion notation [\#102](https://github.com/editorconfig-checker/editorconfig-checker/issues/102)
 
-## [2.3.2] - 2021-02-02
+**Closed issues:**
 
-- Allow version to be empty in config [#146](https://github.com/editorconfig-checker/editorconfig-checker/pull/146)
+- Add pre-commit hooks [\#133](https://github.com/editorconfig-checker/editorconfig-checker/issues/133)
+- Read excludes from `.gitignore` instead of using the git added files [\#99](https://github.com/editorconfig-checker/editorconfig-checker/issues/99)
 
-## [2.3.1] - 2021-01-09
+## [2.2.0](https://github.com/editorconfig-checker/editorconfig-checker/tree/2.2.0) (2020-10-20)
 
-- Only check config version when config is available [#142](https://github.com/editorconfig-checker/editorconfig-checker/pull/142)
+**Fixed bugs:**
 
-## [2.3.0] - 2021-01-09
+- GetRelativePath cwd replacement too naive [\#121](https://github.com/editorconfig-checker/editorconfig-checker/issues/121)
+- max\_line\_length should support non ASCII characters [\#115](https://github.com/editorconfig-checker/editorconfig-checker/issues/115)
 
-- Add `version` field on config [#140](https://github.com/editorconfig-checker/editorconfig-checker/pull/140)
-- Extended validation to staged and unadded files [#135](https://github.com/editorconfig-checker/editorconfig-checker/pull/135)
+**Closed issues:**
 
-## [2.2.0] - 2020-10-20
+- Allow disabling blocks of files [\#124](https://github.com/editorconfig-checker/editorconfig-checker/issues/124)
 
-### Added
+## [2.1.0](https://github.com/editorconfig-checker/editorconfig-checker/tree/2.1.0) (2020-06-07)
 
-- Add support for disabling validation via `editorconfig-checker-disable` and re-enabling with `editorconfig-checker-enable` [#126](https://github.com/editorconfig-checker/editorconfig-checker/pull/126)
+**Closed issues:**
 
-### Fixed
+- \[Request\] Support max\_line\_length [\#111](https://github.com/editorconfig-checker/editorconfig-checker/issues/111)
 
-- Fix file path corruption [#121](https://github.com/editorconfig-checker/editorconfig-checker/issues/121)
-- Fix `insert_final_newline=true` validation when file ends with CRLF [#130](https://github.com/editorconfig-checker/editorconfig-checker/pull/130)
-- Fix `max_line_length` validation for UTF-8 [#115](https://github.com/editorconfig-checker/editorconfig-checker/issues/115)
+## [2.0.4](https://github.com/editorconfig-checker/editorconfig-checker/tree/2.0.4) (2020-05-18)
 
-## [2.1.0] - 2020-06-07
+**Fixed bugs:**
 
-### Added
+- Bug: Default excludes ignored? [\#108](https://github.com/editorconfig-checker/editorconfig-checker/issues/108)
+- Option to only disable indent\_size check [\#94](https://github.com/editorconfig-checker/editorconfig-checker/issues/94)
 
-- `max_line_length` support [#112](https://github.com/editorconfig-checker/editorconfig-checker/pull/112) ([@mstruebing](https://github.com/mstruebing))
+## [2.0.3](https://github.com/editorconfig-checker/editorconfig-checker/tree/2.0.3) (2019-09-13)
 
-### Misc
+**Fixed bugs:**
 
-- switched to Github-actions from TravisCI [#113](https://github.com/editorconfig-checker/editorconfig-checker/pull/113) ([@mstruebing](https://github.com/mstruebing))
+- Verbose doesn't seemt to get recognized from language wrappers [\#87](https://github.com/editorconfig-checker/editorconfig-checker/issues/87)
 
-## [2.0.4] - 2020-05-18
+**Closed issues:**
 
-### Added
+- Add a web-page for editorconfig-checker [\#80](https://github.com/editorconfig-checker/editorconfig-checker/issues/80)
 
-- all, install and uninstall targets in the Makefile [#107](https://github.com/editorconfig-checker/editorconfig-checker/pull/107) ([@stephanlachnit](https://github.com/stephanlachnit))
-- man page [#107](https://github.com/editorconfig-checker/editorconfig-checker/pull/107) ([@stephanlachnit](https://github.com/stephanlachnit))
+## [2.0.2](https://github.com/editorconfig-checker/editorconfig-checker/tree/2.0.2) (2019-08-19)
 
-### Fixed
+**Closed issues:**
 
-- check if default excludes are ignored in `IsExcluded` to correctly check if files should be checked [#109](https://github.com/editorconfig-checker/editorconfig-checker/pull/108) ([@mstruebing](https://github.com/mstruebing))
-- Change `Dockerfile` `CMD` to allow the usage of `ec` everywhere inside the image [#105](https://github.com/editorconfig-checker/editorconfig-checker/pull/105) ([@chambo-e](https://github.com/chambo-e))
+- Add arch installation to readme [\#83](https://github.com/editorconfig-checker/editorconfig-checker/issues/83)
 
-### Misc
+## [2.0.1](https://github.com/editorconfig-checker/editorconfig-checker/tree/2.0.1) (2019-08-18)
 
-- Marked non-build targets in the Makefile as phony [#107](https://github.com/editorconfig-checker/editorconfig-checker/pull/107) ([@stephanlachnit](https://github.com/stephanlachnit))
+## [2.0.0](https://github.com/editorconfig-checker/editorconfig-checker/tree/2.0.0) (2019-08-18)
 
-## [2.0.3] - 2019-09-13
+**Fixed bugs:**
 
-### Fixed
+- Color output broken on Windows [\#74](https://github.com/editorconfig-checker/editorconfig-checker/issues/74)
 
-- (Only care for not empty stringish passed files)[https://github.com/editorconfig-checker/editorconfig-checker/pull/88]
-  Can lead to not correctly checking and aborting the program
-- (Correctly initialize logger)[https://github.com/editorconfig-checker/editorconfig-checker/pull/90]
-- (Correctly parse `--no-color`-flag)[https://github.com/editorconfig-checker/editorconfig-checker/pull/90]
-- Make `--no-color`-flag remove leftover color
+**Closed issues:**
 
-### Misc
+- Add `init` flag to create a configuration [\#79](https://github.com/editorconfig-checker/editorconfig-checker/issues/79)
+- Make allowed content Types configurable [\#78](https://github.com/editorconfig-checker/editorconfig-checker/issues/78)
+- Introduce config file [\#70](https://github.com/editorconfig-checker/editorconfig-checker/issues/70)
+- Add flags to disable checks [\#69](https://github.com/editorconfig-checker/editorconfig-checker/issues/69)
+- Integrate more meaningful verbose output [\#33](https://github.com/editorconfig-checker/editorconfig-checker/issues/33)
+- use golangs power for checking of files [\#11](https://github.com/editorconfig-checker/editorconfig-checker/issues/11)
+- cache already checked results [\#9](https://github.com/editorconfig-checker/editorconfig-checker/issues/9)
 
-- (Use go 1.13 in ci)[https://github.com/editorconfig-checker/editorconfig-checker/pull/89]
+## [1.3.0](https://github.com/editorconfig-checker/editorconfig-checker/tree/1.3.0) (2019-08-06)
 
-## [2.0.2] - 2019-08-19
+**Closed issues:**
 
-- (Update editorconfig-core-go to v2.1.1)[https://github.com/editorconfig-checker/editorconfig-checker/pull/77]
+- Support "tabs for indentation, spaces for alignment" style [\#66](https://github.com/editorconfig-checker/editorconfig-checker/issues/66)
 
-## [2.0.1] - 2019-08-18
+## [1.2.1](https://github.com/editorconfig-checker/editorconfig-checker/tree/1.2.1) (2019-07-06)
 
-- (Make allowed content types behave correctly)[https://github.com/editorconfig-checker/editorconfig-checker/pull/81]
+## [1.2.0](https://github.com/editorconfig-checker/editorconfig-checker/tree/1.2.0) (2019-05-02)
 
-## [2.0.0] - 2019-08-18
+**Closed issues:**
 
-### BREAKING
+- dry run command [\#59](https://github.com/editorconfig-checker/editorconfig-checker/issues/59)
+- Support include as whitelist, instead of exclude as blacklist [\#49](https://github.com/editorconfig-checker/editorconfig-checker/issues/49)
 
-- (Introduce `.ecrc` as a config file and not only to ignore files.)[https://github.com/editorconfig-checker/editorconfig-checker/pull/76]
-- (Removed shorthand flags for clarity(see usage))[https://github.com/editorconfig-checker/editorconfig-checker/pull/76]
+## [1.1.3](https://github.com/editorconfig-checker/editorconfig-checker/tree/1.1.3) (2019-04-20)
 
-### Added
+**Closed issues:**
 
-- (disable specific checks)[https://github.com/editorconfig-checker/editorconfig-checker/pull/71]
-- (A config can be generated with the `init`-flag)[https://github.com/editorconfig-checker/editorconfig-checker/pull/76]
-- (Files can be passed with `ec [<file>|<directory>]`)[https://github.com/editorconfig-checker/editorconfig-checker/pull/76]
-- (Added `debug` flag (more debug output will be added while debugging))[https://github.com/editorconfig-checker/editorconfig-checker/pull/76]
+- Make sure to have a clean master branch on release [\#34](https://github.com/editorconfig-checker/editorconfig-checker/issues/34)
 
-### Changed
+## [1.1.2](https://github.com/editorconfig-checker/editorconfig-checker/tree/1.1.2) (2019-03-16)
 
-- (Print most output on `stdout` instead of `stderr` now for `grepability`)[https://github.com/editorconfig-checker/editorconfig-checker/pull/76]
+**Fixed bugs:**
 
-### Fixed
+- Alpine based systems are not able to run a compiled binary [\#51](https://github.com/editorconfig-checker/editorconfig-checker/issues/51)
+- Problems excluding files via .ecrc on Windows [\#46](https://github.com/editorconfig-checker/editorconfig-checker/issues/46)
 
-- (fixed some golint and gocyclo issues)[https://github.com/editorconfig-checker/editorconfig-checker/pull/72]
+## [1.1.1](https://github.com/editorconfig-checker/editorconfig-checker/tree/1.1.1) (2019-03-01)
 
-### Misc
+## [1.1.0](https://github.com/editorconfig-checker/editorconfig-checker/tree/1.1.0) (2019-02-27)
 
-- (Put more structure into packages and rewrite most of internals.)[https://github.com/editorconfig-checker/editorconfig-checker/pull/76]
+**Closed issues:**
 
-## [1.3.0] - 2019-08-06
+- Disable file [\#42](https://github.com/editorconfig-checker/editorconfig-checker/issues/42)
+- Disable line [\#41](https://github.com/editorconfig-checker/editorconfig-checker/issues/41)
 
-### Added
+## [1.0.0](https://github.com/editorconfig-checker/editorconfig-checker/tree/1.0.0) (2019-02-08)
 
-- (allow spaces after tabs)[https://github.com/editorconfig-checker/editorconfig-checker/pull/67] with flag `spaces-after-tabs`
+**Fixed bugs:**
 
-### Misc
+- Block comments with tab validator produce an error [\#35](https://github.com/editorconfig-checker/editorconfig-checker/issues/35)
 
-- Some code refactoring (together with (allow spaces after tabs)[https://github.com/editorconfig-checker/editorconfig-checker/pull/67])
-- (updated editorconfig-core version to v2 which uses go modules now)[https://github.com/editorconfig-checker/editorconfig-checker/pull/68]
+**Closed issues:**
 
-## [1.2.1] - 2019-07-06
+- extend default excludes [\#38](https://github.com/editorconfig-checker/editorconfig-checker/issues/38)
+- List supported EditorConfig features [\#37](https://github.com/editorconfig-checker/editorconfig-checker/issues/37)
 
-### Fixed
+## [0.0.4](https://github.com/editorconfig-checker/editorconfig-checker/tree/0.0.4) (2019-01-13)
 
-- fix type to correctly ignore `jpeg` (`jepg` before)
-- allow every content type which contains `text/`
+## [0.0.3](https://github.com/editorconfig-checker/editorconfig-checker/tree/0.0.3) (2019-01-13)
 
-## [1.2.0] - 2019-05-02
+## [0.0.2](https://github.com/editorconfig-checker/editorconfig-checker/tree/0.0.2) (2019-01-13)
 
-### Added
+**Closed issues:**
 
-- (`dry-run`-flag)[https://github.com/editorconfig-checker/editorconfig-checker/pull/60]
+- Get git versioned files [\#31](https://github.com/editorconfig-checker/editorconfig-checker/issues/31)
+- verbose flag [\#13](https://github.com/editorconfig-checker/editorconfig-checker/issues/13)
 
-### Misc
+## [0.0.1](https://github.com/editorconfig-checker/editorconfig-checker/tree/0.0.1) (2018-12-17)
 
-- Switch to `go mod`
+**Fixed bugs:**
 
-## [1.1.3] - 2019-04-20
+- Don't run exclude regexp on absolute path [\#20](https://github.com/editorconfig-checker/editorconfig-checker/issues/20)
 
-### Fixed
 
-- `insert_final_newline` behaviour according to specification (https://github.com/editorconfig-checker/editorconfig-checker/pull/56)
-- Check if current branch is master and up to date with remote on release
 
-## [1.1.2] - 2019-03-16
-
-### Changed
-
-- use Go 1.12 in travis
-
-### Fixed
-
-- use `CGO_ENABLED=0` to let the binary run on alpine
-- correctly use go vet in travis
-
-## [1.1.1] - 2019-03-01
-
-### Fixed
-
-- Use `.exe` extension for windows binaries
-
-## [1.1.0] - 2019-02-27
-
-### Added
-
-- Changelog
-- disable lines inline with `editorconfig-checker-disable-line` see https://github.com/editorconfig-checker/editorconfig-checker/pull/43
-- disable files inline with `editorconfig-checker-disable-file` on first line see https://github.com/editorconfig-checker/editorconfig-checker/pull/43
-
-## [1.0.0] - 2019-02-08
-
-- initial release
+\* *This Changelog was automatically generated by [github_changelog_generator](https://github.com/github-changelog-generator/github-changelog-generator)*

@@ -16,4 +16,11 @@ jobs:
       - run: ./bin/ec -config stuff.json -init && diff stuff.json ./testfiles/generated-config.json && rm stuff.json
       - run: make run
       - run: make bench
+      - uses: heinrichreimer/github-changelog-generator-action@v2.1.1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: EndBug/add-and-commit@v7
+        with:
+          add: "CHANGELOG.md"
+          message: "docs: add changelog [skip-ci]"
       - uses: codecov/codecov-action@v1
