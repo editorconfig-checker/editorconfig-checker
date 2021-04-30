@@ -1,0 +1,12 @@
+version: 2
+updates:
+- package-ecosystem: gomod
+  directory: "/"
+  schedule:
+    interval: daily
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: github.com/editorconfig/editorconfig-core-go/v2
+    versions:
+    - 2.3.9
+    - 2.4.0
