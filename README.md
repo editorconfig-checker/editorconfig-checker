@@ -139,9 +139,9 @@ A sample `.ecrc` file can look like this and will be used from your current work
     // set these options to true to disable specific checks
     "EndOfLine": false,
     "Indentation": false,
+    "IndentSize": false,
     "InsertFinalNewline": false,
     "TrimTrailingWhitespace": false,
-    "IndentSize": false,
     "MaxLineLength": false
   }
 }
@@ -242,16 +242,18 @@ An `.ecrc` which would ignore all test files and all markdown files can look lik
 
 ```
 {
-    "verbose": false,
-    "ignore_defaults": false,
-    "exclude": ["testfiles", "\\.md$"],
-    "spaces_after_tabs": false,
-    "disable": {
-        "end_of_line": false,
-        "trim_trailing_whitespace": false,
-        "insert_final_newline": false,
-        "indentation": false
-    }
+  "Verbose": false,
+  "IgnoreDefaults": false,
+  "Exclude": ["testfiles", "\\.md$"],
+  "SpacesAfterTabs": false,
+  "Disable": {
+    "EndOfLine": false,
+    "Indentation": false,
+    "IndentSize": false,
+    "InsertFinalNewline": false,
+    "TrimTrailingWhitespace": false,
+    "MaxLineLength": false
+  }
 }
 ```
 
@@ -266,6 +268,8 @@ For example: `ec --exclude node_modules`
 Every exclude option is merged together.
 
 If you want to see which files the tool would check without checking them you can pass the `--dry-run` flag.
+
+Note that while `--dry-run` outputs absolute paths, a regular expression matches on relative paths from where the `ec` command is used.
 
 ## Docker 
 
