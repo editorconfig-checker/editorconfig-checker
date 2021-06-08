@@ -17,7 +17,7 @@ var DefaultExcludes = strings.Join(defaultExcludes, "|")
 // defaultExcludes are an array to produce the correct string from
 var defaultExcludes = []string{
 	"yarn\\.lock$",
-	"package-lock\\.json",
+	"package-lock\\.json$",
 	"composer\\.lock$",
 	"\\.snap$",
 	"\\.otf$",

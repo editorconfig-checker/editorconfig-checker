@@ -197,7 +197,7 @@ add x y =
 If you don't pass the `ignore-defaults` flag to the binary these files are excluded automatically:
 ```
 "yarn\\.lock$",
-"package-lock\\.json",
+"package-lock\\.json$",
 "composer\\.lock$",
 "\\.snap$",
 "\\.otf$",
