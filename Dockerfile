@@ -3,7 +3,7 @@ FROM golang:1.13-alpine as build
 RUN apk add --no-cache git
 WORKDIR /ec
 COPY . /ec
-RUN GO111MODULE=on CGO_ENABLED=0 go build -o bin/ec cmd/editorconfig-checker/main.go
+RUN GO111MODULE=on CGO_ENABLED=0 go build -ldflags "-X main.version=$(cat VERSION | tr -d '\n')" -o bin/ec ./cmd/editorconfig-checker/main.go
 
 #
 
