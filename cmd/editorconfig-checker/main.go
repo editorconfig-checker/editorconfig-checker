@@ -107,7 +107,6 @@ func main() {
 	filePaths, err := files.GetFiles(config)
 
 	if err != nil {
-		config.Logger.Error(err.Error())
 		os.Exit(1)
 	}
 

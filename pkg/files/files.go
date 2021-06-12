@@ -47,7 +47,7 @@ func IsExcluded(filePath string, config config.Config) (bool, error) {
 
 // AddToFiles adds a file to a slice if it isn't already in there
 // and meets the requirements and returns the new slice
-func AddToFiles(filePaths []string, filePath string, config config.Config) []string {
+func AddToFiles(filePaths []string, filePath string, config config.Config) ([]string, error) {
 	contentType, err := GetContentType(filePath)
 
 	config.Logger.Debug("AddToFiles: filePath: %s, contentType: %s", filePath, contentType)
@@ -55,22 +55,24 @@ func AddToFiles(filePaths []string, filePath string, config config.Config) []str
 	if err != nil {
 		config.Logger.Error("Could not get the ContentType of file: %s", filePath)
 		config.Logger.Error(err.Error())
+		return filePaths, err
 	}
 
 	isExcluded, err := IsExcluded(filePath, config)
 
 	if err == nil && !isExcluded && IsAllowedContentType(contentType, config) {
 		config.Logger.Verbose("Add %s to be checked", filePath)
-		return append(filePaths, filePath)
+		return append(filePaths, filePath), err
 	}
 
 	config.Logger.Verbose("Don't add %s to be checked", filePath)
-	return filePaths
+	return filePaths, err
 }
 
 // GetFiles returns all files which should be checked
 func GetFiles(config config.Config) ([]string, error) {
 	var filePaths []string
+	var hasNonExistingFile error
 
 	// Handle explicit passed files
 	if len(config.PassedFiles) != 0 {
@@ -78,17 +80,24 @@ func GetFiles(config config.Config) ([]string, error) {
 			if utils.IsDirectory(passedFile) {
 				_ = filepath.Walk(passedFile, func(path string, fi os.FileInfo, err error) error {
 					if fi.Mode().IsRegular() {
-						filePaths = AddToFiles(filePaths, path, config)
+						filePaths, err = AddToFiles(filePaths, path, config)
+						if hasNonExistingFile == nil {
+							hasNonExistingFile = err
+						}
 					}
 
 					return nil
 				})
 			} else {
-				filePaths = AddToFiles(filePaths, passedFile, config)
+				var err error
+				filePaths, err = AddToFiles(filePaths, passedFile, config)
+				if hasNonExistingFile == nil {
+					hasNonExistingFile = err
+				}
 			}
 		}
 
-		return filePaths, nil
+		return filePaths, hasNonExistingFile
 	}
 
 	byteArray, err := exec.Command("git", "ls-files", "--cached", "--others", "--modified", "--exclude-standard").Output()
@@ -101,7 +110,10 @@ func GetFiles(config config.Config) ([]string, error) {
 
 		_ = filepath.Walk(cwd, func(path string, fi os.FileInfo, err error) error {
 			if fi.Mode().IsRegular() {
-				filePaths = AddToFiles(filePaths, path, config)
+				filePaths, err = AddToFiles(filePaths, path, config)
+				if hasNonExistingFile == nil {
+					hasNonExistingFile = err
+				}
 			}
 
 			return nil
@@ -117,12 +129,12 @@ func GetFiles(config config.Config) ([]string, error) {
 			// The err would be a broken symlink for example,
 			// so we want to program to continue but the file should not be checked
 			if err == nil && fi.Mode().IsRegular() {
-				filePaths = AddToFiles(filePaths, filePath, config)
+				filePaths, hasNonExistingFile = AddToFiles(filePaths, filePath, config)
 			}
 		}
 	}
 
-	return filePaths, nil
+	return filePaths, hasNonExistingFile
 }
 
 // ReadLines returns the lines from a file as a slice

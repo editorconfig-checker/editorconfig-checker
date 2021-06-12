@@ -125,46 +125,51 @@ func TestGetRelativePath(t *testing.T) {
 
 func TestAddToFiles(t *testing.T) {
 	configuration := config.Config{}
-	excludedFileConfiguration := config.Config{Exclude: []string{"files"}}
+	excludedFileConfiguration := config.Config{Exclude: []string{"files.go"}}
+	type Expected struct {
+		filePaths []string
+		err       error
+	}
 	addToFilesTests := []struct {
 		filePaths []string
 		filePath  string
 		config    config.Config
-		expected  []string
+		expected  Expected
 	}{
 		{[]string{},
 			"./files.go",
 			excludedFileConfiguration,
-			[]string{}},
+			Expected{[]string{}, nil}},
 		{[]string{"./files.go"},
 			"./files.go",
 			configuration,
-			[]string{"./files.go"}},
+			Expected{[]string{"./files.go"}, nil}},
+		{[]string{""},
+			"./not-existing.go",
+			configuration,
+			Expected{[]string{""}, nil}},
+		{[]string{"./files.go"},
+			"./not-existing.go",
+			configuration,
+			Expected{[]string{"./files.go"}, nil}},
 	}
 
 	for _, tt := range addToFilesTests {
-		actual := AddToFiles(tt.filePaths, tt.filePath, tt.config)
+		actual, err := AddToFiles(tt.filePaths, tt.filePath, tt.config)
 
-		if !reflect.DeepEqual(actual, tt.expected) {
+		if !reflect.DeepEqual(actual, tt.expected.filePaths) && err != tt.expected.err {
 			t.Error(actual)
 			t.Error(tt.expected)
-			t.Errorf("AddToFiles(%s, %s, %+v): expected: %v, got: %v", tt.filePaths, tt.filePath, tt.config, tt.expected, actual)
+			t.Errorf("AddToFiles(%s, %s, %+v): expected: %v, got: %v, err: %v", tt.filePaths, tt.filePath, tt.config, tt.expected, actual, err)
 		}
 	}
 }
 
 func TestGetFiles(t *testing.T) {
 	configuration := config.Config{}
-	_, err := GetFiles(configuration)
-
-	if err == nil {
-		t.Errorf("Error expected")
-	}
-
-	configuration.PassedFiles = []string{"."}
 	files, err := GetFiles(configuration)
 
-	if len(files) > 0 && err != nil {
+	if len(files) > 0 && err == nil {
 		t.Errorf("Error expected")
 	}
 }
