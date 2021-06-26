@@ -100,7 +100,7 @@ func GetFiles(config config.Config) ([]string, error) {
 		}
 
 		_ = filepath.Walk(cwd, func(path string, fi os.FileInfo, err error) error {
-			if fi.Mode().IsRegular() {
+			if fi != nil && fi.Mode().IsRegular() {
 				filePaths = AddToFiles(filePaths, path, config)
 			}
 

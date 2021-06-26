@@ -107,19 +107,13 @@ func TestGetRelativePath(t *testing.T) {
 
 	// Check with the current directory ("/tmp/stuff") in the middle of the given file path
 	relativeFilePath, _ = GetRelativePath("/foo" + DIR + filePath)
-	if relativeFilePath != "../../foo"+DIR+filePath {
+	if relativeFilePath != "../../../foo"+DIR+filePath {
 		t.Errorf("GetRelativePath(%s): expected: %v, got: %v", "/foo"+DIR+filePath, "../../foo"+DIR+filePath, relativeFilePath)
 	}
 
 	err = os.Remove(DIR)
 	if err != nil {
 		panic(err)
-	}
-
-	_, err = GetRelativePath(cwd + filePath)
-
-	if err == nil {
-		t.Error("Expected an error for a not existing directory")
 	}
 }
 
@@ -155,14 +149,14 @@ func TestAddToFiles(t *testing.T) {
 
 func TestGetFiles(t *testing.T) {
 	configuration := config.Config{}
-	_, err := GetFiles(configuration)
+	files, err := GetFiles(configuration)
 
-	if err == nil {
-		t.Errorf("Error expected")
+	if err != nil && len(files) > 0 {
+		t.Error("Expected no error and no files")
 	}
 
 	configuration.PassedFiles = []string{"."}
-	files, err := GetFiles(configuration)
+	files, err = GetFiles(configuration)
 
 	if len(files) > 0 && err != nil {
 		t.Errorf("Error expected")
