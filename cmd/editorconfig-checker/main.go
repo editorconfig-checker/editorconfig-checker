@@ -136,7 +136,7 @@ func main() {
 	os.Exit(0)
 }
 
-// ReturnableFlags returns wether a flag passed should exit the program
+// ReturnableFlags returns whether a flag passed should exit the program
 func ReturnableFlags(config config.Config) bool {
 	switch {
 	case config.ShowVersion:
