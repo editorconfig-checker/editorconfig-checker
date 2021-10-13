@@ -94,17 +94,21 @@ func TrailingWhitespace(line string, trimTrailingWhitespace bool) error {
 
 // FinalNewline validates if a file has a final and correct newline
 func FinalNewline(fileContent string, insertFinalNewline string, endOfLine string) error {
-	if insertFinalNewline == "true" {
+	if endOfLine != "" && insertFinalNewline == "true" {
 		expectedEolChar := utils.GetEolChar(endOfLine)
 		if !strings.HasSuffix(fileContent, expectedEolChar) || (expectedEolChar == "\n" && strings.HasSuffix(fileContent, "\r\n")) {
 			return errors.New("Wrong line endings or new final newline")
 		}
-	} else if insertFinalNewline == "false" {
+	} else {
 		regexpPattern := "(\n|\r|\r\n)$"
-		matched, _ := regexp.MatchString(regexpPattern, fileContent)
+		hasFinalNewline, _ := regexp.MatchString(regexpPattern, fileContent)
 
-		if matched {
+		if insertFinalNewline == "false" && hasFinalNewline {
 			return errors.New("No final newline expected")
+		}
+
+		if insertFinalNewline == "true" && !hasFinalNewline {
+			return errors.New("Final newline expected")
 		}
 	}
 
