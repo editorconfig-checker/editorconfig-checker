@@ -61,6 +61,16 @@ func TestFinalNewline(t *testing.T) {
 		{"x\r\n", "", "lf", nil},
 		{"x\r\n", "", "cr", nil},
 		{"x\r\n", "", "crlf", nil},
+
+		// end_of_line not set
+		{"x", "true", "", errors.New("Final newline expected")},
+		{"x", "false", "", nil},
+		{"x\n", "true", "", nil},
+		{"x\n", "false", "", errors.New("No final newline expected")},
+		{"x\r", "true", "", nil},
+		{"x\r", "false", "", errors.New("No final newline expected")},
+		{"x\r\n", "true", "", nil},
+		{"x\r\n", "false", "", errors.New("No final newline expected")},
 	}
 
 	for _, tt := range finalNewlineTests {
