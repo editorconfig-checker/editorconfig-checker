@@ -26,7 +26,7 @@ type FileInformation struct {
 	Editorconfig *editorconfig.Definition
 }
 
-// IsExcluded returns wether the file is excluded via arguments or config file
+// IsExcluded returns whether the file is excluded via arguments or config file
 func IsExcluded(filePath string, config config.Config) (bool, error) {
 	if len(config.Exclude) == 0 && config.IgnoreDefaults {
 		return false, nil
@@ -174,7 +174,7 @@ func GetContentType(path string) (string, error) {
 	return http.DetectContentType(buffer), nil
 }
 
-// PathExists checks wether a path of a file or directory exists or not
+// PathExists checks whether a path of a file or directory exists or not
 func PathExists(filePath string) bool {
 	absolutePath, _ := filepath.Abs(filePath)
 	_, err := os.Stat(absolutePath)
@@ -197,7 +197,7 @@ func GetRelativePath(filePath string) (string, error) {
 	return filepath.Rel(cwd, filePath)
 }
 
-// IsAllowedContentType returns wether the contentType is
+// IsAllowedContentType returns whether the contentType is
 // an allowed content type to check or not
 func IsAllowedContentType(contentType string, config config.Config) bool {
 	result := false
