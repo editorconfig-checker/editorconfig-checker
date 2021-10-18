@@ -20,6 +20,7 @@ var defaultExcludes = []string{
 	"yarn\\.lock$",
 	"package-lock\\.json$",
 	"composer\\.lock$",
+	"Cargo\\.lock$",
 	"\\.pnp\\.cjs$",
 	"\\.pnp\\.js$",
 	"\\.snap$",

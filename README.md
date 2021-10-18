@@ -200,6 +200,7 @@ If you don't pass the `ignore-defaults` flag to the binary these files are exclu
 "yarn\\.lock$",
 "package-lock\\.json$",
 "composer\\.lock$",
+"Cargo\\.lock$",
 "\\.pnp\\.cjs$",
 "\\.pnp\\.js$",
 "\\.snap$",
