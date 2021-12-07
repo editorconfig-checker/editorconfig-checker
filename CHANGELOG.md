@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.4.0](https://github.com/editorconfig-checker/editorconfig-checker/tree/2.4.0) (2021-12-07)
+
+**Fixed bugs:**
+
+- Docker image outputs blank version [\#166](https://github.com/editorconfig-checker/editorconfig-checker/issues/166)
+- Final Newline Bug under Windows [\#164](https://github.com/editorconfig-checker/editorconfig-checker/issues/164)
+
+**Closed issues:**
+
+- Exclude .yarn/ and .pnp.cjs by Default [\#170](https://github.com/editorconfig-checker/editorconfig-checker/issues/170)
+- Document exclude regex is on relative path [\#167](https://github.com/editorconfig-checker/editorconfig-checker/issues/167)
+
 ## [2.3.5](https://github.com/editorconfig-checker/editorconfig-checker/tree/2.3.5) (2021-03-29)
 
 **Fixed bugs:**
