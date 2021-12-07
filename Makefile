@@ -62,7 +62,7 @@ endif
 current_version:
 	@echo the current version is: $(CURRENT_VERSION)
 
-_do_release: _checkout clean _tag_version test build run _build-all-binaries _compress-all-binaries
+_do_release: _checkout clean _tag_version build run _build-all-binaries _compress-all-binaries
 	git checkout master
 	git merge --no-ff release
 	git push origin master && git push origin master --tags
