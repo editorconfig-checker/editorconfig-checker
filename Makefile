@@ -83,8 +83,7 @@ _build-all-binaries:
 	# doesn't work on my machine and not in travis, see: https://github.com/golang/go/wiki/GoArm
 	# GOOS=android GOARCH=arm  $(COMPILE_COMMAND) && mv ./bin/ec ./bin/ec-android-arm
 	# GOOS=darwin  GOARCH=arm $(COMPILE_COMMAND) && mv ./bin/ec ./bin/ec-darwin-arm
-	# Go support for darwin-386 has been dropped since 1.15 - see https://github.com/golang/go/issues/37610
-	# GOOS=darwin  GOARCH=386 $(COMPILE_COMMAND) && mv ./bin/ec ./bin/ec-darwin-386
+	GOOS=darwin  GOARCH=arm64 $(COMPILE_COMMAND) && mv ./bin/ec ./bin/ec-darwin-arm64
 	CGO_ENABLED=0 GOOS=darwin    GOARCH=amd64    $(COMPILE_COMMAND) && mv ./bin/ec ./bin/ec-darwin-amd64
 	CGO_ENABLED=0 GOOS=darwin    GOARCH=arm64    $(COMPILE_COMMAND) && mv ./bin/ec ./bin/ec-darwin-arm64
 	CGO_ENABLED=0 GOOS=dragonfly GOARCH=amd64    $(COMPILE_COMMAND) && mv ./bin/ec ./bin/ec-dragonfly-amd64
