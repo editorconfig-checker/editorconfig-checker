@@ -108,7 +108,6 @@
 - Make allowed content Types configurable [\#78](https://github.com/editorconfig-checker/editorconfig-checker/issues/78)
 - Introduce config file [\#70](https://github.com/editorconfig-checker/editorconfig-checker/issues/70)
 - Add flags to disable checks [\#69](https://github.com/editorconfig-checker/editorconfig-checker/issues/69)
-- Integrate more meaningful verbose output [\#33](https://github.com/editorconfig-checker/editorconfig-checker/issues/33)
 - use golangs power for checking of files [\#11](https://github.com/editorconfig-checker/editorconfig-checker/issues/11)
 - cache already checked results [\#9](https://github.com/editorconfig-checker/editorconfig-checker/issues/9)
 
@@ -159,6 +158,7 @@
 
 - extend default excludes [\#38](https://github.com/editorconfig-checker/editorconfig-checker/issues/38)
 - List supported EditorConfig features [\#37](https://github.com/editorconfig-checker/editorconfig-checker/issues/37)
+- Integrate more meaningful verbose output [\#33](https://github.com/editorconfig-checker/editorconfig-checker/issues/33)
 
 ## [0.0.4](https://github.com/editorconfig-checker/editorconfig-checker/tree/0.0.4) (2019-01-13)
 
