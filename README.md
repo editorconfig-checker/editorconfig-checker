@@ -76,6 +76,11 @@ If you are using Arch Linux you can use:
 trizen -S editorconfig-checker-git
 ```
 
+If go 1.16 or greater is installed, you can also install it globally via `go install`:
+
+```bash
+go install github.com/editorconfig-checker/editorconfig-checker/cmd/editorconfig-checker@latest
+```
 
 ## Usage
 
