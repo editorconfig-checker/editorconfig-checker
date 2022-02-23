@@ -67,13 +67,19 @@ Grab a binary from the [release page](https://github.com/editorconfig-checker/ed
 If you have go installed you can run `go get github.com/editorconfig-checker/editorconfig-checker` and run `make build` inside the project folder. 
 This will place a binary called `ec` into the `bin` directory.
 
-If you are using Arch Linux you can use:
+If you are using Arch Linux, you can use [pacman](https://wiki.archlinux.org/title/Pacman) to install from [community repository](https://archlinux.org/packages/community/x86_64/editorconfig-checker/):
+
+```
+pacman -S editorconfig-checker
+```
+
+Also, development (VCS) package is available in the [AUR](https://aur.archlinux.org/packages/editorconfig-checker-git):
 
 ```
 <favourite-aur-helper> <install-command> editorconfig-checker-git
 
 # i.e.
-trizen -S editorconfig-checker-git
+paru -S editorconfig-checker-git
 ```
 
 If go 1.16 or greater is installed, you can also install it globally via `go install`:
