@@ -2,27 +2,27 @@
 
 <a href="https://www.buymeacoffee.com/mstruebing" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
 
-[![Build Status](https://travis-ci.org/editorconfig-checker/editorconfig-checker.svg?branch=master)](https://travis-ci.org/editorconfig-checker/editorconfig-checker) 
+[![Build Status](https://travis-ci.org/editorconfig-checker/editorconfig-checker.svg?branch=master)](https://travis-ci.org/editorconfig-checker/editorconfig-checker)
 [![codecov](https://codecov.io/gh/editorconfig-checker/editorconfig-checker/branch/master/graph/badge.svg)](https://codecov.io/gh/editorconfig-checker/editorconfig-checker)
 [![Hits-of-Code](https://hitsofcode.com/github/editorconfig-checker/editorconfig-checker)](https://hitsofcode.com/view/github/editorconfig-checker/editorconfig-checker)
 [![Go Report Card](https://goreportcard.com/badge/github.com/editorconfig-checker/editorconfig-checker)](https://goreportcard.com/report/github.com/editorconfig-checker/editorconfig-checker)
 
 ![Logo](https://raw.githubusercontent.com/editorconfig-checker/editorconfig-checker/master/docs/logo.png "Logo")
 
-1. [What](#what)  
-2. [Quickstart](#quickstart)  
-3. [Installation](#installation)  
-4. [Usage](#usage)  
-5. [Configuration](#configuration)  
-6. [Excluding](#excluding)  
-6.1 [Excluding Lines](#excluding-lines)  
-6.2 [Excluding Files](#excluding-files)  
-6.2.1 [Inline](#inline)  
-6.2.2 [Default Excludes](#default-excludes)  
-6.2.3 [Manually Excluding](#manually-excluding)  
-6.2.4 [via configuration](#via-configuration)  
-6.2.5 [via arguments](#via-arguments)  
-6.2.6 [Generally](#generally)  
+1. [What](#what)
+2. [Quickstart](#quickstart)
+3. [Installation](#installation)
+4. [Usage](#usage)
+5. [Configuration](#configuration)
+6. [Excluding](#excluding)
+6.1 [Excluding Lines](#excluding-lines)
+6.2 [Excluding Files](#excluding-files)
+6.2.1 [Inline](#inline)
+6.2.2 [Default Excludes](#default-excludes)
+6.2.3 [Manually Excluding](#manually-excluding)
+6.2.4 [via configuration](#via-configuration)
+6.2.5 [via arguments](#via-arguments)
+6.2.6 [Generally](#generally)
 7. [Docker](#docker)
 8. [Continuous Integration](#continous-integration)
 8. [Support](#support)
@@ -32,8 +32,8 @@
 
 ![Example Screenshot](https://raw.githubusercontent.com/editorconfig-checker/editorconfig-checker/master/docs/screenshot.png "Example Screenshot")
 
-This is a tool to check if your files consider your `.editorconfig`-rules. 
-Most tools - like linters for example - only test one filetype and need an extra configuration. 
+This is a tool to check if your files consider your `.editorconfig`-rules.
+Most tools - like linters for example - only test one filetype and need an extra configuration.
 This tool only needs your `.editorconfig` to check all files.
 
 If you don't know about editorconfig already you can read about it here: [editorconfig.org](https://editorconfig.org/).
@@ -62,9 +62,9 @@ tar xzf ec-$OS-$ARCH.tar.gz && \
 
 ## Installation
 
-Grab a binary from the [release page](https://github.com/editorconfig-checker/editorconfig-checker/releases). 
+Grab a binary from the [release page](https://github.com/editorconfig-checker/editorconfig-checker/releases).
 
-If you have go installed you can run `go get github.com/editorconfig-checker/editorconfig-checker` and run `make build` inside the project folder. 
+If you have go installed you can run `go get github.com/editorconfig-checker/editorconfig-checker` and run `make build` inside the project folder.
 This will place a binary called `ec` into the `bin` directory.
 
 If you are using Arch Linux, you can use [pacman](https://wiki.archlinux.org/title/Pacman) to install from [community repository](https://archlinux.org/packages/community/x86_64/editorconfig-checker/):
@@ -172,7 +172,7 @@ You can exclude single lines inline. To do that you need a comment on that line 
 
 ```js
 const myTemplateString = `
-  first line 
+  first line
      wrongly indended line because it needs to be` // editorconfig-checker-disable-line
 ```
 
@@ -183,7 +183,7 @@ To temporarily disable all checks, add a comment containing `editorconfig-checke
 ```js
 // editorconfig-checker-disable
 const myTemplateString = `
-  first line 
+  first line
      wrongly indended line because it needs to be
 `
 // editorconfig-checker-enable
@@ -195,7 +195,7 @@ const myTemplateString = `
 
 If you want to exclude a file inline you need a comment on the first line of the file that contains: `editorconfig-checker-disable-file`
 
-```hs 
+```hs
 -- editorconfig-checker-disable-file
 add :: Int -> Int -> Int
 add x y =
@@ -286,7 +286,7 @@ If you want to see which files the tool would check without checking them you ca
 
 Note that while `--dry-run` outputs absolute paths, a regular expression matches on relative paths from where the `ec` command is used.
 
-## Docker 
+## Docker
 
 You are able to run this tool inside a Docker container.
 To do this you need to have Docker installed and run this command in your repository root which you want to check:
@@ -310,7 +310,7 @@ ENABLE:
 ```
 
 ## Support
-If you have any questions, suggestions, need a wrapper for a programming language or just want to chat join #editorconfig-checker on 
+If you have any questions, suggestions, need a wrapper for a programming language or just want to chat join #editorconfig-checker on
 freenode(IRC).
-If you don't have an IRC-client set up you can use the 
+If you don't have an IRC-client set up you can use the
 [freenode webchat](https://webchat.freenode.net/?channels=editorconfig-checker).
