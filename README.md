@@ -214,6 +214,7 @@ If you don't pass the `ignore-defaults` flag to the binary these files are exclu
 "^Cargo\\.lock$",
 "^\\.pnp\\.cjs$",
 "^\\.pnp\\.js$",
+"^\\.pnp\\.loader\\.mjs$",
 "\\.snap$",
 "\\.otf$",
 "\\.woff$",

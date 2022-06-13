@@ -23,6 +23,7 @@ var defaultExcludes = []string{
 	"^Cargo\\.lock$",
 	"^\\.pnp\\.cjs$",
 	"^\\.pnp\\.js$",
+	"^\\.pnp\\.loader\\.mjs$",
 	"\\.snap$",
 	"\\.otf$",
 	"\\.woff$",
