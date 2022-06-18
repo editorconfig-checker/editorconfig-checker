@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.5.0](https://github.com/editorconfig-checker/editorconfig-checker/tree/2.5.0) (2022-06-18)
+
+**Closed issues:**
+
+- Add Configuration File Schema into SchemaStore [\#194](https://github.com/editorconfig-checker/editorconfig-checker/issues/194)
+- Support for darwin-arm64 [\#187](https://github.com/editorconfig-checker/editorconfig-checker/issues/187)
+
 ## [2.4.0](https://github.com/editorconfig-checker/editorconfig-checker/tree/2.4.0) (2021-12-07)
 
 **Fixed bugs:**
@@ -80,19 +87,11 @@
 
 ## [2.0.3](https://github.com/editorconfig-checker/editorconfig-checker/tree/2.0.3) (2019-09-13)
 
-**Fixed bugs:**
-
-- Verbose doesn't seemt to get recognized from language wrappers [\#87](https://github.com/editorconfig-checker/editorconfig-checker/issues/87)
-
 **Closed issues:**
 
 - Add a web-page for editorconfig-checker [\#80](https://github.com/editorconfig-checker/editorconfig-checker/issues/80)
 
 ## [2.0.2](https://github.com/editorconfig-checker/editorconfig-checker/tree/2.0.2) (2019-08-19)
-
-**Fixed bugs:**
-
-- Color output broken on Windows [\#74](https://github.com/editorconfig-checker/editorconfig-checker/issues/74)
 
 **Closed issues:**
 
@@ -101,6 +100,11 @@
 ## [2.0.1](https://github.com/editorconfig-checker/editorconfig-checker/tree/2.0.1) (2019-08-18)
 
 ## [2.0.0](https://github.com/editorconfig-checker/editorconfig-checker/tree/2.0.0) (2019-08-18)
+
+**Fixed bugs:**
+
+- Verbose doesn't seemt to get recognized from language wrappers [\#87](https://github.com/editorconfig-checker/editorconfig-checker/issues/87)
+- Color output broken on Windows [\#74](https://github.com/editorconfig-checker/editorconfig-checker/issues/74)
 
 **Closed issues:**
 
