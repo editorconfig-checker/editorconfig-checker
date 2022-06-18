@@ -90,6 +90,10 @@
 
 ## [2.0.2](https://github.com/editorconfig-checker/editorconfig-checker/tree/2.0.2) (2019-08-19)
 
+**Fixed bugs:**
+
+- Color output broken on Windows [\#74](https://github.com/editorconfig-checker/editorconfig-checker/issues/74)
+
 **Closed issues:**
 
 - Add arch installation to readme [\#83](https://github.com/editorconfig-checker/editorconfig-checker/issues/83)
@@ -97,10 +101,6 @@
 ## [2.0.1](https://github.com/editorconfig-checker/editorconfig-checker/tree/2.0.1) (2019-08-18)
 
 ## [2.0.0](https://github.com/editorconfig-checker/editorconfig-checker/tree/2.0.0) (2019-08-18)
-
-**Fixed bugs:**
-
-- Color output broken on Windows [\#74](https://github.com/editorconfig-checker/editorconfig-checker/issues/74)
 
 **Closed issues:**
 
