@@ -42,19 +42,19 @@ run: build
 run-verbose: build
 	@./bin/ec --verbose
 
-release: _is_master_branch _git_branch_is_up_to_date _do_release
+release: _is_main_branch _git_branch_is_up_to_date _do_release
 	@echo Release done. Go to Github and create a release.
 
-_is_master_branch:
-ifneq ($(GIT_BRANCH),master)
-	@echo You are not on the master branch.
-	@echo Please check out the master and try to release again
+_is_main_branch:
+ifneq ($(GIT_BRANCH),main)
+	@echo You are not on the main branch.
+	@echo Please check out the main and try to release again
 	@false
 endif
 
 _git_branch_is_up_to_date:
 ifneq ($(GIT_BRANCH_UP_TO_DATE),up to date)
-	@echo Your master branch is not up to date.
+	@echo Your main branch is not up to date.
 	@echo Please push your changes or pull changes from the remote.
 	@false
 endif
@@ -63,9 +63,9 @@ current_version:
 	@echo the current version is: $(CURRENT_VERSION)
 
 _do_release: _checkout clean _tag_version build run _build-all-binaries _compress-all-binaries
-	git checkout master
+	git checkout main
 	git merge --no-ff release
-	git push origin master && git push origin master --tags
+	git push origin main && git push origin main --tags
 
 _checkout:
 	git branch -D release; git checkout -b release
@@ -136,4 +136,4 @@ nix-install:
 nix-update-dependencies:
 	nix-shell -p vgo2nix --run vgo2nix
 
-.PHONY: clean build install uninstall test bench run run-verbose release _is_master_branch _git_branch_is_up_to_date current_version _do_release _tag_version _build-all-binaries _compress-all-binaries _release_dockerfile _build_dockerfile _push_dockerfile nix-build nix-install nix-update-dependencies
+.PHONY: clean build install uninstall test bench run run-verbose release _is_main_branch _git_branch_is_up_to_date current_version _do_release _tag_version _build-all-binaries _compress-all-binaries _release_dockerfile _build_dockerfile _push_dockerfile nix-build nix-install nix-update-dependencies
