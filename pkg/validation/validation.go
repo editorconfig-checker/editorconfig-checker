@@ -3,17 +3,27 @@ package validation
 
 import (
 	"fmt"
-	"io/ioutil"
+	"os"
+	"regexp"
 	"strconv"
 	"strings"
 
 	"github.com/editorconfig/editorconfig-core-go/v2"
 
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/config"
+	"github.com/editorconfig-checker/editorconfig-checker/pkg/encoding"
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/error"
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/files"
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/validation/validators"
 )
+
+var textRegexes = []string{
+	"^text/",
+	"^application/ecmascript$",
+	"^application/json$",
+	"^application/xml$",
+	"+xml$",
+}
 
 // ValidateFile Validates a single file and returns the errors
 func ValidateFile(filePath string, config config.Config) []error.ValidationError {
@@ -25,19 +35,34 @@ func ValidateFile(filePath string, config config.Config) []error.ValidationError
 
 	var validationErrors []error.ValidationError
 	var isDisabled bool = false
-	lines := files.ReadLines(filePath)
+
+	rawFileContent, err := os.ReadFile(filePath)
+	if err != nil {
+		panic(err)
+	}
+	fileContent := string(rawFileContent)
+	mime, err := files.GetContentTypeBytes(rawFileContent, config)
+	for _, regex := range textRegexes {
+		match, _ := regexp.MatchString(regex, mime)
+		if match {
+			var charset string
+			fileContent, charset, err = encoding.DecodeBytes(rawFileContent)
+			if err != nil {
+				if charset == "" {
+					charset = "unknown"
+				}
+				config.Logger.Error("Could not decode the %s encoded file: %s", charset, filePath)
+				config.Logger.Error(err.Error())
+			}
+			break
+		}
+	}
+	lines := files.ReadLines(fileContent)
 
 	// return if first line contains editorconfig-checker-disable-file
 	if len(lines) == 0 || strings.Contains(lines[0], directiveDisableFile) {
 		return validationErrors
 	}
-
-	rawFileContent, err := ioutil.ReadFile(filePath)
-	if err != nil {
-		panic(err)
-	}
-
-	fileContent := string(rawFileContent)
 
 	editorconfig, err := editorconfig.GetDefinitionForFilename(filePath)
 	if err != nil {

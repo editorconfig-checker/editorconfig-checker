@@ -3,19 +3,23 @@ package files
 
 import (
 	"bufio"
+	"bytes"
 	"fmt"
-	"net/http"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"regexp"
 	"strings"
 
+	"github.com/gabriel-vasile/mimetype"
+
 	"github.com/editorconfig/editorconfig-core-go/v2"
 
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/config"
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/utils"
 )
+
+const DefaultMimeType = "application/octet-stream"
 
 // FileInformation is a Struct which represents some FileInformation
 type FileInformation struct {
@@ -48,7 +52,7 @@ func IsExcluded(filePath string, config config.Config) (bool, error) {
 // AddToFiles adds a file to a slice if it isn't already in there
 // and meets the requirements and returns the new slice
 func AddToFiles(filePaths []string, filePath string, config config.Config) []string {
-	contentType, err := GetContentType(filePath)
+	contentType, err := GetContentType(filePath, config)
 
 	config.Logger.Debug("AddToFiles: filePath: %s, contentType: %s", filePath, contentType)
 
@@ -126,12 +130,10 @@ func GetFiles(config config.Config) ([]string, error) {
 }
 
 // ReadLines returns the lines from a file as a slice
-func ReadLines(filePath string) []string {
+func ReadLines(content string) []string {
 	var lines []string
-	fileHandle, _ := os.Open(filePath)
-	defer fileHandle.Close()
-	fileScanner := bufio.NewScanner(fileHandle)
-
+	stringReader := strings.NewReader(content)
+	fileScanner := bufio.NewScanner(stringReader)
 	for fileScanner.Scan() {
 		lines = append(lines, fileScanner.Text())
 	}
@@ -140,38 +142,47 @@ func ReadLines(filePath string) []string {
 }
 
 // GetContentType returns the content type of a file
-func GetContentType(path string) (string, error) {
+func GetContentType(path string, config config.Config) (string, error) {
 	fileStat, err := os.Stat(path)
 
 	if err != nil {
 		return "", err
 	}
 
+	if fileStat.IsDir() {
+		return "", fmt.Errorf("%s is a directory", path)
+	}
+
 	if fileStat.Size() == 0 {
 		return "", nil
 	}
 
-	file, err := os.Open(path)
-	if err != nil {
-		return "", err
-	}
-	defer file.Close()
-
-	// Only the first 512 bytes are used to sniff the content type.
-	buffer := make([]byte, 512)
-	_, err = file.Read(buffer)
-	if err != nil {
-		return "", err
-	}
-
-	// Reset the read pointer if necessary.
-	_, err = file.Seek(0, 0)
+	rawFileContent, err := os.ReadFile(path)
 	if err != nil {
 		panic(err)
 	}
+	return GetContentTypeBytes(rawFileContent, config)
+}
 
+// GetContentTypeBytes returns the content type of a byte slice
+func GetContentTypeBytes(rawFileContent []byte, config config.Config) (string, error) {
+	bytesReader := bytes.NewReader(rawFileContent)
+
+	mimeType, err := mimetype.DetectReader(bytesReader)
+	if err != nil {
+		return "", err
+	}
+
+	mime := mimeType.String()
 	// Always returns a valid content-type and "application/octet-stream" if no others seemed to match.
-	return http.DetectContentType(buffer), nil
+	parts := strings.Split(mime, ";")
+	if len(parts) > 0 {
+		mime = strings.TrimSpace(parts[0])
+	}
+	if mime == "" {
+		return DefaultMimeType, nil
+	}
+	return mime, nil
 }
 
 // PathExists checks whether a path of a file or directory exists or not

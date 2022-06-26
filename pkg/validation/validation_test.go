@@ -9,7 +9,7 @@ import (
 func TestProcessValidation(t *testing.T) {
 	configuration := config.Config{Verbose: true}
 
-	processValidationResult := ProcessValidation([]string{"./main.go"}, configuration)
+	processValidationResult := ProcessValidation([]string{"./../../cmd/editorconfig-checker/main.go"}, configuration)
 	if len(processValidationResult) > 1 || len(processValidationResult[0].Errors) != 0 {
 		t.Error("Should not have errors when validating main.go, got", processValidationResult)
 	}
@@ -33,7 +33,7 @@ func TestProcessValidation(t *testing.T) {
 func TestValidateFile(t *testing.T) {
 	configuration := config.Config{Verbose: true}
 
-	result := ValidateFile("./main.go", configuration)
+	result := ValidateFile("./../../cmd/editorconfig-checker/main.go", configuration)
 	if len(result) != 0 {
 		t.Error("Should not have errors when validating main.go, got", result)
 	}

@@ -5,7 +5,10 @@
   "IgnoreDefaults": false,
   "SpacesAftertabs": false,
   "NoColor": false,
-  "exclude": ["testfiles"],
+  "exclude": [
+    "testfiles",
+    "testdata"
+  ],
   "AllowedContentTypes": [],
   "PassedFiles": [],
   "Disable": {
