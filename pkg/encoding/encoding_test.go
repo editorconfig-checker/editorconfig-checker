@@ -63,7 +63,7 @@ var decodeTextTests = []decodeTest{
 	{"utf32lebom.txt", "UTF-32LE", false, false},
 	{"utf8_bom.html", "UTF-8", false, false},
 	{"utf8.html", "UTF-8", false, false},
-	{"utf8-sdl.txt", "UTF-8", false, false},
+	{"utf8-sdl.txt", "windows-1252", false, false},
 	{"utf8.txt", "UTF-8", false, false},
 	{"utf8.txt-encoding-test-files.txt", "UTF-8", false, false},
 }
