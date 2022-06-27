@@ -31,7 +31,7 @@ go build -ldflags "-X main.version=$(CURRENT_VERSION)" -o $1 ./cmd/editorconfig-
 endef
 
 $(EXE): $(SOURCES) VERSION
-	$(call _build,bin/ec$(EXEEXT))
+	$(call _build,$(EXE))
 
 build: $(EXE) ## Build bin/ec
 
@@ -183,6 +183,7 @@ help: ## Display available commands
 PHONY += dumpvars
 dumpvars: ## Dump variables
 	@echo CURRENT_VERSION=$(CURRENT_VERSION)
+	@echo EXE=$(EXE)
 	@echo EXEEXT=$(EXEEXT)
 	@echo GIT_BRANCH=$(GIT_BRANCH)
 	@echo GIT_BRANCH_UP_TO_DATE=$(GIT_BRANCH_UP_TO_DATE)
