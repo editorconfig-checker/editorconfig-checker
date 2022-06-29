@@ -3,6 +3,7 @@ package encoding
 
 import (
 	"fmt"
+	"sort"
 	"strings"
 	"unicode/utf8"
 
@@ -96,22 +97,46 @@ var encodings = map[string]encoding.Encoding{
 func DecodeBytes(contentBytes []byte) (string, string, error) {
 	contentString := string(contentBytes)
 
+	charset, err := detectText(contentBytes)
+	if err != nil {
+		if IsBinaryFile(contentBytes) {
+			return contentString, BinaryData, nil
+		}
+		return contentString, charset, err
+	}
+	decodedContentString, err := decodeText(contentBytes, charset)
+	if err != nil {
+		if IsBinaryFile(contentBytes) {
+			return contentString, BinaryData, nil
+		}
+		return contentString, charset, err
+	}
+	return decodedContentString, charset, nil
+}
+
+func detectText(contentBytes []byte) (string, error) {
 	detector := chardet.NewTextDetector()
-	r, err := detector.DetectBest(contentBytes)
+	// r, err := detector.DetectBest(contentBytes)
+	// return r.Charset, err
+
+	results, err := detector.DetectAll(contentBytes)
 	if err != nil {
-		if IsBinaryFile(contentBytes) {
-			return contentString, BinaryData, nil
-		}
-		return contentString, r.Charset, err
+		return "", err
 	}
-	decodedContentString, err := decodeText(contentBytes, r.Charset)
-	if err != nil {
-		if IsBinaryFile(contentBytes) {
-			return contentString, BinaryData, nil
-		}
-		return contentString, r.Charset, err
+	if len(results) == 0 {
+		return "", fmt.Errorf("Failed to determine charset")
 	}
-	return decodedContentString, r.Charset, nil
+	confidence := -1
+	keys := make([]string, 0, len(results))
+	for _, result := range results {
+		if result.Confidence < confidence {
+			break
+		}
+		confidence = result.Confidence
+		keys = append(keys, result.Charset)
+	}
+	sort.Strings(keys)
+	return keys[0], nil
 }
 
 func decodeText(contentBytes []byte, charset string) (string, error) {

@@ -4,6 +4,8 @@ import (
 	"os"
 	"reflect"
 	"testing"
+
+	"github.com/baulk/chardet"
 )
 
 type decodeTest struct {
@@ -22,11 +24,11 @@ var decodeTextTests = []decodeTest{
 	{"8859_1_pt.html", "ISO-8859-1", false, false},
 	{"ascii.txt", "ISO-8859-1", false, false},
 	{"big5.html", "Big5", false, false},
-	{"candide-gb18030.txt", "windows-1252", false, false},
-	{"candide-utf-16le.txt", "ISO-8859-1", false, false},
+	{"candide-gb18030.txt", "windows-1252", false, false}, // should be GB18030
+	{"candide-utf-16le.txt", "ISO-8859-1", false, false}, // should be UTF-16LE
 	{"candide-utf-32be.txt", "UTF-32BE", false, false},
 	{"candide-utf-8.txt", "UTF-8", false, false},
-	{"candide-windows-1252.txt", "ISO-8859-1", false, false},
+	{"candide-windows-1252.txt", "ISO-8859-1", false, false}, // should be windows-1252
 	{"cp865.txt", "windows-1252", false, false},
 	{"euc_jp.html", "EUC-JP", false, false},
 	{"euc_kr.html", "EUC-KR", false, false},
@@ -38,17 +40,17 @@ var decodeTextTests = []decodeTest{
 	{"html.utf8bomdetect.html", "UTF-8", false, false},
 	{"html.utf8bom.html", "UTF-8", false, false},
 	{"html.utf8bomws.html", "UTF-8", false, false},
-	{"html.utf8.html", "ISO-8859-1", false, false},
+	{"html.utf8.html", "ISO-8859-1", false, false}, // should be UTF-8 ?
 	{"html.withbr.html", "ISO-8859-1", false, false},
 	{"iso88591.txt", "ISO-8859-1", false, false},
-	{"koi8_r.txt", "ISO-8859-1", false, false},
+	{"koi8_r.txt", "ISO-8859-1", false, false}, // should be KOI8-R
 	{"latin1.txt", "ISO-8859-1", false, false},
 	{"rashomon-euc-jp.txt", "EUC-JP", false, false},
 	{"rashomon-iso-2022-jp.txt", "ISO-2022-JP", false, false},
 	{"rashomon-shift-jis.txt", "Shift_JIS", false, false},
 	{"rashomon-utf-8.txt", "UTF-8", false, false},
 	{"shift_jis.html", "Shift_JIS", false, false},
-	{"sunzi-bingfa-gb-levels-1-and-2-hz-gb2312.txt", "UTF-8", false, false},
+	{"sunzi-bingfa-gb-levels-1-and-2-hz-gb2312.txt", "Big5", false, false}, // should be GB18030
 	{"sunzi-bingfa-gb-levels-1-and-2-utf-8.txt", "UTF-8", false, false},
 	{"sunzi-bingfa-simplified-gbk.txt", "GB18030", false, false},
 	{"sunzi-bingfa-simplified-utf-8.txt", "UTF-8", false, false},
@@ -63,7 +65,7 @@ var decodeTextTests = []decodeTest{
 	{"utf32lebom.txt", "UTF-32LE", false, false},
 	{"utf8_bom.html", "UTF-8", false, false},
 	{"utf8.html", "UTF-8", false, false},
-	{"utf8-sdl.txt", "windows-1252", false, false},
+	{"utf8-sdl.txt", "windows-1252", false, false}, // should be UTF-8
 	{"utf8.txt", "UTF-8", false, false},
 	{"utf8.txt-encoding-test-files.txt", "UTF-8", false, false},
 }
@@ -81,6 +83,7 @@ func TestDecodeBytesText(t *testing.T) {
 		errored := err != nil
 		if charset != tt.charset {
 			t.Errorf("DecodeBytes(%s): charset: expected: %v, got: %v (changed=%v, errored=%v)", tt.filename, tt.charset, charset, changed, errored)
+			listAllCharsets(rawFileContent, t)
 		}
 		if changed != tt.changed {
 			t.Errorf("DecodeBytes(%s): content changed: expected: %v, got: %v (charset=%v, errored=%v)", tt.filename, tt.changed, changed, charset, errored)
@@ -88,6 +91,18 @@ func TestDecodeBytesText(t *testing.T) {
 		if errored != tt.errored {
 			t.Errorf("DecodeBytes(%s): errored: expected: %v, got: %v (err=%v, charset=%v, changed=%v)", tt.filename, tt.errored, errored, err.Error(), charset, changed)
 		}
+	}
+}
+
+func listAllCharsets(contentBytes []byte, t *testing.T) {
+	detector := chardet.NewTextDetector()
+	results, err := detector.DetectAll(contentBytes)
+	if err != nil {
+		t.Logf("  err=%s", err)
+		return
+	}
+	for i, result := range results {
+		t.Logf("  result[%d]=%+v", i, result)
 	}
 }
 
