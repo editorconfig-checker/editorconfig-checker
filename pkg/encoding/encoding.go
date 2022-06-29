@@ -146,9 +146,7 @@ func init() {
 
 // IsBinaryFile returns true if the bytes contain \x00-\x08,\x0b,\x0e-\x1f
 func IsBinaryFile(rawFileContent []byte) bool {
-	n := 0
 	for _, b := range rawFileContent {
-		n += 1
 		if binaryChars[b] {
 			return true
 		}
