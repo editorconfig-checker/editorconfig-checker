@@ -12,7 +12,6 @@ endif
 EXE=bin/ec$(EXEEXT)
 SRC_DIR := $(shell dirname "$(realpath "$(firstword $(MAKEFILE_LIST))")")
 SOURCES = $(shell find "$(SRC_DIR)" -type f -name "*.go")
-BINARIES = $(wildcard bin/*)
 GIT_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
 GIT_BRANCH_UP_TO_DATE = $(shell git remote show origin | tail -n1 | sed "s/.*(\(.*\))/\1/")
 CURRENT_VERSION = $(shell cat VERSION | tr -d "\n")
@@ -154,10 +153,10 @@ _build-all-binaries:
 	$(call _build_target,windows/arm64,$(EXEEXT))
 
 _compress-all-binaries:
-	for f in $(BINARIES); do      \
+	for f in bin/*; do      \
 		tar czf $$f.tar.gz $$f;    \
 	done
-	@rm -f $(BINARIES)
+	@rm -f bin/*
 
 _release_dockerfile: _build_dockerfile _push_dockerfile
 
@@ -189,7 +188,6 @@ dumpvars: ## Dump variables
 	@echo GIT_BRANCH_UP_TO_DATE=$(GIT_BRANCH_UP_TO_DATE)
 	@echo STDERR=$(STDERR)
 	@echo SRC_DIR=$(SRC_DIR)
-	@echo BINARIES=$(BINARIES)
 	@echo SOURCES=$(SOURCES)
 
 .PHONY: $(PHONY) clean build install uninstall test bench run run-verbose release _is_main_branch _git_branch_is_up_to_date current_version _do_release _tag_version _build-all-binaries _compress-all-binaries _release_dockerfile _build_dockerfile _push_dockerfile nix-build nix-install nix-update-dependencies
