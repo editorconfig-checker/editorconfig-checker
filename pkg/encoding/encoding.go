@@ -116,9 +116,6 @@ func DecodeBytes(contentBytes []byte) (string, string, error) {
 
 func detectText(contentBytes []byte) (string, error) {
 	detector := chardet.NewTextDetector()
-	// r, err := detector.DetectBest(contentBytes)
-	// return r.Charset, err
-
 	results, err := detector.DetectAll(contentBytes)
 	if err != nil {
 		return "", err
