@@ -6,7 +6,7 @@ else
 endif
 
 ifeq ($(wildcard "C:/Program Files/Git/usr/bin/*"),)
-  export PATH:="C:/Program Files/Git/usr/bin:$(PATH)"
+export PATH:="C:/Program Files/Git/usr/bin:$(PATH)"
 endif
 
 EXE=bin/ec$(EXEEXT)
@@ -51,10 +51,10 @@ bench: ## Run benchmark
 	go test -bench=. ./**/*/
 
 run: build ## Build and run bin/ec
-	@./bin/ec
+	@./bin/ec --exclude .git
 
 run-verbose: build ## Build and run bin/ec --verbose
-	@./bin/ec --verbose
+	@./bin/ec --verbose --exclude .git
 
 release: _is_main_branch _git_branch_is_up_to_date _do_release ## Create release
 	@echo Release done. Go to Github and create a release.
@@ -154,9 +154,9 @@ _build-all-binaries:
 
 _compress-all-binaries:
 	for f in bin/*; do      \
-		tar czf - $$f | gzip -9 - > $$f.tar.gz;    \
+		tar czvf - $$f | gzip -9 - > $$f.tar.gz;    \
+		rm -f $$f;    \
 	done
-	@rm -f bin/*
 
 _release_dockerfile: _build_dockerfile _push_dockerfile
 
