@@ -51,10 +51,10 @@ bench: ## Run benchmark
 	go test -bench=. ./**/*/
 
 run: build ## Build and run bin/ec
-	@./bin/ec --exclude .git
+	@./bin/ec --exclude "\\.git" --exclude "\\.exe$$"
 
 run-verbose: build ## Build and run bin/ec --verbose
-	@./bin/ec --verbose --exclude .git
+	@./bin/ec --verbose --exclude "\\.git" --exclude "\\.exe$$"
 
 release: _is_main_branch _git_branch_is_up_to_date _do_release ## Create release
 	@echo Release done. Go to Github and create a release.
