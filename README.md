@@ -162,7 +162,18 @@ You could also specify command line arguments and they will get merged with the 
 
 You can create a configuration with the `init`-flag. If you specify an `config`-path it will be created there.
 
-By default the allowed_content_types are `text/` and `application/octet-stream`(needed as a fallback when no content type could be determined). You can add additional accepted content types with the `allowed_content_types` key. But the default ones doesn't get removed.
+By default the allowed_content_types are:
+
+1. `text/` (for example, `text/plain` or `text/html`)
+1. `application/ecmascript`
+1. `application/json`
+1. `application/x-ndjson`
+1. `application/xml`
+1. `+json` (for example, `application/geo+json`)
+1. `+xml` (for example, `application/rss+xml`)
+1. `application/octet-stream`
+
+`application/octet-stream` is needed as a fallback when no content type could be determined. You can add additional accepted content types with the `allowed_content_types` key. But the default ones don't get removed.
 
 ## Excluding
 

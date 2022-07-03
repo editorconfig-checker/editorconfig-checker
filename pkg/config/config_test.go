@@ -104,7 +104,7 @@ func TestMerge(t *testing.T) {
 
 	c1.Merge(mergeConfig)
 
-	mergeConfig.AllowedContentTypes = []string{"text/", "application/octet-stream", "application/ecmascript", "application/json", "application/xml", "+xml", "xml/"}
+	mergeConfig.AllowedContentTypes = []string{"text/", "application/octet-stream", "application/ecmascript", "application/json", "application/x-ndjson", "application/xml", "+json", "+xml", "xml/"}
 	mergeConfig.Exclude = []string{"testfiles", "testdata", "some-other"}
 
 	expected := mergeConfig
@@ -141,7 +141,7 @@ func TestParse(t *testing.T) {
 		c.Debug != true ||
 		c.IgnoreDefaults != true ||
 		!reflect.DeepEqual(c.Exclude, []string{"testfiles"}) ||
-		!reflect.DeepEqual(c.AllowedContentTypes, []string{"text/", "application/octet-stream", "application/ecmascript", "application/json", "application/xml", "+xml", "hey"}) ||
+		!reflect.DeepEqual(c.AllowedContentTypes, []string{"text/", "application/octet-stream", "application/ecmascript", "application/json", "application/x-ndjson", "application/xml", "+json", "+xml", "hey"}) ||
 		c.SpacesAftertabs != true ||
 		c.Disable.EndOfLine != false ||
 		c.Disable.TrimTrailingWhitespace != false ||
@@ -171,7 +171,7 @@ func TestGetAsString(t *testing.T) {
 	_ = c.Parse()
 
 	actual := c.GetAsString()
-	expected := "Config: {ShowVersion:false Help:false DryRun:false Path:../../.ecrc Version:2.5.0 Verbose:false Debug:false IgnoreDefaults:false SpacesAftertabs:false NoColor:false Exclude:[testfiles testdata] AllowedContentTypes:[text/ application/octet-stream application/ecmascript application/json application/xml +xml] PassedFiles:[] Disable:{EndOfLine:false Indentation:false InsertFinalNewline:false TrimTrailingWhitespace:false IndentSize:false MaxLineLength:false} Logger:{Verbosee:false Debugg:false NoColor:false}}"
+	expected := "Config: {ShowVersion:false Help:false DryRun:false Path:../../.ecrc Version:2.5.0 Verbose:false Debug:false IgnoreDefaults:false SpacesAftertabs:false NoColor:false Exclude:[testfiles testdata] AllowedContentTypes:[text/ application/octet-stream application/ecmascript application/json application/x-ndjson application/xml +json +xml] PassedFiles:[] Disable:{EndOfLine:false Indentation:false InsertFinalNewline:false TrimTrailingWhitespace:false IndentSize:false MaxLineLength:false} Logger:{Verbosee:false Debugg:false NoColor:false}}"
 
 	if actual != expected {
 		t.Errorf("Expected: %v, got: %v ", expected, actual)
