@@ -87,6 +87,10 @@
 
 ## [2.0.3](https://github.com/editorconfig-checker/editorconfig-checker/tree/2.0.3) (2019-09-13)
 
+**Fixed bugs:**
+
+- Verbose doesn't seemt to get recognized from language wrappers [\#87](https://github.com/editorconfig-checker/editorconfig-checker/issues/87)
+
 **Closed issues:**
 
 - Add a web-page for editorconfig-checker [\#80](https://github.com/editorconfig-checker/editorconfig-checker/issues/80)
@@ -103,7 +107,6 @@
 
 **Fixed bugs:**
 
-- Verbose doesn't seemt to get recognized from language wrappers [\#87](https://github.com/editorconfig-checker/editorconfig-checker/issues/87)
 - Color output broken on Windows [\#74](https://github.com/editorconfig-checker/editorconfig-checker/issues/74)
 
 **Closed issues:**
