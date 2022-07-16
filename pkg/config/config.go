@@ -59,6 +59,12 @@ var defaultExcludes = []string{
 var defaultAllowedContentTypes = []string{
 	"text/",
 	"application/octet-stream",
+	"application/ecmascript",
+	"application/json",
+	"application/x-ndjson",
+	"application/xml",
+	"+json",
+	"+xml",
 }
 
 // Config struct, contains everything a config can contain

@@ -1,0 +1,1027 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+<meta name="msapplication-starturl" content="http://www.nate.com/" />
+<meta name="msapplication-task" content="name=받은 메일함 보기; action-uri=http://mail3.nate.com/?go_url=listmail&amp;mboxid=10&amp;lt=main; icon-uri=nate_mail.ico" />
+<meta name="msapplication-task" content="name=모아보기; action-uri=http://www.cyworld.com/etc/bridgeJumplist.asp?category=clog; icon-uri=cy_clog.ico" />
+<meta name="msapplication-task" content="name=내 미니홈피 가기; action-uri=http://www.cyworld.com/etc/bridgeJumplist.asp?category=minihp; icon-uri=cy_minihp.ico" />
+<meta name="msapplication-task" content="name=내 블로그 가기; action-uri=http://www.cyworld.com/etc/bridgeJumplist.asp?category=blog; icon-uri=cy_blog.ico" />
+<meta name="msapplication-task" content="name=내 BGM 듣기; action-uri=http://music.cyworld.com/note/mymusic/mysong.asp; icon-uri=cy_mymusic.ico" />
+<meta name="robots" content="nofollow" />
+<meta name="CODE_LANGUAGE" content="C#" />
+<meta name="CODE_MADE" content="SK Communications" />
+<meta name="autocomplete" content="off" />
+<meta http-equiv="Content-Type" content="text/html; charset=euc-kr" />
+<title>네이트</title>
+<link href="http://www.nate.com/favicon.ico" rel="shortcut icon"/>
+<script type="text/javascript">
+//<![CDATA[
+var isSvc = true; var isInfoAjax = true; var isGray = "";
+var idxCommsBar = ""; var host = "www.nate.com";
+var isNateLogin = ("False" == "True"); var loginType = ""; var myId = "";
+var iSvcSeq = "1"; var iSvcSeqB = "4"; var iSvcSeqC = "2"; var iSvcSeqW = "4";
+var isiPad = (navigator.userAgent.toUpperCase().indexOf("IPAD") !== -1);
+var isGalaxyTab = (navigator.userAgent.toUpperCase().indexOf("SHW-M180") !== -1); // GT-P1000
+var isGalaxyTab10 = (navigator.userAgent.toUpperCase().indexOf("SHW-M380") !== -1);
+var isTablet = (isiPad == true || isGalaxyTab == true || isGalaxyTab10 == true);
+
+
+document.write('<script type="text/javascript" src="/main/v1/js/nate_general_v20120719.js?v=201208161010_2012073001"><\/script>');
+
+document.write('<script type="text/javascript" src="/main/v1/js/nate_logout_v20110728.js?v=201203081007_20111020"><\/script>');
+document.write('<link rel="stylesheet" type="text/css" href="/css/main/main_v7_20120731.css?v=201208021034_2012073001" media="all" \/>');
+if (isiPad) {
+document.write('<link rel="stylesheet" type="text/css" href="/css/main/main_ipad_v3.css?v=20120724" media="all" \/>');
+}
+else if (isGalaxyTab) {
+document.write('<link rel="stylesheet" type="text/css" href="/css/main/main_galaxy_v2.css?v=20110728" media="all" \/>');
+}
+
+if (isiPad||isGalaxyTab) {
+	var scrollDiv;
+	document.write('<script type="text/javascript" src="/main/v1/js/padroller.js"><\/script>');
+	function domLoaded() { scrollDiv = new padRoller("NateOnBuddyList"); }
+	if (isNateLogin) { try { document.addEventListener('DOMContentLoaded', domLoaded, false); } catch(e) { } }
+}
+
+try { 
+	if (window.navigator.userAgent.toString().indexOf("Trident/5.0") > -1) {
+		window.external.msSiteModeCreateJumplist('NATE Favorites');
+		window.external.msSiteModeAddJumpListItem('싸이월드 뮤직', 'http://music.cyworld.com', 'cy_bgm.ico');
+		window.external.msSiteModeAddJumpListItem('앱스토어', 'http://appstore.cyworld.com', 'cy_apps.ico');
+		window.external.msSiteModeAddJumpListItem('왜떴을까', 'http://search.nate.com/search/all.html?thr=iejl', 'nate_why.ico');
+		window.external.msSiteModeAddJumpListItem('판', 'http://pann.nate.com', 'nate_pann.ico');
+		window.external.msSiteModeAddJumpListItem('뉴스', 'http://news.nate.com', 'nate_news.ico');
+	}
+}
+catch (e) { }
+
+if (isTablet)
+{
+    document.write('<link rel="apple-touch-icon-precomposed" href="http://main.nateimg.co.kr/img/nate_144.png" />');
+}
+
+//]]>
+</script>
+
+</head>
+
+<body onload="loadpg()">
+<div id="wrap">
+<div id="header">
+<div id="header_cont" class="header_cont">
+<div class="logo_area">
+<h1 id="brand_identity" class="normal"><a href="http://www.nate.com/?f=bi" onmousedown="nc('NBI01');"><img src="http://main.nateimg.co.kr/img/cms/content_pool/2012/08/normal_bi(0).gif" alt="네이트" /></a></h1>
+<h1 class="issue_birthday" id="bi_birthday" style="display:none"><a href="javascript:;" onclick="getBirthdayBiGift();" onmousedown="nc('SBI01');" id="bi_birthday_img"></a><span id="bi_birthday_span"><a href="javascript:;" onclick="getBirthdayBiGift();" id="birthdayName"></a></span></h1>
+
+
+<p id="promotion_special" class="bi_promotion"><a id="clogbannerlink" onmousedown="nc('NBI11');"></a></p>
+
+</div>
+<div class="accessibility_area">
+<h2>네이트 메인페이지 내용 바로가기 링크</h2>
+<ul>
+<li><a href="#search">통합검색 바로가기</a></li>
+<li><a href="#f_login">로그인영역 바로가기</a></li>
+<li><a href="#tabTit0">본문영역 바로가기</a></li>
+</ul>
+</div>
+<div class="top_area">
+<ul class="set_browser">
+<li id="setHomeBtn" class="set_nate" style="display:none;"><a href="javascript:;" onclick="setStartPage('http://www.nate.com/?f=begin');" onmousedown="nc('NBI02');" title="네이트를 시작페이지로">네이트를 시작페이지로</a></li>
+<li id="setSearchBtn" class="set_search" style="display:none;"><a href="#" onclick="nc('NBI03'); var spop = window.open('etc/set_browser_search.html','searchWindowCreation','width=451,height=470'); try { spop.focus(); } catch(e) { } " title="검색창 설정하기">검색창 설정하기</a></li>
+<li id="viewMNateBtn" class="mobile_nate"><a href="#" title="모바일 네이트" onclick="nc('NBI04'); viewMobilePage();" >모바일 네이트</a></li>
+</ul>
+<a id="linkMobile" href="http://m.nate.com/" style="position:absolute; left:2px; top:7px; display: none"><img src="http://main.nateimg.co.kr/img/mobile/btn_mobileweb.png" alt="모바일웹 보기" width="68" height="11" /></a>
+<ul class="global_gnb">
+	<li class="nateon"><a href="http://nateonweb.nate.com/" title="네이트온 서비스로 가기" onclick="nc('NBI05');" >네이트온</a></li>
+	<li class="egloos"><a href="http://www.egloos.com/" title="이글루스 서비스로 가기" onclick="nc('NBI07');" target="_blank">이글루스</a></li>
+	<li class="cytogether"><a href="http://cytogether.cyworld.com/" title="사이좋은세상 서비스로 가기" onclick="nc('NBI06');" >사이좋은세상</a></li>
+</ul>
+</div>
+
+<script async src="/main/v1/contents/floatingSearch_v20120719.js?v=20120719" type="text/javascript"></script>
+<div class="search_area">
+<h2>통합검색 영역</h2>
+<form id="search3" name="search3" method="get" action="" style="display: none;"></form>
+<form id="search" name="search" action="http://search.nate.com/search/all.html" onsubmit="return checkSearchForm()">
+<input type="hidden" name="s" value="" />
+<input type="hidden" name="sc" id="sc" value=""  />
+<input type="hidden" name="afc" id="afc" value="" />
+<input type="hidden" id="j" name="j" value="" />
+<input type="hidden" id="thr" name="thr" value="sbma" />
+<input type="hidden" id="nq" name="nq" value="" />
+<fieldset>
+<legend>통합검색 입력</legend>
+<div id="acWrap" class="home">
+<label>
+<input class="main_search" id="q" name="q" value="" type="text" style="ime-mode:active" tabindex="1"/>
+<input id="acBtn" class="btn_search" type="image" onclick="return search_floating();" src="http://main2.nateimg.co.kr/img/v3/btn_search3.gif" />
+
+</label>
+<img id="acImg" class="arrow_autocomplete" src="http://main.nateimg.co.kr/img/v3/layer_on01.gif" alt="자동완성 열기" style="visibility:hidden;"/>
+<div id="acDiv" class="layer_autocomplete" style="display:none;">
+<iframe id="acIfrm" name="acIfrm" scrolling="no" frameborder="0" marginheight="0" marginwidth="0" src="" title="자동완성영역"></iframe>
+</div>
+</div>
+<div id="ohDiv" style="display:none;"><iframe id="ohIfrm" name="ohIfrm" scrolling="no" frameborder="0" title="자동완성키패드"></iframe></div>
+</fieldset>
+</form>
+<input type="hidden" id="premiumText" name="premiumText" title="" value="" />
+<input type="hidden" id="premiumLink" name="premiumLink" title="" value="" />
+<input type="hidden" id="statCode" name="statCode" title="" value="" />
+
+<div class="word-rank-wrap" style="display:none" id="rankDiv">
+<ol id="rankArea"><li style="display:none"></li></ol>
+</div>
+<dl class="realtime">
+<dt>시맨틱 검색</dt>
+<dd id="cmsSearchKeyword"><a id="onclick_semantic01" href="http://search.nate.com/search/all.html?q=%C7%CF%C7%CF+%BE%EE%BB%F6%B4%EB%C8%AD" onmousedown="javascript:setNcCode('NSC11|NSC21|NSC31',idxSvcSemantic);">하하 어색 대화</a><span>I</span><a id="onclick_semantic02" href="http://search.nate.com/search/all.html?q=%BC%F6%C1%F6+%B1%E8%BC%F6%C7%F6+%BF%A9%C7%E0" onmousedown="javascript:setNcCode('NSC12|NSC22|NSC32',idxSvcSemantic);">수지 김수현</a><span>I</span><a id="onclick_semantic03" href="http://search.nate.com/search/all.html?q=%C1%A6%B4%CF%C6%DB+%BE%D6%B4%CF%BD%BA%C5%E6+%BE%E0%C8%A5" onmousedown="javascript:setNcCode('NSC13|NSC23|NSC33',idxSvcSemantic);">제니퍼 약혼</a><span>I</span><a id="onclick_semantic04" href="http://search.nate.com/search/all.html?q=%B9%CC%B7%E1+%B1%D9%C8%B2" onmousedown="javascript:setNcCode('NSC14|NSC24|NSC34',idxSvcSemantic);">미료 근황</a></dd>
+</dl>
+<p class="search_people"><a href="#" onclick="javascript:onclick_SearchPeople();" onmousedown="nc('NSC02');">사람검색</a></p>
+</div>
+<div class="gnb_area">
+    <a class="gnb_mail" title="메일 서비스로 가기" href="http://mail3.nate.com/" onmousedown="nc('NGB01');">메일</a>
+    <a class="gnb_news" title="뉴스 서비스로 가기" href="http://news.nate.com" onmousedown="nc('NEV31');">뉴스</a>
+    <a class="gnb_pann" title="판 서비스로 가기" href="http://pann.nate.com" onmousedown="nc('NGB02');">판</a>    
+	<a class="gnb_video" title="동영상 서비스로 가기" href="http://pann.nate.com/video" onmousedown="nc('NGB09');">동영상</a>
+	<a class="gnb_hoppin" title="hoppin 서비스로 가기" href="http://www.hoppin.nate.com" onmousedown="nc('NGB10');">hoppin</a>
+    <a class="gnb_game" title="게임 서비스로 가기" href="http://game.nate.com/" onmousedown="nc('NGB06');">게임</a>
+    <a class="gnb_map" title="지도 서비스로 가기" href="http://map.nate.com/" onmousedown="nc('NGB08');">지도</a>
+    <a class="gnb_hompy" title="미니홈피 서비스로 가기" href="http://www.cyworld.com/pims/mhsection/mh_index.asp" onmousedown="nc('NGB12');">미니홈피</a>
+    <a class="gnb_blog" title="블로그 서비스로 가기" href="http://blog.cyworld.com/" onmousedown="nc('NGB13');">블로그</a>
+    <a class="gnb_club" title="클럽 서비스로 가기" href="http://club.cyworld.com/club/clubsection2/index.asp" onmousedown="nc('NGB14');">클럽</a>
+    <a class="gnb_apps" title="앱스토어 서비스로 가기" href="http://apps.cy.nate.com/" onmousedown="nc('NGB07');">앱스토어</a>
+    <a class="gnb_gift" title="선물가게 서비스로 가기" href="http://www.cyworld.com/mall/mall5_index.asp?inflow=NL00" onmousedown="nc('NGB15');">선물가게</a>
+    <a class="gnb_music" title="뮤직 서비스로 가기" href="http://music.cyworld.com/" onmousedown="nc('NGB16');">뮤직</a>
+    
+	
+	<p id="Banggle_GNB" class="svc_cy"><a href="http://cyrang.cyworld.com/" title=" 우리들의 이야기 싸이랑" onmousedown="nc('NGB11');"><img src="http://main2.nateimg.co.kr/img/cms/content_pool/2012/07/svc_cy2.gif" width="26" height="26" alt=" 우리들의 이야기 싸이랑" /></a></p>
+    
+	
+	<!--
+	<p class="svc_cy_special2"><a href="http://cyrang.cyworld.com/" title="우리들의 이야기 싸이랑 구경하기" onmousedown="nc('NGB11');"><img src="http://main.nateimg.co.kr/img/v3/svc_cy_special4_update.gif" alt="우리들의 이야기 싸이랑 구경하기" /></a></p>
+	-->
+
+	<ul id="gnbNewServiceArea" class="gnb_new_service" onmouseover="viewNewServiceLayer();"  onmouseout="expandContractForGnbLayer2();">
+		<li id="NewService_GNB" style="display:none;"><a href="http://ask.nate.com/"><img src="http://image.nate.com/img/cms/content_pool/2012/07/gnb_menu_01(1)(0).gif" width="45" height="12" alt=" 지식" /></a></li>
+	</ul>	
+	
+	<ul id="gnbNewServiceLayer" class="gnb_service_add" style="display:none;" onmouseout="expandContractForGnbLayer(this.id,event);"><li><a onmousedown="nc('NEV48');" href="http://ask.nate.com" title="지식 서비스로 가기">지식</a></li><li><a onmousedown="nc('NEV49');" href="http://mobile.nate.com/" title="폰월드 서비스로 가기">폰월드</a></li><li><a onmousedown="nc('NEV50');" href="http://movie.nate.com/" title="영화 서비스로 가기">영화</a></li><li><a onmousedown="nc('NEV51');" href="http://nateonweb.nate.com/download/messenger/windows/4.1/download.php" title="네이트온 서비스로 가기">네이트온</a></li></ul>
+	
+	
+	
+    <p class="ico_up" title="UP" style="left:413px;" >UP</p>
+	<!--
+	<p class="ico_new" title="NEW">NEW</p>
+	-->
+    <div id="allViewLayer" class="layer_allsvc_wrap" style="display:none;"></div>
+</div>
+
+<script async src="/main/v1/contents/gnbNewService_v20120719.js?v=201208161206_20110728" type="text/javascript"></script>
+
+<dl id="whyArea" class="why_area"><dt>왜 떴을까?</dt><dd id="v20_whyimg" class="why_img" style="background:url('http://main2.nateimg.co.kr/img/cms/content_pool/2012/08/0814_8.gif') no-repeat left top;"><a class="why_click" id="why_click" href="http://search.nate.com/search/all.html?q=%C0%CC%BA%B4%C7%E5+%B0%E1%C8%A5+%BA%CE%C0%CE&amp;thr=frw&amp;nq=1" title="" onmousedown="onmousedown_WhyHot();nc2('RWA01');"></a></dd><dd class="why_btn"><a class="why_prev" title="이전 내용" href="javascript:whyArea_dir('P', whyArea_ver);" onmousedown="nc('NSC91');">이전 내용</a><a class="why_next" title="다음 내용" href="javascript:whyArea_dir('N', whyArea_ver);" onmousedown="nc('NSC92');">다음 내용</a></dd><dd class="view_allsvc"><a id="gnb_svcall_button" class="gnb_svcall" title="서비스 더보기" href="javascript:showAllService();">네이트 다른 서비스 더보기</a></dd><dd class="gnb_banner" style="display:none;"><a title="동영상 올리고 싸이판 GO!" href="http://pann.nate.com/event/psypann"><img src="http://main2.nateimg.co.kr/img/v3/gnb_right_psyucc.gif" alt="동영상 올리고 싸이판 GO!" onmousedown="nc('NEW01');"/></a></dd><dd class="london_special" style="display:none;">           <ul>                     <li class="title"><a href="http://search.nate.com/search/all.html?q=%B7%B1%B4%F8%BF%C3%B8%B2%C7%C8+%B8%DE%B4%DE%BC%F8%C0%A7&amp;ddthr=fomr&amp;nq=1" title="대한민국 메달 현황 보기" onmousedown="nc('NEW01');">대한민국 메달 현황 보기</a></li>                     <li id="liMedalGrade" class="grade">                     </li>                     <li id="liMedalGold" class="gold">                     </li>                     <li id="liMedalSilver" class="silver">                     </li>                     <li id="liMedalBronze" class="bronze">                     </li>           </ul></dd></dl>
+</div>
+</div>
+<hr />
+<div id="cont_wrap">
+<div class="content">
+
+	<div id="layerLogout" class="layer_logout" style="display: none"></div>
+	<script type="text/javascript">
+	//<![CDATA[
+		var bLogout = false;
+		if (isLogout()) { fillLogout(); }
+		try { xCookie.setSubCookie("NateMain", "NcOpen", "1"); } catch (e) { }
+	//]]>
+	</script>
+
+
+
+<div class="news_wrap">
+	<script type="text/javascript" charset="euc-kr" src="/main/srv/news/data/news_v20120709.js?20120816122632"></script>
+
+<script type="text/javascript" charset="euc-kr" src="/main/srv/news/data/news_data_v20120709.asp?r=20120816122632"></script><script type="text/javascript" charset="euc-kr" src="/main/srv/news/data/news_data_tab1_v20120709.asp?r=20120816122632"></script>
+
+<div class="news_area" id="news_area">
+<script type="text/javascript">
+	//<![CDATA[
+	if(isiPad == true || isTablet == true) {
+		document.write('<h4 id="tabTit0" class="Selected" onclick="newsBox.changeTab(0);"><a href="#" onclick="ndrclick(\'NEA01\');return false;">뉴스</a></h4>');
+	} else {
+		document.write('<h4 id="tabTit0" class="Selected" onmouseover="newsBox.changeTab(0);" onmouseout="newsBox.resetTab();"><a href="http://news.nate.com/" onclick="ndrclick(\'NEA01\');">뉴스</a></h4>');
+	}
+	//]]>
+	</script>
+	<div class="tabCont tabIn01" style=";">	
+		<ul class="news_list" id="news_text_type_div" onmouseover="newsBox.rollingStop();" onmouseout="newsBox.rollingStart();">
+			<li id="newsTxt_0"><a href="http://news.nate.com/section?mid=n0200" onclick="ndrclick('NEB31', 'Live_NH_01_02_0120120816121301');" target="_self">靑 &quot;노다 내각 기대 안해&quot; 日과 대화중단 선언</a><span>|</span><a href="http://news.nate.com/section?mid=n0300&amp;n=374561#cid374561" onclick="ndrclick('NEB32', 'Live_NH_01_02_0220120816121301');" target="_self">'반한기류' 日 민간영역 확산</a></li>
+			<li id="newsTxt_1"><a href="http://news.nate.com/subsection?mid=n0304&amp;n=374617#cid374617" onclick="ndrclick('NEB33', 'Live_NH_01_02_0320120816121142');" target="_self">부산지법, 부산저축銀에 파산 선고</a><span>|</span><a href="http://news.nate.com/subsection?mid=n0404&amp;n=374589#cid374589" onclick="ndrclick('NEB34', 'Live_NH_01_02_2720120816110940');" target="_self">서울시, 강남역 주변 빗물 흐름 개선한다</a></li>
+			<li id="newsTxt_2"><a href="http://sports.news.nate.com/abrsoccer/&amp;n=3" onclick="ndrclick('NEB35', 'Live_NH_01_02_0120120816102117');" target="_self">QPR 구하기 나선 박지성, 위기설 가가와</a><span>|</span><a href="http://sports.news.nate.com/abrsoccer/&amp;n=1" onclick="ndrclick('NEB36', 'Live_NH_01_02_0220120816103706');" target="_self">'반 페르시 맨유행' 암울한 박주영</a></li>
+			<li id="newsTxt_3"><a href="http://news.nate.com/ent/subsection?mid=e0103&amp;n=374556#cid374556" onclick="ndrclick('NED31', 'Live_NH_01_02_0120120816110121');" target="_self">'우결' 은정 하차 없다, 새커플 추가</a><span>|</span><a href="http://news.nate.com/ent/section?mid=e0100" onclick="ndrclick('NED32', 'Live_NH_01_02_0220120816110121');" target="_self">'무한뉴스' 하하 녹화, 멤버들 격한 축하</a></li>
+		</ul>
+		<div class="news_thumb" id="news_photo_type_div" style="display:none;" onmouseover="newsBox.rollingStop();" onmouseout="newsBox.rollingStart();">
+			<dl class="first">
+				<dd id="newsImgSrc_1"><!-- article_GenPho_3 --></dd>
+				<dt id="newsImgTit_1"><!-- article_GenPho_2 --></dt>
+			</dl>
+			<dl>
+				<dd id="newsImgSrc_2"><!-- article_GenPho_5 --></dd>
+				<dt id="newsImgTit_2"><!-- article_GenPho_4 --></dt>
+			</dl>
+			<dl>
+				<dd id="newsImgSrc_3"><!-- article_GenPho_7 --></dd>
+				<dt id="newsImgTit_3"><!-- article_GenPho_6 --></dt>
+			</dl>
+			<dl>
+				<dd id="newsImgSrc_4"><!-- article_GenPho_9 --></dd>
+				<dt id="newsImgTit_4"><!-- article_GenPho_8 --></dt>
+			</dl>
+		</div>
+		<dl class="news_pic" onmouseover="newsBox.rollingStop();" onmouseout="newsBox.rollingStart();">
+			<dd id="newsImgSrc_0"><a href="javascript:OpenPopup('http://ps.news.nate.com/photo/slidePopup?cid=374609&amp;mid=n0411',868,695);" onclick="ndrclick('NEB01', 'Live_NH_01_01_0120120816120234');" target="_self"><img src="http://news.nateimg.co.kr/etc/cms/2012/08/16/1345086471_373.jpg" width="120" height="90" alt="" /></a></dd>
+			<dt id="newsImgTit_0"><a href="javascript:OpenPopup('http://ps.news.nate.com/photo/slidePopup?cid=374609&amp;mid=n0411',868,695);" onclick="ndrclick('NEB01', 'Live_NH_01_01_0120120816120234');" target="_self">'용역 폭력' 컨택터스&quot;새 언론 창간하겠다&quot;</a></dt>
+		</dl>
+		<ul class="news_list down" onmouseover="newsBox.rollingStop();" onmouseout="newsBox.rollingStart();">
+			<li id="newsTxt_4"><a href="http://news.nate.com/subsection?mid=n0203&amp;n=371371#cid371371" onclick="ndrclick('NEB41', 'Live_NH_01_03_0520120816120432');" target="_self">새누리, 1초만에 만장일치로 현기환 제명 최종 확정</a></li>
+			<li id="newsTxt_5"><a href="http://news.nate.com/subsection?mid=n0402&amp;n=374570#cid374570" onclick="ndrclick('NEB43', 'Live_NH_01_03_0720120816120009');" target="_self">&quot;'대구 중학생 자살' 학교법인 등 1억3천 배상 판결&quot;</a></li>
+			<li id="newsTxt_6"><a href="http://news.nate.com/subsection?mid=n0305&amp;n=374582#cid374582" onclick="ndrclick('NEB45', 'Live_NH_01_03_0920120816115455');" target="_self">금호타이어 무기한 총파업</a><span>|</span><a href="http://news.nate.com/subsection?mid=n0406&amp;n=374591#cid374591" onclick="ndrclick('NEB46', 'Live_NH_01_03_1020120816120805');" target="_self">인턴은 휴가도 없나요</a></li>
+			<li id="newsTxt_7"><a href="http://news.nate.com/subsection?mid=n0304&amp;n=368272#cid368272" onclick="ndrclick('NEB47', 'Live_NH_01_03_1120120816120009');" target="_self">'태아보험' 여자아이 태어나자마자 보험사의 봉?</a></li>
+			<li id="newsTxt_8"><a href="http://sports.news.nate.com/basketvolley/" onclick="ndrclick('NEB49', 'Live_NH_01_03_0720120816083227');" target="_self">'100년에 나올까 말까 한 천재' 김연경을 위하여</a></li>
+			<li id="newsTxt_9"><a href="http://news.nate.com/ent/subsection?mid=e0102&amp;n=374584#cid374584" onclick="ndrclick('NEC31', 'Live_NH_01_03_0320120816113553');" target="_self">소연 교통사고 조작설, 어쩌다 이지경까지 왔나</a></li>				
+		</ul>
+		<p class="arrow_wrap" id="newsOptBtn" onmouseover="newsBox.rollingStop();" onmouseout="newsBox.rollingStart();">
+			<a class="prev" href="javascript:newsBox.showPreNext('P');" onclick="ndrclick('NEJ11');" title="이전 기사">이전</a><a class="next" href="javascript:newsBox.showPreNext('N');" onclick="ndrclick('NEJ11');" title="다음 기사">다음</a>
+		</p>
+	</div>
+
+
+	<script type="text/javascript">
+	//<![CDATA[
+	if(isiPad == true || isTablet == true) {
+		document.write('<h4 id="tabTit1" onclick="newsBox.changeTab(1);"><a href="#" onclick="ndrclick(\'NEG03\');return false;">스포츠</a></h4>');
+	} else {
+		document.write('<h4 id="tabTit1" onmouseover="newsBox.changeTab(1);" onmouseout="newsBox.resetTab();"><a href="http://sports.news.nate.com/" onclick="ndrclick(\'NEG03\');">스포츠</a></h4>');
+	}
+	//]]>
+	</script>
+	<div class="tabCont tabIn02" style="display:none;">			
+	</div>
+
+	<script type="text/javascript">
+	//<![CDATA[
+	if(isiPad == true || isTablet == true) {
+		document.write('<h4 id="tabTit2" onclick="newsBox.changeTab(2);"><a href="#" onclick="ndrclick(\'NEG04\');return false;">연예</a></h4>');
+	} else {
+		document.write('<h4 id="tabTit2" onmouseover="newsBox.changeTab(2);" onmouseout="newsBox.resetTab();"><a href="http://news.nate.com/ent/index" onclick="ndrclick(\'NEG04\');">연예</a></h4>');
+	}
+	//]]>
+	</script>
+	<div class="tabCont tabIn03" style="display:none;">					
+	</div>
+
+	<script type="text/javascript">
+	//<![CDATA[
+	if(isiPad == true || isTablet == true) {
+		document.write('<h4 id="tabTit3" onclick="newsBox.changeTab(3);"><a href="#" onclick="ndrclick(\'NEG05\');return false;">판</a></h4>');
+	} else {
+		document.write('<h4 id="tabTit3" onmouseover="newsBox.changeTab(3);" onmouseout="newsBox.resetTab();"><a href="http://pann.nate.com/" onclick="ndrclick(\'NEG05\');">판</a></h4>');
+	}
+	//]]>
+	</script>
+	<div class="tabCont tabIn04" style="display:none;"></div>
+
+	<script type="text/javascript">
+	//<![CDATA[
+	if(isiPad == true || isTablet == true) {
+		document.write('<h4 id="tabTit4" onclick="newsBox.changeTab(4);"><a href="#" onclick="ndrclick(\'NEC37\');return false;">' + rSpecialTabNmTxt[0].txtTit + '</a></h4>');
+	} else {
+		document.write('<h4 id="tabTit4" onmouseover="newsBox.changeTab(4);" onmouseout="newsBox.resetTab();"><a href="' + rSpecialTabNmTxt[0].txtUrl + '" onclick="ndrclick(\'NEC37\');">' + rSpecialTabNmTxt[0].txtTit + '</a></h4>');
+	}
+	//]]>
+	</script>
+	<div class="tabCont tabIn05" style="display:none;"></div>
+
+	<script type="text/javascript">
+	//<![CDATA[
+		document.write('<h4 id="tabTit5"><a href="javascript:;" onclick="ndrclick(\'NEK01\');openTimelineLayer();">시간별뉴스</a></h4>');
+	//]]>
+	</script>
+</div>
+
+
+<script type="text/javascript">
+//<![CDATA[
+try {
+	var rTotalTxt = new Array();
+	var nCntTotalTxt = rSisaNewsTxt.length + rEntNewsTxt.length + rSpoNewsTxt.length;
+	for(var i = 0 ; i < nCntTotalTxt ; i++) {
+		if(i == 2 || i == 8 || i == 12 || i == 18 || i == 22 || i == 28) {
+			rTotalTxt.push(rSpoNewsTxt[0]);
+			rSpoNewsTxt = rSpoNewsTxt.slice(1, rSpoNewsTxt.length);
+		} else if(i == 3 || i == 9 || i == 13 || i == 19 || i == 23 || i == 29) {
+			rTotalTxt.push(rEntNewsTxt[0]);
+			rEntNewsTxt = rEntNewsTxt.slice(1, rEntNewsTxt.length);
+		} else {
+			rTotalTxt.push(rSisaNewsTxt[0]);
+			rSisaNewsTxt = rSisaNewsTxt.slice(1, rSisaNewsTxt.length);
+		}
+	}
+	
+	var rTotalImg = new Array();
+	var nCntTotalImg = rSisaNewsImg.length + rEntNewsImg.length + rSpoNewsImg.length;
+	for(var i = 0 ; i < nCntTotalImg ; i++) {
+		if(rSpoNewsImg.length > 0 && (i == 2 || i == 6 || i == 9 || i == 11)) {
+			rTotalImg.push(rSpoNewsImg[0]);
+			rSpoNewsImg = rSpoNewsImg.slice(1, rSpoNewsImg.length);
+		} else if(rEntNewsImg.length > 0 && (i == 1 || i == 3 || i == 5 || i == 8)) {
+			rTotalImg.push(rEntNewsImg[0]);
+			rEntNewsImg = rEntNewsImg.slice(1, rEntNewsImg.length);
+		} else if(rSisaNewsImg.length > 0) {
+			rTotalImg.push(rSisaNewsImg[0]);
+			rSisaNewsImg = rSisaNewsImg.slice(1, rSisaNewsImg.length);
+		}
+	}
+	
+	if(sNewsImgRandom == 'E') {
+		rTotalImg.push(rTotalImg.shift());
+	} else if(sNewsImgRandom == 'S') {
+		rTotalImg.push(rTotalImg.shift());
+		rTotalImg.push(rTotalImg.shift());
+	}
+	
+	var fifthTabTxtItem = new Array();
+	var fifthTabImgItem = new Array();
+	if(issueTabVisible == 'Y') {
+		fifthTabTxtItem = rSpecialTxt;
+		fifthTabImgItem = rSpecialImg;
+	} else {
+		fifthTabTxtItem = rSearchTxt;
+		fifthTabImgItem = rMovieImg;
+	}
+	
+	// 뉴스
+	var newsBox = new _classNewsBox({
+		'rMenuItem':rMenuTxt, 
+		'rNewsImgItem':rTotalImg, 
+		'rNewsTxtItem':rTotalTxt,
+		'rSecondTabTxtItem':rSpoTxt,
+		'rSecondTabImgItem':rSpoImg,
+		'rThirdTabTxtItem':rEntTxt,
+		'rThirdTabImgItem':rEntImg,
+		'rFourthTabTxtItem':rPannTxt,
+		'rFourthTabImgItem':rPannImg,
+		'rFifthTabTxtItem':fifthTabTxtItem,
+		'rFifthTabImgItem':fifthTabImgItem,
+		'sNewsImgRan':sNewsImgRandom, 'isMain':isMain, 'nSpoMenuType': nSpoMenuType, 'nEntMenuType': nEntMenuType, 'nPannMenuType': nPannMenuType, 'nSpecialMenuType': nSpecialMenuType,
+		'nInitTabNum':0, 
+		'bIssueTabVisible':issueTabVisible, 
+		'objName':'newsBox', 
+		'sTagId':'newsTxt' 
+	});
+	
+	newsBox.showMenu();
+	newsBox.changeTabDelay(0);	
+} catch (e) {}
+
+//]]> 
+</script>
+<script type="text/javascript" charset="euc-kr" src="/main/srv/news/data/issue_v20120709.js?20120816084343"></script>
+<script type="text/javascript" charset="euc-kr" src="/main/srv/news/data/issue_data_v20120709.asp?r=20120816084343"></script>
+
+<div class="issue_area">
+	<h4>이슈컨텐츠</h4>
+	<div class="todayCont">
+		<h5>투데이</h5>
+		<ul>
+			<li class="infolist">
+				
+				<dl id="RightTopBox01" style="display:none;">
+					<dt><a href="http://newscomm.nate.com/weather" onmousedown="nc('NRD01');">날씨</a></dt>
+					<dd><a href="http://search.nate.com/search/all.html?s=&sc=&afc=&j=&thr=sbma&nq=1&q=%B3%AF%BE%BE" onmousedown="nc('NRD02');">오늘 날씨</a> | <a href="http://news.nate.com/weather/?menu=LongWeek" onmousedown="nc('NRD03');">주간 예보</a></dd>
+				</dl>
+				
+				<dl id="RightTopBox02" style="display:none;">
+					<dt><a href="http://stock.finance.nate.com/" onmousedown="nc('NRE01');">증권</a></dt>
+					<dd><a id="titleKospi" href="http://stock.finance.nate.com/" onmousedown="nc('NRE03');">코스피</a> | <span id="kospiJisu" class="tx_stock">-</span> <span id="kospiRate" class="tx_rate">-</span></dd>
+				</dl>
+				<dl id="RightTopBox03" style="display:none;">
+					<dt><a href="http://finance.nate.com/" onmousedown="nc('NRF01');">금융</a></dt>
+					<dd><a href="http://money.finance.nate.com/" onmousedown="nc('NRF02');">최고 금리</a> | <a href="http://search.nate.com/search/all.html?z=A&s=&tq=&sg=&nq=&sc=&afc=&thr=sbus&q=%C8%AF%C0%B2&nq=1" onmousedown="nc('NRF03');">환율 조회</a></dd>
+				</dl>
+				<dl id="RightTopBox04" style="display:none;">
+					<dt><a href="http://news.nate.com/ent/tvTable?mid=e0500" onmousedown="nc('NRA01');">TV정보</a></dt>
+					<dd><a href="http://news.nate.com/ent/tvTable?mid=e0500" onmousedown="nc('NRA02');">편성표</a> | <a href="http://news.nate.com/ent/TvHolic?mid=e0200" onmousedown="nc('NRA03');">화제TV</a></dd>
+				</dl>
+				<dl id="RightTopBox05" style="display:none;">
+					<dt><a href="http://search.nate.com/search/all.html?thr=sbus&q=%BF%EE%BC%BC" onmousedown="nc('NRB01');">운세</a></dt>
+					<dd><a href="http://search.nate.com/search/all.html?thr=sbus&q=%B6%EC%BA%B0%BF%EE%BC%BC" onmousedown="nc('NRB02');">띠별 운세</a> | <a href="http://search.nate.com/search/all.html?nq=5&thr=ukkt&q=%BA%B0%C0%DA%B8%AE%BF%EE%BC%BC" onmousedown="nc('NRB03');">별자리 운세</a></dd>
+				</dl>
+				<dl id="RightTopBox06" style="display:none;">
+					<dt><a href="http://sports.news.nate.com/" onmousedown="nc('NRC01');">스포츠</a></dt>
+					<dd><a href="http://sports.news.nate.com/video" onmousedown="nc('NRC02');">비디오</a> | <a href="http://sports.news.nate.com/photo
+" onmousedown="nc('NRC03');">포토</a></dd>
+				</dl>
+				<p class="arrow_wrap">
+					<a class="prev" href="#;" title="이전" onclick="nc('NRA04');fillStockLayer('P');">이전</a><a class="next" href="#;" title="다음" onclick="nc('NRA05');fillStockLayer('N');">다음</a>
+				</p>
+			</li>
+			<li class="view"><a href="http://sports.news.nate.com/GoLondon_Video/final?section=3" onclick="ndrclick('NEJ18', '');" target="_self">올림픽 '명장면 베스트'</a></li>
+		</ul>
+	</div>
+	<!-- 실시간 검색어 -->
+	<div id="SearchRankMax" class="realtime">
+		<h5><a href="http://search.nate.com/keyword/" onmousedown="nc('NRT02')">실시간 검색어</a></h5>
+		<ol id="v20_searchrank" style="display:block" onmousedown="nc('NRT12')">
+		<li class="rank01_select"><a href="" title=""></a><span class=""><em></em></span></li>
+		<li class="rank02"><a href="" title=""></a><span class=""><em></em></span></li>
+		<li class="rank03"><a href="" title=""></a><span class=""><em></em></span></li>
+		<li class="rank04"><a href="" title=""></a><span class=""><em></em></span></li>
+		<li class="rank05"><a href="" title=""></a><span class=""><em></em></span></li>
+		<li class="rank06"><a href="" title=""></a><span class=""><em></em></span></li>
+		<li class="rank07"><a href="" title=""></a><span class=""><em></em></span></li>
+		<li class="rank08" style="display:none"><a href="" title=""></a><span class=""><em></em></span></li>
+		<li class="rank09" style="display:none"><a href="" title=""></a><span class=""><em></em></span></li>
+		<li class="rank10" style="display:none"><a href="" title=""></a><span class=""><em></em></span></li>			
+		<li class="rank11" style="display:none"><a href="" title=""></a><span class=""><em></em></span></li>
+		<li class="rank12" style="display:none"><a href="" title=""></a><span class=""><em></em></span></li>			
+		<li class="rank13" style="display:none"><a href="" title=""></a><span class=""><em></em></span></li>
+		<li class="rank14" style="display:none"><a href="" title=""></a><span class=""><em></em></span></li>
+		</ol>
+		<p class="arrow_wrap"><a class="prev" id="searchRankPrvBtn" href="javascript:;" onmousedown="javascript:nc('NRT91')" title="이전 내용"><img src="http://main2.nateimg.co.kr/img/v3/btn_prev2.gif" alt="이전 내용" /></a><a class="next" id="searchRankNextBtn" href="javascript:;" onmousedown="javascript:nc('NRT92')" title="다음 내용"><img src="http://main2.nateimg.co.kr/img/v3/btn_next2.gif" alt="다음 내용" /></a></p>
+	</div>
+	<!-- 이슈 레이어 -->
+	<div class="lyr_issue" id="lyr_issue" style="display:none">
+		<div class="newsflash"><a href="" onclick="ndrclick('NEC88', '');" target="_self"></a></div>
+		<a href="#;" class="close" onclick="closeSpecialLayer(nSpecialLayerModDate);return false;" title="닫기">닫기</a>
+	</div>
+	<!-- 이슈 레이어 : 런던올림픽 -->
+ 	<div class="lyr_issue_london" id="lyr_issue2" style="display:none"></div>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+try {
+if(isMain) viewIssueLayer(nSpecialLayerVisible, nSpecialLayerModDate);
+} catch (e) {}
+//]]> 
+</script>
+<!-- Issue Content AREA END -->
+
+
+<!-- 시간별뉴스 레이어 -->
+<div class="lyr_timeline " style="display:none" id="timelineLayer"><!-- 확장시 expand 클래스 추가 -->		
+	<div class="inner_timeline">
+		<h5>시간대별 주요기사</h5>
+		<div class="updateinfo">
+			마지막 업데이트 <span id="lastUpDtTimeLine">06.18.14:30</span>
+			<a href="http://www.nate.com/?f=timeline" class="update" onmousedown="nc('NGA01');" title="업데이트">업데이트</a>
+		</div>
+		<div class="timeline" id="divNewsTimeLineList"></div>					
+ 
+		<div class="more">
+			<a href="javascript:;" onclick="newsTimeLineMoreOpen()" class="open" style="display:block;" onmousedown="nc('NGA03');" title="시간별뉴스 펼치기" id="timelineMoreBtnOpen">펼침</a>
+			<a href="javascript:;" onclick="newsTimeLineMoreOpen();" class="close" style="display:none;" onmousedown="nc('NGA04');" title="시간별뉴스 접기" id="timelineMoreBtnClose">접음</a>
+		</div>
+		<div class="lyr_close"><a href="javascript:;" onclick="closeTimelineLayer()" onmousedown="nc('NGA02');" title="시간대별 주요기사 닫기">시간대별 주요기사 닫기</a></div>
+ 
+	</div>
+</div>
+
+
+	<!-- 오픈커뮤니케이션 : 뉴스 -->
+	<div class="lyr_open120723_news">
+		<dl>
+			<dd  id="div_lyr_open120723_news" class="desc" style="display:none;">							
+				<p>
+				<strong>뉴스를 시간 순서대로 차곡차곡!</strong>
+				뉴스를 시간대별로 보고, 새로운 뉴스는 ‘알림’을 통해 바로 받아보실 수 있어요. 올림픽 소식도 네이트가 가장 빠릅니다!
+				</p>
+				<a href="javascript:CloseLayer0723('news');" class="close" title="닫기">닫기</a>
+			</dd>
+		</dl>
+	</div>
+</div>
+
+
+
+
+
+<div id="div_skt_banner" class="SKT_banner_area">
+	<script type="text/javascript" src="http://cyad1.nate.com/js.kti/nate/main@mband_Position2"></script>
+</div>
+
+
+
+<!-- 오픈커뮤니케이션 레이어 -->
+<div id="div_lyr_open120723" class="lyr_open120723" style="display:none;">
+	<dl>
+		<dt>새로워진 네이트에서 올림픽을 즐겨보세요!</dt>
+		<dd>
+			<strong>뉴스를 시간 순서대로 차곡차곡!</strong>
+			뉴스를 시간대별로 보고, 새로운 뉴스는 ‘알림’을 통해 바로 받아보실 수 있어요. 올림픽 소식도 네이트가 가장 빠릅니다!							
+		</dd>
+		<dd>
+			<strong>모아보기로 친구들 소식까지!</strong>
+			‘모아보기’를 기본으로 설정하고 내 소식 및 친구들 소식도 한 눈에 보세요!  							
+		</dd>
+		<dd>
+			<strong>이렇게 빠를수가! 이슈를 내 손안에</strong>
+			‘이슈 키워드’ 영역에서 Hot한 이슈를 Cool하게 정리해드려요. 올림픽 소식도 물론 Hot하게 전달할게요!							
+		</dd>
+		<dd>
+			<strong>좋은 콘텐츠만 골라서 보세요.</strong>
+			순위가 높은 서비스별 콘텐츠만 쏙쏙 뽑아 ‘랭킹’ 영역으로 새롭게 만나보세요. 그야말로 콘텐츠의 왕중왕!							
+		</dd>
+	</dl>
+	<a href="javascript:CloseLayer0723('intro');" class="close" id="lyr_open" title="닫기">닫기</a>
+</div>
+
+
+
+
+
+	
+<div class="connect_wrap">
+	<div class="connect_top">
+		<h3 class="tit_logout">
+			<a title="친구소식보기" href="http://xo.nate.com/Login.sk?cpurl=www_ndr.nate.com%2flogin&amp;redirect=http%3A%2F%2Fwww.nate.com&amp;mapper=on" class="myfriendfeed" onmousedown="nc('NCO58');">친구소식보기</a>
+			<span>로그인하면 친구 소식을 볼 수 있습니다</span>
+		</h3>					
+	</div>
+
+	<!-- 오픈커뮤니케이션 : 모아보기 -->
+	<div  class="lyr_open120723_moa">
+		<dl>
+			<dd class="desc" id="div_lyr_open120723_moa" style="display:none;">						
+				<p>
+				<strong>모아보기로 친구들 소식까지!</strong>
+				‘모아보기’를 기본으로 설정하고 내 소식 및 친구들 소식도 한 눈에 보세요!  
+				</p>
+				<a href="javascript:CloseLayer0723('moa');" class="close" title="닫기">닫기</a>
+			</dd>
+		</dl>
+	</div>
+</div>
+
+
+<div class="coverstory_wrap">
+	<a name="coverstory"></a>
+	<div class="cover_wrap" style="background:url('http://c1img.cyworld.co.kr/img/coverstory/upload/2012/0814/120816_main.gif') no-repeat left bottom;"><h3 id="nateConnectTitle" class=""><a id="nateConnectLink" title="" href="" onmouseup=""></a></h3><p class="msg"><a href="#" id="nameConnect" style="color: #e37a48;"><span id="coverstoryName"><span style='margin-right: 40px; border: 1px solid #red'>&nbsp;</span></span>, 친구 문제로 고민한 적 있으세요? </a></p></div><input type="hidden" id="coverstory_seq" value="1087" /><input type="hidden" id="mainCoverDate" value="2012-08-16" />
+
+	 
+	<script type="text/javascript">		viewCoverFloating();</script>
+</div>
+
+<!-- 이슈큐레이션 -->
+<div class="curation_wrap" id="curationDiv">
+	<h3>이슈큐레이션</h3>
+	<h4 class="issuekeyword">이슈키워드</h4>
+	<ul id="curationMenu" class="keyword"><li class="keyword1"><a href="javascript:;" onclick="centerContentDir('1|C');" onmousedown="javascript:nc('NDM01');nc2('');setNDRClickSpotStat('NDM01','http://www.nate.com/');" target="_self" title="스타 주당">스타 주당</a></li>		<li class="keyword2"><a href="javascript:;" onclick="centerContentDir('2|C');" onmousedown="javascript:nc('NDM11');nc2('');setNDRClickSpotStat('NDM09','http://www.nate.com/');" target="_self" title="모델출신 남자배우">모델출신 남자배우</a></li>		<li class="keyword3"><a href="javascript:;" onclick="centerContentDir('3|C');" onmousedown="javascript:nc('NDM21');nc2('');setNDRClickSpotStat('NDM17','http://www.nate.com/');" target="_self" title="만원 맛집">만원 맛집</a></li>		<li class="keyword4 keyword_selected4"><a href="javascript:;" onclick="centerContentDir('4|C');" onmousedown="javascript:nc('NDM31');nc2('');setNDRClickSpotStat('NDM25','http://www.nate.com/');" target="_self" title="프라모델 열풍">프라모델 열풍</a></li>		<li class="keyword5"><a href="javascript:;" onclick="centerContentDir('5|C');" onmousedown="javascript:nc('NDM41');nc2('');setNDRClickSpotStat('NDM33','http://www.nate.com/');" target="_self" title="스타 엽기사진">스타 엽기사진</a></li></ul>
+	<div class="keywordcontent" id="divKeywordContents"></div>
+	<h4 class="issueinfo">이슈정보</h4>
+	<ul class="info" id="curationIssueInfoMenu">
+		<li id="wellbeing" class="info1"><a href="javascript:;" onclick="centerContentDir('6|wellbeing')" onmousedown="nc('NDH01');">건강/맛집</a></li>
+		<li id="trend" class="info2"><a href="javascript:;" onclick="centerContentDir('7|trend')" onmousedown="nc('NDH11');">뷰티/패션</a></li>
+		<li id="leisure" class="info3"><a href="javascript:;" onclick="centerContentDir('8|leisure')" onmousedown="nc('NDH21');">여행/취미</a></li>
+		<li id="life" class="info4"><a href="javascript:;" onclick="centerContentDir('9|life')" onmousedown="nc('NDH31');">일상/생활</a></li>
+		<li id="television" class="info5"><a href="javascript:;" onclick="centerContentDir('10|television')" onmousedown="nc('NDH41');">연예/TV</a></li>
+		<li id="music" class="info6"><a href="javascript:;" onclick="centerContentDir('11|music')" onmousedown="nc('NDH51');">뮤직/동영상</a></li>
+		<li id="entertainment" class="info7"><a href="javascript:;" onclick="centerContentDir('12|entertainment')" onmousedown="nc('NDH61');">엔터테인먼트</a></li>
+	</ul>				
+	<div id="curationIssueInfo" class="infocontent">
+		<div class="issuebox blog">
+			<span class="svc">싸이블로그</span>
+			<dl class="thumb">
+				<dt><a id="curationIssueInfo_dt1" href="http://www.cyworld.com/no1eunju/3727902" onmousedown="javascript:nc('NDM32');nc2('RTC01');setNDRClickSpotStat('NDM32','http://www.cyworld.com/no1eunju/3727902');" target="_blank" title="[싸이블로그] 여심마저 사로잡은온갖 '프라모델'이 가득!">여심마저 사로잡은<br />온갖 '프라모델'이 가득!</a></dt>
+				<dd><a id="curationIssueInfo_dd1" href="http://www.cyworld.com/no1eunju/3727902" onmousedown="javascript:nc('NDM32');nc2('RTC01');setNDRClickSpotStat('NDM32','http://www.cyworld.com/no1eunju/3727902');" target="_blank" title="[싸이블로그] 여심마저 사로잡은온갖 '프라모델'이 가득!"><img src="http://image.nate.com/img/cms/content_pool/2012/08/0816_iss4_05.jpg" width="128" height="75" alt="http://image.nate.com/img/cms/content_pool/2012/08/0816_iss4_05.jpg" style="display:block;" /><span class="thumbframe" style="display:block;"></span></a></dd>
+			</dl>
+		</div>
+		<div class="issuebox egloos">
+			<span class="svc">이글루스</span>
+			<dl class="txt">				
+				<dt><a id="curationIssueInfo_dt2" href="http://fndnfpt.egloos.com/1209995" onmousedown="javascript:nc('NDM33');nc2('RTC02');setNDRClickSpotStat('NDM33','http://fndnfpt.egloos.com/1209995');" target="_blank" title="[이글루스] 문구점에서 100원 주고 구매한 '프라모델'">문구점에서 100원 주고<br /> 구매한 '프라모델'</a></dt>
+				<dd><a id="curationIssueInfo_dd2" href="http://fndnfpt.egloos.com/1209995" onmousedown="javascript:nc('NDM33');nc2('RTC02');setNDRClickSpotStat('NDM33','http://fndnfpt.egloos.com/1209995');" target="_blank" title="[이글루스] 4년 전 시골 동네 문구점을 탐방하다가 구매한 1980년대 추정 '프라모델' 개봉기">4년 전 시골 동네 문구점을 탐방하다가 구매한 1980년대 추정 '프라모델' 개봉기<img src="" width="128" height="75" alt="" style="display:none;border-style:hidden" /><span class="thumbframe" style="display:none;border-style:hidden"></span></a></dd>
+			</dl>
+		</div>
+		<div class="issuebox video">
+			<span class="svc">동영상</span>
+			<dl class="txt">
+				<dt><a id="curationIssueInfo_dt3" href="http://pann.nate.com/video/107196492?mainfrom=isscrtnkwd" onmousedown="javascript:nc('NDM34');nc2('RTC09');setNDRClickSpotStat('NDM34','http://pann.nate.com/video/107196492?mainfrom=isscrtnkwd');" target="_blank" title="[동영상] 심심풀이로 만들었다는 '건담' 로봇들의 싸움">심심풀이로 만들었다는<br /> '건담' 로봇들의 싸움</a></dt>
+				<dd><a id="curationIssueInfo_dd3" href="http://pann.nate.com/video/107196492?mainfrom=isscrtnkwd" onmousedown="javascript:nc('NDM34');nc2('RTC09');setNDRClickSpotStat('NDM34','http://pann.nate.com/video/107196492?mainfrom=isscrtnkwd');" target="_blank" title="[동영상] 부자연스럽게 보이기 쉬운 그래픽으로 하는 영화보다 훨씬 실사 같다고?">부자연스럽게 보이기 쉬운 그래픽으로 하는 영화보다 훨씬 실사 같다고?<img src="" width="128" height="75" alt="" style="display:none;border-style:hidden" /><span class="thumbframe" style="display:none;border-style:hidden"></span></a></dd>				
+			</dl>
+		</div>
+		<div class="issuebox blog">
+			<span class="svc">싸이블로그</span>
+			<dl class="thumb">				
+				<dt><a id="curationIssueInfo_dt4" href="http://www.cyworld.com/LOVE050812/13028872" onmousedown="javascript:nc('NDM35');nc2('RTC01');setNDRClickSpotStat('NDM35','http://www.cyworld.com/LOVE050812/13028872');" target="_blank" title="[싸이블로그] 눈이 부실 정도인 타이타닉 LED 완성기">눈이 부실 정도인<br /> 타이타닉 LED 완성기</a></dt>
+				<dd><a id="curationIssueInfo_dd4" href="http://www.cyworld.com/LOVE050812/13028872" onmousedown="javascript:nc('NDM35');nc2('RTC01');setNDRClickSpotStat('NDM35','http://www.cyworld.com/LOVE050812/13028872');" target="_blank" title="[싸이블로그] 눈이 부실 정도인 타이타닉 LED 완성기"><img src="http://image.nate.com/img/cms/content_pool/2012/08/0816_iss4_03.jpg" width="128" height="75" alt="http://image.nate.com/img/cms/content_pool/2012/08/0816_iss4_03.jpg" style="display:block;" /><span class="thumbframe" style="display:block;"></span></a></dd>
+			</dl>
+		</div>
+		<div class="issuebox blog">
+			<span class="svc">싸이블로그</span>
+			<dl class="thumb">				
+				<dt><a id="curationIssueInfo_dt5" href="http://www.cyworld.com/dudcks09/7206449" onmousedown="javascript:nc('NDM36');nc2('RTC01');setNDRClickSpotStat('NDM36','http://www.cyworld.com/dudcks09/7206449');" target="_blank" title="[싸이블로그] '프라모델' 엄청 많았던예쁜 카페 탐방기">'프라모델' 엄청 많았던<br />예쁜 카페 탐방기</a></dt>
+				<dd><a id="curationIssueInfo_dd5" href="http://www.cyworld.com/dudcks09/7206449" onmousedown="javascript:nc('NDM36');nc2('RTC01');setNDRClickSpotStat('NDM36','http://www.cyworld.com/dudcks09/7206449');" target="_blank" title="[싸이블로그] '프라모델' 엄청 많았던예쁜 카페 탐방기"><img src="http://image.nate.com/img/cms/content_pool/2012/08/0816_iss4_08.jpg" width="128" height="75" alt="http://image.nate.com/img/cms/content_pool/2012/08/0816_iss4_08.jpg" style="display:block;" /><span class="thumbframe" style="display:block;"></span></a></dd>
+			</dl>
+		</div>
+		<div class="issuebox blog">
+			<span class="svc">싸이블로그</span>
+			<dl class="thumb">				
+				<dt><a id="curationIssueInfo_dt6" href="http://www.cyworld.com/president_J/8648822" onmousedown="javascript:nc('NDM37');nc2('RTC01');setNDRClickSpotStat('NDM37','http://www.cyworld.com/president_J/8648822');" target="_blank" title="[싸이블로그] 아버지가 30년 넘게 만든'프라모델' 작품 전시장">아버지가 30년 넘게 만든<br />'프라모델' 작품 전시장</a></dt>
+				<dd><a id="curationIssueInfo_dd6" href="http://www.cyworld.com/president_J/8648822" onmousedown="javascript:nc('NDM37');nc2('RTC01');setNDRClickSpotStat('NDM37','http://www.cyworld.com/president_J/8648822');" target="_blank" title="[싸이블로그] 아버지가 30년 넘게 만든'프라모델' 작품 전시장"><img src="http://image.nate.com/img/cms/content_pool/2012/08/0816_iss4_04.jpg" width="128" height="75" alt="http://image.nate.com/img/cms/content_pool/2012/08/0816_iss4_04.jpg" style="display:block;" /><span class="thumbframe" style="display:block;"></span></a></dd>
+			</dl>
+		</div>
+		<div class="issuebox blog">
+			<span class="svc">싸이블로그</span>
+			<dl class="txt">				
+				<dt><a id="curationIssueInfo_dt7" href="http://www.cyworld.com/grizzly2/3883296" onmousedown="javascript:nc('NDM38');nc2('RTC01');setNDRClickSpotStat('NDM38','http://www.cyworld.com/grizzly2/3883296');" target="_blank" title="[싸이블로그] '프라모델' 제작기에 관한단편적인 생각">'프라모델' 제작기에 관한<br />단편적인 생각</a></dt>
+				<dd><a id="curationIssueInfo_dd7" href="http://www.cyworld.com/grizzly2/3883296" onmousedown="javascript:nc('NDM38');nc2('RTC01');setNDRClickSpotStat('NDM38','http://www.cyworld.com/grizzly2/3883296');" target="_blank" title="[싸이블로그] 감탄할 만큼 놀라운 작품에 제작기가 없어 서운한 마음이 들어 쓰는 글?">감탄할 만큼 놀라운 작품에 제작기가 없어 서운한 마음이 들어 쓰는 글?<img src="" width="128" height="75" alt="" style="display:none;border-style:hidden" /><span class="thumbframe" style="display:none;border-style:hidden"></span></a></dd>
+			</dl>
+		</div>
+		<div class="issuebox pann">
+			<span class="svc">판</span>
+			<dl class="thumb">				
+				<dt><a id="curationIssueInfo_dt8" href="http://pann.nate.com/talk/120413489?mainfrom=isscrtnkwd" onmousedown="javascript:nc('NDM39');nc2('RTC03');setNDRClickSpotStat('NDM39','http://pann.nate.com/talk/120413489?mainfrom=isscrtnkwd');" target="_blank" title="[판] 디테일한 설정이 압권인남자 친구의 '프라모델'">디테일한 설정이 압권인<br />남자 친구의 '프라모델'</a></dt>
+				<dd><a id="curationIssueInfo_dd8" href="http://pann.nate.com/talk/120413489?mainfrom=isscrtnkwd" onmousedown="javascript:nc('NDM39');nc2('RTC03');setNDRClickSpotStat('NDM39','http://pann.nate.com/talk/120413489?mainfrom=isscrtnkwd');" target="_blank" title="[판] 디테일한 설정이 압권인남자 친구의 '프라모델'"><img src="http://image.nate.com/img/cms/content_pool/2012/08/0816_iss4_02.jpg" width="128" height="75" alt="http://image.nate.com/img/cms/content_pool/2012/08/0816_iss4_02.jpg" style="display:block;" /><span class="thumbframe" style="display:block;"></span></a></dd>
+			</dl>
+		</div>
+		<div class="issuebox blog">
+			<span class="svc">싸이블로그</span>
+			<dl class="thumb">							
+				<dt><a id="curationIssueInfo_dt9" href="http://www.cyworld.com/y222/3967677" onmousedown="javascript:nc('NDM40');nc2('RTC01');setNDRClickSpotStat('NDM40','http://www.cyworld.com/y222/3967677');" target="_blank" title="[싸이블로그] 방안 가득 채워 넣은 나만의 '토이 룸' 공개">방안 가득 채워 넣은<br /> 나만의 '토이 룸' 공개</a></dt>
+				<dd><a id="curationIssueInfo_dd9" href="http://www.cyworld.com/y222/3967677" onmousedown="javascript:nc('NDM40');nc2('RTC01');setNDRClickSpotStat('NDM40','http://www.cyworld.com/y222/3967677');" target="_blank" title="[싸이블로그] 방안 가득 채워 넣은 나만의 '토이 룸' 공개"><img src="http://image.nate.com/img/cms/content_pool/2012/08/0816_iss4_06.jpg" width="128" height="75" alt="http://image.nate.com/img/cms/content_pool/2012/08/0816_iss4_06.jpg" style="display:block;" /><span class="thumbframe" style="display:block;"></span></a></dd>				
+			</dl>
+		</div>
+	</div>
+	<div class="infocontent" id="curationIssueInfoCont" style="display:none"></div>
+
+	<!-- 오픈커뮤니케이션 : 이슈 -->
+	<div class="lyr_open120723_curation">
+		<dl>
+			<dd class="desc" id="div_lyr_open120723_curation" style="display:none;">						
+				<p>
+				<strong>이렇게 빠를수가! 이슈를 내 손안에</strong>
+				‘이슈 키워드’ 영역에서 Hot한 이슈를 Cool하게 정리해드려요. 올림픽 소식도 물론 Hot하게 전달할게요!
+				</p>
+				<a href="javascript:CloseLayer0723('curation');" class="close" title="닫기">닫기</a>
+			</dd>
+		</dl>
+	</div>
+</div>
+
+<!-- 이슈랭킹 -->
+<div class="ranking_wrap">
+	<h3>이슈랭킹</h3>
+	<ul id="ulRanking01" class="category" style="display:block;">
+		<li id="liRankingNews" class="news_selected"><a onclick="viewRankingNews();" style="cursor:pointer;" onmousedown="nc('NDN01');" >실시간 관심뉴스</a></li>
+		<li id="liRankingTalk" class="tok"><a onclick="viewRankingTalk();" style="cursor:pointer;" onmousedown="nc('NDN18');" >오늘의 톡</a></li>
+		<li id="liRankingBlog" class="blog"><a onclick="viewRankingSocialUp();" style="cursor:pointer;" onmousedown="nc('NDZ01');" >소셜UP 키워드</a></li>
+		<li id="liRankingVideo" class="video"><a onclick="viewRankingBestVideo();" style="cursor:pointer;" onmousedown="nc('NDN49');" >베스트 동영상</a></li>
+		<li id="liRankingMusic" class="music"><a onclick="viewRankingMusic();" style="cursor:pointer;" onmousedown="nc('NDN66');" >뮤직 실시간 차트</a></li>
+		<li id="liRankingMovie" class="movie"><a onclick="viewRankingBoxOffice();" style="cursor:pointer;" onmousedown="nc('NDN83');" >영화 예매순위</a></li>
+	</ul>
+	<ul id="ulRanking02" class="category" style="display:none;">
+		<li id="liRankingNews02" class="news_selected"><a onclick="viewRankingBlog();" style="cursor:pointer;" onmousedown="nc('NDN34');" >블로그  공감 / 댓글</a></li>
+		<li id="liRankingTalk02" class="tok"><a onclick="viewRankingWhy();" style="cursor:pointer;" onmousedown="nc('NDZ02');" >왜떴을까</a></li>
+	</ul>
+	<!-- 실시간 관심뉴스 -->
+	<div id="divRankingArea" class="rankcontent">
+	</div>
+	<p class="arrow_wrap">
+		<a class="prev" href="javascript:rankingPaging();" title="이전" onmousedown="nc('NDL93');">이전</a><a class="next" href="javascript:rankingPaging();" title="다음" onmousedown="nc('NDL94');" >다음</a>
+	</p>
+</div>
+
+
+
+<div class="banner_wrap">
+	<h3>프로모션/이벤트 배너</h3>
+	<div>			
+		<ul id="eventBanner" class="promotion1"><li><a href="javascript:openPromotion('http://cytogether.cyworld.com/campaign/event/warm/201207_sports.asp');" onmousedown="javascript:setNcCode('NEV11|NEV13|NEV15',idxEventBanner);"><img src="http://main2.nateimg.co.kr/img/cms/content_pool/2012/07/0802_13740_이벤트배너_온기훈훈.gif" alt=" 재능기부 멘토스쿨" width="137" height="40"/></a></li>			<li><a href="javascript:openPromotion('http://music.cyworld.com/event/promotion/2012/bgmstamp_2012/promotion.asp');" onmousedown="javascript:setNcCode('NEV12|NEV14|NEV16',idxEventBanner);"><img src="http://main.nateimg.co.kr/img/cms/content_pool/2012/07/0801_13740_bgme.gif" alt=" bgm스탬프" width="137" height="40"/></a></li></ul>
+		<div id="happynate_new" class="happynate"><a href="http://www.cyworld.com/sk_happynate/5892068" onmousedown="happynateBannerClick(1)"><img src="http://main.nateimg.co.kr/img/cms/content_pool/2012/07/120702_24556_CyApp.jpg" width="246" height="56" alt=" 동영상 찍고 바로 업로드 하자!" /></a></div>					
+	</div>
+	<p class="arrow_wrap3">
+		<a class="prev" href="javascript:happyNate_v1_dir('P', happyNate_ver, eventBanner_ver);" title="이전 내용" onmousedown="nc('NEV91')">이전 내용</a><a class="next" href="javascript:happyNate_v1_dir('N', happyNate_ver, eventBanner_ver);" title="다음 내용" onmousedown="nc('NEV92')">다음 내용</a>
+	</p>
+	
+</div>
+
+
+</div>
+<div class="sidearea">
+<div id="UI" class="login_area">
+<ul id="tab_login" class="tab_login">
+<li class="nate_on"><a href="javascript:onclick_LoginTab('nate');" onmousedown="nc('NLI41');" onfocus="blur();">네이트</a></li>
+<li class="cyworld_off"><a href="javascript:onclick_LoginTab('cy');" onmousedown="nc('NLI42');" onfocus="blur();">싸이월드</a></li>
+</ul>
+<script type="text/javascript">
+//<![CDATA[
+document.write('<script type="text/javascript" src="/common/secure/js/xecure_nate.js?v=20120326"><\/script>');
+document.write('<script type="text/javascript" src="/common/secure/js/rsa/secure_common.js"><\/script>');
+//]]>
+</script>
+<form id="login" name="login" action="https://cyxso.cyworld.com/LoginAuth.sk" target="_top" method="post" style="visibility: hidden; position: absolute;" onsubmit="return SubmitCheck('cy');">
+<input type="hidden" id="loginEmail" name="email" />
+<input type="hidden" id="loginPasswd" name="passwd" value="" />
+<input type="hidden" id="passwd_rsa" name="passwd_rsa" value="" />
+<input type="hidden" id="echk" name="echk" value="" />
+<input type="hidden" id="loginSafeChk" name="safechk" value="on" />
+<input type="hidden" id="loginstr" name="loginstr" value="direct" />
+<input type="hidden" id="iplevel" name="iplevel" value="" />
+<input type="hidden" name="redirection" value="http://www.nate.com" />
+<input type="hidden" name="cpurl" value="www_ndr.nate.com%2flogin" />
+</form>
+<form id="f_login" name="f_login" action="https://xo.nate.com/LoginAuth.sk" method="post" target="_top" onsubmit="return SubmitCheck('nate');">
+<input type="hidden" id="PASSWD_RSA" name="PASSWD_RSA" value="" />
+<input type="hidden" id="sso" name="sso" value="false" />
+<input type="hidden" id="redirect" name="redirect" value="http://www.nate.com" />
+<input type="hidden" name="cpurl" value="www_ndr.nate.com%2flogin" />
+<fieldset>
+<legend>로그인영역</legend>
+<div class="mod_login">
+<p class="login_top">
+<input name="ID" id="ID" class="login_input" type="text" value="아이디" tabindex="2" style="ime-mode:inactive" onfocus="showKeycryptAlert();" onblur="hideKeycryptAlert()" />
+<select name="domain" id="domain" tabindex="3" onkeydown="vkeydownDomainInput(event);" >
+<option value="nate.com" selected="selected">nate.com</option>
+<option value="empas.com">empas.com</option>
+<option value="lycos.co.kr">lycos.co.kr</option>
+<option value="netsgo.com">netsgo.com</option>
+</select>
+</p>
+<p class="login_bottom">
+<label class="save_id"><input id="SAVEID" name="SAVEID" type="checkbox"  onmousedown="nc('NCM94');"/> 아이디 저장</label>
+<label class="set_home" id="idStartHP" style="display: none;"><input type="checkbox" id="checkStartHP"  onmousedown="nc('NCM95');"/> 시작페이지 설정</label>
+<label id="nateOnly" class="nate_only" style="display: none;"><input type="checkbox" id="usedNid" name="usedNid" value="on" /> <a href="javascript:openNateLogin();">네이트 아이디로만 로그인</a></label>
+<input name="PASSDM" id="PASSDM" class="login_input" maxlength="20" type="text" value="비밀번호" readonly="readonly" />
+<input name="PASSWD" id="PASSWD" class="login_input" maxlength="20" type="password" tabindex="4" style="display:none;" onblur="hideKeycryptAlert();vBlurPassInput();" onfocus="showKeycryptAlert()" enc="on" />
+<input name="btnLOGIN" id="btnLOGIN" class="btn_login" type="submit" value="로그인" tabindex="5" onkeydown="vkeydownSubmit(event);" />
+</p>
+</div>
+<div class="mod_secure">
+<p class="info_secure" title="키보드보안 단계 설정하기" onclick="xXecurePop.openWin(1);">보안<span id="securityText">1</span>단계</p>
+<div id="securityBar" class="security_bar level1">
+<dl>
+<dt>보안로그인 단계 선택</dt>
+<dd>
+<iframe src="" id="xXecureIfrm" name="xXecureIfrm" frameborder="0" scrolling="no" title="OTP Level Bar" width="100" height="100"></iframe>
+</dd>
+</dl>
+</div>
+<a class="btn_ip" href="javascript:xXecurePop.openWin(3);"><span id="ipLevelText" class="level2" title="IP보안 자세히 보기"></span></a>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+	if (getFValue() == "cymain") { setLoginTab(false); }
+	function SubmitCheck(svc) {
+		chkMobile();
+		setStartPageLginBox();
+		if (gLogin) { if (getThisLoginTab() == svc) { return true; } else { return false; } }
+		else { return false; }
+	}
+	initLogin();
+	nateLogin = new NateLogin('f_login', 'btnLOGIN', 'xo.nate.com/servlets/EncLoginServlet', '아이디', '비밀번호');
+	ExecBlockCyCookie();
+	var ipvalue = xCookie.getSubCookie("LOGIN", "iplevel");
+	if (ipvalue == undefined) { ipvalue = 2; }
+	$("iplevel").value = ipvalue;
+	$('xXecureIfrm').src = "/common/secure/login_ifrm_level.html?v=2012032601";
+//]]>
+</script>
+</fieldset>
+</form>
+<p class="login_account">
+<a title="아이디 비밀번호 찾기" href="javascript:onclick_Find();">아이디 / 비밀번호 찾기</a><span>|</span><a title="회원가입" href="javascript:onclick_Join();"><strong>회원가입</strong></a>
+</p>
+<div id="layerXKDisabled" class="otp_layer" style="display: none">
+<div class="layer_content"></div>
+<a onclick="xXecureLayer.LayerClose();" class="close">닫기</a>
+</div>
+<div id="XecureKey" style="visibiltiy: hidden; position: absolute; width: 0px; height: 0px;"></div>
+<div id="XecureDiv" style="visibiltiy: hidden; position: absolute; width: 0px; height: 0px;"></div>
+</div>
+
+
+
+
+
+<div id="shopLoading">
+<iframe width="280" height="598" scrolling="no" id="ifrShopping" frameborder="0" src="" title="쇼핑영역 아이프레임"></iframe>
+<div id="divTodayShopping" class="shop_banner" style="display:none;">
+		 <a class="banner" onclick="viewTodayShop();" style="cursor:pointer;"><img id="imgTodayShopping" src="" width="278" height="83" alt="" /></a>
+		 <p class="arrow_wrap">
+					<a class="prev" href="#" title="이전 상품 보기" onclick="NateContent3.Move('TodayShopping_v1', 'P');return false;" onmouseover="NateContent3.Pause('TodayShopping_v1');" onmouseout="NateContent3.Play('TodayShopping_v1');" onmousedown="nc('NFI05');">이전 상품 보기</a><a class="next" href="#" title="다음 상품 보기"  onclick="NateContent3.Move('TodayShopping_v1', 'N');return false;" onmouseover="NateContent3.Pause('TodayShopping_v1');" onmouseout="NateContent3.Play('TodayShopping_v1');" onmousedown="nc('NFI06');">다음 상품 보기</a>
+		 </p>
+</div>
+</div>
+<div class="gift_wrap">
+<h3><a href="http://www.cyworld.com/mall/mall5_index.asp?inflow=NL10" onmousedown="nc('NGS01');">선물가게</a></h3>
+<p class="gift_cate"><a href="http://www.cyworld.com/mall/mall5_decoration_index.asp?inflow=NL10&amp;effect_cd=2&amp;decodir=minihp" onmousedown="nc('NGS02');">스킨</a> <a href="http://www.cyworld.com/mall/mall5_decoration_index.asp?inflow=NL10&amp;effect_cd=35" onmousedown="nc('NGS04');">글꼴</a> <a href="http://www.cyworld.com/mall/mall5_index.asp?inflow=NL10&amp;urlstr=/mall/myAvatar/mall7_myAvatar_sub.asp" onmousedown="nc('NGS05');">미니미</a></p>
+
+
+<div id="giftStore_v2_logout">
+<ul id="giftStore_v2" class="gift_list" onmouseover="NateContent2.Pause('GiftStore_v2');" onmouseout="NateContent2.Play('GiftStore_v2');">
+<li>
+<p id="recommend1" class="recommend" style="display:none;">추천</p>
+<dl class="gift_item">
+<dd><span><a href="javascript:showGift('152738', '2', 0);" onmousedown="javascript:setNcCode('NGS11|NGS21|NGS31',idxGiftStore_v2);"><img src="http://c1img.nate.com/img/mall/items2/2012/07/1_angrybird_skin_6_s_c.gif" width="80" height="80" alt="[스킨] 날아라 레드버드" /></a></span></dd>
+<dt><a class="cate" href="http://www.cyworld.com/mall/mall5_decoration_index.asp?effect_cd=2&amp;decodir=minihp&amp;inflow=NL10" onmousedown="javascript:setNcCode('NGS09|NGS09|NGS09',idxGiftStore_v2);"><span>스킨</span></a><a href="javascript:showGift('152738', '2', 0);" onmousedown="javascript:setNcCode('NGS11|NGS21|NGS31',idxGiftStore_v2);">날아라레...</a></dt>
+</dl>
+</li>
+<li>
+<p id="recommend2" class="recommend" style="display:none;">추천</p>
+<dl class="gift_item">
+<dd><span><a href="javascript:showGift('17005210', '400', 0);" onmousedown="javascript:setNcCode('NGS12|NGS22|NGS32',idxGiftStore_v2);"><img src="http://c1img.nate.com/img/myAvatar/2012/myAvatar_17005210_1.gif" alt="[미니미] 앵그리! 레드버드" /></a></span></dd>
+<dt><a class="cate" href="http://www.cyworld.com/mall/mall5_index.asp?urlstr=/mall/myAvatar/mall7_myAvatar_sub.asp&amp;inflow=NL10" onmousedown="javascript:setNcCode('NGS09|NGS09|NGS09',idxGiftStore_v2);"><span>미니미</span></a><a href="javascript:showGift('17005210', '400', 0);" onmousedown="javascript:setNcCode('NGS12|NGS22|NGS32',idxGiftStore_v2);">앵그리!...</a></dt>
+</dl>
+</li>
+<li>
+<p id="recommend3" class="recommend" style="display:none;">추천</p>
+<dl class="gift_item">
+<dd><span><a href="javascript:showGift('144689', '29', 0);" onmousedown="javascript:setNcCode('NGS13|NGS23|NGS33',idxGiftStore_v2);"><img src="http://c1img.nate.com/img/mall/items/mainstyle/110917_ab4_m_c.gif" width="80" height="80" alt="[메뉴효과] 레드버드 _s" /></a></span></dd>
+<dt><a class="cate" href="http://www.cyworld.com/mall/mall5_decoration_index.asp?inflow=NL10&amp;effect_cd=29&amp;decodir=minihp" onmousedown="javascript:setNcCode('NGS09|NGS09|NGS09',idxGiftStore_v2);"><span>메뉴효과</span></a><a href="javascript:showGift('144689', '29', 0);" onmousedown="javascript:setNcCode('NGS13|NGS23|NGS33',idxGiftStore_v2);">레드...</a></dt>
+</dl>
+</li>
+</ul>
+</div>
+
+<p class="arrow_wrap">
+<a class="prev" href="#" onclick="NateContent2.Move('GiftStore_v2', 'P');return false;" title="이전 선물 보기" onmousedown="nc('NGS91');" onmouseover="NateContent2.Pause('GiftStore_v2');" onmouseout="NateContent2.Play('GiftStore_v2');">이전 선물 보기</a><a class="next" href="#" onclick="NateContent2.Move('GiftStore_v2', 'N');return false;" title="다음 선물 보기" onmousedown="nc('NGS92');" onmouseover="NateContent2.Pause('GiftStore_v2');" onmouseout="NateContent2.Play('GiftStore_v2');">다음 선물 보기</a>
+</p>
+</div>
+<div class="sub_svc_download">
+
+<h3 class="tit_mApplication"><a href="http://mobile.nate.com/apps/index.html" onmousedown="nc('NDL21');">모바일 애플리케이션 </a></h3>
+<ul id="mApplication" class="mApp_list"><li><a href="http://mobile.nate.com/apps/sub.html?type=nateonuc" onmousedown="javascript:setNcCode('NDL22|NDL26|NDL30|NDL34',idxMApplication);"><img src="http://main.nateimg.co.kr/img/cms/content_pool/2012/03/05_nateonuc.gif" alt="네이트온UC" width="48" height="45"/>네이트온UC</a></li><li><a href="http://mobile.nate.com/apps/sub.html?type=mail" onmousedown="javascript:setNcCode('NDL23|NDL27|NDL31|NDL35',idxMApplication);"><img src="http://main2.nateimg.co.kr/img/cms/content_pool/2011/10/06_mailApp.gif" alt="네이트메일" width="48" height="45"/>네이트메일</a></li><li><a href="http://mobile.nate.com/apps/sub.html?type=starhomepy" onmousedown="javascript:setNcCode('NDL24|NDL28|NDL32|NDL36',idxMApplication);"><img src="http://main.nateimg.co.kr/img/cms/content_pool/2011/10/07_starhompy.jpg" alt="스타홈피" width="48" height="45"/>스타홈피</a></li><li><a href="http://mobile.nate.com/apps/sub.html?type=cyflag" onmousedown="javascript:setNcCode('NDL25|NDL29|NDL33|NDL37',idxMApplication);"><img src="http://main2.nateimg.co.kr/img/cms/content_pool/2011/10/08_cyflag.jpg" alt="싸이플래그" width="48" height="45"/>싸이플래그</a></li></ul>
+<div class="nateon_down"><a href="http://nateonweb.nate.com/download/"  onmousedown="nc('NDL01');">NATEON pc다운로드</a></div>
+<p class="arrow_wrap">
+<a class="prev" href="javascript:mApplication_dir('P', mApplication_ver);" onmousedown="nc('NDL91');" title="이전 애플리케이션 보기">이전 애플리케이션 보기</a><a class="next" href="javascript:mApplication_dir('N',mApplication_ver);" onmousedown="nc('NDL92');" title="다음 애플리케이션 보기">다음 애플리케이션 보기</a>
+</p>
+</div>
+<div id="ad_layer7" class="banner_area" onmousedown="nc('NEV79');">
+<script type="text/javascript">
+//<![CDATA[
+    document.write('<script type="text/javascript" src="http://cyad.nate.com/js.kti/nate/main@band_Position1"><\/script>');
+//]]>
+</script>
+</div>
+<div class="clear"></div>
+</div>
+</div>
+<hr />
+<div id="footer">
+<dl id="cmsNotice" class="notice_list" style="display:block"><dt><a href="http://helpdesk.nate.com/natenotice/list.asp" onmousedown="nc('NFT01')">공지사항</a></dt><dd><a id="notice_row" href="http://helpdesk.nate.com/natenotice/view.asp?number_seq=424&amp;page=1" onmousedown="nc('NFT02')">미니홈피 댓글태그 오픈 안내</a></dd></dl>
+<dl id="cmsSvcInfo" class="happynate_list"><dt><a href="http://clean.nate.com/" target="_blank" onmousedown="nc('NFT03')">클린 캠페인</a></dt><dd><a href="http://clean.nate.com/contents/good02.asp" target="_blank" onmousedown="nc('NFT04')">여러분이 생각하시는 선플의 정의는?</a></dd></dl>
+<ul class="view_all">
+<li>
+<a href="javascript:;" id="otp_footer" onclick="showHelpDesk();" class="otp">OTP보안</a> &nbsp;
+<a href="http://helpdesk.nate.com/" onmousedown="nc('NFT11')" class="cs_center">네이트/싸이월드 고객센터</a><span>I</span>
+<a href="http://www.nate.com/sitemap/index.aspx" onmousedown="nc('NFT12')">사이트맵</a>
+<div id="otp_select" class="otp_select" style="display: none"></div>
+</li>
+</ul>
+<dl class="footer_main"><dt>네이트 푸터 영역</dt><dd><a href="http://www.skcomms.co.kr" target="_blank" onmousedown="nc('NFT21')">회사소개</a><span>I</span><a href="https://recruit.nate.com/" target="_blank" onmousedown="nc('NFT22')">인재채용</a><span>I</span><a href="http://partners.nate.com" target="_blank" onmousedown="nc('NFT23')">제휴안내</a><span>I</span><a href="http://www.nate.com/footer/legal/index.html" onmousedown="nc('NFT24')">서비스약관</a><span>I</span><a href="http://www.nate.com/footer/privacy/index.html" onmousedown="nc('NFT25')"><strong>개인정보취급방침</strong></a><span>I</span><a href="http://www.nate.com/footer/privacy/index.html#footer" onmousedown="nc('NFT26')">청소년보호정책</a><span>I</span><a href="http://antispam.nate.com/spam_policy01.html" onmousedown="nc('NFT27')">스팸방지정책</a><span>I</span><a href="http://business.nate.com/" target="_blank" onmousedown="nc('NFT29')">광고문의</a><span>I</span><a href="http://map.nate.com/register/intro.map" target="_blank" onmousedown="nc('NFT30')">검색&middot;지도등록</a><span>I</span><a href="http://devsquare.nate.com/openApi/index" target="_blank" onmousedown="nc('NHA11')">오픈API</a></dd></dl>
+<div class="copyright">Copyright &copy; <a href="http://www.skcomms.co.kr" target="_blank" onmousedown="nc('NFT41')"><strong><span class="sk">SK</span> Communications.</strong></a> All rights reserved.</div>
+<p class="arrow_wrap_notice"><a class="prev" href="javascript:cmsNotice_dir('P', cmsNotice_ver);" onmousedown="nc('NFT91')" title="이전 내용">이전 내용</a><a class="next" href="javascript:cmsNotice_dir('N', cmsNotice_ver);" onmousedown="nc('NFT92')" title="다음 내용">다음 내용</a></p>
+</div>
+
+<div id="cbLayer" style="display: none;"></div>
+
+<div id="ad_area">
+<div id="ad_layer1" class="default"><div class="loading">로딩중~</div></div>
+<div id="ad_frame1" style="display: none"></div>
+<div id="ad_layer2" class="default2"><div class="loading">로딩중~</div></div>
+<div id="ad_layer3" class="default3"></div>
+<div id="ad_layer4"></div>
+
+<div id="gnb_promotion" class="banner_promotion"><a href="http://apps.cy.nate.com/Event/View?event_id=1" onmousedown="nc('NBI11')" target="_blank"><img src="http://main2.nateimg.co.kr/img/cms/content_pool/2012/08/앱스토어개편_20120813.gif" width="55" height="110" alt=" 앱스토어_1세트" /></a></div>
+</div>
+<div id="plus_footer" class="setting_moblie" style="display: none"></div>
+</div>
+<span id="layerTemp"></span>
+<script type="text/javascript">
+//<![CDATA[
+NateContent3.addItem("TodayShopping_v1", iSvcSeq, '/main/v1/data/jsonTodayShopping.js?v=201208161204', "todayShopping_fill", '');
+
+document.write('<script type="text/javascript" src="/main/v1/js/browser.js"><\/script>');
+document.write('<script type="text/javascript" src="/main/v1/js/nate_contents_v20120719.js?v=201208131402_20120719"><\/script>');
+document.write('<script type="text/javascript" src="/main/v1/contents/newstimeline_v20120719.js?v=201208161010_20120207"><\/script>');
+//]]>
+</script>
+<div id="stock_info" style="display: none; position: absolute"><script type="text/javascript">//<![CDATA[	fillNewsEstate('증권|반짝특수 EU회담 아시아울상', 'http://stock.nate.com/news/section/read?section=eco04&amp;date=20111213&amp;page=4&amp;keynum=20111213n20814');//]]></script></div>
+
+<script type="text/javascript">
+//<![CDATA[
+	$('search').setAttribute('autocomplete', 'off');
+	document.write('<script type="text/javascript" src="/main/srv/total/if_search_stock.aspx"><\/script>');
+	function initSearchStock() { setSearchRank(); NateContent.addItem("Stock", "", "fillStock", jsonStock, true, true); }
+	happynateEvent("", ""); // 커버스토리 이벤트
+	setMainCoverstory(); initLoginArea();
+	var verShop = "201208161204";
+	var verCss = "201208021034";
+//]]>
+</script>
+<script async type="text/javascript" src="/main/srv/ad/natead_071.js?v=20120731"></script>
+<script type="text/javascript">
+//<![CDATA[
+	fillEarn(); if (getFValue() != "mnate") { ExecCommuniBarFrame(true); }
+	NateContent2.addItem("GiftStore_v2", iSvcSeq, '/main/v1/data/jsonGiftStore_v20090930.js?v=201208161203', "fillGiftStore_v3", '');
+	getLonodonOlympicIssueLayer();
+
+	var whyArea_ver = "201208161206";
+	var eventBanner_ver = "201208161207";
+	var cmsNotice_ver = "201208161206";
+	var nc_ver = "201208161203";
+	var mApplication_ver = "201208161135";	
+	var floatingSearch_ver = "201208161230";
+	var happyNate_ver = "201208161207";
+	var gnbNewService_ver = "201208161203";
+	var todayShopping_ver = "201208161204";
+	var isAutoRefresh = true;
+	var timeRollingContents;
+
+	// 큐레이션 버전 파일 추가
+	var infoMenu_ver = "201208161230";
+	var infoKeyword1_ver = "201208161205";
+	var infoKeyword2_ver = "201208161205";
+	var infoKeyword3_ver = "201208161230";
+	var infoKeyword4_ver = "201208161205";
+	var infoKeyword5_ver = "201208161205";
+	var infoWellbeing_ver = "201208161201";
+	var infoTrend_ver = "201208161201";
+	var infoLeisure_ver = "201208161201";
+	var infoLife_ver = "201208161202";
+	var infoTV_ver = "201208161202";
+	var infoMusic_ver = "201208161202";
+	var infoEntertainment_ver = "201208161202";
+		
+	var londonIssue_ver = "201208122203";
+	var centerContent_ver = "201208131402";
+
+
+
+	try { if (isNateLogin && loginType != "nate") { CheckJoinLayer(); } } catch (e) { }
+
+	function onTimedEvent_Nate(nateTime) {
+		setTimeout("onTimedEvent_Nate(" + (++nateTime) + ");", 1000);
+		var refreshTime = (isNateLogin) ? 240 : 300;
+		
+		if (refreshTime == nateTime && isAutoRefresh) {
+			try {
+				nc4("[www_ndretc.nate.com/main/autorefresh/??ndru3=" + ndru3Status + "&ndrl3=" + ndrl3Status + "]");
+				location.href = "http://www.nate.com/?f=" + getAutoRefreshParam();
+
+			}
+			catch (e) {	}
+		}
+		if (nateTime % 10 == 0) { // 10초
+			try { newsBox.loadContents(); } catch (e) { }
+			try { newsBox2.loadContents(); } catch (e) { }
+			try { NateContent.Move('Stock', 'A'); } catch (e) { }
+			try { whyUpBox.loadContents(); } catch (e) { }
+			try { NateContent2.Move('GiftStore_v2', 'A'); } catch (e) { }
+			try { NateContent3.Move('TodayShopping_v1', 'A'); } catch (e) { }
+		}
+	}
+	
+	onTimedEvent_Nate(0);
+	if (isiPad) {
+		document.write('<img src="http://stat.nate.com/stat/stat.tiff?cp_url=[www_ndr.nate.com/ipad/]" width="0"  height="0" border="0" alt="" />');
+		$("viewMNateBtn").style.display = "none";
+	}
+	if (isGalaxyTab) {
+		$("viewMNateBtn").style.display = "none";
+	}
+	if (getFValue() == "mnate") {
+		$("viewMNateBtn").style.display = "none";
+	}
+	function RenderGameList() { }; function RenderAppList() { };
+
+	function fnMoveWhPage() {
+		nc4("[www_ndretc.nate.com/main/replyrefresh/]");
+		document.location.href = "http://www.nate.com?f=whnc";
+	}
+	
+	function fnMovePage(url) {
+	    document.location.href = 'http://www.nate.com' + url;
+    }
+		
+//]]>
+</script>
+
+<script type="text/javascript">
+//<![CDATA[
+CFN_type = ""; CFN_id = ""; CFN_cn = ""; CFN_cmn = "";
+CFN_link = ""; CFN_link_id = ""; CFN_link_stat_cd = "";
+id = (CFN_type == "N") ? CFN_id : CFN_link_id; cyid = (CFN_type == "C") ? CFN_id : CFN_link_id;
+name = CFN_cn; isEmpas = ("False" == "True"); refererDomain = ""; isMobile = "F";
+CFN_cust_tp_cd = ""; CFN_link_cust_tp_cd = "";
+var ndrLoginStatus = (isNateLogin) ? "login" : ((bLogout) ? "byebye" : "logout");
+try { divReferer(refererDomain); } catch (e) { }
+try { if (isNateLogin) fillPersonInfo(); fnGetMainImage();} catch (e) { }
+
+pageEnd('50.193.8.69', '');
+//]]>
+</script>
+</body>
+</html>

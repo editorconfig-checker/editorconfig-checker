@@ -3,6 +3,8 @@ package files
 import (
 	"os"
 	"reflect"
+	"regexp"
+	"runtime"
 	"strings"
 	"testing"
 
@@ -10,33 +12,41 @@ import (
 )
 
 func TestGetContentType(t *testing.T) {
-	contentType, _ := GetContentType("./files.go")
-	if !strings.Contains(contentType, "text/plain") {
-		t.Error("Expected getContentType.go to be of type text/plain")
+	configuration := config.Config{}
+	inputFile := "./files.go"
+	expected := "text/plain"
+	contentType, _ := GetContentType(inputFile, configuration)
+	if !strings.Contains(contentType, expected) {
+		t.Errorf("GetContentType(%q): expected %v, got %v", inputFile, expected, contentType)
 	}
 
-	contentType, _ = GetContentType("./../../docs/logo.png")
-	if !strings.Contains(contentType, "image/png") {
-		t.Error("Expected getContentTypetest.go to be of type application/octet-stream")
+	inputFile = "./../../docs/logo.png"
+	expected = "image/png"
+	contentType, _ = GetContentType(inputFile, configuration)
+	if !strings.Contains(contentType, expected) {
+		t.Errorf("GetContentType(%q): expected %v, got %v", inputFile, expected, contentType)
 	}
 
-	_, err := GetContentType(".")
+	inputFile = "."
+	_, err := GetContentType(inputFile, configuration)
 	if err == nil {
-		t.Error("Expected to return an error for a directory")
+		t.Errorf("GetContentType(%q): expected %v, got %v", inputFile, "an error", "nil")
 	}
 
-	_, err = GetContentType("/abc/!@#")
+	inputFile = "a non-existent file"
+	_, err = GetContentType(inputFile, configuration)
 	if err == nil {
-		t.Error("Expected to return an error for a not existing file")
+		t.Errorf("GetContentType(%q): expected %v, got %v", inputFile, "an error", "nil")
 	}
 
-	emptyFile, _ := os.Create("empty.txt")
-	defer emptyFile.Close()
-	defer os.Remove("empty.txt")
-
-	contentType, err = GetContentType("empty.txt")
-	if contentType != "" || err != nil {
-		t.Error("Expected to return an empty string for an empty file and no error")
+	inputFile = "testdata/empty.txt"
+	contentType, err = GetContentType(inputFile, configuration)
+	if err != nil {
+		t.Errorf("GetContentType(%q): expected %v, got %v", inputFile, "nil", err.Error())
+	}
+	expected = ""
+	if contentType != expected {
+		t.Errorf("GetContentType(%q): expected %v, got %v", inputFile, expected, contentType)
 	}
 }
 
@@ -78,6 +88,9 @@ func TestPathExists(t *testing.T) {
 }
 
 func TestGetRelativePath(t *testing.T) {
+	if runtime.GOOS == "windows" {
+		t.Skip("Skipping on windows")
+	}
 	// Should return paths that are already relative unchanged
 	relativeFilePath, _ := GetRelativePath("bin/ec")
 	if relativeFilePath != "bin/ec" {
@@ -158,13 +171,88 @@ func TestGetFiles(t *testing.T) {
 	_, err := GetFiles(configuration)
 
 	if err == nil {
-		t.Errorf("Error expected")
+		t.Errorf("GetFiles(): expected an error, got nil")
 	}
 
 	configuration.PassedFiles = []string{"."}
 	files, err := GetFiles(configuration)
 
 	if len(files) > 0 && err != nil {
-		t.Errorf("Error expected")
+		t.Errorf("GetFiles(.): expected nil, got %s", err.Error())
+	}
+}
+
+type getContentTypeFilesTest struct {
+	filename string
+	regex    string
+}
+
+var getContentTypeFilesTests = []getContentTypeFilesTest{
+	{"8859_1_da.html", "^text/"},
+	{"8859_1_de.html", "^text/"},
+	{"8859_1_en.html", "^text/"},
+	{"8859_1_es.html", "^text/"},
+	{"8859_1_fr.html", "^text/"},
+	{"8859_1_pt.html", "^text/"},
+	{"ascii.txt", "^text/"},
+	{"big5.html", "^text/"},
+	{"candide-gb18030.txt", "^text/"},
+	{"candide-utf-16le.txt", "^application/octet-stream$"}, // no BOM
+	{"candide-utf-32be.txt", "^application/octet-stream$"}, // no BOM
+	{"candide-utf-8.txt", "^text/"},                        // no BOM
+	{"candide-windows-1252.txt", "^text/"},
+	{"cp865.txt", "^text/"},
+	{"euc_jp.html", "^text/"},
+	{"euc_kr.html", "^text/"},
+	{"gb18030.html", "^text/"},
+	{"html.html", "^text/"},
+	{"html.iso88591.html", "^text/"},
+	{"html.svg.html", "^text/"},
+	{"html.usascii.html", "^text/"},
+	{"html.utf8bomdetect.html", "^text/"}, // has BOM
+	{"html.utf8bom.html", "^text/"},       // has BOM
+	{"html.utf8bomws.html", "^text/"},     // has BOM
+	{"html.utf8.html", "^text/"},          // no BOM
+	{"html.withbr.html", "^text/"},
+	{"iso88591.txt", "^text/"},
+	{"koi8_r.txt", "^text/"},
+	{"latin1.txt", "^text/"},
+	{"rashomon-euc-jp.txt", "^text/"},
+	{"rashomon-iso-2022-jp.txt", "^text/"}, // byte 89 is an Esc (ASCII 27)
+	{"rashomon-shift-jis.txt", "^text/"},
+	{"rashomon-utf-8.txt", "^text/"}, // no BOM
+	{"shift_jis.html", "^text/"},
+	{"sunzi-bingfa-gb-levels-1-and-2-hz-gb2312.txt", "^text/"},
+	{"sunzi-bingfa-gb-levels-1-and-2-utf-8.txt", "^text/"}, // no BOM
+	{"sunzi-bingfa-simplified-gbk.txt", "^text/"},
+	{"sunzi-bingfa-simplified-utf-8.txt", "^text/"}, // no BOM
+	{"sunzi-bingfa-traditional-big5.txt", "^text/"},
+	{"sunzi-bingfa-traditional-utf-8.txt", "^text/"}, // no BOM
+	{"unsu-joh-eun-nal-euc-kr.txt", "^text/"},
+	{"unsu-joh-eun-nal-utf-8.txt", "^text/"},       // no BOM
+	{"utf16bebom.txt", "^text/"},                   // has BOM
+	{"utf16lebom.txt", "^text/"},                   // has BOM
+	{"utf16.txt", "^text/"},                        // has BOM
+	{"utf32bebom.txt", "^text/"},                   // has BOM
+	{"utf32lebom.txt", "^text/"},                   // has BOM
+	{"utf8_bom.html", "^text/"},                    // has BOM
+	{"utf8.html", "^text/"},                        // no BOM
+	{"utf8-sdl.txt", "^text/"},                     // no BOM
+	{"utf8.txt", "^text/"},                         // no BOM
+	{"utf8.txt-encoding-test-files.txt", "^text/"}, // no BOM
+}
+
+func TestGetContentTypeFiles(t *testing.T) {
+	configuration := config.Config{}
+	for _, tt := range getContentTypeFilesTests {
+		filePath := "../encoding/testdata/" + tt.filename
+		contentType, err := GetContentType(filePath, configuration)
+		if err != nil {
+			t.Errorf("GetContentType(%q): expected %v, got %v", tt.filename, "nil", err.Error())
+		}
+		match, _ := regexp.MatchString(tt.regex, contentType)
+		if !match {
+			t.Errorf("GetContentType(%q): expected %v, got %v", tt.filename, tt.regex, contentType)
+		}
 	}
 }
