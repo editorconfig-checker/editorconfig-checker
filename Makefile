@@ -1,48 +1,62 @@
-SRC_DIR = $(PWD)
-SOURCES = $(shell find $(SRC_DIR) -type f -name '*.go')
-BINARIES = $(wildcard bin/*)
+ifeq ($(OS),Windows_NT)
+	EXEEXT:=.exe
+	STDERR=con
+else
+	STDERR=/dev/stderr
+endif
+
+ifeq ($(wildcard "C:/Program Files/Git/usr/bin/*"),)
+export PATH:="C:/Program Files/Git/usr/bin:$(PATH)"
+endif
+
+EXE=bin/ec$(EXEEXT)
+SRC_DIR := $(shell dirname "$(realpath "$(firstword $(MAKEFILE_LIST))")")
+SOURCES = $(shell find "$(SRC_DIR)" -type f -name "*.go")
 GIT_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
-GIT_BRANCH_UP_TO_DATE = $(shell git remote show origin | tail -n1 | sed 's/.*(\(.*\))/\1/')
-CURRENT_VERSION = $(shell cat VERSION | tr -d '\n')
-COMPILE_COMMAND = go build -ldflags "-X main.version=$(CURRENT_VERSION)" -o bin/ec ./cmd/editorconfig-checker/main.go
+GIT_BRANCH_UP_TO_DATE = $(shell git remote show origin | tail -n1 | sed "s/.*(\(.*\))/\1/")
+CURRENT_VERSION = $(shell cat VERSION | tr -d "\n")
 
 prefix = /usr/local
 bindir = /bin
 mandir = /share/man
 
-all: build
+all: build ## Build bin/ec
 
-clean:
+clean: ## Clean bin/ directory
 	rm -f ./bin/*
 
-bin/ec: $(SOURCES) VERSION
-	$(COMPILE_COMMAND)
+define _build
+go build -ldflags "-X main.version=$(CURRENT_VERSION)" -o $1 ./cmd/editorconfig-checker/main.go
+endef
 
-build: bin/ec
+$(EXE): $(SOURCES) VERSION
+	$(call _build,$(EXE))
 
-install: build
-	install -D bin/ec $(DESTDIR)$(prefix)$(bindir)/editorconfig-checker
+build: $(EXE) ## Build bin/ec
+
+install: build ## Build and install executable in PATH
+	install -D $(EXE) $(DESTDIR)$(prefix)$(bindir)/editorconfig-checker
 	install -D docs/editorconfig-checker.1 $(DESTDIR)$(prefix)$(mandir)/man1/editorconfig-checker.1
 
-uninstall:
+uninstall: ## Remove executable from PATH
 	rm -f $(DESTDIR)$(prefix)$(bindir)/editorconfig-checker
 	rm -f $(DESTDIR)$(prefix)$(mandir)/man1/editorconfig-checker.1
 
-test:
+test: ## Run test suite
 	@go test -race -coverprofile=coverage.txt -covermode=atomic ./...
 	@go vet ./...
-	@test -z $(shell gofmt -s -l . | tee /dev/stderr) || (echo "[ERROR] Fix formatting issues with 'gofmt'" && exit 1)
+	@test -z $(shell gofmt -s -l . | tee $(STDERR)) || (echo "[ERROR] Fix formatting issues with 'gofmt'" && exit 1)
 
-bench:
+bench: ## Run benchmark
 	go test -bench=. ./**/*/
 
-run: build
-	@./bin/ec
+run: build ## Build and run bin/ec
+	@./bin/ec --exclude "\\.git" --exclude "\\.exe$$"
 
-run-verbose: build
-	@./bin/ec --verbose
+run-verbose: build ## Build and run bin/ec --verbose
+	@./bin/ec --verbose --exclude "\\.git" --exclude "\\.exe$$"
 
-release: _is_main_branch _git_branch_is_up_to_date _do_release
+release: _is_main_branch _git_branch_is_up_to_date _do_release ## Create release
 	@echo Release done. Go to Github and create a release.
 
 _is_main_branch:
@@ -59,7 +73,7 @@ ifneq ($(GIT_BRANCH_UP_TO_DATE),up to date)
 	@false
 endif
 
-current_version:
+current_version: ## Display current version
 	@echo the current version is: $(CURRENT_VERSION)
 
 _do_release: _checkout clean _tag_version build run _build-all-binaries _compress-all-binaries
@@ -79,45 +93,70 @@ _tag_version: current_version
 	sed -i "s/${CURRENT_VERSION}/$${version}/" ./pkg/config/config_test.go && \
 	git add . && git commit -m "chore(release): $${version}" && git tag "$${version}"
 
+define _build_target
+CGO_ENABLED=0 GOOS=$(subst /,,$(dir $1)) GOARCH=$(notdir $1) $(call _build,bin/ec-$(subst /,,$(dir $1))-$(notdir $1)$2)
+endef
+
 _build-all-binaries:
-	# doesn't work on my machine and not in travis, see: https://github.com/golang/go/wiki/GoArm
-	# GOOS=android GOARCH=arm  $(COMPILE_COMMAND) && mv ./bin/ec ./bin/ec-android-arm
-	# GOOS=darwin  GOARCH=arm $(COMPILE_COMMAND) && mv ./bin/ec ./bin/ec-darwin-arm
-	# Go support for darwin-386 has been dropped since 1.15 - see https://github.com/golang/go/issues/37610
-	# GOOS=darwin  GOARCH=386 $(COMPILE_COMMAND) && mv ./bin/ec ./bin/ec-darwin-386
-	CGO_ENABLED=0 GOOS=darwin    GOARCH=amd64    $(COMPILE_COMMAND) && mv ./bin/ec ./bin/ec-darwin-amd64
-	CGO_ENABLED=0 GOOS=darwin    GOARCH=arm64    $(COMPILE_COMMAND) && mv ./bin/ec ./bin/ec-darwin-arm64
-	CGO_ENABLED=0 GOOS=dragonfly GOARCH=amd64    $(COMPILE_COMMAND) && mv ./bin/ec ./bin/ec-dragonfly-amd64
-	CGO_ENABLED=0 GOOS=freebsd   GOARCH=386      $(COMPILE_COMMAND) && mv ./bin/ec ./bin/ec-freebsd-386
-	CGO_ENABLED=0 GOOS=freebsd   GOARCH=amd64    $(COMPILE_COMMAND) && mv ./bin/ec ./bin/ec-freebsd-amd64
-	CGO_ENABLED=0 GOOS=freebsd   GOARCH=arm      $(COMPILE_COMMAND) && mv ./bin/ec ./bin/ec-freebsd-arm
-	CGO_ENABLED=0 GOOS=linux     GOARCH=386      $(COMPILE_COMMAND) && mv ./bin/ec ./bin/ec-linux-386
-	CGO_ENABLED=0 GOOS=linux     GOARCH=amd64    $(COMPILE_COMMAND) && mv ./bin/ec ./bin/ec-linux-amd64
-	CGO_ENABLED=0 GOOS=linux     GOARCH=arm      $(COMPILE_COMMAND) && mv ./bin/ec ./bin/ec-linux-arm
-	CGO_ENABLED=0 GOOS=linux     GOARCH=arm64    $(COMPILE_COMMAND) && mv ./bin/ec ./bin/ec-linux-arm64
-	CGO_ENABLED=0 GOOS=linux     GOARCH=ppc64    $(COMPILE_COMMAND) && mv ./bin/ec ./bin/ec-linux-ppc64
-	CGO_ENABLED=0 GOOS=linux     GOARCH=ppc64le  $(COMPILE_COMMAND) && mv ./bin/ec ./bin/ec-linux-ppc64le
-	CGO_ENABLED=0 GOOS=linux     GOARCH=mips     $(COMPILE_COMMAND) && mv ./bin/ec ./bin/ec-linux-mips
-	CGO_ENABLED=0 GOOS=linux     GOARCH=mipsle   $(COMPILE_COMMAND) && mv ./bin/ec ./bin/ec-linux-mipsle
-	CGO_ENABLED=0 GOOS=linux     GOARCH=mips64   $(COMPILE_COMMAND) && mv ./bin/ec ./bin/ec-linux-mips64
-	CGO_ENABLED=0 GOOS=linux     GOARCH=mips64le $(COMPILE_COMMAND) && mv ./bin/ec ./bin/ec-linux-mips64le
-	CGO_ENABLED=0 GOOS=netbsd    GOARCH=386      $(COMPILE_COMMAND) && mv ./bin/ec ./bin/ec-netbsd-386
-	CGO_ENABLED=0 GOOS=netbsd    GOARCH=amd64    $(COMPILE_COMMAND) && mv ./bin/ec ./bin/ec-netbsd-amd64
-	CGO_ENABLED=0 GOOS=netbsd    GOARCH=arm      $(COMPILE_COMMAND) && mv ./bin/ec ./bin/ec-netbsd-arm
-	CGO_ENABLED=0 GOOS=openbsd   GOARCH=386      $(COMPILE_COMMAND) && mv ./bin/ec ./bin/ec-openbsd-386
-	CGO_ENABLED=0 GOOS=openbsd   GOARCH=amd64    $(COMPILE_COMMAND) && mv ./bin/ec ./bin/ec-openbsd-amd64
-	CGO_ENABLED=0 GOOS=openbsd   GOARCH=arm      $(COMPILE_COMMAND) && mv ./bin/ec ./bin/ec-openbsd-arm
-	CGO_ENABLED=0 GOOS=plan9     GOARCH=386      $(COMPILE_COMMAND) && mv ./bin/ec ./bin/ec-plan9-386
-	CGO_ENABLED=0 GOOS=plan9     GOARCH=amd64    $(COMPILE_COMMAND) && mv ./bin/ec ./bin/ec-plan9-amd64
-	CGO_ENABLED=0 GOOS=solaris   GOARCH=amd64    $(COMPILE_COMMAND) && mv ./bin/ec ./bin/ec-solaris-amd64
-	CGO_ENABLED=0 GOOS=windows   GOARCH=386      $(COMPILE_COMMAND) && mv ./bin/ec ./bin/ec-windows-386.exe
-	CGO_ENABLED=0 GOOS=windows   GOARCH=amd64    $(COMPILE_COMMAND) && mv ./bin/ec ./bin/ec-windows-amd64.exe
+	@# To generate list of supported targets, run:
+	@#  go tool dist list
+	$(call _build_target,aix/ppc64)
+	@# gcc.exe: error: unrecognized command-line option '-rdynamic'
+	@# $(call _build_target,android/386)
+	@# gcc.exe: error: unrecognized command-line option '-rdynamic'
+	@# $(call _build_target,android/amd64)
+	@# gcc.exe: error: unrecognized command-line option '-marm'; did you mean '-mabm'?
+	@# gcc.exe: error: unrecognized command-line option '-rdynamic'
+	@# $(call _build_target,android/arm)
+	$(call _build_target,android/arm64)
+	$(call _build_target,darwin/amd64)
+	$(call _build_target,darwin/arm64)
+	$(call _build_target,dragonfly/amd64)
+	$(call _build_target,freebsd/386)
+	$(call _build_target,freebsd/amd64)
+	$(call _build_target,freebsd/arm)
+	$(call _build_target,freebsd/arm64)
+	$(call _build_target,illumos/amd64)
+	@# gcc.exe: error: unrecognized command-line option '-framework'
+	@# $(call _build_target,ios/amd64)
+	@# gcc.exe: error: unrecognized command-line option '-framework'
+	@# $(call _build_target,ios/arm64)
+	$(call _build_target,js/wasm)
+	$(call _build_target,linux/386)
+	$(call _build_target,linux/amd64)
+	$(call _build_target,linux/arm)
+	$(call _build_target,linux/arm64)
+	$(call _build_target,linux/mips)
+	$(call _build_target,linux/mips64)
+	$(call _build_target,linux/mips64le)
+	$(call _build_target,linux/mipsle)
+	$(call _build_target,linux/ppc64)
+	$(call _build_target,linux/ppc64le)
+	$(call _build_target,linux/riscv64)
+	$(call _build_target,linux/s390x)
+	$(call _build_target,netbsd/386)
+	$(call _build_target,netbsd/amd64)
+	$(call _build_target,netbsd/arm)
+	$(call _build_target,netbsd/arm64)
+	$(call _build_target,openbsd/386)
+	$(call _build_target,openbsd/amd64)
+	$(call _build_target,openbsd/arm)
+	$(call _build_target,openbsd/arm64)
+	$(call _build_target,openbsd/mips64)
+	$(call _build_target,plan9/386)
+	$(call _build_target,plan9/amd64)
+	$(call _build_target,plan9/arm)
+	$(call _build_target,solaris/amd64)
+	$(call _build_target,windows/386,$(EXEEXT))
+	$(call _build_target,windows/amd64,$(EXEEXT))
+	$(call _build_target,windows/arm,$(EXEEXT))
+	$(call _build_target,windows/arm64,$(EXEEXT))
 
 _compress-all-binaries:
-	for f in $(BINARIES); do      \
-		tar czf $$f.tar.gz $$f;    \
+	for f in bin/*; do      \
+		tar czvf - $$f | gzip -9 - > $$f.tar.gz;    \
+		rm -f $$f;    \
 	done
-	@rm $(BINARIES)
 
 _release_dockerfile: _build_dockerfile _push_dockerfile
 
@@ -127,13 +166,28 @@ _build_dockerfile:
 _push_dockerfile:
 	docker push mstruebing/editorconfig-checker:$(shell grep 'const version' cmd/editorconfig-checker/main.go | sed 's/.*"\(.*\)"/\1/')
 
-nix-build:
+nix-build: ## Build for nix
 	nix-build -E 'with import <nixpkgs> { }; callPackage ./default.nix {}'
 
-nix-install:
+nix-install: ## Install on nix
 	nix-env -i -f install.nix
 
-nix-update-dependencies:
+nix-update-dependencies: ## Update nix dependencies
 	nix-shell -p vgo2nix --run vgo2nix
 
-.PHONY: clean build install uninstall test bench run run-verbose release _is_main_branch _git_branch_is_up_to_date current_version _do_release _tag_version _build-all-binaries _compress-all-binaries _release_dockerfile _build_dockerfile _push_dockerfile nix-build nix-install nix-update-dependencies
+PHONY += help
+help: ## Display available commands
+	@awk -F ':.*##[ \t]*' '/^[^#: \t]+:.*##/ {printf "\033[36m%-23s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST) | sort
+
+PHONY += dumpvars
+dumpvars: ## Dump variables
+	@echo CURRENT_VERSION=$(CURRENT_VERSION)
+	@echo EXE=$(EXE)
+	@echo EXEEXT=$(EXEEXT)
+	@echo GIT_BRANCH=$(GIT_BRANCH)
+	@echo GIT_BRANCH_UP_TO_DATE=$(GIT_BRANCH_UP_TO_DATE)
+	@echo STDERR=$(STDERR)
+	@echo SRC_DIR=$(SRC_DIR)
+	@echo SOURCES=$(SOURCES)
+
+.PHONY: $(PHONY) clean build install uninstall test bench run run-verbose release _is_main_branch _git_branch_is_up_to_date current_version _do_release _tag_version _build-all-binaries _compress-all-binaries _release_dockerfile _build_dockerfile _push_dockerfile nix-build nix-install nix-update-dependencies
