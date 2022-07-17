@@ -143,6 +143,7 @@ func ReadLines(content string) []string {
 
 // GetContentType returns the content type of a file
 func GetContentType(path string, config config.Config) (string, error) {
+
 	fileStat, err := os.Stat(path)
 
 	if err != nil {
@@ -195,9 +196,10 @@ func PathExists(filePath string) bool {
 
 // GetRelativePath returns the relative path of a file from the current working directory
 func GetRelativePath(filePath string) (string, error) {
+	filePath = filepath.FromSlash(filePath)
 	if !filepath.IsAbs(filePath) {
 		// Path is already relative. No changes needed
-		return filePath, nil
+		return filepath.ToSlash(filePath), nil
 	}
 
 	cwd, err := os.Getwd()
@@ -205,7 +207,9 @@ func GetRelativePath(filePath string) (string, error) {
 		return "", fmt.Errorf("Could not get the current working directory")
 	}
 
-	return filepath.Rel(cwd, filePath)
+	cwd = filepath.FromSlash(cwd)
+	rel, err := filepath.Rel(cwd, filePath)
+	return filepath.ToSlash(rel), err
 }
 
 // IsAllowedContentType returns whether the contentType is

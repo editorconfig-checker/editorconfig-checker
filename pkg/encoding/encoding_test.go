@@ -25,7 +25,7 @@ var decodeTextTests = []decodeTest{
 	{"ascii.txt", "ISO-8859-1", false, false},
 	{"big5.html", "Big5", false, false},
 	{"candide-gb18030.txt", "windows-1252", false, false}, // should be GB18030
-	{"candide-utf-16le.txt", "ISO-8859-1", false, false}, // should be UTF-16LE
+	{"candide-utf-16le.txt", "ISO-8859-1", false, false},  // should be UTF-16LE
 	{"candide-utf-32be.txt", "UTF-32BE", false, false},
 	{"candide-utf-8.txt", "UTF-8", false, false},
 	{"candide-windows-1252.txt", "ISO-8859-1", false, false}, // should be windows-1252
