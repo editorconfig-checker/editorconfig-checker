@@ -143,6 +143,8 @@ func ReadLines(content string) []string {
 
 // GetContentType returns the content type of a file
 func GetContentType(path string, config config.Config) (string, error) {
+	fileStat, err := os.Stat(path)
+
 	if err != nil {
 		return "", err
 	}
