@@ -88,9 +88,6 @@ func TestPathExists(t *testing.T) {
 }
 
 func TestGetRelativePath(t *testing.T) {
-	if runtime.GOOS == "windows" {
-		t.Skip("Skipping on windows")
-	}
 	// Should return paths that are already relative unchanged
 	relativeFilePath, _ := GetRelativePath("bin/ec")
 	if relativeFilePath != "bin/ec" {
@@ -104,6 +101,10 @@ func TestGetRelativePath(t *testing.T) {
 
 	if relativeFilePath != "bin/ec" {
 		t.Errorf("GetRelativePath(%s): expected: %v, got: %v", cwd+filePath, "bin/ec", relativeFilePath)
+	}
+
+	if runtime.GOOS == "windows" {
+		t.Skip("Windows fails if current directory is deleted")
 	}
 
 	DIR := "/tmp/stuff"
@@ -133,6 +134,11 @@ func TestGetRelativePath(t *testing.T) {
 
 	if err == nil {
 		t.Error("Expected an error for a not existing directory")
+	}
+
+	err = os.Chdir(cwd)
+	if err != nil {
+		panic(err)
 	}
 }
 
@@ -170,8 +176,8 @@ func TestGetFiles(t *testing.T) {
 	configuration := config.Config{}
 	_, err := GetFiles(configuration)
 
-	if err == nil {
-		t.Errorf("GetFiles(): expected an error, got nil")
+	if err != nil {
+		t.Errorf("GetFiles(): expected nil, got %s", err.Error())
 	}
 
 	configuration.PassedFiles = []string{"."}
