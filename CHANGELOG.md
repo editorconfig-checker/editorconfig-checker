@@ -52,10 +52,6 @@
 
 ## [2.3.0](https://github.com/editorconfig-checker/editorconfig-checker/tree/2.3.0) (2021-01-09)
 
-**Fixed bugs:**
-
-- editorconfig-checker ignores multiple files with brace expansion notation [\#102](https://github.com/editorconfig-checker/editorconfig-checker/issues/102)
-
 **Closed issues:**
 
 - Add pre-commit hooks [\#133](https://github.com/editorconfig-checker/editorconfig-checker/issues/133)
@@ -107,6 +103,7 @@
 
 **Fixed bugs:**
 
+- editorconfig-checker ignores multiple files with brace expansion notation [\#102](https://github.com/editorconfig-checker/editorconfig-checker/issues/102)
 - Color output broken on Windows [\#74](https://github.com/editorconfig-checker/editorconfig-checker/issues/74)
 
 **Closed issues:**
