@@ -56,6 +56,7 @@ var defaultExcludes = []string{
 	"min\\.js$",
 }
 
+// keep synced with pkg/validation/validation.go#L20
 var defaultAllowedContentTypes = []string{
 	"text/",
 	"application/octet-stream",
