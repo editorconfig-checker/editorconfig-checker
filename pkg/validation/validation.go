@@ -17,11 +17,14 @@ import (
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/validation/validators"
 )
 
+// keep synced with /pkg/config/config.go#L59
 var textRegexes = []string{
 	"^text/",
 	"^application/ecmascript$",
 	"^application/json$",
+	"^application/x-ndjson$",
 	"^application/xml$",
+	"+json",
 	"+xml$",
 }
 
