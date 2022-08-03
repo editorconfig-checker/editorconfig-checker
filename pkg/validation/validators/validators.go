@@ -97,7 +97,7 @@ func FinalNewline(fileContent string, insertFinalNewline string, endOfLine strin
 	if endOfLine != "" && insertFinalNewline == "true" {
 		expectedEolChar := utils.GetEolChar(endOfLine)
 		if !strings.HasSuffix(fileContent, expectedEolChar) || (expectedEolChar == "\n" && strings.HasSuffix(fileContent, "\r\n")) {
-			return errors.New("Wrong line endings or new final newline")
+			return errors.New("Wrong line endings or no final newline")
 		}
 	} else {
 		regexpPattern := "(\n|\r|\r\n)$"
