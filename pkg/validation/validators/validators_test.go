@@ -19,18 +19,18 @@ func TestFinalNewline(t *testing.T) {
 		{"x\r", "true", "cr", nil},
 		{"x\r\n", "true", "crlf", nil},
 
-		{"x", "true", "lf", errors.New("Wrong line endings or new final newline")},
-		{"x", "true", "cr", errors.New("Wrong line endings or new final newline")},
-		{"x", "true", "crlf", errors.New("Wrong line endings or new final newline")},
+		{"x", "true", "lf", errors.New("Wrong line endings or no final newline")},
+		{"x", "true", "cr", errors.New("Wrong line endings or no final newline")},
+		{"x", "true", "crlf", errors.New("Wrong line endings or no final newline")},
 
-		{"x\n", "true", "cr", errors.New("Wrong line endings or new final newline")},
-		{"x\n", "true", "crlf", errors.New("Wrong line endings or new final newline")},
+		{"x\n", "true", "cr", errors.New("Wrong line endings or no final newline")},
+		{"x\n", "true", "crlf", errors.New("Wrong line endings or no final newline")},
 
-		{"x\r", "true", "lf", errors.New("Wrong line endings or new final newline")},
-		{"x\r", "true", "crlf", errors.New("Wrong line endings or new final newline")},
+		{"x\r", "true", "lf", errors.New("Wrong line endings or no final newline")},
+		{"x\r", "true", "crlf", errors.New("Wrong line endings or no final newline")},
 
-		{"x\r\n", "true", "lf", errors.New("Wrong line endings or new final newline")},
-		{"x\r\n", "true", "cr", errors.New("Wrong line endings or new final newline")},
+		{"x\r\n", "true", "lf", errors.New("Wrong line endings or no final newline")},
+		{"x\r\n", "true", "cr", errors.New("Wrong line endings or no final newline")},
 
 		// insert_final_newline false
 		{"x", "false", "lf", nil},
