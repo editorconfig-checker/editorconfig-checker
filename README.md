@@ -9,22 +9,23 @@
 
 ![Logo](docs/logo.png)
 
-1. [What](#what)
+1. [What?](#what)
 2. [Quickstart](#quickstart)
 3. [Installation](#installation)
 4. [Usage](#usage)
 5. [Configuration](#configuration)
 6. [Excluding](#excluding)
-   6.1 [Excluding Lines](#excluding-lines)
-   6.2 [Excluding Files](#excluding-files)
-   6.2.1 [Inline](#inline)
-   6.2.2 [Default Excludes](#default-excludes)
-   6.2.3 [Manually Excluding](#manually-excluding)
-   6.2.4 [via configuration](#via-configuration)
-   6.2.5 [via arguments](#via-arguments)
-   6.2.6 [Generally](#generally)
+   1. [Excluding Lines](#excluding-lines)
+   2. [Excluding Blocks](#excluding-blocks)
+   3. [Excluding Files](#excluding-files)
+      1. [Inline](#inline)
+      2. [Default Excludes](#default-excludes)
+      3. [Manually Excluding](#manually-excluding)
+         1. [via configuration](#via-configuration)
+         2. [via arguments](#via-arguments)
+         3. [Generally](#generally)
 7. [Docker](#docker)
-8. [Continuous Integration](#continous-integration)
+8. [Continuous Integration](#continuous-integration)
 9. [Support](#support)
 
 ## What?
@@ -32,7 +33,7 @@
 ![Example Screenshot](docs/screenshot.png)
 
 This is a tool to check if your files consider your `.editorconfig` rules.
-Most tools—like linters for example—only test one filetype and need an extra configuration.
+Most tools—like linters, for example—only test one filetype and need an extra configuration.
 This tool only needs your `.editorconfig` to check all files.
 
 If you don't know about editorconfig already you can read about it here: [editorconfig.org](https://editorconfig.org/).
@@ -179,7 +180,7 @@ By default the allowed_content_types are:
 
 ## Excluding
 
-### Excluding lines
+### Excluding Lines
 
 You can exclude single lines inline. To do that you need a comment on that line that says: `editorconfig-checker-disable-line`.
 
@@ -189,7 +190,7 @@ const myTemplateString = `
      wrongly indended line because it needs to be` // editorconfig-checker-disable-line
 ```
 
-### Excluding blocks
+### Excluding Blocks
 
 To temporarily disable all checks, add a comment containing `editorconfig-checker-disable`. Re-enable with a comment containing `editorconfig-checker-enable`
 
@@ -202,7 +203,7 @@ const myTemplateString = `
 // editorconfig-checker-enable
 ```
 
-### Excluding files
+### Excluding Files
 
 #### Inline
 
@@ -216,7 +217,7 @@ add x y =
   in result -- falsy indentation would not report
 ```
 
-#### Default excludes
+#### Default Excludes
 
 If you don't pass the `ignore-defaults` flag to the binary these files are excluded automatically:
 
@@ -261,7 +262,7 @@ If you don't pass the `ignore-defaults` flag to the binary these files are exclu
 "min\\.js$"
 ```
 
-#### Manually excluding
+#### Manually Excluding
 
 ##### via configuration
 
