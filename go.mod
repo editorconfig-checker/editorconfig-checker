@@ -1,12 +1,21 @@
 module github.com/editorconfig-checker/editorconfig-checker
 
-go 1.16
+go 1.18
 
 require (
-	github.com/baulk/chardet v0.1.0 // indirect
-	github.com/editorconfig/editorconfig-core-go/v2 v2.4.2
-	github.com/gabriel-vasile/mimetype v1.4.0 // indirect
-	github.com/gopherjs/gopherjs v0.0.0-20190812055157-5d271430af9f // indirect
-	github.com/smartystreets/assertions v1.0.1 // indirect
-	golang.org/x/text v0.3.7 // indirect
+	github.com/baulk/chardet v0.1.0
+	github.com/editorconfig/editorconfig-core-go/v2 v2.5.1
+	github.com/gabriel-vasile/mimetype v1.4.0
+	golang.org/x/text v0.3.7
+)
+
+require (
+	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/hashicorp/errwrap v1.0.0 // indirect
+	github.com/hashicorp/go-multierror v1.1.1 // indirect
+	github.com/pmezard/go-difflib v1.0.0 // indirect
+	golang.org/x/mod v0.5.1 // indirect
+	golang.org/x/net v0.0.0-20210505024714-0287a6fb4125 // indirect
+	gopkg.in/ini.v1 v1.67.0 // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
