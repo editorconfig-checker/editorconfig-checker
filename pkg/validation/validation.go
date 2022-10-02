@@ -70,6 +70,7 @@ func ValidateFile(filePath string, config config.Config) []error.ValidationError
 	editorconfig, warnings, err := editorconfig.GetDefinitionForFilenameGraceful(filePath)
 	if err != nil {
 		config.Logger.Error("cannot load %s as .editorconfig: %s", filePath, err)
+		return validationErrors
 	}
 	if warnings != nil {
 		config.Logger.Warning(warnings.Error())
