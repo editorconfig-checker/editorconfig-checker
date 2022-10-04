@@ -43,6 +43,7 @@ var defaultExcludes = []string{
 	"\\.bak$",
 	"\\.bin$",
 	"\\.pdf$",
+	"\\.db$",
 	"\\.zip$",
 	"\\.gz$",
 	"\\.tar$",

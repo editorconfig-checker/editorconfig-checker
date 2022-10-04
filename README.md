@@ -249,6 +249,7 @@ If you don't pass the `ignore-defaults` flag to the binary these files are exclu
 "\\.bak$",
 "\\.bin$",
 "\\.pdf$",
+"\\.db$",
 "\\.zip$",
 "\\.gz$",
 "\\.tar$",
