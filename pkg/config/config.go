@@ -78,6 +78,7 @@ type Config struct {
 
 	// CONFIG FILE
 	Version             string
+	Parsable            bool
 	Verbose             bool
 	Debug               bool
 	IgnoreDefaults      bool
@@ -168,6 +169,10 @@ func (c *Config) Merge(config Config) {
 		c.NoColor = config.NoColor
 	}
 
+	if config.Parsable {
+		c.Parsable = config.Parsable
+	}
+
 	if config.IgnoreDefaults {
 		c.IgnoreDefaults = config.IgnoreDefaults
 	}
@@ -194,9 +199,9 @@ func (c *Config) Merge(config Config) {
 
 	c.mergeDisabled(config.Disable)
 	c.Logger = logger.Logger{
-		Verbosee: c.Verbose || config.Verbose,
-		Debugg:   c.Debug || config.Debug,
-		NoColor:  c.NoColor || config.NoColor}
+		Verbosee: c.Verbose,
+		Debugg:   c.Debug,
+		NoColor:  c.NoColor || c.Parsable}
 }
 
 // mergeDisabled merges the disabled checks into the config
@@ -245,6 +250,7 @@ func (c Config) Save(version string) error {
 	type writtenConfig struct {
 		Version             string
 		Verbose             bool
+		Parsable            bool
 		Debug               bool
 		IgnoreDefaults      bool
 		SpacesAftertabs     bool

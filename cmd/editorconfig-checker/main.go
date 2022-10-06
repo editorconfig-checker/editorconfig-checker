@@ -39,6 +39,7 @@ func init() {
 	flag.BoolVar(&c.ShowVersion, "version", false, "print the version number")
 	flag.BoolVar(&c.Help, "help", false, "print the help")
 	flag.BoolVar(&c.Help, "h", false, "print the help")
+	flag.BoolVar(&c.Parsable, "parsable", false, "output in a parsable format, also disables color")
 	flag.BoolVar(&c.Verbose, "verbose", false, "print debugging information")
 	flag.BoolVar(&c.Verbose, "v", false, "print debugging information")
 	flag.BoolVar(&c.Debug, "debug", false, "print debugging information")
@@ -124,7 +125,10 @@ func main() {
 
 	if errorCount != 0 {
 		error.PrintErrors(errors, config)
-		config.Logger.Error(fmt.Sprintf("\n%d errors found", errorCount))
+
+		if !config.Parsable {
+			config.Logger.Error(fmt.Sprintf("\n%d errors found", errorCount))
+		}
 	}
 
 	config.Logger.Verbose("%d files checked", len(filePaths))

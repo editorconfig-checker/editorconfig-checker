@@ -42,14 +42,24 @@ func PrintErrors(errors []ValidationErrors, config config.Config) {
 				continue
 			}
 
-			config.Logger.Warning(fmt.Sprintf("%s:", relativeFilePath))
-			for _, singleError := range fileErrors.Errors {
-				if singleError.LineNumber != -1 {
-					config.Logger.Error(fmt.Sprintf("\t%d: %s", singleError.LineNumber, singleError.Message))
-				} else {
-					config.Logger.Error(fmt.Sprintf("\t%s", singleError.Message))
+			if config.Parsable {
+				for _, singleError := range fileErrors.Errors {
+					if singleError.LineNumber != -1 {
+						config.Logger.Error(fmt.Sprintf("%s:%d: %s", relativeFilePath, singleError.LineNumber, singleError.Message))
+					} else {
+						config.Logger.Error(fmt.Sprintf("%s: %s", relativeFilePath, singleError.Message))
+					}
 				}
+			} else {
+				config.Logger.Warning(fmt.Sprintf("%s:", relativeFilePath))
+				for _, singleError := range fileErrors.Errors {
+					if singleError.LineNumber != -1 {
+						config.Logger.Error(fmt.Sprintf("\t%d: %s", singleError.LineNumber, singleError.Message))
+					} else {
+						config.Logger.Error(fmt.Sprintf("\t%s", singleError.Message))
+					}
 
+				}
 			}
 		}
 	}
