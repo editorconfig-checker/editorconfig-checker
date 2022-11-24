@@ -11,10 +11,10 @@ insert_final_newline = true
 [{*.go,go.mod}]
 indent_style = tab
 
-[*.nix]
+[*.{yaml,yml}]
 indent_size = 2
 
-[*.yml]
+[*.nix]
 indent_size = 2
 
 [.ecrc]
