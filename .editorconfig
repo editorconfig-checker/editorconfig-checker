@@ -15,6 +15,9 @@ indent_size = unset
 [*.{yaml,yml}]
 indent_size = 2
 
+[*.md]
+indent_size = unset
+
 [*.nix]
 indent_size = 2
 
