@@ -10,6 +10,7 @@ insert_final_newline = true
 
 [{*.go,go.mod}]
 indent_style = tab
+indent_size = unset
 
 [*.{yaml,yml}]
 indent_size = 2
@@ -22,3 +23,4 @@ indent_size = 2
 
 [Makefile]
 indent_style = tab
+indent_size = unset
