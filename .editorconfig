@@ -11,8 +11,14 @@ insert_final_newline = true
 [{*.go,go.mod}]
 indent_style = tab
 
+[*.nix]
+indent_size = 2
+
+[*.yml]
+indent_size = 2
+
+[.ecrc]
+indent_size = 2
+
 [Makefile]
 indent_style = tab
-
-[*{.yml,.ecrc,.nix}]
-indent_size = 2
