@@ -5,7 +5,6 @@
 **Closed issues:**
 
 - Improve binary file check [\#205](https://github.com/editorconfig-checker/editorconfig-checker/issues/205)
-- TAR\_BAD\_ARCHIVE: Unrecognized archive format [\#178](https://github.com/editorconfig-checker/editorconfig-checker/issues/178)
 
 ## [2.5.0](https://github.com/editorconfig-checker/editorconfig-checker/tree/2.5.0) (2022-06-18)
 
