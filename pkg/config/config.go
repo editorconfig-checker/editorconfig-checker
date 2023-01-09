@@ -21,6 +21,7 @@ var defaultExcludes = []string{
 	"^package-lock\\.json$",
 	"^composer\\.lock$",
 	"^Cargo\\.lock$",
+	"^Gemfile\\.lock$",
 	"^\\.pnp\\.cjs$",
 	"^\\.pnp\\.js$",
 	"^\\.pnp\\.loader\\.mjs$",
