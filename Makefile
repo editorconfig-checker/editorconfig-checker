@@ -1,5 +1,4 @@
 ifeq ($(OS),Windows_NT)
-	EXEEXT:=.exe
 	STDERR=con
 else
 	STDERR=/dev/stderr
@@ -147,10 +146,10 @@ _build-all-binaries:
 	$(call _build_target,plan9/amd64)
 	$(call _build_target,plan9/arm)
 	$(call _build_target,solaris/amd64)
-	$(call _build_target,windows/386,$(EXEEXT))
-	$(call _build_target,windows/amd64,$(EXEEXT))
-	$(call _build_target,windows/arm,$(EXEEXT))
-	$(call _build_target,windows/arm64,$(EXEEXT))
+	$(call _build_target,windows/386,.exe)
+	$(call _build_target,windows/amd64,.exe)
+	$(call _build_target,windows/arm,.exe)
+	$(call _build_target,windows/arm64,.exe)
 
 _compress-all-binaries:
 	for f in bin/*; do      \
