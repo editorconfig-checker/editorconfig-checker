@@ -2,6 +2,7 @@ name: "ci"
 
 on:
   push:
+  pull_request:
   workflow_dispatch:
 
 jobs:
@@ -9,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - uses: wagoid/commitlint-github-action@v5.3.0
         if: ${{ github.ref != 'refs/heads/main' }}
       - uses: actions/setup-go@v3
@@ -23,6 +26,7 @@ jobs:
         with:
           token: ${{ secrets.GH_TOKEN }}
       - uses: EndBug/add-and-commit@v9
+        if: ${{ github.ref == 'refs/heads/main' }}
         with:
           add: "CHANGELOG.md"
           message: "docs: add changelog [skip-ci]"
