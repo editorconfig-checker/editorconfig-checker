@@ -5,8 +5,12 @@ updates:
   schedule:
     interval: daily
   open-pull-requests-limit: 10
-  ignore:
-  - dependency-name: github.com/editorconfig/editorconfig-core-go/v2
-    versions:
-    - 2.3.9
-    - 2.4.0
+  # ignore:
+  # - dependency-name: github.com/editorconfig/editorconfig-core-go/v2
+  #   versions:
+  #   - 2.3.9
+  #   - 2.4.0
+- package-ecosystem: "github-actions"
+  directory: "/" # == /.github/workflows/
+  schedule:
+    interval: "daily"
