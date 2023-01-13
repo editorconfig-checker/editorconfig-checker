@@ -26,4 +26,4 @@ jobs:
         with:
           add: "CHANGELOG.md"
           message: "docs: add changelog [skip-ci]"
-      - uses: codecov/codecov-action@v1
+      - uses: codecov/codecov-action@v3
