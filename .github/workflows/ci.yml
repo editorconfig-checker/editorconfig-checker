@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: wagoid/commitlint-github-action@v2.0.3
+      - uses: wagoid/commitlint-github-action@v5.3.0
         if: ${{ github.ref != 'refs/heads/main' }}
       - uses: actions/setup-go@v3
         with:
