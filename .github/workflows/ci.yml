@@ -21,7 +21,7 @@ jobs:
       - run: make bench
       - uses: heinrichreimer/github-changelog-generator-action@v2.1.1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GH_TOKEN }}
       - uses: EndBug/add-and-commit@v9
         with:
           add: "CHANGELOG.md"
