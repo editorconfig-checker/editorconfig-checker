@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.7.0](https://github.com/editorconfig-checker/editorconfig-checker/tree/2.7.0) (2023-01-14)
+
+**Fixed bugs:**
+
+- ec-linux-amd64.tar.gz v2.60 is broken [\#213](https://github.com/editorconfig-checker/editorconfig-checker/issues/213)
+
+**Closed issues:**
+
+- TAR\_BAD\_ARCHIVE: Unrecognized archive format [\#178](https://github.com/editorconfig-checker/editorconfig-checker/issues/178)
+
 ## [2.6.0](https://github.com/editorconfig-checker/editorconfig-checker/tree/2.6.0) (2022-07-24)
 
 **Closed issues:**
@@ -42,9 +52,9 @@
 
 - Specify line number for "Line too long" error? [\#154](https://github.com/editorconfig-checker/editorconfig-checker/issues/154)
 
-## [2.3.2](https://github.com/editorconfig-checker/editorconfig-checker/tree/2.3.2) (2021-02-02)
-
 ## [2.3.3](https://github.com/editorconfig-checker/editorconfig-checker/tree/2.3.3) (2021-02-02)
+
+## [2.3.2](https://github.com/editorconfig-checker/editorconfig-checker/tree/2.3.2) (2021-02-02)
 
 **Closed issues:**
 
