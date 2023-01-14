@@ -1,0 +1,515 @@
+# This is an example .goreleaser.yml file with some sensible defaults.
+# Make sure to check the documentation at https://goreleaser.com
+project_name: editorconfig-checker
+env:
+  - REPO_LICENSE=MIT
+  - DOCKERHUB_USERNAME={{ if index .Env "DOCKERHUB_USERNAME"  }}{{ .Env.DOCKERHUB_USERNAME }}{{ else }}echoix{{ end }}
+  - GHCR_USERNAME={{ if index .Env "GHCR_USERNAME"  }}{{ .Env.GHCR_USERNAME }}{{ else }}echoix{{ end }}
+before:
+  hooks:
+    # You may remove this if you don't use go modules.
+    - go mod tidy
+    # you may remove this if you don't need go generate
+    - go generate ./...
+    # # - cmd: echo "Version is {{ .Version }}" > log.txt
+    # - echo "Version is {{ .Version }}"
+    # - echo "RawVersion is {{ .RawVersion }}"
+    # - echo "Summary is {{ .Summary }}"
+    # # - echo "PrefixedTag is {{ .PrefixedTag }}"
+    # # - echo "ReleaseNotes is {{ .ReleaseNotes }}"
+    # - echo "Major is {{ .Major }}"
+    # - echo "Minor is {{ .Minor }}"
+    # - echo "Patch is {{ .Patch }}"
+    # - echo "Prerelease is {{ .Prerelease }}"
+    # - echo "GitURL is {{ .GitURL }}"
+    # - echo "Env is {{ .Env }}"
+    # # - echo "Version is {{ .Version }}" > log111.txt
+    # # - echo "PrefixedTag is ;;{{ .PrefixedTag }};;"
+# after:
+#   hooks:
+#     - echo "Version is {{ .Version }}" > log111.txt
+builds:
+  - # ID of the build.
+    # Defaults to the binary name.
+    id: "editorconfig-checker"
+
+    # Path to main.go file or main package.
+    # Notice: when used with `gomod.proxy`, this must be a package.
+    #
+    # Default is `.`.
+    main: ./cmd/editorconfig-checker
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - windows
+      - darwin
+
+    goarch:
+      - amd64
+      - arm64
+      - arm
+      - 386
+    # Set the modified timestamp on the output binary, typically
+    # you would do this to ensure a build was reproducible. Pass
+    # empty string to skip modifying the output.
+    # Default is empty string, which will be the compile time.
+    mod_timestamp: "{{ .CommitTimestamp }}"
+    flags:
+      - -trimpath
+    # Custom ldflags templates.
+    # Default is `-s -w -X main.version={{.Version}} -X main.commit={{.Commit}} -X main.date={{.Date}} -X main.builtBy=goreleaser`.
+    # The goal of the changes to the default flags is to make reproducible builds.
+    ldflags:
+      - -s -w -X main.version={{.Version}}
+      - -X main.commit={{.Commit}} -X main.date={{.CommitDate}}
+      - -X main.builtBy=goreleaser
+
+# GoReleaser can create macOS Universal Binaries - also known as Fat Binaries.
+# Those binaries are in a special format that contains both `arm64` and `amd64`
+# executables in a single file.
+universal_binaries:
+  # Whether to remove the previous single-arch binaries from the artifact list.
+  # If left as false, your end release might have both several macOS archives:
+  # amd64, arm64 and all.
+  #
+  # Defaults to false.
+  - replace: true
+archives:
+  - # ID of this archive.
+    # Defaults to `default`.
+    id: archive-editorconfig-checker
+
+    # Builds reference which build instances should be archived in this archive.
+    # Default is empty, which includes all builds.
+    builds:
+      - editorconfig-checker
+
+    format: tar.gz
+    # this name template makes the OS and Arch compatible with the results of uname.
+    name_template: >-
+      {{ .ProjectName }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+      {{- if .Arm }}v{{ .Arm }}{{ end }}
+    # use zip for windows archives
+    format_overrides:
+      - goos: windows
+        format: zip
+    # This will make the destination paths be relative to the longest common
+    # path prefix between all the files matched and the source glob.
+    # Enabling this essentially mimic the behavior of nfpm's contents section.
+    # It will be the default by June 2023.
+    #
+    # Default: false
+    # Since: v1.14.
+    rlcp: true
+
+# GoReleaser can be wired to nfpm to generate and publish `.deb`, `.rpm`, `.apk`, and Archlinux packages.
+nfpms:
+  - # Your app's vendor.
+    # Default is empty.
+    vendor: Editorconfig-Checker
+    # Template to your app's homepage.
+    # Default is empty.
+    homepage: https://editorconfig-checker.github.io/
+    # Your app's maintainer (probably you).
+    # Default is empty.
+    maintainer: Max Strübing <mxstrbng@gmail.com>
+    # Template to your app's description.
+    # Default is empty.
+    description: |-
+      A tool to verify that your files are in harmony with your .editorconfig
+    # Your app's license.
+    # Default is empty.
+    license: "{{ .Env.REPO_LICENSE }}"
+
+    # Formats to be generated.
+    formats:
+      - apk
+      - deb
+      - rpm
+      - termux.deb # Since GoReleaser v1.11.
+      - archlinux # Since GoReleaser v1.13.
+# snapcrafts:
+#   - # Whether to publish the snap to the snapcraft store.
+#     # Remember you need to `snapcraft login` first.
+#     # Defaults to false.
+#     publish: false
+
+#     # Single-line elevator pitch for your amazing snap.
+#     # 79 char long at most.
+#     summary: A tool to verify that your files are in harmony with your .editorconfig
+
+#     # This the description of your snap. You have a paragraph or two to tell the
+#     # most important story about your snap. Keep it under 100 words though,
+#     # we live in tweetspace and your description wants to look good in the snap
+#     # store.
+#     description: |-
+#       This is a tool to check if your files consider your .editorconfig rules.
+#       Most tools—like linters, for example—only test one filetype and need an extra
+#       configuration. This tool only needs your .editorconfig to check all files.
+#     # A guardrail to prevent you from releasing a snap to all your users before
+#     # it is ready.
+#     # `devel` will let you release only to the `edge` and `beta` channels in the
+#     # store. `stable` will let you release also to the `candidate` and `stable`
+#     # channels.
+#     grade: devel
+#     # Your app's license, based on SPDX license expressions:
+#     # https://spdx.org/licenses
+#     # Default is empty.
+#     license: MIT
+#     # A snap of type base to be used as the execution environment for this snap.
+#     # Valid values are:
+#     # * bare - Empty base snap;
+#     # * core - Ubuntu Core 16;
+#     # * core18 - Ubuntu Core 18.
+#     # Default is empty.
+#     base: bare
+# chocolateys:
+#   -
+#     # Your app's owner.
+#     # It basically means your.
+#     # Defaults empty.
+#     owners: Editorconfig-Checker
+#     # Your app's authors (probably you).
+#     # Defaults are shown below.
+#     authors: Max Strübing
+#     # Your app's project url.
+#     # It is a required field.
+#     project_url: https://editorconfig-checker.github.io/
+#     # Your app's copyright details.
+#     # Default is empty.
+#     # copyright:
+#     # App's license information url.
+#     license_url: https://github.com/editorconfig-checker/editorconfig-checker/blob/main/LICENSE
+#     # Your app's source url.
+#     # Default is empty.
+#     project_source_url: https://github.com/editorconfig-checker/editorconfig-checker
+#     # Your app's documentation url.
+#     # Default is empty.
+#     docs_url: https://github.com/editorconfig-checker/editorconfig-checker/blob/main/README.md
+#     # App's bugtracker url.
+#     # Default is empty.
+#     bug_tracker_url: https://github.com/editorconfig-checker/editorconfig-checker/issues
+#      # Your app's summary:
+#     summary: A tool to verify that your files are in harmony with your .editorconfig
+#     # This the description of your chocolatey package.
+#     # Supports markdown.
+#     description: |
+#       {{ .ProjectName }} installer package.
+#       This is a tool to check if your files consider your .editorconfig rules.
+#       Most tools—like linters, for example—only test one filetype and need an extra
+#       configuration. This tool only needs your .editorconfig to check all files.
+#     # Your app's release notes.
+#     # A description of the changes made in this release of the package.
+#     # Supports markdown. To prevent the need to continually update this field,
+#     # providing a URL to an external list of Release Notes is perfectly
+#     # acceptable.
+#     # Default is empty.
+#     release_notes: "https://github.com/editorconfig-checker/editorconfig-checker/releases/tag/{{ .Version }}"
+
+#     # The api key that should be used to push to the chocolatey repository.
+#     #
+#     # WARNING: do not expose your api key in the configuration file!
+#     api_key: '{{ .Env.CHOCOLATEY_API_KEY }}'
+
+#     # The source repository that will push the package to.
+#     #
+#     # Defaults are shown below.
+#     source_repo: "https://push.chocolatey.org/"
+
+#     # Setting this will prevent goreleaser to actually try to push the package
+#     # to chocolatey repository, leaving the responsability of publishing it to
+#     # the user.
+#     skip_publish: true
+
+dockers:
+  # - image_templates:
+  #     # - "mstruebing/editorconfig-checker"
+  #     # - "mstruebing/editorconfig-checker:latest"
+  #     # - "mstruebing/editorconfig-checker:{{ .Tag }}"
+  #     # - "mstruebing/editorconfig-checker:{{ .Tag }}-{{ .Env.GO_VERSION }}"
+  #     # - "mstruebing/editorconfig-checker:v{{ .Major }}"
+  #     # - "mstruebing/editorconfig-checker:v{{ .Major }}.{{ .Minor }}"
+  #     # # - "ghcr.io/editorconfig-checker/editorconfig-checker"
+  #     # - "ghcr.io/editorconfig-checker/editorconfig-checker:latest"
+  #     # - "ghcr.io/editorconfig-checker/editorconfig-checker:{{ .Tag }}"
+  #     # - "ghcr.io/editorconfig-checker/editorconfig-checker:{{ .Tag }}-{{ .Env.GO_VERSION }}"
+  #     # - "ghcr.io/editorconfig-checker/editorconfig-checker:v{{ .Major }}"
+  #     # - "ghcr.io/editorconfig-checker/editorconfig-checker:v{{ .Major }}.{{ .Minor }}"
+  #     - "echoix/editorconfig-checker"
+  #     - "echoix/editorconfig-checker:latest"
+  #     - "echoix/editorconfig-checker:{{ .Tag }}"
+  #     # - "echoix/editorconfig-checker:{{ .Tag }}-{{ .Env.GOVERSION }}"
+  #     - "echoix/editorconfig-checker:v{{ .Major }}"
+  #     - "echoix/editorconfig-checker:v{{ .Major }}.{{ .Minor }}"
+  #     # - "ghcr.io/echoix/editorconfig-checker"
+  #     - "ghcr.io/echoix/editorconfig-checker:latest"
+  #     - "ghcr.io/echoix/editorconfig-checker:{{ .Tag }}"
+  #     # - "ghcr.io/echoix/editorconfig-checker:{{ .Tag }}-{{ .Env.GO_VERSION }}"
+  #     - "ghcr.io/echoix/editorconfig-checker:v{{ .Major }}"
+  #     - "ghcr.io/echoix/editorconfig-checker:v{{ .Major }}.{{ .Minor }}"
+
+  #   dockerfile: goreleaser.Dockerfile
+  #   # Skips the docker push.
+  #   # Could be useful if you also do draft releases.
+  #   #
+  #   # If set to auto, the release will not be pushed to the Docker repository
+  #   #  in case there is an indicator of a prerelease in the tag, e.g. v1.0.0-rc1.
+  #   #
+  #   # Defaults to false.
+  #   # skip_push: auto
+
+  #   # Set the "backend" for the Docker pipe.
+  #   #
+  #   # Valid options are: docker, buildx, podman.
+  #   #
+  #   # Podman is a GoReleaser Pro feature and is only available on Linux.
+  #   #
+  #   # Defaults to docker.
+  #   use: buildx
+  #   # Template of the docker build flags.
+  #   build_flag_templates:
+  #     - "--label=org.opencontainers.image.created={{.Date}}"
+  #     - "--label=org.opencontainers.image.title={{.ProjectName}}"
+  #     - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+  #     - "--label=org.opencontainers.image.version={{.Version}}"
+  #     - "--label=org.opencontainers.image.source={{.GitURL}}"
+  #     - "--label=org.opencontainers.image.description=A tool to verify that your files are in harmony with your .editorconfig"
+  #     - "--label=org.opencontainers.image.licenses={{ .Env.REPO_LICENSE }}"
+  #     # - "--platform=linux/arm64,linux/amd64"
+  #     # - "--platform=linux/arm64"
+
+  - id: docker-linux-amd64
+    ids:
+      - editorconfig-checker
+    goos: linux
+    goarch: amd64
+    # skip_push: auto
+    use: buildx
+    dockerfile: goreleaser.Dockerfile
+    image_templates:
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-amd64"
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-amd64"
+    build_flag_templates:
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.title={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+      - "--label=org.opencontainers.image.source={{.GitURL}}"
+      - "--label=org.opencontainers.image.description=A tool to verify that your files are in harmony with your .editorconfig"
+      - "--label=org.opencontainers.image.licenses={{ .Env.REPO_LICENSE }}"
+      - "--platform=linux/amd64"
+  - id: docker-linux-i386
+    ids:
+      - editorconfig-checker
+    goos: linux
+    goarch: 386
+    # skip_push: auto
+    use: buildx
+    dockerfile: goreleaser.Dockerfile
+    image_templates:
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-i386"
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-i386"
+    build_flag_templates:
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.title={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+      - "--label=org.opencontainers.image.source={{.GitURL}}"
+      - "--label=org.opencontainers.image.description=A tool to verify that your files are in harmony with your .editorconfig"
+      - "--label=org.opencontainers.image.licenses={{ .Env.REPO_LICENSE }}"
+      - "--platform=linux/386"
+  - id: docker-linux-arm64
+    ids:
+      - editorconfig-checker
+    goos: linux
+    goarch: arm64
+    # skip_push: auto
+    skip_push: false
+    use: buildx
+    dockerfile: goreleaser.Dockerfile
+    image_templates:
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm64v8"
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm64v8"
+    build_flag_templates:
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.title={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+      - "--label=org.opencontainers.image.source={{.GitURL}}"
+      - "--label=org.opencontainers.image.description=A tool to verify that your files are in harmony with your .editorconfig"
+      - "--label=org.opencontainers.image.licenses={{ .Env.REPO_LICENSE }}"
+      - "--platform=linux/arm64/v8"
+  - id: docker-linux-arm32v6
+    ids:
+      - editorconfig-checker
+    goos: linux
+    goarch: arm
+    goarm: 6
+    # skip_push: auto
+    skip_push: false
+    use: buildx
+    dockerfile: goreleaser.Dockerfile
+    image_templates:
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm32v6"
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm32v6"
+    build_flag_templates:
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.title={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+      - "--label=org.opencontainers.image.source={{.GitURL}}"
+      - "--label=org.opencontainers.image.description=A tool to verify that your files are in harmony with your .editorconfig"
+      - "--label=org.opencontainers.image.licenses={{ .Env.REPO_LICENSE }}"
+      - "--platform=linux/arm/v6"
+docker_manifests:
+  # Pushing the tag manifests first in case of failures
+  - id: docker_manifest-dockerhub-tag
+    skip_push: false
+    name_template: "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}"
+    image_templates:
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-amd64"
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm64v8"
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm32v6"
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-i386"
+  - id: docker_manifest-ghcr-tag
+    skip_push: false
+    name_template: "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}"
+    image_templates:
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-amd64"
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm64v8"
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm32v6"
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-i386"
+
+  - id: docker_manifest-dockerhub-vMajor
+    skip_push: auto
+    name_template: "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:v{{ .Major }}"
+    image_templates:
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-amd64"
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm64v8"
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm32v6"
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-i386"
+  - id: docker_manifest-dockerhub-vMajorMinor
+    skip_push: auto
+    name_template: "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:v{{ .Major }}.{{ .Minor }}"
+    image_templates:
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-amd64"
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm64v8"
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm32v6"
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-i386"
+  - id: docker_manifest-dockerhub-latest
+    skip_push: auto
+    name_template: "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:latest"
+    image_templates:
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-amd64"
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm64v8"
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm32v6"
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-i386"
+
+  - id: docker_manifest-ghcr-vMajor
+    skip_push: auto
+    name_template: "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:v{{ .Major }}"
+    image_templates:
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-amd64"
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm64v8"
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm32v6"
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-i386"
+  - id: docker_manifest-ghcr-vMajorMinor
+    skip_push: auto
+    name_template: "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:v{{ .Major }}.{{ .Minor }}"
+    image_templates:
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-amd64"
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm64v8"
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm32v6"
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-i386"
+  - id: docker_manifest-ghcr-latest
+    skip_push: auto
+    name_template: "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:latest"
+    image_templates:
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-amd64"
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm64v8"
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm32v6"
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-i386"
+checksum:
+  name_template: "checksums.txt"
+# snapshot:
+#   name_template: "{{ incpatch .Version }}-next"
+sboms:
+  - artifacts: package
+    id: sbom-package
+  - artifacts: archive
+    id: sbom-archive
+  - artifacts: binary
+    id: sbom-binary
+  - artifacts: source
+    id: sbom-source
+
+changelog:
+  use: github #-native
+  sort:
+    asc
+    # Group commits messages by given regex and title.
+  # Order value defines the order of the groups.
+  # Proving no regex means all commits will be grouped under the default group.
+  # Groups are disabled when using github-native, as it already groups things by itself.
+  # Matches are performed against strings of the form: "<abbrev-commit>[:] <title-commit>".
+  # Regex use RE2 syntax as defined here: https://github.com/google/re2/wiki/Syntax.
+  #
+  # Default is no groups.
+  groups:
+    - title: Features
+      regexp: '^.*?feat(\([[:word:]]+\))??!?:.+$'
+      order: 0
+    - title: "Bug fixes"
+      regexp: '^.*?bug(\([[:word:]]+\))??!?:.+$'
+      order: 1
+    - title: Others
+      order: 999
+  # filters:
+  #   exclude:
+  #     - "^docs:"
+  #     - "^test:"
+
+release:
+  # What to do with the release notes in case there the release already exists.
+  #
+  # Valid options are:
+  # - `keep-existing`: keep the existing notes
+  # - `append`: append the current release notes to the existing notes
+  # - `prepend`: prepend the current release notes to the existing notes
+  # - `replace`: replace existing notes
+  #
+  # Default is `keep-existing`.
+  mode: keep-existing
+  # If set to true, will not auto-publish the release.
+  # Available only for GitHub and Gitea.
+  # Default is false.
+  draft: true
+  # If set to auto, will mark the release as not ready for production
+  # in case there is an indicator for this in the tag e.g. v1.0.0-rc1
+  # If set to true, will mark the release as not ready for production.
+  # Default is false.
+  prerelease: auto
+
+  # Header template for the release body.
+  # Defaults to empty.
+  header: |
+    ## editorconfig-checker {{ .Tag }} ({{ .Date }})
+
+    Welcome to this new release of editorconfig-checker!
+
+  # Footer template for the release body.
+  # Defaults to empty.
+  footer: |
+    ## Thanks!
+
+    Those were the changes on {{ .Tag }}!
+
+# The lines beneath this are called `modelines`. See `:help modeline`
+# Feel free to remove those if you don't want/use them.
+# yaml-language-server: $schema=https://goreleaser.com/static/schema.json
+# vim: set ts=2 sw=2 tw=0 fo=cnqoj
