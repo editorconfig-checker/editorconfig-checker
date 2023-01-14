@@ -153,7 +153,7 @@ _build-all-binaries:
 
 _compress-all-binaries:
 	for f in bin/*; do      \
-		tar czvf - $$f | gzip -9 - > $$f.tar.gz;    \
+		tar czf $$f.tar.gz $$f;    \
 		rm -f $$f;    \
 	done
 
