@@ -276,7 +276,7 @@ An `.ecrc` which would ignore all test files and all markdown files can look lik
   "Verbose": false,
   "IgnoreDefaults": false,
   "Exclude": ["testfiles", "\\.md$"],
-  "SpacesAfterTabs": false,
+  "SpacesAftertabs": false,
   "Disable": {
     "EndOfLine": false,
     "Indentation": false,
