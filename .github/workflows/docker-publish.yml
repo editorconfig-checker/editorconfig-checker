@@ -26,6 +26,14 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v3
 
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+        with:
+          platforms: all
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
@@ -38,10 +46,20 @@ jobs:
         with:
           images: ${{ secrets.DOCKER_USERNAME }}/editorconfig-checker
 
-      - name: Build and push Docker image
+      - name: Build and push tagged Docker image
         uses: docker/build-push-action@v4
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          platform: linux/amd64,linux/arm64,linux/arm/v7
+
+      - name: Build and push latest Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: mstruebing/editorconfig-checker:latest
+          labels: ${{ steps.meta.outputs.labels }}
+          platform: linux/amd64,linux/arm64,linux/arm/v7
