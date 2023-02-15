@@ -8,7 +8,7 @@ ifeq ($(wildcard "C:/Program Files/Git/usr/bin/*"),)
 export PATH:="C:/Program Files/Git/usr/bin:$(PATH)"
 endif
 
-EXE=bin/ec$(EXEEXT)
+EXE=bin/editorconfig-checker$(EXEEXT)
 SRC_DIR := $(shell dirname "$(realpath "$(firstword $(MAKEFILE_LIST))")")
 SOURCES = $(shell find "$(SRC_DIR)" -type f -name "*.go")
 GIT_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
@@ -19,7 +19,7 @@ prefix = /usr/local
 bindir = /bin
 mandir = /share/man
 
-all: build ## Build bin/ec
+all: build ## Build bin/editorconfig-checker
 
 clean: ## Clean bin/ directory
 	rm -f ./bin/*
@@ -31,7 +31,7 @@ endef
 $(EXE): $(SOURCES) VERSION
 	$(call _build,$(EXE))
 
-build: $(EXE) ## Build bin/ec
+build: $(EXE) ## Build bin/editorconfig-checker
 
 install: build ## Build and install executable in PATH
 	install -D $(EXE) $(DESTDIR)$(prefix)$(bindir)/editorconfig-checker
@@ -49,11 +49,11 @@ test: ## Run test suite
 bench: ## Run benchmark
 	go test -bench=. ./**/*/
 
-run: build ## Build and run bin/ec
-	@./bin/ec --exclude "\\.git" --exclude "\\.exe$$"
+run: build ## Build and run bin/editorconfig-checker
+	@./bin/editorconfig-checker --exclude "\\.git" --exclude "\\.exe$$"
 
-run-verbose: build ## Build and run bin/ec --verbose
-	@./bin/ec --verbose --exclude "\\.git" --exclude "\\.exe$$"
+run-verbose: build ## Build and run bin/editorconfig-checker --verbose
+	@./bin/editorconfig-checker --verbose --exclude "\\.git" --exclude "\\.exe$$"
 
 release: _is_main_branch _git_branch_is_up_to_date _do_release ## Create release
 	@echo Release done. Go to Github and create a release.
@@ -93,7 +93,7 @@ _tag_version: current_version
 	git add . && git commit -m "chore(release): $${version}" && git tag "$${version}"
 
 define _build_target
-CGO_ENABLED=0 GOOS=$(subst /,,$(dir $1)) GOARCH=$(notdir $1) $(call _build,bin/ec-$(subst /,,$(dir $1))-$(notdir $1)$2)
+CGO_ENABLED=0 GOOS=$(subst /,,$(dir $1)) GOARCH=$(notdir $1) $(call _build,bin/editorconfig-checker-$(subst /,,$(dir $1))-$(notdir $1)$2)
 endef
 
 _build-all-binaries:
