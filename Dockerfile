@@ -10,6 +10,7 @@ RUN GO111MODULE=on CGO_ENABLED=0 go build -ldflags "-X main.version=$(cat VERSIO
 FROM alpine:latest
 
 RUN apk add --no-cache git
+RUN git config --global --add safe.directory /check
 WORKDIR /check/
 COPY --from=build /ec/bin/ec /usr/bin
 
