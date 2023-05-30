@@ -95,7 +95,7 @@ func GetFiles(config config.Config) ([]string, error) {
 		return filePaths, nil
 	}
 
-	byteArray, err := exec.Command("git", "ls-files", "--cached", "--others", "--modified", "--exclude-standard").Output()
+	byteArray, err := exec.Command("git", "ls-files", "--cached", "--others", "--exclude-standard").Output()
 	if err != nil {
 		// It is not a git repository.
 		cwd, err := os.Getwd()
