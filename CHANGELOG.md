@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.7.1](https://github.com/editorconfig-checker/editorconfig-checker/tree/2.7.1) (2023-08-21)
+
+**Closed issues:**
+
+- Exclude regex doesn't work properly on windows [\#217](https://github.com/editorconfig-checker/editorconfig-checker/issues/217)
+
 ## [2.7.0](https://github.com/editorconfig-checker/editorconfig-checker/tree/2.7.0) (2023-01-14)
 
 **Fixed bugs:**
