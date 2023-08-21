@@ -1,9 +1,12 @@
-FROM golang:1.19-alpine as build
+FROM --platform=$BUILDPLATFORM golang:1.19-alpine as build
 
 RUN apk add --no-cache git
 WORKDIR /ec
 COPY . /ec
-RUN GO111MODULE=on CGO_ENABLED=0 go build -ldflags "-X main.version=$(cat VERSION | tr -d '\n')" -o bin/ec ./cmd/editorconfig-checker/main.go
+ARG TARGETOS TARGETARCH
+RUN --mount=type=cache,target=/root/.cache/go-build \
+    --mount=type=cache,target=/go/pkg \
+    GOOS=${TARGETOS} GOARCH=${TARGETARCH} GO111MODULE=on CGO_ENABLED=0 go build -ldflags "-X main.version=$(cat VERSION | tr -d '\n')" -o bin/ec ./cmd/editorconfig-checker/main.go
 
 #
 
