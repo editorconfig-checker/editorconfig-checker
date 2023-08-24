@@ -314,9 +314,9 @@ Dockerhub: [mstruebing/editorconfig-checker](https://hub.docker.com/r/mstruebing
 
 ### Mega-Linter
 
-Instead of installing and configuring `editorconfig-checker` and all other linters in your project CI workflows (GitHub Actions & others), you can use [Mega-Linter](https://nvuillam.github.io/mega-linter/) which does all that for you with a single [assisted installation](https://nvuillam.github.io/mega-linter/installation/).
+Instead of installing and configuring `editorconfig-checker` and all other linters in your project CI workflows (GitHub Actions & others), you can use [Mega-Linter](https://megalinter.io/latest/) which does all that for you with a single [assisted installation](https://megalinter.io/latest/install-assisted/).
 
-Mega-Linter embeds [editorconfig-checker](https://nvuillam.github.io/mega-linter/descriptors/editorconfig_editorconfig_checker/) by default in all its [flavors](https://nvuillam.github.io/mega-linter/flavors/), meaning that it will be run at each commit or Pull Request to detect any issue related to `.editorconfig`.
+Mega-Linter embeds [editorconfig-checker](https://megalinter.io/latest/descriptors/editorconfig_editorconfig_checker/) by default in all its [flavors](https://megalinter.io/latest/flavors/), meaning that it will be run at each commit or Pull Request to detect any issue related to `.editorconfig`.
 
 If you want to use only `editorconfig-checker` and not the 70+ other linters, you can use the following `.mega-linter.yml` configuration file:
 
