@@ -126,6 +126,10 @@ func detectText(contentBytes []byte) (string, error) {
 	confidence := -1
 	keys := make([]string, 0, len(results))
 	for _, result := range results {
+		_, ok := getEncoding(result.Charset)
+		if !ok {
+			continue
+		}
 		if result.Confidence < confidence {
 			break
 		}
@@ -137,23 +141,26 @@ func detectText(contentBytes []byte) (string, error) {
 }
 
 func decodeText(contentBytes []byte, charset string) (string, error) {
-	r := strings.NewReplacer("-", "", "_", "")
-	key := strings.ToLower(r.Replace(charset))
-	enc, ok := encodings[key]
+	enc, ok := getEncoding(charset)
 	if !ok {
 		return "", fmt.Errorf("unrecognized charset %s", charset)
 	}
-	if enc != nil {
-		var err error
-		contentBytes, err = enc.NewDecoder().Bytes(contentBytes)
-		if err != nil {
-			return "", err
-		}
+	var err error
+	contentBytes, err = enc.NewDecoder().Bytes(contentBytes)
+	if err != nil {
+		return "", err
 	}
 	if !utf8.Valid(contentBytes) {
 		return "", fmt.Errorf("the file is not a valid UTF-8 encoded file")
 	}
 	return string(contentBytes), nil
+}
+
+func getEncoding(charset string) (encoding.Encoding, bool) {
+	r := strings.NewReplacer("-", "", "_", "")
+	key := strings.ToLower(r.Replace(charset))
+	enc, ok := encodings[key]
+	return enc, ok
 }
 
 var binaryChars = [256]bool{}
