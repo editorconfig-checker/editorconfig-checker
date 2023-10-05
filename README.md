@@ -325,6 +325,13 @@ ENABLE:
   - EDITORCONFIG
 ```
 
+### GitLab CI
+
+The [ss-open/ci/recipes project](https://gitlab.com/ss-open/ci/recipes) offers a ready to use lint job integrating editorconfig-checker.
+
+- Main documentation: https://gitlab.com/ss-open/ci/recipes/-/blob/main/README.md
+- Editorconfig job specific documentation: https://gitlab.com/ss-open/ci/recipes/-/blob/main/stages/lint/editorconfig/README.md
+
 ## Support
 
 If you have any questions, suggestions, need a wrapper for a programming language or just want to chat join #editorconfig-checker on freenode(IRC).
