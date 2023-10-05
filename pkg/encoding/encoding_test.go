@@ -16,6 +16,7 @@ type decodeTest struct {
 }
 
 var decodeTextTests = []decodeTest{
+	// Encodings
 	{"8859_1_da.html", "ISO-8859-1", false, false},
 	{"8859_1_de.html", "ISO-8859-1", false, false},
 	{"8859_1_en.html", "ISO-8859-1", false, false},
@@ -68,6 +69,8 @@ var decodeTextTests = []decodeTest{
 	{"utf8-sdl.txt", "windows-1252", false, false}, // should be UTF-8
 	{"utf8.txt", "UTF-8", false, false},
 	{"utf8.txt-encoding-test-files.txt", "UTF-8", false, false},
+	// Issues
+	{"issue252.txt", "UTF-8", false, false},
 }
 
 func TestDecodeBytesText(t *testing.T) {
