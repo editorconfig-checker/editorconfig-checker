@@ -1,6 +1,6 @@
 module github.com/editorconfig-checker/editorconfig-checker
 
-go 1.18
+go 1.21
 
 require (
 	github.com/baulk/chardet v0.1.0
