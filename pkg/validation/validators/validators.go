@@ -39,14 +39,13 @@ func Space(line string, indentSize int, config config.Config) error {
 			}
 		} else {
 			// match recurring spaces and everything except tab characters
-			regexpPattern := fmt.Sprintf("^( )*([^ \t]|$)")
+			regexpPattern := `^( )*([^ \t]|$)`
 			matched, _ := regexp.MatchString(regexpPattern, line)
 
 			if !matched {
 				return fmt.Errorf("Wrong indent style found (tabs instead of spaces)")
 			}
 		}
-
 	}
 
 	return nil
@@ -148,7 +147,7 @@ func MaxLineLength(line string, maxLineLength int, charSet string) error {
 	var length int
 	if charSet == "utf-8" || charSet == "utf-8-bom" {
 		if charSet == "utf-8-bom" && strings.HasPrefix(line, "\xEF\xBB\xBF") {
-			line = line[3:] //strip BOM
+			line = line[3:] // strip BOM
 		}
 		length = utf8.RuneCountInString(line)
 	} else {

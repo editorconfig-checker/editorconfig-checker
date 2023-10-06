@@ -5,6 +5,7 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
+	"io/fs"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -80,7 +81,16 @@ func GetFiles(config config.Config) ([]string, error) {
 	if len(config.PassedFiles) != 0 {
 		for _, passedFile := range config.PassedFiles {
 			if utils.IsDirectory(passedFile) {
-				_ = filepath.Walk(passedFile, func(path string, fi os.FileInfo, err error) error {
+				_ = fs.WalkDir(os.DirFS(passedFile), ".", func(path string, de fs.DirEntry, err error) error {
+					if err != nil {
+						return err
+					}
+
+					fi, err := de.Info()
+					if err != nil {
+						return err
+					}
+
 					if fi.Mode().IsRegular() {
 						filePaths = AddToFiles(filePaths, path, config)
 					}
@@ -103,7 +113,16 @@ func GetFiles(config config.Config) ([]string, error) {
 			return filePaths, err
 		}
 
-		_ = filepath.Walk(cwd, func(path string, fi os.FileInfo, err error) error {
+		_ = fs.WalkDir(os.DirFS(cwd), ".", func(path string, de fs.DirEntry, err error) error {
+			if err != nil {
+				return err
+			}
+
+			fi, err := de.Info()
+			if err != nil {
+				return err
+			}
+
 			if fi.Mode().IsRegular() {
 				filePaths = AddToFiles(filePaths, path, config)
 			}
@@ -144,7 +163,6 @@ func ReadLines(content string) []string {
 // GetContentType returns the content type of a file
 func GetContentType(path string, config config.Config) (string, error) {
 	fileStat, err := os.Stat(path)
-
 	if err != nil {
 		return "", err
 	}

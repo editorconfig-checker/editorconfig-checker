@@ -45,6 +45,9 @@ func ValidateFile(filePath string, config config.Config) []error.ValidationError
 	}
 	fileContent := string(rawFileContent)
 	mime, err := files.GetContentTypeBytes(rawFileContent, config)
+	if err != nil {
+		panic(err)
+	}
 	for _, regex := range textRegexes {
 		match, _ := regexp.MatchString(regex, mime)
 		if match {
@@ -153,7 +156,6 @@ func ValidateLineEnding(fileInformation files.FileInformation, config config.Con
 func ValidateIndentation(fileInformation files.FileInformation, config config.Config) error.ValidationError {
 	var indentSize int
 	indentSize, err := strconv.Atoi(fileInformation.Editorconfig.Raw["indent_size"])
-
 	// Set indentSize to zero if there is no indentSize set
 	if err != nil {
 		indentSize = 0
