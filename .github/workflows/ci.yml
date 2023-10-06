@@ -25,9 +25,4 @@ jobs:
       - uses: heinrichreimer/github-changelog-generator-action@v2.1.1
         with:
           token: ${{ secrets.GH_TOKEN_PAT }}
-      - uses: EndBug/add-and-commit@v9
-        if: ${{ github.ref == 'refs/heads/main' }}
-        with:
-          add: "CHANGELOG.md"
-          message: "docs: add changelog [skip-ci]"
       - uses: codecov/codecov-action@v3
