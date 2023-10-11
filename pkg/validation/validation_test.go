@@ -7,7 +7,9 @@ import (
 )
 
 func TestProcessValidation(t *testing.T) {
-	configuration := config.Config{Verbose: true}
+	configuration := config.Config{
+		Verbose: true,
+	}
 
 	processValidationResult := ProcessValidation([]string{"./../../cmd/editorconfig-checker/main.go"}, configuration)
 	if len(processValidationResult) > 1 || len(processValidationResult[0].Errors) != 0 {

@@ -8,13 +8,12 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/editorconfig/editorconfig-core-go/v2"
-
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/config"
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/encoding"
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/error"
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/files"
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/validation/validators"
+	"github.com/editorconfig/editorconfig-core-go/v2"
 )
 
 // keep synced with /pkg/config/config.go#L59
@@ -70,7 +69,12 @@ func ValidateFile(filePath string, config config.Config) []error.ValidationError
 		return validationErrors
 	}
 
-	editorconfig, warnings, err := editorconfig.GetDefinitionForFilenameGraceful(filePath)
+	// idiomatic Go allows empty struct
+	if config.EditorconfigConfig == nil {
+		config.EditorconfigConfig = &editorconfig.Config{}
+	}
+
+	definition, warnings, err := config.EditorconfigConfig.LoadGraceful(filePath)
 	if err != nil {
 		config.Logger.Error("cannot load %s as .editorconfig: %s", filePath, err)
 		return validationErrors
@@ -79,13 +83,13 @@ func ValidateFile(filePath string, config config.Config) []error.ValidationError
 		config.Logger.Warning(warnings.Error())
 	}
 
-	fileInformation := files.FileInformation{Content: fileContent, FilePath: filePath, Editorconfig: editorconfig}
+	fileInformation := files.FileInformation{Content: fileContent, FilePath: filePath, Editorconfig: definition}
 	validationError := ValidateFinalNewline(fileInformation, config)
 	if validationError.Message != nil {
 		validationErrors = append(validationErrors, validationError)
 	}
 
-	fileInformation = files.FileInformation{Content: fileContent, FilePath: filePath, Editorconfig: editorconfig}
+	fileInformation = files.FileInformation{Content: fileContent, FilePath: filePath, Editorconfig: definition}
 	validationError = ValidateLineEnding(fileInformation, config)
 	if validationError.Message != nil {
 		validationErrors = append(validationErrors, validationError)
@@ -107,7 +111,7 @@ func ValidateFile(filePath string, config config.Config) []error.ValidationError
 			continue
 		}
 
-		fileInformation = files.FileInformation{Line: line, FilePath: filePath, LineNumber: lineNumber, Editorconfig: editorconfig}
+		fileInformation = files.FileInformation{Line: line, FilePath: filePath, LineNumber: lineNumber, Editorconfig: definition}
 		validationError = ValidateTrailingWhitespace(fileInformation, config)
 		if validationError.Message != nil {
 			validationErrors = append(validationErrors, validationError)

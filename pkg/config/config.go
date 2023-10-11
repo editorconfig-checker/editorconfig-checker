@@ -7,6 +7,8 @@ import (
 	"io/ioutil"
 	"strings"
 
+	"github.com/editorconfig/editorconfig-core-go/v2"
+
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/logger"
 	"github.com/editorconfig-checker/editorconfig-checker/pkg/utils"
 )
@@ -90,7 +92,8 @@ type Config struct {
 	Disable             DisabledChecks
 
 	// MISC
-	Logger logger.Logger
+	Logger             logger.Logger
+	EditorconfigConfig *editorconfig.Config
 }
 
 // DisabledChecks is a Struct which represents disabled checks
@@ -111,6 +114,10 @@ func NewConfig(configPath string) (*Config, error) {
 	config.AllowedContentTypes = defaultAllowedContentTypes
 	config.Exclude = []string{}
 	config.PassedFiles = []string{}
+
+	config.EditorconfigConfig = &editorconfig.Config{
+		Parser: editorconfig.NewCachedParser(),
+	}
 
 	if !utils.IsRegularFile(configPath) {
 		return &config, fmt.Errorf("No file found at %s", configPath)
@@ -197,7 +204,8 @@ func (c *Config) Merge(config Config) {
 	c.Logger = logger.Logger{
 		Verbosee: c.Verbose || config.Verbose,
 		Debugg:   c.Debug || config.Debug,
-		NoColor:  c.NoColor || config.NoColor}
+		NoColor:  c.NoColor || config.NoColor,
+	}
 }
 
 // mergeDisabled merges the disabled checks into the config
