@@ -7,8 +7,6 @@ name: Publish Docker image
 
 on:
   push:
-    # branches:
-    #  - 'main'
     tags:
       - "*.*.*"
   pull_request:
@@ -35,6 +33,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Log in to Docker Hub
+        if: ${{ github.ref_name == 'main' }}
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
