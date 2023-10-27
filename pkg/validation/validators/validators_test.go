@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/editorconfig-checker/editorconfig-checker/pkg/config"
+	"github.com/editorconfig-checker/editorconfig-checker/v2/pkg/config"
 )
 
 func TestFinalNewline(t *testing.T) {

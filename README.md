@@ -5,7 +5,7 @@
 [![ci](https://github.com/editorconfig-checker/editorconfig-checker/actions/workflows/ci.yml/badge.svg)](https://github.com/editorconfig-checker/editorconfig-checker/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/editorconfig-checker/editorconfig-checker/branch/main/graph/badge.svg)](https://codecov.io/gh/editorconfig-checker/editorconfig-checker)
 [![Hits-of-Code](https://hitsofcode.com/github/editorconfig-checker/editorconfig-checker)](https://hitsofcode.com/view/github/editorconfig-checker/editorconfig-checker)
-[![Go Report Card](https://goreportcard.com/badge/github.com/editorconfig-checker/editorconfig-checker)](https://goreportcard.com/report/github.com/editorconfig-checker/editorconfig-checker)
+[![Go Report Card](https://goreportcard.com/badge/github.com/editorconfig-checker/editorconfig-checker/v2)](https://goreportcard.com/report/github.com/editorconfig-checker/editorconfig-checker/v2)
 
 ![Logo](docs/logo.png)
 
@@ -66,7 +66,7 @@ tar xzf ec-$OS-$ARCH.tar.gz && \
 
 Grab a binary from the [release page](https://github.com/editorconfig-checker/editorconfig-checker/releases).
 
-If you have go installed you can run `go get github.com/editorconfig-checker/editorconfig-checker` and run `make build` inside the project folder.
+If you have go installed you can run `go get github.com/editorconfig-checker/editorconfig-checker/v2` and run `make build` inside the project folder.
 This will place a binary called `ec` into the `bin` directory.
 
 If you are using Arch Linux, you can use [pacman](https://wiki.archlinux.org/title/Pacman) to install from [extra repository](https://archlinux.org/packages/extra/x86_64/editorconfig-checker/):
@@ -87,7 +87,7 @@ paru -S editorconfig-checker-git
 If go 1.16 or greater is installed, you can also install it globally via `go install`:
 
 ```shell
-go install github.com/editorconfig-checker/editorconfig-checker/cmd/editorconfig-checker@latest
+go install github.com/editorconfig-checker/editorconfig-checker/v2/cmd/editorconfig-checker@latest
 ```
 
 ## Usage

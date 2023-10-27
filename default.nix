@@ -21,7 +21,7 @@ buildGoPackage rec {
 
   name = "editorconfig-checker-${version}";
 
-  goPackagePath = "github.com/editorconfig-checker/editorconfig-checker";
+  goPackagePath = "github.com/editorconfig-checker/editorconfig-checker/v2";
 
   src = lib.cleanSourceWith {
     filter = name: type: builtins.match ".*tests.*" name == null;

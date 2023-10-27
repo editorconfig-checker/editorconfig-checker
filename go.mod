@@ -1,4 +1,4 @@
-module github.com/editorconfig-checker/editorconfig-checker
+module github.com/editorconfig-checker/editorconfig-checker/v2
 
 go 1.21
 

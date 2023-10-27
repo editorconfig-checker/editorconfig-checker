@@ -6,12 +6,12 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/editorconfig-checker/editorconfig-checker/pkg/config"
-	"github.com/editorconfig-checker/editorconfig-checker/pkg/error"
-	"github.com/editorconfig-checker/editorconfig-checker/pkg/files"
-	"github.com/editorconfig-checker/editorconfig-checker/pkg/logger"
-	"github.com/editorconfig-checker/editorconfig-checker/pkg/utils"
-	"github.com/editorconfig-checker/editorconfig-checker/pkg/validation"
+	"github.com/editorconfig-checker/editorconfig-checker/v2/pkg/config"
+	"github.com/editorconfig-checker/editorconfig-checker/v2/pkg/error"
+	"github.com/editorconfig-checker/editorconfig-checker/v2/pkg/files"
+	"github.com/editorconfig-checker/editorconfig-checker/v2/pkg/logger"
+	"github.com/editorconfig-checker/editorconfig-checker/v2/pkg/utils"
+	"github.com/editorconfig-checker/editorconfig-checker/v2/pkg/validation"
 )
 
 // version is used vor the help
