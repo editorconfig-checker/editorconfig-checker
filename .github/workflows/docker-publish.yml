@@ -43,7 +43,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ format('{0}/editorconfig-checker', secrets.DOCKER_USERNAME || 'mstruebing') }}
+          images: ${{ format('{0}/editorconfig-checker', secrets.DOCKER_USERNAME || 'dev') }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
@@ -52,7 +52,7 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
             ${{ steps.meta.outputs.tags }}
-            ${{ secrets.DOCKER_USERNAME }}/editorconfig-checker:latest
+            ${{ secrets.DOCKER_USERNAME || 'dev' }}/editorconfig-checker:latest
           labels: ${{ steps.meta.outputs.labels }}
           platforms: |
             linux/amd64
