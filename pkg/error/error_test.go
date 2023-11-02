@@ -4,7 +4,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/editorconfig-checker/editorconfig-checker/pkg/config"
+	"github.com/editorconfig-checker/editorconfig-checker/v2/pkg/config"
 )
 
 func TestGetErrorCount(t *testing.T) {
