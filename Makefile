@@ -85,7 +85,7 @@ _checkout:
 
 _tag_version: current_version
 	@read -p "Enter version to release: " version && \
-	[[ $$version == v* ]]  && \ # check that there is leading v in the version
+	[[ $$version == v* ]]  && \
 	echo $${version} > VERSION && \
 	sed -i "s/VERSION=".*"/VERSION=\"$${version}\"/" ./README.md && \
 	sed -i "s/\"Version\": \".*\",/\"Version\": \"$${version}\",/" .ecrc && \
