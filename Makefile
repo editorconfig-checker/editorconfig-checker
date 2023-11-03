@@ -78,6 +78,7 @@ current_version: ## Display current version
 _do_release: _checkout clean _tag_version build run _build-all-binaries _compress-all-binaries
 	git checkout main
 	git merge --no-ff release
+	exit 1
 	git push origin main && git push origin main --tags
 
 _checkout:
@@ -85,6 +86,7 @@ _checkout:
 
 _tag_version: current_version
 	@read -p "Enter version to release: " version && \
+	[[ $$version == v* ]]  && \
 	echo $${version} > VERSION && \
 	sed -i "s/VERSION=".*"/VERSION=\"$${version}\"/" ./README.md && \
 	sed -i "s/\"Version\": \".*\",/\"Version\": \"$${version}\",/" .ecrc && \

@@ -83,7 +83,7 @@ func TestMerge(t *testing.T) {
 
 	mergeConfig = Config{
 		ShowVersion:         true,
-		Version:             "2.7.2",
+		Version:             "v2.7.3",
 		Help:                true,
 		DryRun:              true,
 		Path:                "some-other",
@@ -175,7 +175,7 @@ func TestGetAsString(t *testing.T) {
 	_ = c.Parse()
 
 	actual := c.GetAsString()
-	expected := "Config: {ShowVersion:false Help:false DryRun:false Path:../../.ecrc Version:2.7.2 Verbose:false Debug:false IgnoreDefaults:false SpacesAftertabs:false NoColor:false Exclude:[testfiles testdata] AllowedContentTypes:[text/ application/octet-stream application/ecmascript application/json application/x-ndjson application/xml +json +xml] PassedFiles:[] Disable:{EndOfLine:false Indentation:false InsertFinalNewline:false TrimTrailingWhitespace:false IndentSize:false MaxLineLength:false} Logger:{Verbosee:false Debugg:false NoColor:false} EditorconfigConfig:0x"
+	expected := "Config: {ShowVersion:false Help:false DryRun:false Path:../../.ecrc Version:v2.7.3 Verbose:false Debug:false IgnoreDefaults:false SpacesAftertabs:false NoColor:false Exclude:[testfiles testdata] AllowedContentTypes:[text/ application/octet-stream application/ecmascript application/json application/x-ndjson application/xml +json +xml] PassedFiles:[] Disable:{EndOfLine:false Indentation:false InsertFinalNewline:false TrimTrailingWhitespace:false IndentSize:false MaxLineLength:false} Logger:{Verbosee:false Debugg:false NoColor:false} EditorconfigConfig:0x"
 
 	if !strings.HasPrefix(actual, expected) {
 		t.Errorf("Expected: %v, got: %v ", expected, actual)
