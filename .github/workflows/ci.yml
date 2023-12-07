@@ -15,7 +15,7 @@ jobs:
           fetch-depth: 0
       - uses: wagoid/commitlint-github-action@v5.4.4
         if: ${{ github.ref != 'refs/heads/main' }}
-      - uses: actions/setup-go@v4
+      - uses: actions/setup-go@v5
         with:
           go-version-file: "go.mod"
       - run: make build
