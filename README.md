@@ -112,6 +112,8 @@ USAGE:
         show which files would be checked
   -exclude string
         a regex which files should be excluded from checking - needs to be a valid regular expression
+  -format
+        specifies the output format, see "Formats" below for more information
   -h    print the help
   -help
         print the help
@@ -131,6 +133,14 @@ USAGE:
 If you run this tool from a repository root it will check all files which are added to the git repository and are text files. If the tool isn't able to determine a file type it will be added to be checked too.
 
 If you run this tool from a normal directory it will check all files which are text files. If the tool isn't able to determine a file type it will be added to be checked too.
+
+### Formats
+
+The following output formats are supported:
+
+- **default**: Plain text, human readable output.
+- **gcc**: GCC compatible output. Useful for editors that support compiling and showing syntax errors.
+           <file>:<line>:<column>: <type>: <message>
 
 ## Configuration
 

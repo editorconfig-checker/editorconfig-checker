@@ -42,14 +42,25 @@ func PrintErrors(errors []ValidationErrors, config config.Config) {
 				continue
 			}
 
-			config.Logger.Warning(fmt.Sprintf("%s:", relativeFilePath))
-			for _, singleError := range fileErrors.Errors {
-				if singleError.LineNumber != -1 {
-					config.Logger.Error(fmt.Sprintf("\t%d: %s", singleError.LineNumber, singleError.Message))
-				} else {
-					config.Logger.Error(fmt.Sprintf("\t%s", singleError.Message))
+			if config.Format == "gcc" {
+				// gcc: A format mimicking the error format from GCC.
+				for _, singleError := range fileErrors.Errors {
+					var lineNo = 0
+					if singleError.LineNumber > 0 {
+						lineNo = singleError.LineNumber
+					}
+					config.Logger.Error(fmt.Sprintf("%s:%d:%d: %s: %s", relativeFilePath, lineNo, 0, "error", singleError.Message))
 				}
-
+			} else {
+				// default: A human readable text format.
+				config.Logger.Warning(fmt.Sprintf("%s:", relativeFilePath))
+				for _, singleError := range fileErrors.Errors {
+					if singleError.LineNumber != -1 {
+						config.Logger.Error(fmt.Sprintf("\t%d: %s", singleError.LineNumber, singleError.Message))
+					} else {
+						config.Logger.Error(fmt.Sprintf("\t%s", singleError.Message))
+					}
+				}
 			}
 		}
 	}
