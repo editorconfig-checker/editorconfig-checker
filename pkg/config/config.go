@@ -82,6 +82,7 @@ type Config struct {
 	// CONFIG FILE
 	Version             string
 	Verbose             bool
+	Format              string
 	Debug               bool
 	IgnoreDefaults      bool
 	SpacesAftertabs     bool
@@ -166,6 +167,10 @@ func (c *Config) Merge(config Config) {
 
 	if config.Verbose {
 		c.Verbose = config.Verbose
+	}
+
+	if config.Format != "" {
+		c.Format = config.Format
 	}
 
 	if config.Debug {
@@ -254,6 +259,7 @@ func (c Config) Save(version string) error {
 	type writtenConfig struct {
 		Version             string
 		Verbose             bool
+		Format              string
 		Debug               bool
 		IgnoreDefaults      bool
 		SpacesAftertabs     bool

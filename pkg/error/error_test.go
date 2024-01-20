@@ -152,6 +152,9 @@ func TestPrintErrors(t *testing.T) {
 	}
 
 	// wannabe test
-	config := config.Config{}
-	PrintErrors(input, config)
+	config1 := config.Config{}
+	PrintErrors(input, config1)
+
+	config2 := config.Config{Format: "gcc"}
+	PrintErrors(input, config2)
 }
