@@ -54,7 +54,7 @@ Unsupported features are:
 ## Quickstart
 
 ```shell
-VERSION="2.7.2"
+VERSION="2.8.0"
 OS="linux"
 ARCH="amd64"
 curl -O -L -C - https://github.com/editorconfig-checker/editorconfig-checker/releases/download/$VERSION/ec-$OS-$ARCH.tar.gz && \
