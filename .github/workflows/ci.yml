@@ -26,4 +26,4 @@ jobs:
       - uses: heinrichreimer/github-changelog-generator-action@v2.1.1
         with:
           token: ${{ secrets.GH_TOKEN_PAT }}
-      - uses: codecov/codecov-action@v3
+      - uses: codecov/codecov-action@v4
