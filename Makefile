@@ -85,6 +85,7 @@ _checkout:
 
 _tag_version: current_version
 	@read -p "Enter version to release: " version && \
+	[[ $$version == v* ]]  && \
 	echo $${version} > VERSION && \
 	sed -i "s/VERSION=".*"/VERSION=\"$${version}\"/" ./README.md && \
 	sed -i "s/\"Version\": \".*\",/\"Version\": \"$${version}\",/" .ecrc && \
@@ -160,10 +161,10 @@ _compress-all-binaries:
 _release_dockerfile: _build_dockerfile _push_dockerfile
 
 _build_dockerfile:
-	docker build -t mstruebing/editorconfig-checker:$(shell grep 'const version' cmd/editorconfig-checker/main.go | sed 's/.*"\(.*\)"/\1/') .
+	docker buildx build -t mstruebing/editorconfig-checker:$(shell cat VERSION) .
 
 _push_dockerfile:
-	docker push mstruebing/editorconfig-checker:$(shell grep 'const version' cmd/editorconfig-checker/main.go | sed 's/.*"\(.*\)"/\1/')
+	docker push mstruebing/editorconfig-checker:$(shell cat VERSION)
 
 nix-build: ## Build for nix
 	nix-build -E 'with import <nixpkgs> { }; callPackage ./default.nix {}'
