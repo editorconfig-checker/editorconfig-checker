@@ -75,7 +75,7 @@ func AddToFiles(filePaths []string, filePath string, config config.Config) []str
 
 // GetFiles returns all files which should be checked
 func GetFiles(config config.Config) ([]string, error) {
-	var filePaths []string
+	filePaths := make([]string, 0)
 
 	// Handle explicit passed files
 	if len(config.PassedFiles) != 0 {
@@ -92,7 +92,7 @@ func GetFiles(config config.Config) ([]string, error) {
 					}
 
 					if fi.Mode().IsRegular() {
-						filePaths = AddToFiles(filePaths, path, config)
+						filePaths = AddToFiles(filePaths, filepath.Join(passedFile, path), config)
 					}
 
 					return nil
