@@ -20,7 +20,7 @@ jobs:
           go-version-file: "go.mod"
       - run: make build
       - run: make test
-      - run: ./bin/ec -config stuff.json -init && diff stuff.json ./testfiles/generated-config.json && rm stuff.json
+      - run: ./bin/editorconfig-checker -config stuff.json -init && diff stuff.json ./testfiles/generated-config.json && rm stuff.json
       - run: make run
       - run: make bench
       - uses: heinrichreimer/github-changelog-generator-action@v2.1.1
