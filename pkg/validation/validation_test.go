@@ -127,7 +127,7 @@ func TestValidateFile(t *testing.T) {
 	configuration = config.Config{Verbose: true}
 	result = ValidateFile("./../../testfiles/line-to-long.txt", configuration)
 	if len(result) != 1 {
-		t.Error("Should have no error, got", result)
+		t.Error("Should have one error, got", result)
 	}
 
 	configuration = config.Config{Verbose: true}
@@ -135,5 +135,11 @@ func TestValidateFile(t *testing.T) {
 	result = ValidateFile("./../../testfiles/line-to-long.txt", configuration)
 	if len(result) != 0 {
 		t.Error("Should have no error, got", result)
+	}
+
+	configuration = config.Config{Verbose: true}
+	result = ValidateFile("./../../testfiles/spaces-with-tab.c", configuration)
+	if len(result) != 1 {
+		t.Error("Should have one error, got", result)
 	}
 }
