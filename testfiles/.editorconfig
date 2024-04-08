@@ -17,3 +17,7 @@ end_of_line = lf
 
 [line-to-long.txt]
 max_line_length = 2
+
+[spaces-with-tab.c]
+indent_style = space
+indent_size = unset
