@@ -4,8 +4,8 @@ package error
 import (
 	"fmt"
 
-	"github.com/editorconfig-checker/editorconfig-checker/v2/pkg/config"
-	"github.com/editorconfig-checker/editorconfig-checker/v2/pkg/files"
+	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/config"
+	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/files"
 )
 
 // ValidationError represents one validation error

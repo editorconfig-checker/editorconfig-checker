@@ -16,8 +16,8 @@ import (
 
 	"github.com/editorconfig/editorconfig-core-go/v2"
 
-	"github.com/editorconfig-checker/editorconfig-checker/v2/pkg/config"
-	"github.com/editorconfig-checker/editorconfig-checker/v2/pkg/utils"
+	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/config"
+	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/utils"
 )
 
 const DefaultMimeType = "application/octet-stream"
