@@ -1,7 +1,6 @@
 package config
 
 import (
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -158,7 +157,7 @@ func TestParse(t *testing.T) {
 }
 
 func TestSave(t *testing.T) {
-	dir, _ := ioutil.TempDir("", "example")
+	dir, _ := os.MkdirTemp("", "example")
 	defer os.RemoveAll(dir)
 	configFile := filepath.Join(dir, "config")
 	c, _ := NewConfig(configFile)
