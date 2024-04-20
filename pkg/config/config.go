@@ -4,7 +4,7 @@ package config
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"os"
 	"strings"
 
 	"github.com/editorconfig/editorconfig-core-go/v2"
@@ -134,7 +134,7 @@ func NewConfig(configPath string) (*Config, error) {
 // Parse parses a config at a given path
 func (c *Config) Parse() error {
 	if c.Path != "" {
-		configString, err := ioutil.ReadFile(c.Path)
+		configString, err := os.ReadFile(c.Path)
 		if err != nil {
 			return err
 		}
@@ -276,7 +276,7 @@ func (c Config) Save(version string) error {
 
 	configJSON, _ := json.MarshalIndent(writtenConfig{Version: version}, "", "  ")
 	configString := strings.Replace(string(configJSON[:]), "null", "[]", -1)
-	err := ioutil.WriteFile(c.Path, []byte(configString), 0644)
+	err := os.WriteFile(c.Path, []byte(configString), 0644)
 
 	return err
 }
