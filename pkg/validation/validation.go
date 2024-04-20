@@ -8,11 +8,11 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/editorconfig-checker/editorconfig-checker/v2/pkg/config"
-	"github.com/editorconfig-checker/editorconfig-checker/v2/pkg/encoding"
-	"github.com/editorconfig-checker/editorconfig-checker/v2/pkg/error"
-	"github.com/editorconfig-checker/editorconfig-checker/v2/pkg/files"
-	"github.com/editorconfig-checker/editorconfig-checker/v2/pkg/validation/validators"
+	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/config"
+	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/encoding"
+	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/error"
+	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/files"
+	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/validation/validators"
 	"github.com/editorconfig/editorconfig-core-go/v2"
 )
 

@@ -3,7 +3,7 @@ package validation
 import (
 	"testing"
 
-	"github.com/editorconfig-checker/editorconfig-checker/v2/pkg/config"
+	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/config"
 )
 
 func TestProcessValidation(t *testing.T) {
