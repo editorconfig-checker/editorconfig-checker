@@ -46,7 +46,7 @@ jobs:
           images: ${{ format('{0}/editorconfig-checker', secrets.DOCKER_USERNAME || 'dev') }}
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
