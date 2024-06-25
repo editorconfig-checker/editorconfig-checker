@@ -93,21 +93,36 @@ func TrailingWhitespace(line string, trimTrailingWhitespace bool) error {
 
 // FinalNewline validates if a file has a final and correct newline
 func FinalNewline(fileContent string, insertFinalNewline string, endOfLine string) error {
-	if endOfLine != "" && insertFinalNewline == "true" {
-		expectedEolChar := utils.GetEolChar(endOfLine)
-		if !strings.HasSuffix(fileContent, expectedEolChar) || (expectedEolChar == "\n" && strings.HasSuffix(fileContent, "\r\n")) {
-			return errors.New("Wrong line endings or no final newline")
-		}
-	} else {
-		regexpPattern := "(\n|\r|\r\n)$"
-		hasFinalNewline, _ := regexp.MatchString(regexpPattern, fileContent)
+	if insertFinalNewline == "" {
+		return nil
+	}
 
-		if insertFinalNewline == "false" && hasFinalNewline {
+	var expectedEolChars string
+
+	if endOfLine != "" {
+		expectedEolChars = utils.GetEolChar(endOfLine)
+	} else {
+		expectedEolChars = `\r\n|\r|\n`
+	}
+
+	re := regexp.MustCompile("(?:" + expectedEolChars + ")((?:" + expectedEolChars + ")?)$")
+	matches := re.FindStringSubmatch(fileContent)
+
+	unexpectedCrLf := expectedEolChars == "\n" && strings.HasSuffix(fileContent, "\r\n")
+
+	if insertFinalNewline == "false" {
+		if matches != nil && !unexpectedCrLf {
 			return errors.New("No final newline expected")
 		}
+	}
 
-		if insertFinalNewline == "true" && !hasFinalNewline {
+	if insertFinalNewline == "true" {
+		if matches == nil || unexpectedCrLf {
 			return errors.New("Final newline expected")
+		}
+
+		if matches[1] != "" {
+			return errors.New("Multiple newlines at end of file")
 		}
 	}
 
