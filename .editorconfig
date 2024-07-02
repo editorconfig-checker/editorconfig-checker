@@ -27,3 +27,6 @@ indent_size = 2
 [Makefile]
 indent_style = tab
 indent_size = unset
+
+[generated-config.json]
+insert_final_newline = false
