@@ -142,7 +142,7 @@ _build-all-binaries:
 	$(call _build_target,openbsd/amd64)
 	$(call _build_target,openbsd/arm)
 	$(call _build_target,openbsd/arm64)
-	$(call _build_target,openbsd/mips64)
+	# $(call _build_target,openbsd/mips64)
 	$(call _build_target,plan9/386)
 	$(call _build_target,plan9/amd64)
 	$(call _build_target,plan9/arm)
