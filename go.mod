@@ -6,7 +6,7 @@ require (
 	github.com/baulk/chardet v0.1.0
 	github.com/editorconfig/editorconfig-core-go/v2 v2.6.2
 	github.com/gabriel-vasile/mimetype v1.4.5
-	golang.org/x/text v0.16.0
+	golang.org/x/text v0.17.0
 )
 
 require (
