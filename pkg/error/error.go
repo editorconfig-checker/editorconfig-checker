@@ -10,8 +10,9 @@ import (
 
 // ValidationError represents one validation error
 type ValidationError struct {
-	LineNumber int
-	Message    error
+	LineNumber        int
+	Message           error
+	ConsecuitiveCount int
 }
 
 // ValidationErrors represents which errors occurred in a file
@@ -29,6 +30,44 @@ func GetErrorCount(errors []ValidationErrors) int {
 	}
 
 	return errorCount
+}
+
+func ConsolidateErrors(errors []ValidationError, config config.Config) []ValidationError {
+	var lineLessErrors []ValidationError
+	var errorsWithLines []ValidationError
+
+	// filter the errors, so we do not need to care about LineNumber == -1 in the loop below
+	for _, singleError := range errors {
+		if singleError.LineNumber == -1 {
+			lineLessErrors = append(lineLessErrors, singleError)
+		} else {
+			errorsWithLines = append(errorsWithLines, singleError)
+		}
+	}
+
+	config.Logger.Debug("sorted errors: %d with line number -1, %d with a line number", len(lineLessErrors), len(errorsWithLines))
+
+	var consolidatedErrors []ValidationError
+
+	// scan through the errors
+	for i := 0; i < len(errorsWithLines); i++ {
+		thisError := errorsWithLines[i]
+		config.Logger.Debug("investigating error %d(%s)", i, thisError.Message)
+		// scan through the errors after the current one
+		for j, nextError := range errorsWithLines[i+1:] {
+			config.Logger.Debug("comparing against error %d(%s)", j, nextError.Message)
+			if nextError.Message.Error() == thisError.Message.Error() {
+				thisError.ConsecuitiveCount++ // keep track of how many consecutive lines we've seen
+				i = i + j + 1                 // make sure the outer loop jumps over the consecutive errors we just found
+			} else {
+				break // if they are different errors we can stop comparing messages
+			}
+		}
+
+		consolidatedErrors = append(consolidatedErrors, thisError)
+	}
+
+	return append(lineLessErrors, consolidatedErrors...)
 }
 
 // PrintErrors prints the errors to the console
@@ -54,9 +93,13 @@ func PrintErrors(errors []ValidationErrors, config config.Config) {
 			} else {
 				// default: A human readable text format.
 				config.Logger.Warning(fmt.Sprintf("%s:", relativeFilePath))
-				for _, singleError := range fileErrors.Errors {
+				for _, singleError := range ConsolidateErrors(fileErrors.Errors, config) {
 					if singleError.LineNumber != -1 {
-						config.Logger.Error(fmt.Sprintf("\t%d: %s", singleError.LineNumber, singleError.Message))
+						if singleError.ConsecuitiveCount != 0 {
+							config.Logger.Error(fmt.Sprintf("\t%d-%d: %s", singleError.LineNumber, singleError.LineNumber+singleError.ConsecuitiveCount, singleError.Message))
+						} else {
+							config.Logger.Error(fmt.Sprintf("\t%d: %s", singleError.LineNumber, singleError.Message))
+						}
 					} else {
 						config.Logger.Error(fmt.Sprintf("\t%s", singleError.Message))
 					}
