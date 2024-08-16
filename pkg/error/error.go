@@ -21,6 +21,13 @@ type ValidationErrors struct {
 	Errors   []ValidationError
 }
 
+func (error1 *ValidationError) Equal(error2 ValidationError) bool {
+	return error1.Message.Error() == error2.Message.Error() &&
+		error1.LineNumber == error2.LineNumber &&
+		error1.ConsecuitiveCount == error2.ConsecuitiveCount
+
+}
+
 // GetErrorCount returns the amount of errors
 func GetErrorCount(errors []ValidationErrors) int {
 	var errorCount = 0

@@ -2,7 +2,7 @@ package error
 
 import (
 	"errors"
-	"reflect"
+	"slices"
 	"testing"
 
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/config"
@@ -137,7 +137,7 @@ func TestConsolidateErrors(t *testing.T) {
 
 	actual := ConsolidateErrors(input, config.Config{})
 
-	if !reflect.DeepEqual(expected, actual) {
+	if !slices.EqualFunc(expected, actual, func(e1 ValidationError, e2 ValidationError) bool { return e1.Equal(e2) }) {
 		t.Log("consolidation expectation          :", expected)
 		t.Log("consolidation actual returned value:", actual)
 		t.Error("returned list of validation errors deviated from the expected set")
