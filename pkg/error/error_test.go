@@ -129,7 +129,7 @@ func TestConsolidateErrors(t *testing.T) {
 
 	expected := []ValidationError{
 		{LineNumber: -1, Message: errors.New("file-level error")},
-		{LineNumber: 1, ConsecuitiveCount: 1, Message: errors.New("message kind one")},
+		{LineNumber: 1, ConsecutiveCount: 1, Message: errors.New("message kind one")},
 		{LineNumber: 4, Message: errors.New("message kind one")},
 		{LineNumber: 5, Message: errors.New("message kind two")},
 		{LineNumber: 6, Message: errors.New("message kind one")},
