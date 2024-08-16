@@ -157,4 +157,7 @@ func TestPrintErrors(t *testing.T) {
 
 	config2 := config.Config{Format: "gcc"}
 	PrintErrors(input, config2)
+
+	config3 := config.Config{Format: "github-actions"}
+	PrintErrors(input, config3)
 }

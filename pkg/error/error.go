@@ -81,6 +81,11 @@ func PrintErrors(errors []ValidationErrors, config config.Config) {
 				continue
 			}
 
+			// for these formats the errors need to be consolidated first.
+			if config.Format == "default" || config.Format == "github-actions" {
+				fileErrors.Errors = ConsolidateErrors(fileErrors.Errors, config)
+			}
+
 			if config.Format == "gcc" {
 				// gcc: A format mimicking the error format from GCC.
 				for _, singleError := range fileErrors.Errors {
@@ -90,10 +95,23 @@ func PrintErrors(errors []ValidationErrors, config config.Config) {
 					}
 					config.Logger.Error(fmt.Sprintf("%s:%d:%d: %s: %s", relativeFilePath, lineNo, 0, "error", singleError.Message))
 				}
+			} else if config.Format == "github-actions" {
+				// github-actions: A format dedicated for usage in Github Actions
+				for _, singleError := range fileErrors.Errors {
+					if singleError.LineNumber != -1 {
+						if singleError.ConsecuitiveCount != 0 {
+							config.Logger.Error(fmt.Sprintf("::error file=%s,line=%d,endLine=%d::%s", relativeFilePath, singleError.LineNumber, singleError.LineNumber+singleError.ConsecuitiveCount, singleError.Message))
+						} else {
+							config.Logger.Error(fmt.Sprintf("::error file=%s,line=%d::%s", relativeFilePath, singleError.LineNumber, singleError.Message))
+						}
+					} else {
+						config.Logger.Error(fmt.Sprintf("::error file=%s::%s", relativeFilePath, singleError.Message))
+					}
+				}
 			} else {
 				// default: A human readable text format.
 				config.Logger.Warning(fmt.Sprintf("%s:", relativeFilePath))
-				for _, singleError := range ConsolidateErrors(fileErrors.Errors, config) {
+				for _, singleError := range fileErrors.Errors {
 					if singleError.LineNumber != -1 {
 						if singleError.ConsecuitiveCount != 0 {
 							config.Logger.Error(fmt.Sprintf("\t%d-%d: %s", singleError.LineNumber, singleError.LineNumber+singleError.ConsecuitiveCount, singleError.Message))
