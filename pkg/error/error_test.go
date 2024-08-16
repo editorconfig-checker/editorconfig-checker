@@ -113,6 +113,38 @@ func TestGetErrorCount(t *testing.T) {
 	}
 }
 
+func TestValidationErrorEqual(t *testing.T) {
+	baseError := ValidationError{
+		LineNumber: -1,
+		Message:    errors.New("a message"),
+	}
+	wrongLineNumberError := ValidationError{
+		LineNumber: 2,
+		Message:    errors.New("a message"),
+	}
+	differentMessageError := ValidationError{
+		LineNumber: -1,
+		Message:    errors.New("different message"),
+	}
+	differentCountError := ValidationError{
+		LineNumber:       -1,
+		Message:          errors.New("a message"),
+		ConsecutiveCount: 1,
+	}
+	if !baseError.Equal(baseError) {
+		t.Error("failed to detect an error being equal to itself")
+	}
+	if baseError.Equal(wrongLineNumberError) {
+		t.Error("failed to detect a difference in the LineNumber")
+	}
+	if baseError.Equal(differentMessageError) {
+		t.Error("failed to detect a difference in the Message")
+	}
+	if baseError.Equal(differentCountError) {
+		t.Error("failed to detect a difference in the ConsequtiveCount")
+	}
+}
+
 func TestConsolidateErrors(t *testing.T) {
 	input := []ValidationError{
 		// two messages that become one block
