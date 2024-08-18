@@ -127,9 +127,9 @@ func TestValidationErrorEqual(t *testing.T) {
 		Message:    errors.New("different message"),
 	}
 	differentCountError := ValidationError{
-		LineNumber:       -1,
-		Message:          errors.New("a message"),
-		ConsecutiveCount: 1,
+		LineNumber:                    -1,
+		Message:                       errors.New("a message"),
+		AdditionalIdenticalErrorCount: 1,
 	}
 	if !baseError.Equal(baseError) {
 		t.Error("failed to detect an error being equal to itself")
@@ -161,7 +161,7 @@ func TestConsolidateErrors(t *testing.T) {
 
 	expected := []ValidationError{
 		{LineNumber: -1, Message: errors.New("file-level error")},
-		{LineNumber: 1, ConsecutiveCount: 1, Message: errors.New("message kind one")},
+		{LineNumber: 1, AdditionalIdenticalErrorCount: 1, Message: errors.New("message kind one")},
 		{LineNumber: 4, Message: errors.New("message kind one")},
 		{LineNumber: 5, Message: errors.New("message kind two")},
 		{LineNumber: 6, Message: errors.New("message kind one")},

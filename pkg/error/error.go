@@ -10,9 +10,9 @@ import (
 
 // ValidationError represents one validation error
 type ValidationError struct {
-	LineNumber       int
-	Message          error
-	ConsecutiveCount int
+	LineNumber                    int
+	Message                       error
+	AdditionalIdenticalErrorCount int
 }
 
 // ValidationErrors represents which errors occurred in a file
@@ -24,7 +24,7 @@ type ValidationErrors struct {
 func (error1 *ValidationError) Equal(error2 ValidationError) bool {
 	return error1.Message.Error() == error2.Message.Error() &&
 		error1.LineNumber == error2.LineNumber &&
-		error1.ConsecutiveCount == error2.ConsecutiveCount
+		error1.AdditionalIdenticalErrorCount == error2.AdditionalIdenticalErrorCount
 
 }
 
@@ -63,9 +63,9 @@ func ConsolidateErrors(errors []ValidationError, config config.Config) []Validat
 		// scan through the errors after the current one
 		for j, nextError := range errorsWithLines[i+1:] {
 			config.Logger.Debug("comparing against error %d(%s)", j, nextError.Message)
-			if nextError.Message.Error() == thisError.Message.Error() && nextError.LineNumber == thisError.LineNumber+thisError.ConsecutiveCount+1 {
-				thisError.ConsecutiveCount++ // keep track of how many consecutive lines we've seen
-				i = i + j + 1                // make sure the outer loop jumps over the consecutive errors we just found
+			if nextError.Message.Error() == thisError.Message.Error() && nextError.LineNumber == thisError.LineNumber+thisError.AdditionalIdenticalErrorCount+1 {
+				thisError.AdditionalIdenticalErrorCount++ // keep track of how many consecutive lines we've seen
+				i = i + j + 1                             // make sure the outer loop jumps over the consecutive errors we just found
 			} else {
 				break // if they are different errors we can stop comparing messages
 			}
@@ -106,8 +106,8 @@ func PrintErrors(errors []ValidationErrors, config config.Config) {
 				// github-actions: A format dedicated for usage in Github Actions
 				for _, singleError := range fileErrors.Errors {
 					if singleError.LineNumber != -1 {
-						if singleError.ConsecutiveCount != 0 {
-							config.Logger.Error(fmt.Sprintf("::error file=%s,line=%d,endLine=%d::%s", relativeFilePath, singleError.LineNumber, singleError.LineNumber+singleError.ConsecutiveCount, singleError.Message))
+						if singleError.AdditionalIdenticalErrorCount != 0 {
+							config.Logger.Error(fmt.Sprintf("::error file=%s,line=%d,endLine=%d::%s", relativeFilePath, singleError.LineNumber, singleError.LineNumber+singleError.AdditionalIdenticalErrorCount, singleError.Message))
 						} else {
 							config.Logger.Error(fmt.Sprintf("::error file=%s,line=%d::%s", relativeFilePath, singleError.LineNumber, singleError.Message))
 						}
@@ -120,8 +120,8 @@ func PrintErrors(errors []ValidationErrors, config config.Config) {
 				config.Logger.Warning(fmt.Sprintf("%s:", relativeFilePath))
 				for _, singleError := range fileErrors.Errors {
 					if singleError.LineNumber != -1 {
-						if singleError.ConsecutiveCount != 0 {
-							config.Logger.Error(fmt.Sprintf("\t%d-%d: %s", singleError.LineNumber, singleError.LineNumber+singleError.ConsecutiveCount, singleError.Message))
+						if singleError.AdditionalIdenticalErrorCount != 0 {
+							config.Logger.Error(fmt.Sprintf("\t%d-%d: %s", singleError.LineNumber, singleError.LineNumber+singleError.AdditionalIdenticalErrorCount, singleError.Message))
 						} else {
 							config.Logger.Error(fmt.Sprintf("\t%d: %s", singleError.LineNumber, singleError.Message))
 						}
