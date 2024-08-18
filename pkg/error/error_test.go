@@ -152,7 +152,7 @@ func TestConsolidateErrors(t *testing.T) {
 		{LineNumber: 2, Message: errors.New("message kind one")},
 		// one message with a good line between it and the last bad line, but repeating the message
 		{LineNumber: 4, Message: errors.New("message kind one")},
-		// one message that breaks the continousnes of line 4 to line 6
+		// one message that breaks the continuousness of line 4 to line 6
 		{LineNumber: 5, Message: errors.New("message kind two")},
 		{LineNumber: 6, Message: errors.New("message kind one")},
 		// one message without a line number, that will become sorted to the top
