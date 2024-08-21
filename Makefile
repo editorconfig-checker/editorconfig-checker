@@ -155,6 +155,7 @@ _build-all-binaries:
 _compress-all-binaries:
 	for f in bin/*; do      \
 		tar czf $$f.tar.gz $$f;    \
+		zip $$f.zip $$f;    \
 		rm -f $$f;    \
 	done
 
