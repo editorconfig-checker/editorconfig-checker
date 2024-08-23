@@ -200,6 +200,16 @@ const myTemplateString = `
      wrongly indented line because it needs to be` // editorconfig-checker-disable-line
 ```
 
+Alternatively, you can use `editorconfig-checker-disable-next-line` to skip the line that comes after this comment.
+This modifier is present to improve readability, or because your sometimes have no other choice because of your own/language constraints.
+
+```javascript
+// editorconfig-checker-disable-next-line used because blah blah blah what ever the reason blah
+const myTemplateString = `a line that is (...) longer (...) than ... usual` // or with a very long inline comment
+```
+
+Please note that using `editorconfig-checker-disable-next-line` has only an effect on the next line, so it will report if the line where you added the modifier doesn't comply.
+
 ### Excluding Blocks
 
 To temporarily disable all checks, add a comment containing `editorconfig-checker-disable`. Re-enable with a comment containing `editorconfig-checker-enable`

@@ -1,0 +1,13 @@
+hello
+whatever // editorconfig-checker-disable-next-line
+  world
+what
+
+# crazy use cases, but people are crazy out there
+hello      // editorconfig-checker-disable-next-line
+  whatever // editorconfig-checker-disable-next-line
+  world
+what
+
+hello
+// editorconfig-checker-disable-next-line // using it on last line should not lead to problem

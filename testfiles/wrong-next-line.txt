@@ -1,0 +1,4 @@
+hello
+  world // editorconfig-checker-disable-next-line has no effect on current line
+
+  world // editorconfig-checker-disable-next-line has no effect on current line, even it's the last one
