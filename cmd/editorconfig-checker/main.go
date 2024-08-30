@@ -122,10 +122,11 @@ func main() {
 	}
 
 	errors := validation.ProcessValidation(filePaths, config)
-	errorCount := error.GetErrorCount(errors)
 
+	formattedErrors := error.FormatErrors(errors, config)
+	errorCount := len(formattedErrors)
 	if errorCount != 0 {
-		error.PrintErrors(errors, config)
+		config.Logger.PrintLogMessages(formattedErrors)
 		config.Logger.Error(fmt.Sprintf("\n%d errors found", errorCount))
 	}
 

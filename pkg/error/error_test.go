@@ -218,7 +218,7 @@ func TestConsolidatingInterleavedErrors(t *testing.T) {
 	}
 }
 
-func TestPrintErrors(t *testing.T) {
+func TestFormatErrors(t *testing.T) {
 	input := []ValidationErrors{
 		{
 			FilePath: "some/path",
@@ -270,11 +270,11 @@ func TestPrintErrors(t *testing.T) {
 
 	// wannabe test
 	config1 := config.Config{}
-	PrintErrors(input, config1)
+	FormatErrors(input, config1)
 
 	config2 := config.Config{Format: "gcc"}
-	PrintErrors(input, config2)
+	FormatErrors(input, config2)
 
 	config3 := config.Config{Format: "github-actions"}
-	PrintErrors(input, config3)
+	FormatErrors(input, config3)
 }

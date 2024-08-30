@@ -6,6 +6,7 @@ import (
 
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/config"
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/files"
+	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/logger"
 )
 
 // ValidationError represents one validation error
@@ -77,14 +78,15 @@ func ConsolidateErrors(errors []ValidationError, config config.Config) []Validat
 	return append(lineLessErrors, consolidatedErrors...)
 }
 
-// PrintErrors prints the errors to the console
-func PrintErrors(errors []ValidationErrors, config config.Config) {
+// FormatErrors prints the errors to the console
+func FormatErrors(errors []ValidationErrors, config config.Config) []logger.LogMessage {
+	var formatted_errors []logger.LogMessage
 	for _, fileErrors := range errors {
 		if len(fileErrors.Errors) > 0 {
 			relativeFilePath, err := files.GetRelativePath(fileErrors.FilePath)
 
 			if err != nil {
-				config.Logger.Error(err.Error())
+				formatted_errors = append(formatted_errors, logger.LogMessage{Level: "error", Message: err.Error()})
 				continue
 			}
 
@@ -100,36 +102,37 @@ func PrintErrors(errors []ValidationErrors, config config.Config) {
 					if singleError.LineNumber > 0 {
 						lineNo = singleError.LineNumber
 					}
-					config.Logger.Error(fmt.Sprintf("%s:%d:%d: %s: %s", relativeFilePath, lineNo, 0, "error", singleError.Message))
+					formatted_errors = append(formatted_errors, logger.LogMessage{Level: "error", Message: fmt.Sprintf("%s:%d:%d: %s: %s", relativeFilePath, lineNo, 0, "error", singleError.Message)})
 				}
 			} else if config.Format == "github-actions" {
 				// github-actions: A format dedicated for usage in Github Actions
 				for _, singleError := range fileErrors.Errors {
 					if singleError.LineNumber != -1 {
 						if singleError.AdditionalIdenticalErrorCount != 0 {
-							config.Logger.Error(fmt.Sprintf("::error file=%s,line=%d,endLine=%d::%s", relativeFilePath, singleError.LineNumber, singleError.LineNumber+singleError.AdditionalIdenticalErrorCount, singleError.Message))
+							formatted_errors = append(formatted_errors, logger.LogMessage{Level: "error", Message: fmt.Sprintf("::error file=%s,line=%d,endLine=%d::%s", relativeFilePath, singleError.LineNumber, singleError.LineNumber+singleError.AdditionalIdenticalErrorCount, singleError.Message)})
 						} else {
-							config.Logger.Error(fmt.Sprintf("::error file=%s,line=%d::%s", relativeFilePath, singleError.LineNumber, singleError.Message))
+							formatted_errors = append(formatted_errors, logger.LogMessage{Level: "error", Message: fmt.Sprintf("::error file=%s,line=%d::%s", relativeFilePath, singleError.LineNumber, singleError.Message)})
 						}
 					} else {
-						config.Logger.Error(fmt.Sprintf("::error file=%s::%s", relativeFilePath, singleError.Message))
+						formatted_errors = append(formatted_errors, logger.LogMessage{Level: "error", Message: fmt.Sprintf("::error file=%s::%s", relativeFilePath, singleError.Message)})
 					}
 				}
 			} else {
 				// default: A human readable text format.
-				config.Logger.Warning(fmt.Sprintf("%s:", relativeFilePath))
+				formatted_errors = append(formatted_errors, logger.LogMessage{Level: "warning", Message: fmt.Sprintf("%s:", relativeFilePath)})
 				for _, singleError := range fileErrors.Errors {
 					if singleError.LineNumber != -1 {
 						if singleError.AdditionalIdenticalErrorCount != 0 {
-							config.Logger.Error(fmt.Sprintf("\t%d-%d: %s", singleError.LineNumber, singleError.LineNumber+singleError.AdditionalIdenticalErrorCount, singleError.Message))
+							formatted_errors = append(formatted_errors, logger.LogMessage{Level: "error", Message: fmt.Sprintf("\t%d-%d: %s", singleError.LineNumber, singleError.LineNumber+singleError.AdditionalIdenticalErrorCount, singleError.Message)})
 						} else {
-							config.Logger.Error(fmt.Sprintf("\t%d: %s", singleError.LineNumber, singleError.Message))
+							formatted_errors = append(formatted_errors, logger.LogMessage{Level: "error", Message: fmt.Sprintf("\t%d: %s", singleError.LineNumber, singleError.Message)})
 						}
 					} else {
-						config.Logger.Error(fmt.Sprintf("\t%s", singleError.Message))
+						formatted_errors = append(formatted_errors, logger.LogMessage{Level: "error", Message: fmt.Sprintf("\t%s", singleError.Message)})
 					}
 				}
 			}
 		}
 	}
+	return formatted_errors
 }
