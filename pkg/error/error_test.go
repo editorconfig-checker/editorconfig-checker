@@ -255,6 +255,17 @@ func TestPrintErrors(t *testing.T) {
 				},
 			},
 		},
+		{
+			FilePath: "some/file/with/consecutive/errors",
+			Errors: []ValidationError{
+				{LineNumber: 1, Message: errors.New("message kind one")},
+				{LineNumber: 2, Message: errors.New("message kind one")},
+				{LineNumber: 4, Message: errors.New("message kind one")},
+				{LineNumber: 5, Message: errors.New("message kind two")},
+				{LineNumber: 6, Message: errors.New("message kind one")},
+				{LineNumber: -1, Message: errors.New("file-level error")},
+			},
+		},
 	}
 
 	// wannabe test
