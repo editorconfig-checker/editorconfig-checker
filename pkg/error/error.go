@@ -89,7 +89,7 @@ func PrintErrors(errors []ValidationErrors, config config.Config) {
 			}
 
 			// for these formats the errors need to be consolidated first.
-			if config.Format == "default" || config.Format == "github-actions" {
+			if config.Format != "gcc" {
 				fileErrors.Errors = ConsolidateErrors(fileErrors.Errors, config)
 			}
 
