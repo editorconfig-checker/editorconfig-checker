@@ -1,0 +1,94 @@
+
+[TestPrintErrors - 1]
+[]logger.LogMessage{
+    {Level:"warning", Message:"../../../../../../proc/cpuinfo:"},
+    {Level:"error", Message:"\t1: WRONG"},
+    {Level:"warning", Message:"../../../../../../proc/cpuinfoNOT:"},
+    {Level:"error", Message:"\t1: WRONG"},
+    {Level:"warning", Message:"some/other/path:"},
+    {Level:"error", Message:"\tWRONG"},
+    {Level:"error", Message:"\t1: WRONG"},
+    {Level:"warning", Message:"some/file/with/consecutive/errors:"},
+    {Level:"error", Message:"\tfile-level error"},
+    {Level:"error", Message:"\t1-2: message kind one"},
+    {Level:"error", Message:"\t4: message kind one"},
+    {Level:"error", Message:"\t5: message kind two"},
+    {Level:"error", Message:"\t6: message kind one"},
+}
+---
+
+[TestPrintErrors - 2]
+[]logger.LogMessage{
+    {Level:"error", Message:"../../../../../../proc/cpuinfo:1:0: error: WRONG"},
+    {Level:"error", Message:"../../../../../../proc/cpuinfoNOT:1:0: error: WRONG"},
+    {Level:"error", Message:"some/other/path:1:0: error: WRONG"},
+    {Level:"error", Message:"some/other/path:0:0: error: WRONG"},
+    {Level:"error", Message:"some/file/with/consecutive/errors:1:0: error: message kind one"},
+    {Level:"error", Message:"some/file/with/consecutive/errors:2:0: error: message kind one"},
+    {Level:"error", Message:"some/file/with/consecutive/errors:4:0: error: message kind one"},
+    {Level:"error", Message:"some/file/with/consecutive/errors:5:0: error: message kind two"},
+    {Level:"error", Message:"some/file/with/consecutive/errors:6:0: error: message kind one"},
+    {Level:"error", Message:"some/file/with/consecutive/errors:0:0: error: file-level error"},
+}
+---
+
+[TestPrintErrors - 3]
+[]logger.LogMessage{
+    {Level:"error", Message:"::error file=../../../../../../proc/cpuinfo,line=1::WRONG"},
+    {Level:"error", Message:"::error file=../../../../../../proc/cpuinfoNOT,line=1::WRONG"},
+    {Level:"error", Message:"::error file=some/other/path::WRONG"},
+    {Level:"error", Message:"::error file=some/other/path,line=1::WRONG"},
+    {Level:"error", Message:"::error file=some/file/with/consecutive/errors::file-level error"},
+    {Level:"error", Message:"::error file=some/file/with/consecutive/errors,line=1,endLine=2::message kind one"},
+    {Level:"error", Message:"::error file=some/file/with/consecutive/errors,line=4::message kind one"},
+    {Level:"error", Message:"::error file=some/file/with/consecutive/errors,line=5::message kind two"},
+    {Level:"error", Message:"::error file=some/file/with/consecutive/errors,line=6::message kind one"},
+}
+---
+
+[TestFormatErrors - 1]
+[]logger.LogMessage{
+    {Level:"warning", Message:"../../../../../../proc/cpuinfo:"},
+    {Level:"error", Message:"\t1: WRONG"},
+    {Level:"warning", Message:"../../../../../../proc/cpuinfoNOT:"},
+    {Level:"error", Message:"\t1: WRONG"},
+    {Level:"warning", Message:"some/other/path:"},
+    {Level:"error", Message:"\tWRONG"},
+    {Level:"error", Message:"\t1: WRONG"},
+    {Level:"warning", Message:"some/file/with/consecutive/errors:"},
+    {Level:"error", Message:"\tfile-level error"},
+    {Level:"error", Message:"\t1-2: message kind one"},
+    {Level:"error", Message:"\t4: message kind one"},
+    {Level:"error", Message:"\t5: message kind two"},
+    {Level:"error", Message:"\t6: message kind one"},
+}
+---
+
+[TestFormatErrors - 2]
+[]logger.LogMessage{
+    {Level:"error", Message:"../../../../../../proc/cpuinfo:1:0: error: WRONG"},
+    {Level:"error", Message:"../../../../../../proc/cpuinfoNOT:1:0: error: WRONG"},
+    {Level:"error", Message:"some/other/path:1:0: error: WRONG"},
+    {Level:"error", Message:"some/other/path:0:0: error: WRONG"},
+    {Level:"error", Message:"some/file/with/consecutive/errors:1:0: error: message kind one"},
+    {Level:"error", Message:"some/file/with/consecutive/errors:2:0: error: message kind one"},
+    {Level:"error", Message:"some/file/with/consecutive/errors:4:0: error: message kind one"},
+    {Level:"error", Message:"some/file/with/consecutive/errors:5:0: error: message kind two"},
+    {Level:"error", Message:"some/file/with/consecutive/errors:6:0: error: message kind one"},
+    {Level:"error", Message:"some/file/with/consecutive/errors:0:0: error: file-level error"},
+}
+---
+
+[TestFormatErrors - 3]
+[]logger.LogMessage{
+    {Level:"error", Message:"::error file=../../../../../../proc/cpuinfo,line=1::WRONG"},
+    {Level:"error", Message:"::error file=../../../../../../proc/cpuinfoNOT,line=1::WRONG"},
+    {Level:"error", Message:"::error file=some/other/path::WRONG"},
+    {Level:"error", Message:"::error file=some/other/path,line=1::WRONG"},
+    {Level:"error", Message:"::error file=some/file/with/consecutive/errors::file-level error"},
+    {Level:"error", Message:"::error file=some/file/with/consecutive/errors,line=1,endLine=2::message kind one"},
+    {Level:"error", Message:"::error file=some/file/with/consecutive/errors,line=4::message kind one"},
+    {Level:"error", Message:"::error file=some/file/with/consecutive/errors,line=5::message kind two"},
+    {Level:"error", Message:"::error file=some/file/with/consecutive/errors,line=6::message kind one"},
+}
+---

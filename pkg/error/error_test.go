@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/config"
+	"github.com/gkampitakis/go-snaps/snaps"
 )
 
 func TestGetErrorCount(t *testing.T) {
@@ -270,11 +271,11 @@ func TestFormatErrors(t *testing.T) {
 
 	// wannabe test
 	config1 := config.Config{}
-	FormatErrors(input, config1)
+	snaps.MatchSnapshot(t, FormatErrors(input, config1))
 
 	config2 := config.Config{Format: "gcc"}
-	FormatErrors(input, config2)
+	snaps.MatchSnapshot(t, FormatErrors(input, config2))
 
 	config3 := config.Config{Format: "github-actions"}
-	FormatErrors(input, config3)
+	snaps.MatchSnapshot(t, FormatErrors(input, config3))
 }
