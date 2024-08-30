@@ -64,3 +64,17 @@ func TestPrintColor(t *testing.T) {
 func TestPrint(t *testing.T) {
 	Print("Hello")
 }
+
+func TestPrintLogMessage(t *testing.T) {
+	logger := Logger{}
+
+	messages := []LogMessage{
+		{Level: "debug", Message: "debug message"},
+		{Level: "verbose", Message: "verbose message"},
+		{Level: "warning", Message: "warning message"},
+		{Level: "error", Message: "error message"},
+		{Level: "output", Message: "normal message"},
+	}
+
+	logger.PrintLogMessages(messages)
+}
