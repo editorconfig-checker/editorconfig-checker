@@ -23,9 +23,16 @@ type ValidationErrors struct {
 }
 
 func (error1 *ValidationError) Equal(error2 ValidationError) bool {
-	return error1.Message.Error() == error2.Message.Error() &&
-		error1.LineNumber == error2.LineNumber &&
-		error1.AdditionalIdenticalErrorCount == error2.AdditionalIdenticalErrorCount
+	if error1.Message.Error() != error2.Message.Error() {
+		return false
+	}
+	if error1.LineNumber != error2.LineNumber {
+		return false
+	}
+	if error1.AdditionalIdenticalErrorCount != error2.AdditionalIdenticalErrorCount {
+		return false
+	}
+	return true
 
 }
 
