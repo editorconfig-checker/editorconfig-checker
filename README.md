@@ -138,9 +138,15 @@ If you run this tool from a normal directory it will check all files which are t
 
 The following output formats are supported:
 
-- **default**: Plain text, human readable output.
-- **gcc**: GCC compatible output. Useful for editors that support compiling and showing syntax errors.
-           <file>:<line>:<column>: <type>: <message>
+- **default**: Plain text, human readable output.<br/>
+      ```text
+      <file>:
+        <startingLine>-<endLine>: <message>
+      ```
+- **gcc**: GCC compatible output. Useful for editors that support compiling and showing syntax errors. <br/>
+      `<file>:<line>:<column>: <type>: <message>`
+- **github-actions**: The format used by GitHub Actions <br/>
+      `::error file=<file>,line=<startingLine>,endLine=<endingLine>::<message>`
 
 ## Configuration
 
