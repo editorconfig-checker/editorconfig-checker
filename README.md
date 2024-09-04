@@ -38,7 +38,7 @@ This tool only needs your `.editorconfig` to check all files.
 
 If you don't know about editorconfig already you can read about it here: [editorconfig.org](https://editorconfig.org/).
 
-Currently implemented editorconfig features are:
+Currently, implemented editorconfig features are:
 
 - `end_of_line`
 - `insert_final_newline`
@@ -84,7 +84,7 @@ Also, development (VCS) package is available in the [AUR](https://aur.archlinux.
 paru -S editorconfig-checker-git
 ```
 
-If go 1.16 or greater is installed, you can also install it globally via `go install`:
+If Go 1.16 or greater is installed, you can also install it globally via `go install`:
 
 ```shell
 go install github.com/editorconfig-checker/editorconfig-checker/v3/cmd/editorconfig-checker@latest
@@ -171,11 +171,11 @@ A sample `.ecrc` file can look like this and will be used from your current work
 
 You can set any of the options under the `"Disable"` section to `true` to disable those particular checks.
 
-You could also specify command line arguments and they will get merged with the configuration file, the command line arguments have a higher precedence than the configuration.
+You could also specify command line arguments, and they will get merged with the configuration file. The command line arguments have a higher precedence than the configuration.
 
-You can create a configuration with the `init`-flag. If you specify an `config`-path it will be created there.
+You can create a configuration with the `init`-flag. If you specify a `config`-path it will be created there.
 
-By default the allowed_content_types are:
+By default, the allowed_content_types are:
 
 1. `text/` (matches `text/plain`, `text/html`, etc.)
 1. `application/ecmascript`
@@ -197,8 +197,18 @@ You can exclude single lines inline. To do that you need a comment on that line 
 ```javascript
 const myTemplateString = `
   first line
-     wrongly indended line because it needs to be` // editorconfig-checker-disable-line
+     wrongly indented line because it needs to be` // editorconfig-checker-disable-line
 ```
+
+Alternatively, you can use `editorconfig-checker-disable-next-line` to skip the line that comes after this comment.
+This modifier is present to improve readability, or because your sometimes have no other choice because of your own/language constraints.
+
+```javascript
+// editorconfig-checker-disable-next-line used because blah blah blah what ever the reason blah
+const myTemplateString = `a line that is (...) longer (...) than ... usual` // or with a very long inline comment
+```
+
+Please note that using `editorconfig-checker-disable-next-line` has only an effect on the next line, so it will report if the line where you added the modifier doesn't comply.
 
 ### Excluding Blocks
 
@@ -208,7 +218,7 @@ To temporarily disable all checks, add a comment containing `editorconfig-checke
 // editorconfig-checker-disable
 const myTemplateString = `
   first line
-     wrongly indended line because it needs to be
+     wrongly indented line because it needs to be
 `
 // editorconfig-checker-enable
 ```
@@ -283,7 +293,7 @@ If you don't pass the `ignore-defaults` flag to the binary these files are exclu
 In your `.ecrc` file you can exclude files with the `"exclude"` key which takes an array of regular expressions.
 This will get merged with the default excludes (if not ignored). You should remember to escape your regular expressions correctly. ;)
 
-An `.ecrc` which would ignore all test files and all markdown files can look like this:
+An `.ecrc` which would ignore all test files and all Markdown files can look like this:
 
 ```json
 {
@@ -304,7 +314,7 @@ An `.ecrc` which would ignore all test files and all markdown files can look lik
 
 ##### via arguments
 
-If you want to play around how the tool would behave you can also pass the `--exclude` argument to the binary. This will accept a regular expression as well. If you use this argument the default excludes as well as the excludes from the `.ecrc` file will merged together.
+If you want to play around how the tool would behave you can also pass the `--exclude` argument to the binary. This will accept a regular expression as well. If you use this argument the default excludes as well as the excludes from the `.ecrc` file will be merged together.
 
 For example: `ec --exclude node_modules`
 
@@ -322,7 +332,7 @@ You are able to run this tool inside a Docker container.
 To do this you need to have Docker installed and run this command in your repository root which you want to check:
 `docker run --rm --volume=$PWD:/check mstruebing/editorconfig-checker`
 
-Dockerhub: [mstruebing/editorconfig-checker](https://hub.docker.com/r/mstruebing/editorconfig-checker)
+Docker Hub: [mstruebing/editorconfig-checker](https://hub.docker.com/r/mstruebing/editorconfig-checker)
 
 ## Continuous Integration
 

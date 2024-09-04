@@ -33,6 +33,7 @@ func ValidateFile(filePath string, config config.Config) []error.ValidationError
 	const directiveDisable = directivePrefix + "disable"
 	const directiveDisableFile = directivePrefix + "disable-file"
 	const directiveDisableLine = directivePrefix + "disable-line"
+	const directiveDisableNextLine = directivePrefix + "disable-next-line"
 	const directiveEnable = directivePrefix + "enable"
 
 	var validationErrors []error.ValidationError
@@ -95,20 +96,58 @@ func ValidateFile(filePath string, config config.Config) []error.ValidationError
 		validationErrors = append(validationErrors, validationError)
 	}
 
+	var disableNextLineFound bool // used to ignore the line when editorconfig-checker-disable-next-line was found on previous line
 	for lineNumber, line := range lines {
-		if strings.Contains(line, directiveEnable) {
+		// search for editorconfig-checker-enable
+		// but only if not disabled for performance reasons
+		if isDisabled && strings.Contains(line, directiveEnable) {
 			isDisabled = false
-		} else if directiveIndex := strings.Index(line, directiveDisable); directiveIndex != -1 {
-			if strings.HasPrefix(line[directiveIndex:], directiveDisableLine) {
-				// found editorconfig-checker-disable-line, so just skip current line
-				continue
-			} else {
-				isDisabled = true
-			}
+		}
+
+		// check for the status of the previous line (it was the next line on previous loop iteration)
+		if disableNextLineFound {
+			// editorconfig-checker-disable-next-line was found on previous line
+
+			// check for successive editorconfig-checker-disable-next-line
+			disableNextLineFound = strings.Contains(line, directiveDisableNextLine)
+
+			// there is no need to check for editorconfig-checker-disable-line here, since line will be skipped
+
+			// skip current line
+			continue
 		}
 
 		if isDisabled {
+			// no need to check further if disabled, for performance reasons
 			continue
+		}
+
+		if directiveIndex := strings.Index(line, directiveDisable); directiveIndex != -1 {
+			// a directive STARTING with editorconfig-checker-disable was found
+			// let's check the possible modifiers
+
+			directiveText := line[directiveIndex:] // shorten the text for performance reasons
+
+			// this variable is here for reability, code could have been simplified, but it would have been harder to read
+			activateDisable := true
+
+			// check for editorconfig-checker-disable-next-line, and set status for next line
+			if strings.Contains(directiveText, directiveDisableNextLine) {
+				disableNextLineFound = true
+				// it's not a editorconfig-checker-disable, there is no reason to disable all the following lines
+				activateDisable = false
+			}
+
+			if strings.Contains(directiveText, directiveDisableLine) {
+				// found editorconfig-checker-disable-line, skip current line
+				continue
+			}
+
+			if activateDisable {
+				// found editorconfig-checker-disable, skip current line and all following
+				isDisabled = true
+				continue
+			}
 		}
 
 		fileInformation = files.FileInformation{Line: line, FilePath: filePath, LineNumber: lineNumber, Editorconfig: definition}
