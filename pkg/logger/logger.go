@@ -13,6 +13,11 @@ const (
 	RESET  = "\x1b[33;0m"
 )
 
+type LogMessage struct {
+	Level   string
+	Message string
+}
+
 // Logger struct
 type Logger struct {
 	Verbosee bool
@@ -43,6 +48,27 @@ func (l Logger) Warning(format string, a ...interface{}) {
 		Println(message)
 	} else {
 		PrintlnColor(message, YELLOW)
+	}
+}
+
+func (l Logger) PrintLogMessage(message LogMessage) {
+	switch message.Level {
+	case "error":
+		l.Error(message.Message)
+	case "warning":
+		l.Warning(message.Message)
+	case "debug":
+		l.Debug(message.Message)
+	case "verbose":
+		l.Verbose(message.Message)
+	default:
+		l.Output(message.Message)
+	}
+}
+
+func (l Logger) PrintLogMessages(messages []LogMessage) {
+	for _, message := range messages {
+		l.PrintLogMessage(message)
 	}
 }
 

@@ -3,3 +3,4 @@ editorconfig-checker.test
 coverage.txt
 result-bin
 path
+node_modules

@@ -39,8 +39,8 @@ func init() {
 	flag.BoolVar(&c.ShowVersion, "version", false, "print the version number")
 	flag.BoolVar(&c.Help, "help", false, "print the help")
 	flag.BoolVar(&c.Help, "h", false, "print the help")
-	flag.StringVar(&c.Format, "format", "default", "specify the output format: default, gcc")
-	flag.StringVar(&c.Format, "f", "default", "specify the output format: default, gcc")
+	flag.StringVar(&c.Format, "format", "default", "specify the output format: default, gcc, github-actions")
+	flag.StringVar(&c.Format, "f", "default", "specify the output format: default, gcc, github-actions")
 	flag.BoolVar(&c.Verbose, "verbose", false, "print debugging information")
 	flag.BoolVar(&c.Verbose, "v", false, "print debugging information")
 	flag.BoolVar(&c.Debug, "debug", false, "print debugging information")
@@ -122,10 +122,11 @@ func main() {
 	}
 
 	errors := validation.ProcessValidation(filePaths, config)
-	errorCount := error.GetErrorCount(errors)
 
+	formattedErrors := error.FormatErrors(errors, config)
+	errorCount := len(formattedErrors)
 	if errorCount != 0 {
-		error.PrintErrors(errors, config)
+		config.Logger.PrintLogMessages(formattedErrors)
 		config.Logger.Error(fmt.Sprintf("\n%d errors found", errorCount))
 	}
 
