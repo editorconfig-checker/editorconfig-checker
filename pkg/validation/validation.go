@@ -106,7 +106,7 @@ func ValidateFile(filePath string, config config.Config) []error.ValidationError
 
 		// check for the status of the previous line (it was the next line on previous loop iteration)
 		if disableNextLineFound {
-			// editorconfig-checker-disable--nextline was found on previous line
+			// editorconfig-checker-disable-next-line was found on previous line
 
 			// check for successive editorconfig-checker-disable-next-line
 			disableNextLineFound = strings.Contains(line, directiveDisableNextLine)
