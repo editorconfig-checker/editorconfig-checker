@@ -325,3 +325,12 @@ func TestFormatErrors(t *testing.T) {
 	config3 := config.Config{Format: "github-actions"}
 	s.MatchSnapshot(t, FormatErrors(input, config3))
 }
+
+func TestMain(m *testing.M) {
+	v := m.Run()
+
+	// After all tests have run `go-snaps` will sort snapshots
+	snaps.Clean(m, snaps.CleanOpts{Sort: true})
+
+	os.Exit(v)
+}
