@@ -3,6 +3,7 @@ package error
 import (
 	"errors"
 	"os"
+	"path/filepath"
 	"slices"
 	"testing"
 
@@ -244,6 +245,27 @@ func TestFormatErrors(t *testing.T) {
 		t.Fatalf("Could not chdir to /: %s", err)
 	}
 
+	/*
+		why care about the path separators?
+
+		The absolute paths in the testdata below come out differently, depending on the path separator
+		used by the system that runs the tests.
+
+		This leads to the problem, that one cannot verify a snapshot taken under Linux when using Windows
+		and vice versa, unless the tests are differentiated by the path separator.
+	*/
+	var safePathSep string
+	if os.PathSeparator == '/' {
+		safePathSep = "slash"
+	} else if os.PathSeparator == '\\' {
+		safePathSep = "backslash"
+	} else {
+		t.Fatal("current path separator is unexpected - please fix test to handle this path separator")
+	}
+	s := snaps.WithConfig(
+		snaps.Dir(filepath.Join("__snapshots__", "pathseparator-"+safePathSep)),
+	)
+
 	input := []ValidationErrors{
 		{
 			FilePath: "some/path",
@@ -295,11 +317,11 @@ func TestFormatErrors(t *testing.T) {
 
 	// wannabe test
 	config1 := config.Config{}
-	snaps.MatchSnapshot(t, FormatErrors(input, config1))
+	s.MatchSnapshot(t, FormatErrors(input, config1))
 
 	config2 := config.Config{Format: "gcc"}
-	snaps.MatchSnapshot(t, FormatErrors(input, config2))
+	s.MatchSnapshot(t, FormatErrors(input, config2))
 
 	config3 := config.Config{Format: "github-actions"}
-	snaps.MatchSnapshot(t, FormatErrors(input, config3))
+	s.MatchSnapshot(t, FormatErrors(input, config3))
 }
