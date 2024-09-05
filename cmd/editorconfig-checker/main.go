@@ -39,8 +39,8 @@ func init() {
 	flag.BoolVar(&c.ShowVersion, "version", false, "print the version number")
 	flag.BoolVar(&c.Help, "help", false, "print the help")
 	flag.BoolVar(&c.Help, "h", false, "print the help")
-	flag.StringVar(&c.Format, "format", "default", "specify the output format: default, gcc, github-actions")
-	flag.StringVar(&c.Format, "f", "default", "specify the output format: default, gcc, github-actions")
+	flag.StringVar(&c.Format, "format", "default", "specify the output format: default, gcc, github-actions, codeclimate")
+	flag.StringVar(&c.Format, "f", "default", "specify the output format: default, gcc, github-actions, codeclimate")
 	flag.BoolVar(&c.Verbose, "verbose", false, "print debugging information")
 	flag.BoolVar(&c.Verbose, "v", false, "print debugging information")
 	flag.BoolVar(&c.Debug, "debug", false, "print debugging information")
@@ -127,7 +127,9 @@ func main() {
 	errorCount := len(formattedErrors)
 	if errorCount != 0 {
 		config.Logger.PrintLogMessages(formattedErrors)
-		config.Logger.Error(fmt.Sprintf("\n%d errors found", errorCount))
+		if config.Format != "codeclimate" {
+			config.Logger.Error(fmt.Sprintf("\n%d errors found", errorCount))
+		}
 	}
 
 	config.Logger.Verbose("%d files checked", len(filePaths))

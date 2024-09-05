@@ -2,6 +2,7 @@
 package error
 
 import (
+	"encoding/json"
 	"fmt"
 
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/config"
@@ -88,6 +89,8 @@ func ConsolidateErrors(errors []ValidationError, config config.Config) []Validat
 // FormatErrors prints the errors to the console
 func FormatErrors(errors []ValidationErrors, config config.Config) []logger.LogMessage {
 	var formatted_errors []logger.LogMessage
+	var codeclimateIssues []CodeclimateIssue
+
 	for _, fileErrors := range errors {
 		if len(fileErrors.Errors) > 0 {
 			relativeFilePath, err := files.GetRelativePath(fileErrors.FilePath)
@@ -102,7 +105,14 @@ func FormatErrors(errors []ValidationErrors, config config.Config) []logger.LogM
 				fileErrors.Errors = ConsolidateErrors(fileErrors.Errors, config)
 			}
 
-			if config.Format == "gcc" {
+			switch config.Format {
+			case "codeclimate":
+				// codeclimate: A format that is compatible with the codeclimate format for GitLab CI.
+				// https://docs.gitlab.com/ee/ci/testing/code_quality.html#implement-a-custom-tool
+				for _, singleError := range fileErrors.Errors {
+					codeclimateIssues = append(codeclimateIssues, newCodeclimateIssue(singleError, relativeFilePath))
+				}
+			case "gcc":
 				// gcc: A format mimicking the error format from GCC.
 				for _, singleError := range fileErrors.Errors {
 					var lineNo = 0
@@ -111,7 +121,7 @@ func FormatErrors(errors []ValidationErrors, config config.Config) []logger.LogM
 					}
 					formatted_errors = append(formatted_errors, logger.LogMessage{Level: "error", Message: fmt.Sprintf("%s:%d:%d: %s: %s", relativeFilePath, lineNo, 0, "error", singleError.Message)})
 				}
-			} else if config.Format == "github-actions" {
+			case "github-actions":
 				// github-actions: A format dedicated for usage in Github Actions
 				for _, singleError := range fileErrors.Errors {
 					if singleError.LineNumber != -1 {
@@ -124,7 +134,7 @@ func FormatErrors(errors []ValidationErrors, config config.Config) []logger.LogM
 						formatted_errors = append(formatted_errors, logger.LogMessage{Level: "error", Message: fmt.Sprintf("::error file=%s::%s", relativeFilePath, singleError.Message)})
 					}
 				}
-			} else {
+			default:
 				// default: A human readable text format.
 				formatted_errors = append(formatted_errors, logger.LogMessage{Level: "warning", Message: fmt.Sprintf("%s:", relativeFilePath)})
 				for _, singleError := range fileErrors.Errors {
@@ -139,6 +149,16 @@ func FormatErrors(errors []ValidationErrors, config config.Config) []logger.LogM
 					}
 				}
 			}
+		}
+	}
+
+	if len(codeclimateIssues) > 0 {
+		// marshall codeclimate issues to json
+		codeclimateIssuesJSON, err := json.Marshal(codeclimateIssues)
+		if err != nil {
+			config.Logger.Error("Error creating codeclimate json: %s", err.Error())
+		} else {
+			return []logger.LogMessage{{Level: "", Message: string(codeclimateIssuesJSON)}}
 		}
 	}
 	return formatted_errors
