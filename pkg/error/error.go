@@ -2,6 +2,7 @@
 package error
 
 import (
+	"encoding/json"
 	"fmt"
 
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/config"
@@ -33,6 +34,7 @@ func GetErrorCount(errors []ValidationErrors) int {
 
 // PrintErrors prints the errors to the console
 func PrintErrors(errors []ValidationErrors, config config.Config) {
+	codeclimateIssues := make([]CodeclimateIssue, 0)
 	for _, fileErrors := range errors {
 		if len(fileErrors.Errors) > 0 {
 			relativeFilePath, err := files.GetRelativePath(fileErrors.FilePath)
@@ -51,6 +53,12 @@ func PrintErrors(errors []ValidationErrors, config config.Config) {
 					}
 					config.Logger.Error(fmt.Sprintf("%s:%d:%d: %s: %s", relativeFilePath, lineNo, 0, "error", singleError.Message))
 				}
+			} else if config.Format == "codeclimate" {
+				// codeclimate: A format that is compatible with the codeclimate format for GitLab CI.
+				// https://docs.gitlab.com/ee/ci/testing/code_quality.html#implement-a-custom-tool
+				for _, singleError := range fileErrors.Errors {
+					codeclimateIssues = append(codeclimateIssues, newCodeclimateIssue(singleError, relativeFilePath))
+				}
 			} else {
 				// default: A human readable text format.
 				config.Logger.Warning(fmt.Sprintf("%s:", relativeFilePath))
@@ -62,6 +70,16 @@ func PrintErrors(errors []ValidationErrors, config config.Config) {
 					}
 				}
 			}
+		}
+	}
+
+	if len(codeclimateIssues) > 0 {
+		// marshall codeclimate issues to json
+		codeclimateIssuesJSON, err := json.Marshal(codeclimateIssues)
+		if err != nil {
+			config.Logger.Error("Error creating codeclimate json: %s", err.Error())
+		} else {
+			config.Logger.Output(string(codeclimateIssuesJSON))
 		}
 	}
 }
