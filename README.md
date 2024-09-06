@@ -62,9 +62,9 @@ Unsupported features are:
 VERSION="v3.11.1"
 OS="linux"
 ARCH="amd64"
-curl -O -L -C - https://github.com/editorconfig-checker/editorconfig-checker/releases/download/$VERSION/ec-$OS-$ARCH.tar.gz && \
-tar xzf ec-$OS-$ARCH.tar.gz && \
-./bin/ec-$OS-$ARCH
+curl -O -L -C - https://github.com/editorconfig-checker/editorconfig-checker/releases/download/$VERSION/editorconfig-checker-$OS-$ARCH.tar.gz && \
+tar xzf editorconfig-checker-$OS-$ARCH.tar.gz && \
+./bin/editorconfig-checker-$OS-$ARCH
 ```
 <!-- x-release-please-end -->
 
@@ -517,7 +517,7 @@ A [configuration file](#configuration) which would ignore all test files and all
 
 If you want to play around how the tool would behave you can also pass the `--exclude` argument to the binary. This will accept a regular expression as well. The argument given will be added to the excludes as defined by your [configuration file](#configuration) (respecting both its [`Exclude`](#via-configuration) and [`IgnoreDefaults`](#ignoring-default-excludes) settings).
 
-For example: `ec --exclude node_modules`
+For example: `editorconfig-checker --exclude node_modules`
 
 ## Charset Setting
 
