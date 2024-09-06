@@ -57,9 +57,9 @@ Unsupported features are:
 VERSION="v3.0.3"
 OS="linux"
 ARCH="amd64"
-curl -O -L -C - https://github.com/editorconfig-checker/editorconfig-checker/releases/download/$VERSION/ec-$OS-$ARCH.tar.gz && \
-tar xzf ec-$OS-$ARCH.tar.gz && \
-./bin/ec-$OS-$ARCH
+curl -O -L -C - https://github.com/editorconfig-checker/editorconfig-checker/releases/download/$VERSION/editorconfig-checker-$OS-$ARCH.tar.gz && \
+tar xzf editorconfig-checker-$OS-$ARCH.tar.gz && \
+./bin/editorconfig-checker-$OS-$ARCH
 ```
 
 ## Installation
@@ -67,7 +67,7 @@ tar xzf ec-$OS-$ARCH.tar.gz && \
 Grab a binary from the [release page](https://github.com/editorconfig-checker/editorconfig-checker/releases).
 
 If you have go installed you can run `go get github.com/editorconfig-checker/editorconfig-checker/v3` and run `make build` inside the project folder.
-This will place a binary called `ec` into the `bin` directory.
+This will place a binary called `editorconfig-checker` into the `bin` directory.
 
 If you are using Arch Linux, you can use [pacman](https://wiki.archlinux.org/title/Pacman) to install from [extra repository](https://archlinux.org/packages/extra/x86_64/editorconfig-checker/):
 
@@ -322,7 +322,7 @@ An `.ecrc` which would ignore all test files and all Markdown files can look lik
 
 If you want to play around how the tool would behave you can also pass the `--exclude` argument to the binary. This will accept a regular expression as well. If you use this argument the default excludes as well as the excludes from the `.ecrc` file will be merged together.
 
-For example: `ec --exclude node_modules`
+For example: `editorconfig-checker --exclude node_modules`
 
 ##### Generally
 
@@ -330,7 +330,7 @@ Every exclude option is merged together.
 
 If you want to see which files the tool would check without checking them you can pass the `--dry-run` flag.
 
-Note that while `--dry-run` outputs absolute paths, a regular expression matches on relative paths from where the `ec` command is used.
+Note that while `--dry-run` outputs absolute paths, a regular expression matches on relative paths from where the `editorconfig-checker` command is used.
 
 ## Docker
 
