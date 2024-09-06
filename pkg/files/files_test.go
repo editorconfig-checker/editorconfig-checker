@@ -89,18 +89,18 @@ func TestPathExists(t *testing.T) {
 
 func TestGetRelativePath(t *testing.T) {
 	// Should return paths that are already relative unchanged
-	relativeFilePath, _ := GetRelativePath("bin/ec")
-	if relativeFilePath != "bin/ec" {
-		t.Errorf("GetRelativePath(%s): expected: %v, got: %v", "bin/ec", "bin/ec", relativeFilePath)
+	relativeFilePath, _ := GetRelativePath("bin/editorconfig-checker")
+	if relativeFilePath != "bin/editorconfig-checker" {
+		t.Errorf("GetRelativePath(%s): expected: %v, got: %v", "bin/editorconfig-checker", "bin/editorconfig-checker", relativeFilePath)
 	}
 
 	// Should convert absolute paths to be relative to current directory
 	cwd, _ := os.Getwd()
-	filePath := "/bin/ec"
+	filePath := "/bin/editorconfig-checker"
 	relativeFilePath, _ = GetRelativePath(cwd + filePath)
 
-	if relativeFilePath != "bin/ec" {
-		t.Errorf("GetRelativePath(%s): expected: %v, got: %v", cwd+filePath, "bin/ec", relativeFilePath)
+	if relativeFilePath != "bin/editorconfig-checker" {
+		t.Errorf("GetRelativePath(%s): expected: %v, got: %v", cwd+filePath, "bin/editorconfig-checker", relativeFilePath)
 	}
 
 	if runtime.GOOS == "windows" {
