@@ -19,7 +19,7 @@ import (
 var version string
 
 // defaultConfigFileNames determines the file names where the config is located
-var defaultConfigFileNames = []string{".ecrc", ".editorconfig-checker.json"}
+var defaultConfigFileNames = []string{".editorconfig-checker.json", ".ecrc"}
 
 // currentConfig is the config used in this run
 var currentConfig *config.Config
