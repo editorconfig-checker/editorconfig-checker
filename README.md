@@ -147,6 +147,25 @@ The following output formats are supported:
       `<file>:<line>:<column>: <type>: <message>`
 - **github-actions**: The format used by GitHub Actions <br/>
       `::error file=<file>,line=<startingLine>,endLine=<endingLine>::<message>`
+- **codeclimate**: The [Code Climate](https://github.com/codeclimate/platform/blob/master/spec/analyzers/SPEC.md#data-types) json format used for [custom quality reports](https://docs.gitlab.com/ee/ci/testing/code_quality.html#implement-a-custom-tool) in GitLab CI
+  ```
+  [
+        {
+              "check_name": "editorconfig-checker",
+              "description": "Wrong indent style found (tabs instead of spaces)",
+              "fingerprint": "e87a958a3960d60a11d4b49c563cccd2",
+              "severity": "minor",
+              "location": {
+                    "path": ".vscode/extensions.json",
+                    "lines": {
+                    "begin": 2,
+                    "end": 2
+                    }
+              }
+        },
+        ...
+  ]
+  ```
 
 ## Configuration
 
