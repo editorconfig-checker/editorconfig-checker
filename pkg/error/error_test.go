@@ -324,6 +324,9 @@ func TestFormatErrors(t *testing.T) {
 
 	config3 := config.Config{Format: "github-actions"}
 	s.MatchSnapshot(t, FormatErrors(input, config3))
+
+	config4 := config.Config{Format: "codeclimate"}
+	s.MatchSnapshot(t, FormatErrors(input, config4))
 }
 
 func TestMain(m *testing.M) {
