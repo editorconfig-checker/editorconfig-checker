@@ -191,7 +191,6 @@ func FormatErrorsAsCodeclimate(errors []ValidationErrors, config config.Config) 
 			for _, singleError := range fileErrors.Errors {
 				codeclimateIssues = append(codeclimateIssues, newCodeclimateIssue(singleError, relativeFilePath))
 			}
-
 		}
 	}
 

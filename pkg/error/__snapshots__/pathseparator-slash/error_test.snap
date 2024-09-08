@@ -1,5 +1,11 @@
 
-[TestFormatErrors - 1]
+[TestFormatErrors/codeclimate - 1]
+[]logger.LogMessage{
+    {Level:"", Message:"[{\"check_name\":\"editorconfig-checker\",\"description\":\"WRONG\",\"fingerprint\":\"bcd0ed212d202770869048ac50ceea7c\",\"severity\":\"minor\",\"location\":{\"path\":\"proc/cpuinfo\",\"lines\":{\"begin\":1,\"end\":0}}},{\"check_name\":\"editorconfig-checker\",\"description\":\"WRONG\",\"fingerprint\":\"8508b1c217914f89d2fbbd0b14eef007\",\"severity\":\"minor\",\"location\":{\"path\":\"proc/cpuinfoNOT\",\"lines\":{\"begin\":1,\"end\":0}}},{\"check_name\":\"editorconfig-checker\",\"description\":\"WRONG\",\"fingerprint\":\"3d1d5dbbb6516a1ff6dfd7d463e39c92\",\"severity\":\"minor\",\"location\":{\"path\":\"some/other/path\",\"lines\":{\"begin\":-1,\"end\":0}}},{\"check_name\":\"editorconfig-checker\",\"description\":\"WRONG\",\"fingerprint\":\"5047d0cb8e7ab136ef2c8409c7ef3ac3\",\"severity\":\"minor\",\"location\":{\"path\":\"some/other/path\",\"lines\":{\"begin\":1,\"end\":0}}},{\"check_name\":\"editorconfig-checker\",\"description\":\"file-level error\",\"fingerprint\":\"d4c61b75e2e08b3f2eb497e4bbe563d1\",\"severity\":\"minor\",\"location\":{\"path\":\"some/file/with/consecutive/errors\",\"lines\":{\"begin\":-1,\"end\":0}}},{\"check_name\":\"editorconfig-checker\",\"description\":\"message kind one\",\"fingerprint\":\"57fe25411e900e3f07da07aeea8c0f64\",\"severity\":\"minor\",\"location\":{\"path\":\"some/file/with/consecutive/errors\",\"lines\":{\"begin\":1,\"end\":1}}},{\"check_name\":\"editorconfig-checker\",\"description\":\"message kind one\",\"fingerprint\":\"797f0cfb797675c4bed477a1067e8ef4\",\"severity\":\"minor\",\"location\":{\"path\":\"some/file/with/consecutive/errors\",\"lines\":{\"begin\":4,\"end\":0}}},{\"check_name\":\"editorconfig-checker\",\"description\":\"message kind two\",\"fingerprint\":\"72013244ffd1c1406ad764b9de9ce525\",\"severity\":\"minor\",\"location\":{\"path\":\"some/file/with/consecutive/errors\",\"lines\":{\"begin\":5,\"end\":0}}},{\"check_name\":\"editorconfig-checker\",\"description\":\"message kind one\",\"fingerprint\":\"0e3f77d4a6f1ffbcc7b8b8a971679f46\",\"severity\":\"minor\",\"location\":{\"path\":\"some/file/with/consecutive/errors\",\"lines\":{\"begin\":6,\"end\":0}}}]"},
+}
+---
+
+[TestFormatErrors/default - 1]
 []logger.LogMessage{
     {Level:"warning", Message:"proc/cpuinfo:"},
     {Level:"error", Message:"\t1: WRONG"},
@@ -17,7 +23,7 @@
 }
 ---
 
-[TestFormatErrors - 2]
+[TestFormatErrors/gcc - 1]
 []logger.LogMessage{
     {Level:"error", Message:"proc/cpuinfo:1:0: error: WRONG"},
     {Level:"error", Message:"proc/cpuinfoNOT:1:0: error: WRONG"},
@@ -32,7 +38,7 @@
 }
 ---
 
-[TestFormatErrors - 3]
+[TestFormatErrors/github-actions - 1]
 []logger.LogMessage{
     {Level:"error", Message:"::error file=proc/cpuinfo,line=1::WRONG"},
     {Level:"error", Message:"::error file=proc/cpuinfoNOT,line=1::WRONG"},
@@ -43,11 +49,5 @@
     {Level:"error", Message:"::error file=some/file/with/consecutive/errors,line=4::message kind one"},
     {Level:"error", Message:"::error file=some/file/with/consecutive/errors,line=5::message kind two"},
     {Level:"error", Message:"::error file=some/file/with/consecutive/errors,line=6::message kind one"},
-}
----
-
-[TestFormatErrors - 4]
-[]logger.LogMessage{
-    {Level:"", Message:"[{\"check_name\":\"editorconfig-checker\",\"description\":\"WRONG\",\"fingerprint\":\"bcd0ed212d202770869048ac50ceea7c\",\"severity\":\"minor\",\"location\":{\"path\":\"proc/cpuinfo\",\"lines\":{\"begin\":1,\"end\":0}}},{\"check_name\":\"editorconfig-checker\",\"description\":\"WRONG\",\"fingerprint\":\"8508b1c217914f89d2fbbd0b14eef007\",\"severity\":\"minor\",\"location\":{\"path\":\"proc/cpuinfoNOT\",\"lines\":{\"begin\":1,\"end\":0}}},{\"check_name\":\"editorconfig-checker\",\"description\":\"WRONG\",\"fingerprint\":\"3d1d5dbbb6516a1ff6dfd7d463e39c92\",\"severity\":\"minor\",\"location\":{\"path\":\"some/other/path\",\"lines\":{\"begin\":-1,\"end\":0}}},{\"check_name\":\"editorconfig-checker\",\"description\":\"WRONG\",\"fingerprint\":\"5047d0cb8e7ab136ef2c8409c7ef3ac3\",\"severity\":\"minor\",\"location\":{\"path\":\"some/other/path\",\"lines\":{\"begin\":1,\"end\":0}}},{\"check_name\":\"editorconfig-checker\",\"description\":\"file-level error\",\"fingerprint\":\"d4c61b75e2e08b3f2eb497e4bbe563d1\",\"severity\":\"minor\",\"location\":{\"path\":\"some/file/with/consecutive/errors\",\"lines\":{\"begin\":-1,\"end\":0}}},{\"check_name\":\"editorconfig-checker\",\"description\":\"message kind one\",\"fingerprint\":\"57fe25411e900e3f07da07aeea8c0f64\",\"severity\":\"minor\",\"location\":{\"path\":\"some/file/with/consecutive/errors\",\"lines\":{\"begin\":1,\"end\":1}}},{\"check_name\":\"editorconfig-checker\",\"description\":\"message kind one\",\"fingerprint\":\"797f0cfb797675c4bed477a1067e8ef4\",\"severity\":\"minor\",\"location\":{\"path\":\"some/file/with/consecutive/errors\",\"lines\":{\"begin\":4,\"end\":0}}},{\"check_name\":\"editorconfig-checker\",\"description\":\"message kind two\",\"fingerprint\":\"72013244ffd1c1406ad764b9de9ce525\",\"severity\":\"minor\",\"location\":{\"path\":\"some/file/with/consecutive/errors\",\"lines\":{\"begin\":5,\"end\":0}}},{\"check_name\":\"editorconfig-checker\",\"description\":\"message kind one\",\"fingerprint\":\"0e3f77d4a6f1ffbcc7b8b8a971679f46\",\"severity\":\"minor\",\"location\":{\"path\":\"some/file/with/consecutive/errors\",\"lines\":{\"begin\":6,\"end\":0}}}]"},
 }
 ---
