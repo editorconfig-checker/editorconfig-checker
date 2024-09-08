@@ -10,6 +10,7 @@ import (
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/error"
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/files"
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/logger"
+	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/outputformat"
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/utils"
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/validation"
 )
@@ -39,8 +40,8 @@ func init() {
 	flag.BoolVar(&c.ShowVersion, "version", false, "print the version number")
 	flag.BoolVar(&c.Help, "help", false, "print the help")
 	flag.BoolVar(&c.Help, "h", false, "print the help")
-	flag.StringVar(&c.Format, "format", "default", "specify the output format: default, gcc, github-actions, codeclimate")
-	flag.StringVar(&c.Format, "f", "default", "specify the output format: default, gcc, github-actions, codeclimate")
+	flag.TextVar(&c.Format, "format", outputformat.Default, "specify the output format: "+outputformat.GetArgumentChoiceText())
+	flag.TextVar(&c.Format, "f", outputformat.Default, "specify the output format: "+outputformat.GetArgumentChoiceText())
 	flag.BoolVar(&c.Verbose, "verbose", false, "print debugging information")
 	flag.BoolVar(&c.Verbose, "v", false, "print debugging information")
 	flag.BoolVar(&c.Debug, "debug", false, "print debugging information")

@@ -8,6 +8,7 @@ import (
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/config"
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/files"
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/logger"
+	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/outputformat"
 )
 
 // ValidationError represents one validation error
@@ -209,14 +210,14 @@ func FormatErrorsAsCodeclimate(errors []ValidationErrors, config config.Config) 
 // FormatErrors prints the errors to the console
 func FormatErrors(errors []ValidationErrors, config config.Config) []logger.LogMessage {
 	switch config.Format {
-	case "codeclimate":
+	case outputformat.Codeclimate:
 		// codeclimate: A format that is compatible with the codeclimate format for GitLab CI.
 		// https://docs.gitlab.com/ee/ci/testing/code_quality.html#implement-a-custom-tool
 		return FormatErrorsAsCodeclimate(errors, config)
-	case "gcc":
+	case outputformat.GCC:
 		// gcc: A format mimicking the error format from GCC.
 		return FormatErrorsAsGCC(errors, config)
-	case "github-actions":
+	case outputformat.GithubActions:
 		// github-actions: A format dedicated for usage in Github Actions
 		return FormatErrorsAsGHA(errors, config)
 	default:

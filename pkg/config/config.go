@@ -10,6 +10,7 @@ import (
 	"github.com/editorconfig/editorconfig-core-go/v2"
 
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/logger"
+	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/outputformat"
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/utils"
 )
 
@@ -86,7 +87,7 @@ type Config struct {
 	// CONFIG FILE
 	Version             string
 	Verbose             bool
-	Format              string
+	Format              outputformat.OutputFormat
 	Debug               bool
 	IgnoreDefaults      bool
 	SpacesAftertabs     bool
@@ -186,7 +187,7 @@ func (c *Config) Merge(config Config) {
 		c.Verbose = config.Verbose
 	}
 
-	if config.Format != "" {
+	if config.Format.IsValid() {
 		c.Format = config.Format
 	}
 

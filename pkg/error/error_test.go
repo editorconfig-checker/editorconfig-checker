@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/config"
+	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/outputformat"
 	"github.com/gkampitakis/go-snaps/snaps"
 )
 
@@ -314,18 +315,11 @@ func TestFormatErrors(t *testing.T) {
 		},
 	}
 
-	t.Run("default", func(t *testing.T) {
-		s.MatchSnapshot(t, FormatErrors(input, config.Config{}))
-	})
-	t.Run("codeclimate", func(t *testing.T) {
-		s.MatchSnapshot(t, FormatErrors(input, config.Config{Format: "codeclimate"}))
-	})
-	t.Run("gcc", func(t *testing.T) {
-		s.MatchSnapshot(t, FormatErrors(input, config.Config{Format: "gcc"}))
-	})
-	t.Run("github-actions", func(t *testing.T) {
-		s.MatchSnapshot(t, FormatErrors(input, config.Config{Format: "github-actions"}))
-	})
+	for _, format := range outputformat.ValidOutputFormats {
+		t.Run(string(format), func(t *testing.T) {
+			s.MatchSnapshot(t, FormatErrors(input, config.Config{Format: format}))
+		})
+	}
 }
 
 func TestMain(m *testing.M) {
