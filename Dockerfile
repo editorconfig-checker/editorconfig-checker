@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM golang:1.21-alpine as build
+FROM --platform=$BUILDPLATFORM golang:1.21-alpine AS build
 
 RUN apk add --no-cache git
 WORKDIR /ec
