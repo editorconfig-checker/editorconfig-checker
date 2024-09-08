@@ -17,13 +17,13 @@
 6. [Excluding](#excluding)
    1. [Excluding Lines](#excluding-lines)
    2. [Excluding Blocks](#excluding-blocks)
-   3. [Excluding Files](#excluding-files)
+   3. [Excluding Paths](#excluding-paths)
       1. [Inline](#inline)
       2. [Default Excludes](#default-excludes)
-      3. [Manually Excluding](#manually-excluding)
+      3. [Ignoring Default Excludes](#ignoring-default-excludes)
+      4. [Manually Excluding](#manually-excluding)
          1. [via configuration](#via-configuration)
          2. [via arguments](#via-arguments)
-         3. [Generally](#generally)
 7. [Docker](#docker)
 8. [Continuous Integration](#continuous-integration)
 9. [Support](#support)
@@ -147,6 +147,25 @@ The following output formats are supported:
       `<file>:<line>:<column>: <type>: <message>`
 - **github-actions**: The format used by GitHub Actions <br/>
       `::error file=<file>,line=<startingLine>,endLine=<endingLine>::<message>`
+- **codeclimate**: The [Code Climate](https://github.com/codeclimate/platform/blob/master/spec/analyzers/SPEC.md#data-types) json format used for [custom quality reports](https://docs.gitlab.com/ee/ci/testing/code_quality.html#implement-a-custom-tool) in GitLab CI
+  ```
+  [
+        {
+              "check_name": "editorconfig-checker",
+              "description": "Wrong indent style found (tabs instead of spaces)",
+              "fingerprint": "e87a958a3960d60a11d4b49c563cccd2",
+              "severity": "minor",
+              "location": {
+                    "path": ".vscode/extensions.json",
+                    "lines": {
+                    "begin": 2,
+                    "end": 2
+                    }
+              }
+        },
+        ...
+  ]
+  ```
 
 ## Configuration
 
@@ -232,7 +251,18 @@ const myTemplateString = `
 // editorconfig-checker-enable
 ```
 
-### Excluding Files
+### Excluding Paths
+
+You can exclude paths from being checked in several ways:
+- ignoring a file by documenting it inside the to-be-excluded file
+- adding a regex matching the path to the `.ecrc`
+- passing a regex matching the path as argument to `--exclude`
+
+All these excludes are used in addition to the [default excludes](#default-excludes), unless you [opt out of them](#ignoring-default-excludes).
+
+If you want to see which files would be checked without checking them you can pass the `--dry-run` flag.
+
+Note that while `--dry-run` might output absolute paths, the regular expression you write must match the filenames using relative paths from where editorconfig-checker is used. This becomes especially relevant if you need to anchor your regular expression in order to only match files in the top level your checked directory.
 
 #### Inline
 
@@ -248,7 +278,7 @@ add x y =
 
 #### Default Excludes
 
-If you don't pass the `ignore-defaults` flag to the binary these files are excluded automatically:
+If you choose to [ignore them](#ignoring-default-excludes), these paths are excluded automatically:
 
 ```
 "^\\.yarn/",
@@ -295,12 +325,16 @@ If you don't pass the `ignore-defaults` flag to the binary these files are exclu
 "min\\.js$"
 ```
 
+#### Ignoring Default Excludes
+
+If you either set `IgnoreDefaults` to `true` or pass the `-ignore-defaults` commandline switch, the [default excludes](#default-excludes) will be ignored entirely.
+
 #### Manually Excluding
 
 ##### via configuration
 
 In your `.ecrc` file you can exclude files with the `"exclude"` key which takes an array of regular expressions.
-This will get merged with the default excludes (if not ignored). You should remember to escape your regular expressions correctly. ;)
+This will get merged with the default excludes (if not [ignored](#ignoring-default-excludes)). You should remember to escape your regular expressions correctly. ;)
 
 An `.ecrc` which would ignore all test files and all Markdown files can look like this:
 
@@ -323,17 +357,9 @@ An `.ecrc` which would ignore all test files and all Markdown files can look lik
 
 ##### via arguments
 
-If you want to play around how the tool would behave you can also pass the `--exclude` argument to the binary. This will accept a regular expression as well. If you use this argument the default excludes as well as the excludes from the `.ecrc` file will be merged together.
+If you want to play around how the tool would behave you can also pass the `--exclude` argument to the binary. This will accept a regular expression as well. The argument given will be added to the excludes as defined by your `.ecrc` (respecting both its [`Exclude`](#via-configuration) and [`IgnoreDefaults`](#ignoring-default-excludes) settings).
 
 For example: `ec --exclude node_modules`
-
-##### Generally
-
-Every exclude option is merged together.
-
-If you want to see which files the tool would check without checking them you can pass the `--dry-run` flag.
-
-Note that while `--dry-run` outputs absolute paths, a regular expression matches on relative paths from where the `ec` command is used.
 
 ## Docker
 
