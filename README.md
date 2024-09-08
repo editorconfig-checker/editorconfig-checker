@@ -354,7 +354,7 @@ An `.ecrc` which would ignore all test files and all Markdown files can look lik
 
 ##### via arguments
 
-If you want to play around how the tool would behave you can also pass the `--exclude` argument to the binary. This will accept a regular expression as well. The argument given will be added to the excludes as defined by your `.ecrc` (respecting both its `Exclude` and `IgnoreDefaults` settings).
+If you want to play around how the tool would behave you can also pass the `--exclude` argument to the binary. This will accept a regular expression as well. The argument given will be added to the excludes as defined by your `.ecrc` (respecting both its [`Exclude`](#via-configuration) and [`IgnoreDefaults`](#ignoring-default-excludes) settings).
 
 For example: `ec --exclude node_modules`
 
