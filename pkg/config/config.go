@@ -112,10 +112,13 @@ type DisabledChecks struct {
 }
 
 // NewConfig initializes a new config
-func NewConfig(configPath string) (*Config, error) {
+func NewConfig(configPaths []string) (*Config, error) {
+	if len(configPaths) == 0 {
+		return nil, fmt.Errorf("No config paths provided")
+	}
+
 	var config Config
 
-	config.Path = configPath
 	config.AllowedContentTypes = defaultAllowedContentTypes
 	config.Exclude = []string{}
 	config.PassedFiles = []string{}
@@ -124,9 +127,19 @@ func NewConfig(configPath string) (*Config, error) {
 		Parser: editorconfig.NewCachedParser(),
 	}
 
-	if !utils.IsRegularFile(configPath) {
+	var configPath string = ""
+	for _, path := range configPaths {
+		if utils.IsRegularFile(path) {
+			configPath = path
+			break
+		}
+	}
+	if configPath == "" {
+		var configPath string = configPaths[0]
+		config.Path = configPath
 		return &config, fmt.Errorf("No file found at %s", configPath)
 	}
+	config.Path = configPath
 
 	return &config, nil
 }

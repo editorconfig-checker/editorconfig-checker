@@ -8,17 +8,46 @@ import (
 	"testing"
 )
 
-const (
-	rootConfigFilePath        = "../../.ecrc"
-	configWithIgnoredDefaults = "../../testfiles/.ecrc"
-)
+var rootConfigFilePath = []string{"../../.ecrc"}
+var configWithIgnoredDefaults = []string{"../../testfiles/.ecrc"}
 
 func TestNewConfig(t *testing.T) {
-	actual, _ := NewConfig("abc")
+	actual, _ := NewConfig([]string{"abc"})
 	var expected Config
 
 	if actual == &expected {
 		t.Errorf("expected %v, got %v", expected, actual)
+	}
+}
+
+func TestNoConfigFileFound(t *testing.T) {
+	_, err := NewConfig([]string{"abc"})
+	var expected = "No file found at abc"
+	if err == nil || err.Error() != expected {
+		t.Errorf("expected an error (%s), got %v", expected, err)
+	}
+}
+
+func TestNoConfigs(t *testing.T) {
+	_, err := NewConfig([]string{})
+	var expected = "No config paths provided"
+	if err == nil || err.Error() != expected {
+		t.Errorf("expected an error (%s), got %v", expected, err)
+	}
+}
+
+func TestNoConfigFileFoundInMultiplePaths(t *testing.T) {
+	_, err := NewConfig([]string{"abc", "def"})
+	var expected = "No file found at abc"
+	if err == nil || err.Error() != expected {
+		t.Errorf("expected an error (%s), got %v", expected, err)
+	}
+}
+
+func TestConfigFileFirstFoundInMultiplePaths(t *testing.T) {
+	c, _ := NewConfig([]string{"abc", rootConfigFilePath[0], configWithIgnoredDefaults[0]})
+	if c.Path != rootConfigFilePath[0] {
+		t.Errorf("expected %s, got %s", rootConfigFilePath[0], c.Path)
 	}
 }
 
@@ -60,7 +89,7 @@ func TestGetExcludesAsRegularExpression(t *testing.T) {
 }
 
 func TestMerge(t *testing.T) {
-	c1, err := NewConfig("../../.ecrc")
+	c1, err := NewConfig([]string{"../../.ecrc"})
 	if err != nil {
 		t.Errorf("Expected to create a config without errors, got %v", err)
 	}
@@ -73,7 +102,7 @@ func TestMerge(t *testing.T) {
 	mergeConfig := Config{}
 	c1.Merge(mergeConfig)
 
-	c2, _ := NewConfig("../../.ecrc")
+	c2, _ := NewConfig([]string{"../../.ecrc"})
 	_ = c2.Parse()
 
 	if !reflect.DeepEqual(c1, c2) {
@@ -138,7 +167,7 @@ func TestMerge(t *testing.T) {
 }
 
 func TestParse(t *testing.T) {
-	c, _ := NewConfig("../../testfiles/.ecrc")
+	c, _ := NewConfig([]string{"../../testfiles/.ecrc"})
 	_ = c.Parse()
 
 	if c.Verbose != true ||
@@ -160,7 +189,7 @@ func TestSave(t *testing.T) {
 	dir, _ := os.MkdirTemp("", "example")
 	defer os.RemoveAll(dir)
 	configFile := filepath.Join(dir, "config")
-	c, _ := NewConfig(configFile)
+	c, _ := NewConfig([]string{configFile})
 	if c.Save("VERSION") != nil {
 		t.Error("Should create the config")
 	}
@@ -171,7 +200,7 @@ func TestSave(t *testing.T) {
 }
 
 func TestGetAsString(t *testing.T) {
-	c, _ := NewConfig("../../.ecrc")
+	c, _ := NewConfig([]string{"../../.ecrc"})
 	_ = c.Parse()
 
 	actual := c.GetAsString()

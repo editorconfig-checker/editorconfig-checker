@@ -150,7 +150,10 @@ The following output formats are supported:
 
 ## Configuration
 
-The configuration is done via arguments or an `.ecrc` file.
+The configuration is done via arguments or it will take the first config file found with the following file names:
+
+- `.ecrc`
+- `.editorconfig-checker.json`
 
 A sample `.ecrc` file can look like this and will be used from your current working directory if not specified via the `--config` argument:
 

@@ -18,8 +18,8 @@ import (
 // version is dynamically set at compiletime
 var version string
 
-// defaultConfigFilePath determines where the config is located
-const defaultConfigFilePath = ".ecrc"
+// defaultConfigFileNames determines the file names where the config is located
+var defaultConfigFileNames = []string{".ecrc", ".editorconfig-checker.json"}
 
 // currentConfig is the config used in this run
 var currentConfig *config.Config
@@ -54,11 +54,14 @@ func init() {
 
 	flag.Parse()
 
+	var configPaths = []string{}
 	if configFilePath == "" {
-		configFilePath = defaultConfigFilePath
+		configPaths = append(configPaths, defaultConfigFileNames[:]...)
+	} else {
+		configPaths = append(configPaths, configFilePath)
 	}
 
-	currentConfig, _ = config.NewConfig(configFilePath)
+	currentConfig, _ = config.NewConfig(configPaths)
 
 	if init {
 		err := currentConfig.Save(version)
