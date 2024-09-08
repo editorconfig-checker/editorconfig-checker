@@ -20,7 +20,8 @@
    3. [Excluding Paths](#excluding-paths)
       1. [Inline](#inline)
       2. [Default Excludes](#default-excludes)
-      3. [Manually Excluding](#manually-excluding)
+      3. [Ignoring Default Excludes](#ignoring-default-excludes)
+      4. [Manually Excluding](#manually-excluding)
          1. [via configuration](#via-configuration)
          2. [via arguments](#via-arguments)
 7. [Docker](#docker)
@@ -254,7 +255,7 @@ You can exclude paths from being checked in several ways:
 - adding a regex matching the path to the `.ecrc`
 - passing a regex matching the path as argument to `--exclude`
 
-All these excludes are used in addition to the [default excludes](#default-excludes), unless you opt out of them.
+All these excludes are used in addition to the [default excludes](#default-excludes), unless you [opt out of them](#ignoring-default-excludes).
 
 If you want to see which files would be checked without checking them you can pass the `--dry-run` flag.
 
@@ -274,7 +275,7 @@ add x y =
 
 #### Default Excludes
 
-If you don't pass the `ignore-defaults` flag to the binary these paths are excluded automatically:
+If you choose to [ignore them](#ignoring-default-excludes), these paths are excluded automatically:
 
 ```
 "^\\.yarn/",
@@ -321,12 +322,16 @@ If you don't pass the `ignore-defaults` flag to the binary these paths are exclu
 "min\\.js$"
 ```
 
+#### Ignoring Default Excludes
+
+If you either set `IgnoreDefaults` to `true` or pass the `-ignore-defaults` commandline switch, the [default excludes](#default-excludes) will be ignored entirely.
+
 #### Manually Excluding
 
 ##### via configuration
 
 In your `.ecrc` file you can exclude files with the `"exclude"` key which takes an array of regular expressions.
-This will get merged with the default excludes (if not ignored). You should remember to escape your regular expressions correctly. ;)
+This will get merged with the default excludes (if not [ignored](#ignoring-default-excludes)). You should remember to escape your regular expressions correctly. ;)
 
 An `.ecrc` which would ignore all test files and all Markdown files can look like this:
 
