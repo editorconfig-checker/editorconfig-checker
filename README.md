@@ -169,9 +169,12 @@ The following output formats are supported:
 
 ## Configuration
 
-The configuration is done via arguments or an `.ecrc` file.
+The configuration is done via arguments or it will take the first config file found with the following file names:
 
-A sample `.ecrc` file can look like this and will be used from your current working directory if not specified via the `--config` argument:
+- `.editorconfig-checker.json`
+- `.ecrc` (deprecated filename, soon unsupported)
+
+A sample configuration file can look like this and will be used from your current working directory if not specified via the `--config` argument:
 
 ```json
 {
@@ -252,7 +255,7 @@ const myTemplateString = `
 
 You can exclude paths from being checked in several ways:
 - ignoring a file by documenting it inside the to-be-excluded file
-- adding a regex matching the path to the `.ecrc`
+- adding a regex matching the path to the [configuration file](#configuration)
 - passing a regex matching the path as argument to `--exclude`
 
 All these excludes are used in addition to the [default excludes](#default-excludes), unless you [opt out of them](#ignoring-default-excludes).
@@ -330,10 +333,10 @@ If you either set `IgnoreDefaults` to `true` or pass the `-ignore-defaults` comm
 
 ##### via configuration
 
-In your `.ecrc` file you can exclude files with the `"exclude"` key which takes an array of regular expressions.
-This will get merged with the default excludes (if not [ignored](#ignoring-default-excludes)). You should remember to escape your regular expressions correctly. ;)
+In your [configuration file](#configuration) you can exclude files with the `"exclude"` key which takes an array of regular expressions.
+This will get merged with the default excludes (if not [ignored](#ignoring-default-excludes)). You should remember to escape your regular expressions correctly.
 
-An `.ecrc` which would ignore all test files and all Markdown files can look like this:
+A [configuration file](#configuration) which would ignore all test files and all Markdown files can look like this:
 
 ```json
 {
@@ -354,7 +357,7 @@ An `.ecrc` which would ignore all test files and all Markdown files can look lik
 
 ##### via arguments
 
-If you want to play around how the tool would behave you can also pass the `--exclude` argument to the binary. This will accept a regular expression as well. The argument given will be added to the excludes as defined by your `.ecrc` (respecting both its [`Exclude`](#via-configuration) and [`IgnoreDefaults`](#ignoring-default-excludes) settings).
+If you want to play around how the tool would behave you can also pass the `--exclude` argument to the binary. This will accept a regular expression as well. The argument given will be added to the excludes as defined by your [configuration file](#configuration) (respecting both its [`Exclude`](#via-configuration) and [`IgnoreDefaults`](#ignoring-default-excludes) settings).
 
 For example: `ec --exclude node_modules`
 
