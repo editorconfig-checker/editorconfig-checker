@@ -169,7 +169,7 @@ func FormatErrorsAsGCC(errors []ValidationErrors, config config.Config) []logger
 		}
 
 		for _, singleError := range fileErrors.Errors {
-			var lineNo = 0
+			lineNo := 0
 			if singleError.LineNumber > 0 {
 				lineNo = singleError.LineNumber
 			}
