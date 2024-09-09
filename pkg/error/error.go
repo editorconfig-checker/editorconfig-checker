@@ -88,7 +88,7 @@ func ConsolidateErrors(errors []ValidationError, config config.Config) []Validat
 }
 
 func FormatErrorsAsHumanReadable(errors []ValidationErrors, config config.Config) []logger.LogMessage {
-	var formatted_errors []logger.LogMessage
+	var logMessages []logger.LogMessage
 
 	for _, fileErrors := range errors {
 		if len(fileErrors.Errors) == 0 {
@@ -97,33 +97,33 @@ func FormatErrorsAsHumanReadable(errors []ValidationErrors, config config.Config
 
 		relativeFilePath, err := files.GetRelativePath(fileErrors.FilePath)
 		if err != nil {
-			formatted_errors = append(formatted_errors, logger.LogMessage{Level: "error", Message: err.Error()})
+			logMessages = append(logMessages, logger.LogMessage{Level: "error", Message: err.Error()})
 			continue
 		}
 
 		fileErrors.Errors = ConsolidateErrors(fileErrors.Errors, config)
 
-		formatted_errors = append(formatted_errors, logger.LogMessage{Level: "warning", Message: fmt.Sprintf("%s:", relativeFilePath)})
+		logMessages = append(logMessages, logger.LogMessage{Level: "warning", Message: fmt.Sprintf("%s:", relativeFilePath)})
 		for _, singleError := range fileErrors.Errors {
 			if singleError.LineNumber == -1 {
-				formatted_errors = append(formatted_errors, logger.LogMessage{Level: "error", Message: fmt.Sprintf("\t%s", singleError.Message)})
+				logMessages = append(logMessages, logger.LogMessage{Level: "error", Message: fmt.Sprintf("\t%s", singleError.Message)})
 				continue
 			}
 
 			if singleError.AdditionalIdenticalErrorCount == 0 {
-				formatted_errors = append(formatted_errors, logger.LogMessage{Level: "error", Message: fmt.Sprintf("\t%d: %s", singleError.LineNumber, singleError.Message)})
+				logMessages = append(logMessages, logger.LogMessage{Level: "error", Message: fmt.Sprintf("\t%d: %s", singleError.LineNumber, singleError.Message)})
 				continue
 			}
 
-			formatted_errors = append(formatted_errors, logger.LogMessage{Level: "error", Message: fmt.Sprintf("\t%d-%d: %s", singleError.LineNumber, singleError.LineNumber+singleError.AdditionalIdenticalErrorCount, singleError.Message)})
+			logMessages = append(logMessages, logger.LogMessage{Level: "error", Message: fmt.Sprintf("\t%d-%d: %s", singleError.LineNumber, singleError.LineNumber+singleError.AdditionalIdenticalErrorCount, singleError.Message)})
 		}
 	}
 
-	return formatted_errors
+	return logMessages
 }
 
 func FormatErrorsAsGHA(errors []ValidationErrors, config config.Config) []logger.LogMessage {
-	var formatted_errors []logger.LogMessage
+	var logMessages []logger.LogMessage
 
 	for _, fileErrors := range errors {
 		if len(fileErrors.Errors) == 0 {
@@ -132,7 +132,7 @@ func FormatErrorsAsGHA(errors []ValidationErrors, config config.Config) []logger
 
 		relativeFilePath, err := files.GetRelativePath(fileErrors.FilePath)
 		if err != nil {
-			formatted_errors = append(formatted_errors, logger.LogMessage{Level: "error", Message: err.Error()})
+			logMessages = append(logMessages, logger.LogMessage{Level: "error", Message: err.Error()})
 			continue
 		}
 
@@ -141,25 +141,25 @@ func FormatErrorsAsGHA(errors []ValidationErrors, config config.Config) []logger
 		// github-actions: A format dedicated for usage in Github Actions
 		for _, singleError := range fileErrors.Errors {
 			if singleError.LineNumber == -1 {
-				formatted_errors = append(formatted_errors, logger.LogMessage{Level: "error", Message: fmt.Sprintf("::error file=%s::%s", relativeFilePath, singleError.Message)})
+				logMessages = append(logMessages, logger.LogMessage{Level: "error", Message: fmt.Sprintf("::error file=%s::%s", relativeFilePath, singleError.Message)})
 				continue
 			}
 
 			if singleError.AdditionalIdenticalErrorCount == 0 {
-				formatted_errors = append(formatted_errors, logger.LogMessage{Level: "error", Message: fmt.Sprintf("::error file=%s,line=%d::%s", relativeFilePath, singleError.LineNumber, singleError.Message)})
+				logMessages = append(logMessages, logger.LogMessage{Level: "error", Message: fmt.Sprintf("::error file=%s,line=%d::%s", relativeFilePath, singleError.LineNumber, singleError.Message)})
 				continue
 			}
 
-			formatted_errors = append(formatted_errors, logger.LogMessage{Level: "error", Message: fmt.Sprintf("::error file=%s,line=%d,endLine=%d::%s", relativeFilePath, singleError.LineNumber, singleError.LineNumber+singleError.AdditionalIdenticalErrorCount, singleError.Message)})
+			logMessages = append(logMessages, logger.LogMessage{Level: "error", Message: fmt.Sprintf("::error file=%s,line=%d,endLine=%d::%s", relativeFilePath, singleError.LineNumber, singleError.LineNumber+singleError.AdditionalIdenticalErrorCount, singleError.Message)})
 		}
 	}
 
-	return formatted_errors
+	return logMessages
 }
 
 // gcc: A format mimicking the error format from GCC.
 func FormatErrorsAsGCC(errors []ValidationErrors, config config.Config) []logger.LogMessage {
-	var formatted_errors []logger.LogMessage
+	var logMessages []logger.LogMessage
 
 	for _, fileErrors := range errors {
 		if len(fileErrors.Errors) == 0 {
@@ -168,7 +168,7 @@ func FormatErrorsAsGCC(errors []ValidationErrors, config config.Config) []logger
 
 		relativeFilePath, err := files.GetRelativePath(fileErrors.FilePath)
 		if err != nil {
-			formatted_errors = append(formatted_errors, logger.LogMessage{Level: "error", Message: err.Error()})
+			logMessages = append(logMessages, logger.LogMessage{Level: "error", Message: err.Error()})
 			continue
 		}
 
@@ -177,11 +177,11 @@ func FormatErrorsAsGCC(errors []ValidationErrors, config config.Config) []logger
 			if singleError.LineNumber > 0 {
 				lineNo = singleError.LineNumber
 			}
-			formatted_errors = append(formatted_errors, logger.LogMessage{Level: "error", Message: fmt.Sprintf("%s:%d:%d: %s: %s", relativeFilePath, lineNo, 0, "error", singleError.Message)})
+			logMessages = append(logMessages, logger.LogMessage{Level: "error", Message: fmt.Sprintf("%s:%d:%d: %s: %s", relativeFilePath, lineNo, 0, "error", singleError.Message)})
 		}
 	}
 
-	return formatted_errors
+	return logMessages
 }
 
 // codeclimate: A format that is compatible with the codeclimate format for GitLab CI.
