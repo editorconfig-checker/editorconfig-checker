@@ -105,15 +105,17 @@ func FormatErrorsAsHumanReadable(errors []ValidationErrors, config config.Config
 
 		formatted_errors = append(formatted_errors, logger.LogMessage{Level: "warning", Message: fmt.Sprintf("%s:", relativeFilePath)})
 		for _, singleError := range fileErrors.Errors {
-			if singleError.LineNumber != -1 {
-				if singleError.AdditionalIdenticalErrorCount != 0 {
-					formatted_errors = append(formatted_errors, logger.LogMessage{Level: "error", Message: fmt.Sprintf("\t%d-%d: %s", singleError.LineNumber, singleError.LineNumber+singleError.AdditionalIdenticalErrorCount, singleError.Message)})
-				} else {
-					formatted_errors = append(formatted_errors, logger.LogMessage{Level: "error", Message: fmt.Sprintf("\t%d: %s", singleError.LineNumber, singleError.Message)})
-				}
-			} else {
+			if singleError.LineNumber == -1 {
 				formatted_errors = append(formatted_errors, logger.LogMessage{Level: "error", Message: fmt.Sprintf("\t%s", singleError.Message)})
+				continue
 			}
+
+			if singleError.AdditionalIdenticalErrorCount == 0 {
+				formatted_errors = append(formatted_errors, logger.LogMessage{Level: "error", Message: fmt.Sprintf("\t%d: %s", singleError.LineNumber, singleError.Message)})
+				continue
+			}
+
+			formatted_errors = append(formatted_errors, logger.LogMessage{Level: "error", Message: fmt.Sprintf("\t%d-%d: %s", singleError.LineNumber, singleError.LineNumber+singleError.AdditionalIdenticalErrorCount, singleError.Message)})
 		}
 	}
 
@@ -138,15 +140,17 @@ func FormatErrorsAsGHA(errors []ValidationErrors, config config.Config) []logger
 
 		// github-actions: A format dedicated for usage in Github Actions
 		for _, singleError := range fileErrors.Errors {
-			if singleError.LineNumber != -1 {
-				if singleError.AdditionalIdenticalErrorCount != 0 {
-					formatted_errors = append(formatted_errors, logger.LogMessage{Level: "error", Message: fmt.Sprintf("::error file=%s,line=%d,endLine=%d::%s", relativeFilePath, singleError.LineNumber, singleError.LineNumber+singleError.AdditionalIdenticalErrorCount, singleError.Message)})
-				} else {
-					formatted_errors = append(formatted_errors, logger.LogMessage{Level: "error", Message: fmt.Sprintf("::error file=%s,line=%d::%s", relativeFilePath, singleError.LineNumber, singleError.Message)})
-				}
-			} else {
+			if singleError.LineNumber == -1 {
 				formatted_errors = append(formatted_errors, logger.LogMessage{Level: "error", Message: fmt.Sprintf("::error file=%s::%s", relativeFilePath, singleError.Message)})
+				continue
 			}
+
+			if singleError.AdditionalIdenticalErrorCount == 0 {
+				formatted_errors = append(formatted_errors, logger.LogMessage{Level: "error", Message: fmt.Sprintf("::error file=%s,line=%d::%s", relativeFilePath, singleError.LineNumber, singleError.Message)})
+				continue
+			}
+
+			formatted_errors = append(formatted_errors, logger.LogMessage{Level: "error", Message: fmt.Sprintf("::error file=%s,line=%d,endLine=%d::%s", relativeFilePath, singleError.LineNumber, singleError.LineNumber+singleError.AdditionalIdenticalErrorCount, singleError.Message)})
 		}
 	}
 
