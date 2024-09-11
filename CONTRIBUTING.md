@@ -4,7 +4,7 @@ Thanks a lot for your interest in contributing to **editorconfig-checker**!
 
 ## Types of contributions
 
-Contributions to **editorconfig-checker** _include_, but is _not limited to_:
+Contributions to **editorconfig-checker** _include_, but are _not limited to_:
 
 - Reporting a bug.
 - Suggesting a new feature.
