@@ -4,8 +4,10 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
-	"strings"
 	"testing"
+
+	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/outputformat"
+	"github.com/gkampitakis/go-snaps/snaps"
 )
 
 var rootConfigFilePath = []string{"../../.editorconfig-checker.json"}
@@ -202,11 +204,7 @@ func TestSave(t *testing.T) {
 func TestGetAsString(t *testing.T) {
 	c, _ := NewConfig([]string{"../../.editorconfig-checker.json"})
 	_ = c.Parse()
+	c.Format = outputformat.Default
 
-	actual := c.GetAsString()
-	expected := "Config: {ShowVersion:false Help:false DryRun:false Path:../../.editorconfig-checker.json Version:v3.0.3 Verbose:false Format: Debug:false IgnoreDefaults:false SpacesAftertabs:<nil> SpacesAfterTabs:false NoColor:false Exclude:[testfiles testdata] AllowedContentTypes:[text/ application/octet-stream application/ecmascript application/json application/x-ndjson application/xml +json +xml] PassedFiles:[] Disable:{EndOfLine:false Indentation:false InsertFinalNewline:false TrimTrailingWhitespace:false IndentSize:false MaxLineLength:false} Logger:{Verbosee:false Debugg:false NoColor:false} EditorconfigConfig:0x"
-
-	if !strings.HasPrefix(actual, expected) {
-		t.Errorf("Expected: %v, got: %v ", expected, actual)
-	}
+	snaps.MatchSnapshot(t, c.GetAsString())
 }
