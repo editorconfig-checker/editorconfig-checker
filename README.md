@@ -27,6 +27,8 @@
 7. [Docker](#docker)
 8. [Continuous Integration](#continuous-integration)
 9. [Support](#support)
+10. [Contributing](#contributing)
+11. [Semantic Versioning Policy](#semantic-versioning-policy)
 
 ## What?
 
@@ -139,31 +141,30 @@ If you run this tool from a normal directory it will check all files which are t
 The following output formats are supported:
 
 - **default**: Plain text, human readable output.<br/>
-      ```text
-      <file>:
-        <startingLine>-<endLine>: <message>
-      ```
-- **gcc**: GCC compatible output. Useful for editors that support compiling and showing syntax errors. <br/>
-      `<file>:<line>:<column>: <type>: <message>`
-- **github-actions**: The format used by GitHub Actions <br/>
-      `::error file=<file>,line=<startingLine>,endLine=<endingLine>::<message>`
-- **codeclimate**: The [Code Climate](https://github.com/codeclimate/platform/blob/master/spec/analyzers/SPEC.md#data-types) json format used for [custom quality reports](https://docs.gitlab.com/ee/ci/testing/code_quality.html#implement-a-custom-tool) in GitLab CI
+  ```text
+  <file>:
+    <startingLine>-<endLine>: <message>
   ```
+- **gcc**: GCC compatible output. Useful for editors that support compiling and showing syntax errors. <br/>
+  `<file>:<line>:<column>: <type>: <message>`
+- **github-actions**: The format used by GitHub Actions <br/>
+  `::error file=<file>,line=<startingLine>,endLine=<endingLine>::<message>`
+- **codeclimate**: The [Code Climate](https://github.com/codeclimate/platform/blob/master/spec/analyzers/SPEC.md#data-types) json format used for [custom quality reports](https://docs.gitlab.com/ee/ci/testing/code_quality.html#implement-a-custom-tool) in GitLab CI
+  ```json
   [
-        {
-              "check_name": "editorconfig-checker",
-              "description": "Wrong indent style found (tabs instead of spaces)",
-              "fingerprint": "e87a958a3960d60a11d4b49c563cccd2",
-              "severity": "minor",
-              "location": {
-                    "path": ".vscode/extensions.json",
-                    "lines": {
-                    "begin": 2,
-                    "end": 2
-                    }
-              }
-        },
-        ...
+    {
+      "check_name": "editorconfig-checker",
+      "description": "Wrong indent style found (tabs instead of spaces)",
+      "fingerprint": "e87a958a3960d60a11d4b49c563cccd2",
+      "severity": "minor",
+      "location": {
+        "path": ".vscode/extensions.json",
+        "lines": {
+          "begin": 2,
+          "end": 2
+        }
+      }
+    }
   ]
   ```
 
@@ -254,6 +255,7 @@ const myTemplateString = `
 ### Excluding Paths
 
 You can exclude paths from being checked in several ways:
+
 - ignoring a file by documenting it inside the to-be-excluded file
 - adding a regex matching the path to the [configuration file](#configuration)
 - passing a regex matching the path as argument to `--exclude`
@@ -395,3 +397,34 @@ The [ss-open/ci/recipes project](https://gitlab.com/ss-open/ci/recipes) offers a
 
 If you have any questions, suggestions, need a wrapper for a programming language or just want to chat join #editorconfig-checker on freenode(IRC).
 If you don't have an IRC-client set up you can use the [freenode webchat](https://webchat.freenode.net/?channels=editorconfig-checker).
+
+## Contributing
+
+Anyone can help to improve the project, submit a Feature Request, a bug report or even correct a spelling mistake.
+
+The steps to contribute can be found in the [CONTRIBUTING.md](./CONTRIBUTING.md) file.
+
+## Semantic Versioning Policy
+
+**editorconfig-checker** adheres to [Semantic Versioning](https://semver.org/) for releases.
+
+However, as it is a code quality tool, it's not always clear when a minor or major version bump occurs. The following rules are used to determine the version bump:
+
+- Patch release (1.0.x -> 1.0.y)
+  - Updates to output formats (error messages, logs, ...).
+  - Performance improvements which doesn't affect behavior.
+  - Build process changes (e.g., updating dependencies, updating `Dockerfile`, ...).
+  - Reverts (reverting a previous commit).
+  - Bug fixes which result in **editorconfig-checker** reporting less linting errors (removing "false-positive" linting errors).
+- Minor release (1.x.0 -> 1.y.0)
+  - Adding new [configuration options](#configuration), including new CLI flags.
+  - Adding new [path to exclude by default](#default-excludes).
+  - Adding new [output formats](#formats).
+  - Supporting a new [editorconfig](https://editorconfig.org/) property (e.g: `insert_final_newline`, `indent_size`, ...).
+  - Any new feature which doesn't break existing behavior.
+- Major release (x.0.0 -> y.0.0)
+  - Removal of a [configuration](#configuration) option.
+  - Removal of an [output format](#formats).
+  - Removal of a [path to exclude by default](#default-excludes).
+  - Removal of support for an [editorconfig](https://editorconfig.org/) property.
+  - Bug fixes, which might result in **editorconfig-checker** reporting more linting errors, if the previous behavior was incorrect, with the [editorconfig](https://editorconfig.org/) specification.
