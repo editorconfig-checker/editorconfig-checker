@@ -94,7 +94,7 @@ go install github.com/editorconfig-checker/editorconfig-checker/v3/cmd/editorcon
 
 ## Usage
 
-```
+```txt
 USAGE:
   -config string
         config
@@ -282,7 +282,7 @@ add x y =
 
 If you choose to [ignore them](#ignoring-default-excludes), these paths are excluded automatically:
 
-```
+```txt
 "^\\.yarn/",
 "^yarn\\.lock$",
 "^package-lock\\.json$",
@@ -390,8 +390,8 @@ ENABLE:
 
 The [ss-open/ci/recipes project](https://gitlab.com/ss-open/ci/recipes) offers a ready to use lint job integrating editorconfig-checker.
 
-- Main documentation: https://gitlab.com/ss-open/ci/recipes/-/blob/main/README.md
-- Editorconfig job specific documentation: https://gitlab.com/ss-open/ci/recipes/-/blob/main/stages/lint/editorconfig/README.md
+- Main documentation: <https://gitlab.com/ss-open/ci/recipes/-/blob/main/README.md>
+- Editorconfig job specific documentation: <https://gitlab.com/ss-open/ci/recipes/-/blob/main/stages/lint/editorconfig/README.md>
 
 ## Support
 
@@ -427,4 +427,4 @@ However, as it is a code quality tool, it's not always clear when a minor or maj
   - Removal of an [output format](#formats).
   - Removal of a [path to exclude by default](#default-excludes).
   - Removal of support for an [editorconfig](https://editorconfig.org/) property.
-  - Bug fixes, which might result in **editorconfig-checker** reporting more linting errors, if the previous behavior was incorrect, with the [editorconfig](https://editorconfig.org/) specification.
+  - Bug fixes, which result in **editorconfig-checker** reporting more linting errors, because the previous behavior was incorrect according to the [editorconfig specification](https://editorconfig.org/).
