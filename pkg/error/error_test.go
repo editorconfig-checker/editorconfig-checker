@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/config"
+	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/outputformat"
 	"github.com/gkampitakis/go-snaps/snaps"
 )
 
@@ -222,7 +223,6 @@ func TestConsolidatingInterleavedErrors(t *testing.T) {
 }
 
 func TestFormatErrors(t *testing.T) {
-
 	/*
 		why change directory?
 		The relative path conversion done by FormatErrors() changes how absolute paths
@@ -315,18 +315,11 @@ func TestFormatErrors(t *testing.T) {
 		},
 	}
 
-	// wannabe test
-	config1 := config.Config{}
-	s.MatchSnapshot(t, FormatErrors(input, config1))
-
-	config2 := config.Config{Format: "gcc"}
-	s.MatchSnapshot(t, FormatErrors(input, config2))
-
-	config3 := config.Config{Format: "github-actions"}
-	s.MatchSnapshot(t, FormatErrors(input, config3))
-
-	config4 := config.Config{Format: "codeclimate"}
-	s.MatchSnapshot(t, FormatErrors(input, config4))
+	for _, format := range outputformat.ValidOutputFormats {
+		t.Run(string(format), func(t *testing.T) {
+			s.MatchSnapshot(t, FormatErrors(input, config.Config{Format: format}))
+		})
+	}
 }
 
 func TestMain(m *testing.M) {

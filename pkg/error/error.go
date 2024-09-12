@@ -8,6 +8,7 @@ import (
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/config"
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/files"
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/logger"
+	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/outputformat"
 )
 
 // ValidationError represents one validation error
@@ -86,69 +87,123 @@ func ConsolidateErrors(errors []ValidationError, config config.Config) []Validat
 	return append(lineLessErrors, consolidatedErrors...)
 }
 
-// FormatErrors prints the errors to the console
-func FormatErrors(errors []ValidationErrors, config config.Config) []logger.LogMessage {
-	var formatted_errors []logger.LogMessage
-	var codeclimateIssues []CodeclimateIssue
+func FormatErrorsAsHumanReadable(errors []ValidationErrors, config config.Config) []logger.LogMessage {
+	var logMessages []logger.LogMessage
 
 	for _, fileErrors := range errors {
-		if len(fileErrors.Errors) > 0 {
-			relativeFilePath, err := files.GetRelativePath(fileErrors.FilePath)
+		if len(fileErrors.Errors) == 0 {
+			continue
+		}
 
-			if err != nil {
-				formatted_errors = append(formatted_errors, logger.LogMessage{Level: "error", Message: err.Error()})
+		relativeFilePath, err := files.GetRelativePath(fileErrors.FilePath)
+		if err != nil {
+			logMessages = append(logMessages, logger.LogMessage{Level: "error", Message: err.Error()})
+			continue
+		}
+
+		fileErrors.Errors = ConsolidateErrors(fileErrors.Errors, config)
+
+		logMessages = append(logMessages, logger.LogMessage{Level: "warning", Message: fmt.Sprintf("%s:", relativeFilePath)})
+		for _, singleError := range fileErrors.Errors {
+			if singleError.LineNumber == -1 {
+				logMessages = append(logMessages, logger.LogMessage{Level: "error", Message: fmt.Sprintf("\t%s", singleError.Message)})
 				continue
 			}
 
-			// for these formats the errors need to be consolidated first.
-			if config.Format != "gcc" {
-				fileErrors.Errors = ConsolidateErrors(fileErrors.Errors, config)
+			if singleError.AdditionalIdenticalErrorCount == 0 {
+				logMessages = append(logMessages, logger.LogMessage{Level: "error", Message: fmt.Sprintf("\t%d: %s", singleError.LineNumber, singleError.Message)})
+				continue
 			}
 
-			switch config.Format {
-			case "codeclimate":
-				// codeclimate: A format that is compatible with the codeclimate format for GitLab CI.
-				// https://docs.gitlab.com/ee/ci/testing/code_quality.html#implement-a-custom-tool
-				for _, singleError := range fileErrors.Errors {
-					codeclimateIssues = append(codeclimateIssues, newCodeclimateIssue(singleError, relativeFilePath))
-				}
-			case "gcc":
-				// gcc: A format mimicking the error format from GCC.
-				for _, singleError := range fileErrors.Errors {
-					var lineNo = 0
-					if singleError.LineNumber > 0 {
-						lineNo = singleError.LineNumber
-					}
-					formatted_errors = append(formatted_errors, logger.LogMessage{Level: "error", Message: fmt.Sprintf("%s:%d:%d: %s: %s", relativeFilePath, lineNo, 0, "error", singleError.Message)})
-				}
-			case "github-actions":
-				// github-actions: A format dedicated for usage in Github Actions
-				for _, singleError := range fileErrors.Errors {
-					if singleError.LineNumber != -1 {
-						if singleError.AdditionalIdenticalErrorCount != 0 {
-							formatted_errors = append(formatted_errors, logger.LogMessage{Level: "error", Message: fmt.Sprintf("::error file=%s,line=%d,endLine=%d::%s", relativeFilePath, singleError.LineNumber, singleError.LineNumber+singleError.AdditionalIdenticalErrorCount, singleError.Message)})
-						} else {
-							formatted_errors = append(formatted_errors, logger.LogMessage{Level: "error", Message: fmt.Sprintf("::error file=%s,line=%d::%s", relativeFilePath, singleError.LineNumber, singleError.Message)})
-						}
-					} else {
-						formatted_errors = append(formatted_errors, logger.LogMessage{Level: "error", Message: fmt.Sprintf("::error file=%s::%s", relativeFilePath, singleError.Message)})
-					}
-				}
-			default:
-				// default: A human readable text format.
-				formatted_errors = append(formatted_errors, logger.LogMessage{Level: "warning", Message: fmt.Sprintf("%s:", relativeFilePath)})
-				for _, singleError := range fileErrors.Errors {
-					if singleError.LineNumber != -1 {
-						if singleError.AdditionalIdenticalErrorCount != 0 {
-							formatted_errors = append(formatted_errors, logger.LogMessage{Level: "error", Message: fmt.Sprintf("\t%d-%d: %s", singleError.LineNumber, singleError.LineNumber+singleError.AdditionalIdenticalErrorCount, singleError.Message)})
-						} else {
-							formatted_errors = append(formatted_errors, logger.LogMessage{Level: "error", Message: fmt.Sprintf("\t%d: %s", singleError.LineNumber, singleError.Message)})
-						}
-					} else {
-						formatted_errors = append(formatted_errors, logger.LogMessage{Level: "error", Message: fmt.Sprintf("\t%s", singleError.Message)})
-					}
-				}
+			logMessages = append(logMessages, logger.LogMessage{Level: "error", Message: fmt.Sprintf("\t%d-%d: %s", singleError.LineNumber, singleError.LineNumber+singleError.AdditionalIdenticalErrorCount, singleError.Message)})
+		}
+	}
+
+	return logMessages
+}
+
+func FormatErrorsAsGHA(errors []ValidationErrors, config config.Config) []logger.LogMessage {
+	var logMessages []logger.LogMessage
+
+	for _, fileErrors := range errors {
+		if len(fileErrors.Errors) == 0 {
+			continue
+		}
+
+		relativeFilePath, err := files.GetRelativePath(fileErrors.FilePath)
+		if err != nil {
+			logMessages = append(logMessages, logger.LogMessage{Level: "error", Message: err.Error()})
+			continue
+		}
+
+		fileErrors.Errors = ConsolidateErrors(fileErrors.Errors, config)
+
+		// github-actions: A format dedicated for usage in Github Actions
+		for _, singleError := range fileErrors.Errors {
+			if singleError.LineNumber == -1 {
+				logMessages = append(logMessages, logger.LogMessage{Level: "error", Message: fmt.Sprintf("::error file=%s::%s", relativeFilePath, singleError.Message)})
+				continue
 			}
+
+			if singleError.AdditionalIdenticalErrorCount == 0 {
+				logMessages = append(logMessages, logger.LogMessage{Level: "error", Message: fmt.Sprintf("::error file=%s,line=%d::%s", relativeFilePath, singleError.LineNumber, singleError.Message)})
+				continue
+			}
+
+			logMessages = append(logMessages, logger.LogMessage{Level: "error", Message: fmt.Sprintf("::error file=%s,line=%d,endLine=%d::%s", relativeFilePath, singleError.LineNumber, singleError.LineNumber+singleError.AdditionalIdenticalErrorCount, singleError.Message)})
+		}
+	}
+
+	return logMessages
+}
+
+// gcc: A format mimicking the error format from GCC.
+func FormatErrorsAsGCC(errors []ValidationErrors, config config.Config) []logger.LogMessage {
+	var logMessages []logger.LogMessage
+
+	for _, fileErrors := range errors {
+		if len(fileErrors.Errors) == 0 {
+			continue
+		}
+
+		relativeFilePath, err := files.GetRelativePath(fileErrors.FilePath)
+		if err != nil {
+			logMessages = append(logMessages, logger.LogMessage{Level: "error", Message: err.Error()})
+			continue
+		}
+
+		for _, singleError := range fileErrors.Errors {
+			lineNo := 0
+			if singleError.LineNumber > 0 {
+				lineNo = singleError.LineNumber
+			}
+			logMessages = append(logMessages, logger.LogMessage{Level: "error", Message: fmt.Sprintf("%s:%d:%d: %s: %s", relativeFilePath, lineNo, 0, "error", singleError.Message)})
+		}
+	}
+
+	return logMessages
+}
+
+// codeclimate: A format that is compatible with the codeclimate format for GitLab CI.
+// https://docs.gitlab.com/ee/ci/testing/code_quality.html#implement-a-custom-tool
+func FormatErrorsAsCodeclimate(errors []ValidationErrors, config config.Config) []logger.LogMessage {
+	var codeclimateIssues []CodeclimateIssue
+
+	for _, fileErrors := range errors {
+		if len(fileErrors.Errors) == 0 {
+			continue
+		}
+
+		relativeFilePath, err := files.GetRelativePath(fileErrors.FilePath)
+		if err != nil {
+			config.Logger.Error(err.Error())
+			continue
+		}
+
+		fileErrors.Errors = ConsolidateErrors(fileErrors.Errors, config)
+
+		for _, singleError := range fileErrors.Errors {
+			codeclimateIssues = append(codeclimateIssues, newCodeclimateIssue(singleError, relativeFilePath))
 		}
 	}
 
@@ -161,5 +216,24 @@ func FormatErrors(errors []ValidationErrors, config config.Config) []logger.LogM
 			return []logger.LogMessage{{Level: "", Message: string(codeclimateIssuesJSON)}}
 		}
 	}
-	return formatted_errors
+	return []logger.LogMessage{}
+}
+
+// FormatErrors prints the errors to the console
+func FormatErrors(errors []ValidationErrors, config config.Config) []logger.LogMessage {
+	switch config.Format {
+	case outputformat.Codeclimate:
+		// codeclimate: A format that is compatible with the codeclimate format for GitLab CI.
+		// https://docs.gitlab.com/ee/ci/testing/code_quality.html#implement-a-custom-tool
+		return FormatErrorsAsCodeclimate(errors, config)
+	case outputformat.GCC:
+		// gcc: A format mimicking the error format from GCC.
+		return FormatErrorsAsGCC(errors, config)
+	case outputformat.GithubActions:
+		// github-actions: A format dedicated for usage in Github Actions
+		return FormatErrorsAsGHA(errors, config)
+	default:
+		// default: A human readable text format.
+		return FormatErrorsAsHumanReadable(errors, config)
+	}
 }
