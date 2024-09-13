@@ -148,20 +148,22 @@ func NewConfig(configPaths []string) (*Config, error) {
 
 // Parse parses a config at a given path
 func (c *Config) Parse() error {
-	if c.Path != "" {
-		configString, err := os.ReadFile(c.Path)
-		if err != nil {
-			return err
-		}
-
-		tmpConfg := Config{}
-		err = json.Unmarshal(configString, &tmpConfg)
-		if err != nil {
-			return err
-		}
-
-		c.Merge(tmpConfg)
+	if c.Path == "" {
+		return nil
 	}
+
+	configString, err := os.ReadFile(c.Path)
+	if err != nil {
+		return err
+	}
+
+	tmpConfg := Config{}
+	err = json.Unmarshal(configString, &tmpConfg)
+	if err != nil {
+		return err
+	}
+
+	c.Merge(tmpConfg)
 
 	return nil
 }
