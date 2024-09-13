@@ -79,7 +79,12 @@ func init() {
 		os.Exit(0)
 	}
 
-	_ = currentConfig.Parse()
+	err := currentConfig.Parse()
+	if err != nil {
+		currentConfig.Logger.Error(err.Error())
+		os.Exit(2)
+	}
+
 	if tmpExclude != "" {
 		c.Exclude = append(c.Exclude, tmpExclude)
 	}
