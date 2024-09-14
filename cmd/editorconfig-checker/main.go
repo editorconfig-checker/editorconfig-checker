@@ -9,7 +9,6 @@ import (
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/config"
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/error"
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/files"
-	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/logger"
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/outputformat"
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/utils"
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/validation"
@@ -67,7 +66,7 @@ func init() {
 	if init {
 		err := currentConfig.Save(version)
 		if err != nil {
-			logger.Error(err.Error())
+			currentConfig.Logger.Error(err.Error())
 			os.Exit(1)
 		}
 
