@@ -7,66 +7,51 @@ import (
 // Wannbe tests
 
 func TestLoggerDebug(t *testing.T) {
-	logger := Logger{}
+	logger := GetLogger()
 
 	logger.Debug("hello")
 
-	logger = Logger{Debugg: true}
+	logger.Debugg = true
 	logger.Debug("hello")
 }
 
 func TestLoggerVerbose(t *testing.T) {
-	logger := Logger{}
+	logger := GetLogger()
 
 	logger.Verbose("hello")
 
-	logger = Logger{Verbosee: true}
+	logger.Verbosee = true
 	logger.Verbose("hello")
 }
 
 func TestLoggerWarning(t *testing.T) {
-	logger := Logger{}
+	logger := GetLogger()
 	logger.Warning("bla%s", "hey")
 
 	logger.NoColor = true
 	logger.Warning("bla%s", "hey")
-}
-
-func TestWarning(t *testing.T) {
-	Warning("bla%s", "hey")
 }
 
 func TestLoggerOutput(t *testing.T) {
-	logger := Logger{}
+	logger := GetLogger()
 	logger.Output("bla%s", "hey")
 }
 
-func TestOutput(t *testing.T) {
-	Output("bla%s", "hey")
-}
-
 func TestLoggerError(t *testing.T) {
-	logger := Logger{}
+	logger := GetLogger()
 	logger.Error("bla%s", "hey")
 
 	logger.NoColor = true
 	logger.Error("bla%s", "hey")
 }
 
-func TestError(t *testing.T) {
-	Error("bla%s", "hey")
-}
-
 func TestPrintColor(t *testing.T) {
-	PrintColor("Hello", RED)
-}
-
-func TestPrint(t *testing.T) {
-	Print("Hello")
+	logger := GetLogger()
+	logger.printColor("Hello", RED)
 }
 
 func TestPrintLogMessage(t *testing.T) {
-	logger := Logger{}
+	logger := GetLogger()
 
 	messages := []LogMessage{
 		{Level: "debug", Message: "debug message"},

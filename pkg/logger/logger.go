@@ -3,6 +3,8 @@ package logger
 
 import (
 	"fmt"
+	"io"
+	"os"
 )
 
 // Colors which can be used
@@ -23,13 +25,37 @@ type Logger struct {
 	Verbosee bool
 	Debugg   bool
 	NoColor  bool
+	writer   io.Writer
+}
+
+func GetLogger() Logger {
+	logger := Logger{}
+	logger.Init()
+	return logger
+}
+
+// initialize the Logger to write to standard output
+func (l *Logger) Init() {
+	l.writer = os.Stdout
+}
+
+// ensure the Logger is initialized on first print
+func (l *Logger) lazyInit() {
+	if l.writer == nil {
+		l.Init()
+	}
+}
+
+// allow users to overwrite the writer used
+func (l *Logger) SetWriter(w io.Writer) {
+	l.writer = w
 }
 
 // Debug prints a message when Debugg is set to true on the Logger
 func (l Logger) Debug(format string, a ...interface{}) {
 	if l.Debugg {
 		message := fmt.Sprintf(format, a...)
-		Println(message)
+		l.println(message)
 	}
 }
 
@@ -37,7 +63,7 @@ func (l Logger) Debug(format string, a ...interface{}) {
 func (l Logger) Verbose(format string, a ...interface{}) {
 	if l.Verbosee {
 		message := fmt.Sprintf(format, a...)
-		Println(message)
+		l.println(message)
 	}
 }
 
@@ -45,9 +71,9 @@ func (l Logger) Verbose(format string, a ...interface{}) {
 func (l Logger) Warning(format string, a ...interface{}) {
 	message := fmt.Sprintf(format, a...)
 	if l.NoColor {
-		Println(message)
+		l.println(message)
 	} else {
-		PrintlnColor(message, YELLOW)
+		l.printlnColor(message, YELLOW)
 	}
 }
 
@@ -72,56 +98,36 @@ func (l Logger) PrintLogMessages(messages []LogMessage) {
 	}
 }
 
-// Warning prints a warning message to Stdout in yellow
-func Warning(format string, a ...interface{}) {
-	message := fmt.Sprintf(format, a...)
-	PrintlnColor(message, YELLOW)
-}
-
 // Output prints a message on Stdout in 'normal' color
 func (l Logger) Output(format string, a ...interface{}) {
 	message := fmt.Sprintf(format, a...)
-	Println(message)
-}
-
-// Output prints an error message to Stdout in 'normal' color
-func Output(format string, a ...interface{}) {
-	message := fmt.Sprintf(format, a...)
-	Println(message)
+	l.println(message)
 }
 
 // Error prints an error message to Stdout in red
 func (l Logger) Error(format string, a ...interface{}) {
 	message := fmt.Sprintf(format, a...)
 	if l.NoColor {
-		Println(message)
+		l.println(message)
 	} else {
-		PrintlnColor(message, RED)
+		l.printlnColor(message, RED)
 	}
 }
 
-// Error prints an error message to Stdout in red
-func Error(format string, a ...interface{}) {
-	message := fmt.Sprintf(format, a...)
-	PrintlnColor(message, RED)
+// println prints a message with a trailing newline
+func (l Logger) println(message string) {
+	l.lazyInit()
+	fmt.Fprintf(l.writer, "%s\n", message)
 }
 
-// Print prints a message
-func Print(message string) {
-	fmt.Printf("%s", message)
+// printColor prints a message in a given ANSI-color
+func (l Logger) printColor(message string, color string) {
+	l.lazyInit()
+	fmt.Fprintf(l.writer, "%s%s%s", color, message, RESET)
 }
 
-// Println prints a message with a trailing newline
-func Println(message string) {
-	fmt.Printf("%s\n", message)
-}
-
-// PrintColor prints a message in a given ANSI-color
-func PrintColor(message string, color string) {
-	fmt.Printf("%s%s%s", color, message, RESET)
-}
-
-// PrintlnColor prints a message in a given ANSI-color with a trailing newline
-func PrintlnColor(message string, color string) {
-	fmt.Printf("%s%s%s\n", color, message, RESET)
+// printlnColor prints a message in a given ANSI-color with a trailing newline
+func (l Logger) printlnColor(message string, color string) {
+	l.lazyInit()
+	fmt.Fprintf(l.writer, "%s%s%s\n", color, message, RESET)
 }
