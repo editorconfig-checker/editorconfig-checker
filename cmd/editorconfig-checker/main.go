@@ -10,7 +10,6 @@ import (
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/config"
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/error"
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/files"
-	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/logger"
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/outputformat"
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/utils"
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/validation"
@@ -66,13 +65,13 @@ func init() {
 	currentConfig, _ = config.NewConfig(configPaths)
 
 	if strings.HasSuffix(currentConfig.Path, ".ecrc") {
-		logger.Warning("The default configuration file name `.ecrc` is deprecated. Use `.editorconfig-checker.json` instead. You can simply rename it")
+		currentConfig.Logger.Warning("The default configuration file name `.ecrc` is deprecated. Use `.editorconfig-checker.json` instead. You can simply rename it")
 	}
 
 	if init {
 		err := currentConfig.Save(version)
 		if err != nil {
-			logger.Error(err.Error())
+			currentConfig.Logger.Error(err.Error())
 			os.Exit(1)
 		}
 
