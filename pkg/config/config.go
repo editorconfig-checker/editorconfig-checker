@@ -120,6 +120,9 @@ func NewConfig(configPaths []string) (*Config, error) {
 
 	var config Config
 
+	// initialize the Logger early, so usage of it does not fail
+	config.Logger.Init()
+
 	config.AllowedContentTypes = defaultAllowedContentTypes
 	config.Exclude = []string{}
 	config.PassedFiles = []string{}

@@ -3,6 +3,8 @@ package logger
 
 import (
 	"fmt"
+	"io"
+	"os"
 )
 
 // Colors which can be used
@@ -23,6 +25,17 @@ type Logger struct {
 	Verbosee bool
 	Debugg   bool
 	NoColor  bool
+	writer   io.Writer
+}
+
+// initialize the Logger to write to standard output
+func (l *Logger) Init() {
+	l.writer = os.Stdout
+}
+
+// allow users to overwrite the writer used
+func (l *Logger) SetWriter(w io.Writer) {
+	l.writer = w
 }
 
 // Debug prints a message when Debugg is set to true on the Logger
