@@ -24,7 +24,7 @@ func TestNewConfig(t *testing.T) {
 
 func TestNoConfigFileFound(t *testing.T) {
 	_, err := NewConfig([]string{"abc"})
-	var expected = "No file found at abc"
+	var expected = "no file found at abc"
 	if err == nil || err.Error() != expected {
 		t.Errorf("expected an error (%s), got %v", expected, err)
 	}
@@ -32,7 +32,7 @@ func TestNoConfigFileFound(t *testing.T) {
 
 func TestNoConfigs(t *testing.T) {
 	_, err := NewConfig([]string{})
-	var expected = "No config paths provided"
+	var expected = "no config paths provided"
 	if err == nil || err.Error() != expected {
 		t.Errorf("expected an error (%s), got %v", expected, err)
 	}
@@ -40,7 +40,7 @@ func TestNoConfigs(t *testing.T) {
 
 func TestNoConfigFileFoundInMultiplePaths(t *testing.T) {
 	_, err := NewConfig([]string{"abc", "def"})
-	var expected = "No file found at abc"
+	var expected = "no file found at abc"
 	if err == nil || err.Error() != expected {
 		t.Errorf("expected an error (%s), got %v", expected, err)
 	}

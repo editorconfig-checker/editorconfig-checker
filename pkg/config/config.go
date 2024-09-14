@@ -115,7 +115,7 @@ type DisabledChecks struct {
 // NewConfig initializes a new config
 func NewConfig(configPaths []string) (*Config, error) {
 	if len(configPaths) == 0 {
-		return nil, fmt.Errorf("No config paths provided")
+		return nil, fmt.Errorf("no config paths provided")
 	}
 
 	var config Config
@@ -141,7 +141,7 @@ func NewConfig(configPaths []string) (*Config, error) {
 	if configPath == "" {
 		var configPath string = configPaths[0]
 		config.Path = configPath
-		return &config, fmt.Errorf("No file found at %s", configPath)
+		return &config, fmt.Errorf("no file found at %s", configPath)
 	}
 	config.Path = configPath
 
@@ -276,7 +276,7 @@ func (c Config) GetExcludesAsRegularExpression() string {
 // Save saves the config to it's Path
 func (c Config) Save(version string) error {
 	if utils.IsRegularFile(c.Path) {
-		return fmt.Errorf("File `%v` already exists", c.Path)
+		return fmt.Errorf("file `%v` already exists", c.Path)
 	}
 
 	type writtenConfig struct {
