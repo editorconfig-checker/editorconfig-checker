@@ -1,0 +1,47 @@
+
+[TestLoggerDebug - 1]
+
+---
+
+[TestLoggerDebug - 2]
+hello
+
+---
+
+[TestLoggerVerbose - 1]
+
+---
+
+[TestLoggerVerbose - 2]
+hello
+
+---
+
+[TestLoggerWarning - 1]
+[33;1mblahey[33;0m
+
+---
+
+[TestLoggerWarning - 2]
+blahey
+
+---
+
+[TestLoggerOutput - 1]
+blahey
+
+---
+
+[TestLoggerError - 1]
+[31;1mblahey[33;0m
+
+---
+
+[TestLoggerError - 2]
+blahey
+
+---
+
+[TestPrintColor - 1]
+[31;1mHello[33;0m
+---
