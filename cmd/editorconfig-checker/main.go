@@ -98,7 +98,7 @@ func init() {
 // Main function, dude
 func main() {
 	config := *currentConfig
-	config.Logger.Debug(config.GetAsString())
+	config.Logger.Debug("Config: %s", config)
 	config.Logger.Verbose("Exclude Regexp: %s", config.GetExcludesAsRegularExpression())
 
 	if utils.FileExists(config.Path) && config.Version != "" && config.Version != version {
