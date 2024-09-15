@@ -46,6 +46,16 @@ func (l *Logger) SetWriter(w io.Writer) {
 	l.writer = w
 }
 
+// apply the settings from the Logger given to the instance
+func (l *Logger) Configure(newLogger Logger) {
+	l.Verbosee = newLogger.Verbosee
+	l.Debugg = newLogger.Debugg
+	l.NoColor = newLogger.NoColor
+	if newLogger.writer != nil {
+		l.SetWriter(newLogger.writer)
+	}
+}
+
 // Debug prints a message when Debugg is set to true on the Logger
 func (l Logger) Debug(format string, a ...interface{}) {
 	if l.Debugg {

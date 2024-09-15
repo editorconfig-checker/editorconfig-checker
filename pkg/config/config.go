@@ -233,11 +233,12 @@ func (c *Config) Merge(config Config) {
 	}
 
 	c.mergeDisabled(config.Disable)
-	c.Logger = logger.Logger{
+
+	c.Logger.Configure(logger.Logger{
 		Verbosee: c.Verbose || config.Verbose,
 		Debugg:   c.Debug || config.Debug,
 		NoColor:  c.NoColor || config.NoColor,
-	}
+	})
 }
 
 // mergeDisabled merges the disabled checks into the config

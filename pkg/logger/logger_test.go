@@ -2,6 +2,7 @@ package logger
 
 import (
 	"bytes"
+	"os"
 	"testing"
 
 	"github.com/gkampitakis/go-snaps/snaps"
@@ -83,4 +84,48 @@ func TestPrintColor(t *testing.T) {
 	snapHelper(t, &logger, func() {
 		logger.printColor("this should just print this text in red", RED)
 	})
+}
+
+func TestConfigure(t *testing.T) {
+	modifiableLogger := Logger{
+		Verbosee: false,
+		Debugg:   false,
+		NoColor:  false,
+		writer:   nil,
+	}
+
+	if modifiableLogger.Verbosee {
+		t.Errorf("Assumption broken: VerboseEnabled was true already")
+	}
+	if modifiableLogger.Debugg {
+		t.Errorf("Assumption broken: DebugEnabled was true already")
+	}
+	if modifiableLogger.NoColor {
+		t.Errorf("Assumption broken: NoColor was true already")
+	}
+	if modifiableLogger.writer != nil {
+		t.Errorf("Assumption broken: writer was set already")
+	}
+
+	configLogger := Logger{
+		Verbosee: true,
+		Debugg:   true,
+		NoColor:  true,
+		writer:   os.Stderr,
+	}
+
+	modifiableLogger.Configure(configLogger)
+
+	if !modifiableLogger.Verbosee {
+		t.Errorf("Configuring a logger with another logger did not lead to VerboseEnabled becoming true")
+	}
+	if !modifiableLogger.Debugg {
+		t.Errorf("Configuring a logger with another logger did not lead to DebugEnabled becoming true")
+	}
+	if !modifiableLogger.NoColor {
+		t.Errorf("Configuring a logger with another logger did not lead to NoColor becoming true")
+	}
+	if modifiableLogger.writer != os.Stderr {
+		t.Errorf("Configuring a logger with another logger did not lead to writer becoming set to os.Stderr")
+	}
 }
