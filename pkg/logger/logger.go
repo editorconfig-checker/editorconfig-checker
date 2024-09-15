@@ -34,6 +34,13 @@ func (l *Logger) Init() {
 	l.writer = os.Stdout
 }
 
+// ensure the Logger is initialized on first print
+func (l *Logger) LazyInit() {
+	if l.writer == nil {
+		l.Init()
+	}
+}
+
 // allow users to overwrite the writer used
 func (l *Logger) SetWriter(w io.Writer) {
 	l.writer = w
@@ -83,15 +90,18 @@ func (l Logger) Error(format string, a ...interface{}) {
 
 // println prints a message with a trailing newline
 func (l Logger) println(message string) {
+	l.LazyInit()
 	fmt.Fprintf(l.writer, "%s\n", message)
 }
 
 // printColor prints a message in a given ANSI-color
 func (l Logger) printColor(message string, color string) {
+	l.LazyInit()
 	fmt.Fprintf(l.writer, "%s%s%s", color, message, RESET)
 }
 
 // printlnColor prints a message in a given ANSI-color with a trailing newline
 func (l Logger) printlnColor(message string, color string) {
+	l.LazyInit()
 	fmt.Fprintf(l.writer, "%s%s%s\n", color, message, RESET)
 }
