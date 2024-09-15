@@ -4,7 +4,7 @@
 ---
 
 [TestLoggerDebug - 2]
-hello
+this text should be printed when debug was enabled
 
 ---
 
@@ -18,30 +18,30 @@ hello
 ---
 
 [TestLoggerWarning - 1]
-[33;1mblahey[33;0m
+[33;1mthis text should be printed by a logger with default config (and in color)[33;0m
 
 ---
 
 [TestLoggerWarning - 2]
-blahey
+this text should be printed by a logger with default config (but not be colorized)
 
 ---
 
 [TestLoggerOutput - 1]
-blahey
+plain output should be printed always (also supporting format strings)
 
 ---
 
 [TestLoggerError - 1]
-[31;1mblahey[33;0m
+[31;1mthis text should be printed by a logger with default config (and in color)[33;0m
 
 ---
 
 [TestLoggerError - 2]
-blahey
+this text should be printed by a logger with default config (but not be colorized)
 
 ---
 
 [TestPrintColor - 1]
-[31;1mHello[33;0m
+[31;1mthis should just print this text in red[33;0m
 ---
