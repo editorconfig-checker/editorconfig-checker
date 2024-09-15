@@ -91,27 +91,27 @@ func TestGetExcludesAsRegularExpression(t *testing.T) {
 }
 
 func TestMerge(t *testing.T) {
-	c1, err := NewConfig([]string{"../../.editorconfig-checker.json"})
+	modifiedConfig, err := NewConfig([]string{"../../.editorconfig-checker.json"})
 	if err != nil {
 		t.Errorf("Expected to create a config without errors, got %v", err)
 	}
 
-	err = c1.Parse()
+	err = modifiedConfig.Parse()
 	if err != nil {
 		t.Errorf("Expected to parse a config without errors, got %v", err)
 	}
 
-	mergeConfig := Config{}
-	c1.Merge(mergeConfig)
+	emptyConfig := Config{}
+	modifiedConfig.Merge(emptyConfig)
 
-	c2, _ := NewConfig([]string{"../../.editorconfig-checker.json"})
-	_ = c2.Parse()
+	parsedConfig, _ := NewConfig([]string{"../../.editorconfig-checker.json"})
+	_ = parsedConfig.Parse()
 
-	if !reflect.DeepEqual(c1, c2) {
-		t.Errorf("Expected a parsed config and a parsed config merged with an empty config to be the same config, got %v and %v", c1, c2)
+	if !reflect.DeepEqual(modifiedConfig, parsedConfig) {
+		t.Errorf("Expected a parsed config and a parsed config merged with an empty config to be the same config, got %v and %v", modifiedConfig, parsedConfig)
 	}
 
-	mergeConfig = Config{
+	mergeConfig := Config{
 		ShowVersion:         true,
 		Version:             "v3.0.3",
 		Help:                true,
@@ -136,21 +136,22 @@ func TestMerge(t *testing.T) {
 		},
 	}
 
-	c1.Merge(mergeConfig)
+	modifiedConfig.Merge(mergeConfig)
 
 	mergeConfig.AllowedContentTypes = []string{"text/", "application/octet-stream", "application/ecmascript", "application/json", "application/x-ndjson", "application/xml", "+json", "+xml", "xml/"}
 	mergeConfig.Exclude = []string{"testfiles", "testdata", "some-other"}
 
 	expected := mergeConfig
+	// the following set the properties that cannot be specified directly in mergeConfig above, but would cause the test to fail if left unchanged
 	expected.Logger.Verbosee = true
 	expected.Logger.Debugg = true
 	expected.Logger.NoColor = true
-	expected.EditorconfigConfig = c1.EditorconfigConfig
+	expected.EditorconfigConfig = modifiedConfig.EditorconfigConfig
 
-	if !reflect.DeepEqual(c1, &expected) {
+	if !reflect.DeepEqual(modifiedConfig, &expected) {
 		t.Errorf("%#v", &expected)
-		t.Errorf("%#v", c1)
-		t.Errorf("Expected, got %#v and %#v", c1, &expected)
+		t.Errorf("%#v", modifiedConfig)
+		t.Errorf("Expected, got %#v and %#v", modifiedConfig, &expected)
 	}
 
 	config := Config{Path: "./.editorconfig-checker.json"}
