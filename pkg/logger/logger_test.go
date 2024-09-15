@@ -47,5 +47,5 @@ func TestLoggerError(t *testing.T) {
 
 func TestPrintColor(t *testing.T) {
 	logger := GetLogger()
-	logger.PrintColor("Hello", RED)
+	logger.printColor("Hello", RED)
 }
