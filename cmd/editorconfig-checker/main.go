@@ -136,18 +136,11 @@ func main() {
 
 	errors := validation.ProcessValidation(filePaths, config)
 
-	formattedErrors := error.FormatErrors(errors, config)
-	errorCount := len(formattedErrors)
-	if errorCount != 0 {
-		config.Logger.PrintLogMessages(formattedErrors)
-		if config.Format != "codeclimate" {
-			config.Logger.Error(fmt.Sprintf("\n%d errors found", errorCount))
-		}
-	}
+	error.PrintErrors(errors, config)
 
 	config.Logger.Verbose("%d files checked", len(filePaths))
 
-	if errorCount != 0 {
+	if error.GetErrorCount(errors) != 0 {
 		os.Exit(1)
 	}
 

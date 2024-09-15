@@ -1,6 +1,7 @@
 package error
 
 import (
+	"bytes"
 	"errors"
 	"os"
 	"path/filepath"
@@ -317,7 +318,11 @@ func TestFormatErrors(t *testing.T) {
 
 	for _, format := range outputformat.ValidOutputFormats {
 		t.Run(string(format), func(t *testing.T) {
-			s.MatchSnapshot(t, FormatErrors(input, config.Config{Format: format}))
+			buffer := bytes.Buffer{}
+			config := config.Config{Format: format}
+			config.Logger.SetWriter(&buffer)
+			PrintErrors(input, config)
+			s.MatchSnapshot(t, buffer.String())
 		})
 	}
 }

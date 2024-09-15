@@ -49,17 +49,3 @@ func TestPrintColor(t *testing.T) {
 	logger := GetLogger()
 	logger.printColor("Hello", RED)
 }
-
-func TestPrintLogMessage(t *testing.T) {
-	logger := GetLogger()
-
-	messages := []LogMessage{
-		{Level: "debug", Message: "debug message"},
-		{Level: "verbose", Message: "verbose message"},
-		{Level: "warning", Message: "warning message"},
-		{Level: "error", Message: "error message"},
-		{Level: "output", Message: "normal message"},
-	}
-
-	logger.PrintLogMessages(messages)
-}
