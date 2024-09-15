@@ -3,7 +3,6 @@ package error
 
 import (
 	"encoding/json"
-	"fmt"
 
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/config"
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/files"
@@ -101,24 +100,24 @@ func PrintErrorsAsHumanReadable(errors []ValidationErrors, config config.Config)
 
 		fileErrors.Errors = ConsolidateErrors(fileErrors.Errors, config)
 
-		config.Logger.Warning(fmt.Sprintf("%s:", relativeFilePath))
+		config.Logger.Warning("%s:", relativeFilePath)
 		for _, singleError := range fileErrors.Errors {
 			errorCount++
 
 			if singleError.LineNumber == -1 {
-				config.Logger.Error(fmt.Sprintf("\t%s", singleError.Message))
+				config.Logger.Error("\t%s", singleError.Message)
 				continue
 			}
 
 			if singleError.AdditionalIdenticalErrorCount == 0 {
-				config.Logger.Error(fmt.Sprintf("\t%d: %s", singleError.LineNumber, singleError.Message))
+				config.Logger.Error("\t%d: %s", singleError.LineNumber, singleError.Message)
 				continue
 			}
 
-			config.Logger.Error(fmt.Sprintf("\t%d-%d: %s", singleError.LineNumber, singleError.LineNumber+singleError.AdditionalIdenticalErrorCount, singleError.Message))
+			config.Logger.Error("\t%d-%d: %s", singleError.LineNumber, singleError.LineNumber+singleError.AdditionalIdenticalErrorCount, singleError.Message)
 		}
 	}
-	config.Logger.Error(fmt.Sprintf("\n%d errors found", errorCount))
+	config.Logger.Error("\n%d errors found", errorCount)
 }
 
 func PrintErrorsAsGHA(errors []ValidationErrors, config config.Config) {
@@ -141,19 +140,19 @@ func PrintErrorsAsGHA(errors []ValidationErrors, config config.Config) {
 			errorCount++
 
 			if singleError.LineNumber == -1 {
-				config.Logger.Error(fmt.Sprintf("::error file=%s::%s", relativeFilePath, singleError.Message))
+				config.Logger.Error("::error file=%s::%s", relativeFilePath, singleError.Message)
 				continue
 			}
 
 			if singleError.AdditionalIdenticalErrorCount == 0 {
-				config.Logger.Error(fmt.Sprintf("::error file=%s,line=%d::%s", relativeFilePath, singleError.LineNumber, singleError.Message))
+				config.Logger.Error("::error file=%s,line=%d::%s", relativeFilePath, singleError.LineNumber, singleError.Message)
 				continue
 			}
 
-			config.Logger.Error(fmt.Sprintf("::error file=%s,line=%d,endLine=%d::%s", relativeFilePath, singleError.LineNumber, singleError.LineNumber+singleError.AdditionalIdenticalErrorCount, singleError.Message))
+			config.Logger.Error("::error file=%s,line=%d,endLine=%d::%s", relativeFilePath, singleError.LineNumber, singleError.LineNumber+singleError.AdditionalIdenticalErrorCount, singleError.Message)
 		}
 	}
-	config.Logger.Error(fmt.Sprintf("\n%d errors found", errorCount))
+	config.Logger.Error("\n%d errors found", errorCount)
 }
 
 // gcc: A format mimicking the error format from GCC.
@@ -177,10 +176,10 @@ func PrintErrorsAsGCC(errors []ValidationErrors, config config.Config) {
 			if singleError.LineNumber > 0 {
 				lineNo = singleError.LineNumber
 			}
-			config.Logger.Error(fmt.Sprintf("%s:%d:%d: %s: %s", relativeFilePath, lineNo, 0, "error", singleError.Message))
+			config.Logger.Error("%s:%d:%d: %s: %s", relativeFilePath, lineNo, 0, "error", singleError.Message)
 		}
 	}
-	config.Logger.Error(fmt.Sprintf("\n%d errors found", errorCount))
+	config.Logger.Error("\n%d errors found", errorCount)
 }
 
 // codeclimate: A format that is compatible with the codeclimate format for GitLab CI.
