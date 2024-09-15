@@ -201,10 +201,10 @@ func TestSave(t *testing.T) {
 	}
 }
 
-func TestGetAsString(t *testing.T) {
+func TestString(t *testing.T) {
 	c, _ := NewConfig([]string{"../../.editorconfig-checker.json"})
 	_ = c.Parse()
 	c.Format = outputformat.Default
 
-	snaps.MatchSnapshot(t, c.GetAsString())
+	snaps.MatchJSON(t, c.String())
 }

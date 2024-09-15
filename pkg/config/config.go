@@ -304,8 +304,8 @@ func (c Config) Save(version string) error {
 	return err
 }
 
-// GetAsString returns the config in a readable form
-func (c Config) GetAsString() string {
+// String returns the config in a readable form
+func (c Config) String() string {
 	j, _ := json.Marshal(c)
-	return fmt.Sprintf("Config: %s", j)
+	return string(j)
 }

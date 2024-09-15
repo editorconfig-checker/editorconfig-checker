@@ -1,4 +1,51 @@
-
-[TestGetAsString - 1]
-Config: {"ShowVersion":false,"Help":false,"DryRun":false,"Path":"../../.editorconfig-checker.json","Version":"v3.0.3","Verbose":false,"Format":"default","Debug":false,"IgnoreDefaults":false,"SpacesAftertabs":null,"SpacesAfterTabs":false,"NoColor":false,"Exclude":["testfiles","testdata"],"AllowedContentTypes":["text/","application/octet-stream","application/ecmascript","application/json","application/x-ndjson","application/xml","+json","+xml"],"PassedFiles":[],"Disable":{"EndOfLine":false,"Indentation":false,"InsertFinalNewline":false,"TrimTrailingWhitespace":false,"IndentSize":false,"MaxLineLength":false},"Logger":{"Verbosee":false,"Debugg":false,"NoColor":false},"EditorconfigConfig":{"Path":"","Name":"","Version":"","Parser":{},"Graceful":false}}
+[TestString - 1]
+{
+ "AllowedContentTypes": [
+  "text/",
+  "application/octet-stream",
+  "application/ecmascript",
+  "application/json",
+  "application/x-ndjson",
+  "application/xml",
+  "+json",
+  "+xml"
+ ],
+ "Debug": false,
+ "Disable": {
+  "EndOfLine": false,
+  "IndentSize": false,
+  "Indentation": false,
+  "InsertFinalNewline": false,
+  "MaxLineLength": false,
+  "TrimTrailingWhitespace": false
+ },
+ "DryRun": false,
+ "EditorconfigConfig": {
+  "Graceful": false,
+  "Name": "",
+  "Parser": {},
+  "Path": "",
+  "Version": ""
+ },
+ "Exclude": [
+  "testfiles",
+  "testdata"
+ ],
+ "Format": "default",
+ "Help": false,
+ "IgnoreDefaults": false,
+ "Logger": {
+  "Debugg": false,
+  "NoColor": false,
+  "Verbosee": false
+ },
+ "NoColor": false,
+ "PassedFiles": [],
+ "Path": "../../.editorconfig-checker.json",
+ "ShowVersion": false,
+ "SpacesAfterTabs": false,
+ "SpacesAftertabs": null,
+ "Verbose": false,
+ "Version": "v3.0.3"
+}
 ---
