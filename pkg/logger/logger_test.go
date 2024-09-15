@@ -23,12 +23,12 @@ func TestLoggerDebug(t *testing.T) {
 	logger := GetLogger()
 
 	snapHelper(t, &logger, func() {
-		logger.Debug("hello")
+		logger.Debug("this text should not be printed by a logger with default config")
 	})
 
 	snapHelper(t, &logger, func() {
 		logger.Debugg = true
-		logger.Debug("hello")
+		logger.Debug("this text should be printed when debug was enabled")
 	})
 }
 
@@ -36,7 +36,7 @@ func TestLoggerVerbose(t *testing.T) {
 	logger := GetLogger()
 
 	snapHelper(t, &logger, func() {
-		logger.Verbose("hello")
+		logger.Verbose("this text should not be printed by a logger with default config")
 	})
 
 	snapHelper(t, &logger, func() {
@@ -49,12 +49,12 @@ func TestLoggerWarning(t *testing.T) {
 	logger := GetLogger()
 
 	snapHelper(t, &logger, func() {
-		logger.Warning("bla%s", "hey")
+		logger.Warning("this text should be printed by a logger with default config %s", "(and in color)")
 	})
 
 	snapHelper(t, &logger, func() {
 		logger.NoColor = true
-		logger.Warning("bla%s", "hey")
+		logger.Warning("this text should be printed by a logger with default config %s", "(but not be colorized)")
 	})
 }
 
@@ -62,25 +62,25 @@ func TestLoggerOutput(t *testing.T) {
 	logger := GetLogger()
 
 	snapHelper(t, &logger, func() {
-		logger.Output("bla%s", "hey")
+		logger.Output("plain output should be printed always %s", "(also supporting format strings)")
 	})
 }
 
 func TestLoggerError(t *testing.T) {
 	logger := GetLogger()
 	snapHelper(t, &logger, func() {
-		logger.Error("bla%s", "hey")
+		logger.Error("this text should be printed by a logger with default config %s", "(and in color)")
 	})
 
 	snapHelper(t, &logger, func() {
 		logger.NoColor = true
-		logger.Error("bla%s", "hey")
+		logger.Error("this text should be printed by a logger with default config %s", "(but not be colorized)")
 	})
 }
 
 func TestPrintColor(t *testing.T) {
 	logger := GetLogger()
 	snapHelper(t, &logger, func() {
-		logger.printColor("Hello", RED)
+		logger.printColor("this should just print this text in red", RED)
 	})
 }
