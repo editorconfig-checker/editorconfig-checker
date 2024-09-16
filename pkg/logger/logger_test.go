@@ -27,7 +27,7 @@ func TestLoggerDebug(t *testing.T) {
 	})
 
 	snapHelper(t, &logger, func() {
-		logger.Debugg = true
+		logger.DebugEnabled = true
 		logger.Debug("this text should be printed when debug was enabled")
 	})
 }
@@ -40,7 +40,7 @@ func TestLoggerVerbose(t *testing.T) {
 	})
 
 	snapHelper(t, &logger, func() {
-		logger.Verbosee = true
+		logger.VerboseEnabled = true
 		logger.Verbose("hello")
 	})
 }
