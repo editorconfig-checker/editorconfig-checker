@@ -35,7 +35,7 @@ func (l *Logger) Init() {
 }
 
 // ensure the Logger is initialized on first print
-func (l *Logger) LazyInit() {
+func (l *Logger) lazyInit() {
 	if l.writer == nil {
 		l.Init()
 	}
@@ -100,18 +100,18 @@ func (l Logger) Error(format string, a ...interface{}) {
 
 // println prints a message with a trailing newline
 func (l Logger) println(message string) {
-	l.LazyInit()
+	l.lazyInit()
 	fmt.Fprintln(l.writer, message)
 }
 
 // printColor prints a message in a given ANSI-color
 func (l Logger) printColor(message string, color string) {
-	l.LazyInit()
+	l.lazyInit()
 	fmt.Fprintf(l.writer, "%s%s%s", color, message, RESET)
 }
 
 // printlnColor prints a message in a given ANSI-color with a trailing newline
 func (l Logger) printlnColor(message string, color string) {
-	l.LazyInit()
+	l.lazyInit()
 	fmt.Fprintf(l.writer, "%s%s%s\n", color, message, RESET)
 }
