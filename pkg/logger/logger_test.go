@@ -82,7 +82,7 @@ func TestLoggerError(t *testing.T) {
 func TestPrintColor(t *testing.T) {
 	logger := GetLogger()
 	snapHelper(t, &logger, func() {
-		logger.printColor("this should just print this text in red", RED)
+		logger.printColor("this should just print this text in red", escSeqRed)
 	})
 }
 
