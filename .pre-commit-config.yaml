@@ -1,0 +1,34 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+repos:
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v3.4.0
+    hooks:
+      - id: conventional-pre-commit
+        stages:
+          - commit-msg
+        args: []
+  - repo: local
+    hooks:
+      - id: no-FIXME
+        name: check for FIXME
+        description: 'Detect lines containing FIXME'
+        entry: 'FIXME'
+        language: pygrep
+        stages:
+          - pre-commit
+      - id: no-TODO
+        name: check for TODO
+        description: 'Detect lines containing TODO'
+        entry: 'TODO'
+        language: pygrep
+        stages:
+          - pre-commit
+      - id: pass-tests
+        name: Ensure the testsuite is passing
+        entry: make test
+        language: system
+        pass_filenames: false
+        stages:
+          - pre-commit
+
