@@ -104,12 +104,6 @@ func (l Logger) println(message string) {
 	fmt.Fprintln(l.writer, message)
 }
 
-// printColor prints a message in a given ANSI-color
-func (l Logger) printColor(message string, color string) {
-	l.lazyInit()
-	fmt.Fprintf(l.writer, "%s%s%s", color, message, escSeqReset)
-}
-
 // printlnColor prints a message in a given ANSI-color with a trailing newline
 func (l Logger) printlnColor(message string, color string) {
 	l.lazyInit()

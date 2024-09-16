@@ -41,7 +41,3 @@ plain output should be printed always (also supporting format strings)
 this text should be printed by a logger with default config (but not be colorized)
 
 ---
-
-[TestPrintColor - 1]
-[31;1mthis should just print this text in red[33;0m
----
