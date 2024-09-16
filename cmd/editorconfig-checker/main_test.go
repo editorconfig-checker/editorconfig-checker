@@ -19,7 +19,9 @@ func TestMainFunc(t *testing.T) {
 	os.Args = []string{"--debug", "--verbose", "--exclude", "\\.git", "--exclude", "\\.exe$"}
 	go main()
 	lastSeenCode = <-mainHasRun
-	t.Logf("Exit Code 1: %d", lastSeenCode)
+	if lastSeenCode != 0 {
+		t.Errorf("main exited with return code %d, but we expected 0", lastSeenCode)
+	}
 
 	/*
 		the following does not work yet, since flags can only be initialized once
