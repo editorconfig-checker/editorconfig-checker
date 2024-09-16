@@ -9,10 +9,10 @@ import (
 
 // Colors which can be used
 const (
-	YELLOW = "\x1b[33;1m"
-	GREEN  = "\x1b[32;1m"
-	RED    = "\x1b[31;1m"
-	RESET  = "\x1b[33;0m"
+	escSeqYellow = "\x1b[33;1m"
+	escSeqGreen  = "\x1b[32;1m"
+	escSeqRed    = "\x1b[31;1m"
+	escSeqReset  = "\x1b[33;0m"
 )
 
 // Logger struct
@@ -78,7 +78,7 @@ func (l Logger) Warning(format string, a ...interface{}) {
 	if l.NoColor {
 		l.println(message)
 	} else {
-		l.printlnColor(message, YELLOW)
+		l.printlnColor(message, escSeqYellow)
 	}
 }
 
@@ -94,7 +94,7 @@ func (l Logger) Error(format string, a ...interface{}) {
 	if l.NoColor {
 		l.println(message)
 	} else {
-		l.printlnColor(message, RED)
+		l.printlnColor(message, escSeqRed)
 	}
 }
 
@@ -107,11 +107,11 @@ func (l Logger) println(message string) {
 // printColor prints a message in a given ANSI-color
 func (l Logger) printColor(message string, color string) {
 	l.lazyInit()
-	fmt.Fprintf(l.writer, "%s%s%s", color, message, RESET)
+	fmt.Fprintf(l.writer, "%s%s%s", color, message, escSeqReset)
 }
 
 // printlnColor prints a message in a given ANSI-color with a trailing newline
 func (l Logger) printlnColor(message string, color string) {
 	l.lazyInit()
-	fmt.Fprintf(l.writer, "%s%s%s\n", color, message, RESET)
+	fmt.Fprintf(l.writer, "%s%s%s\n", color, message, escSeqReset)
 }
