@@ -2,8 +2,10 @@
 package main
 
 import (
+	"errors"
 	"flag"
 	"fmt"
+	"io/fs"
 	"os"
 
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/config"
@@ -79,7 +81,9 @@ func parseArguments() {
 	}
 
 	err := currentConfig.Parse()
-	if err != nil {
+	// this error should be surpressed if the configFilePath was not set by the user
+	// since the default config paths could trigger this
+	if err != nil && !(configFilePath == "" && errors.Is(err, fs.ErrNotExist)) {
 		currentConfig.Logger.Error(err.Error())
 		exitStub(2)
 	}
