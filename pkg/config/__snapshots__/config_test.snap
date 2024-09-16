@@ -35,9 +35,9 @@
  "Help": false,
  "IgnoreDefaults": false,
  "Logger": {
-  "Debugg": false,
+  "DebugEnabled": false,
   "NoColor": false,
-  "Verbosee": false
+  "VerboseEnabled": false
  },
  "NoColor": false,
  "PassedFiles": [],

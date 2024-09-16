@@ -235,9 +235,9 @@ func (c *Config) Merge(config Config) {
 	c.mergeDisabled(config.Disable)
 
 	c.Logger.Configure(logger.Logger{
-		Verbosee: c.Verbose || config.Verbose,
-		Debugg:   c.Debug || config.Debug,
-		NoColor:  c.NoColor || config.NoColor,
+		VerboseEnabled: c.Verbose || config.Verbose,
+		DebugEnabled:   c.Debug || config.Debug,
+		NoColor:        c.NoColor || config.NoColor,
 	})
 }
 
