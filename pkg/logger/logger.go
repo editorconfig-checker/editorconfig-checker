@@ -17,10 +17,10 @@ const (
 
 // Logger struct
 type Logger struct {
-	Verbosee bool
-	Debugg   bool
-	NoColor  bool
-	writer   io.Writer
+	VerboseEnabled bool
+	DebugEnabled   bool
+	NoColor        bool
+	writer         io.Writer
 }
 
 func GetLogger() Logger {
@@ -48,8 +48,8 @@ func (l *Logger) SetWriter(w io.Writer) {
 
 // apply the settings from the Logger given to the instance
 func (l *Logger) Configure(newLogger Logger) {
-	l.Verbosee = newLogger.Verbosee
-	l.Debugg = newLogger.Debugg
+	l.VerboseEnabled = newLogger.VerboseEnabled
+	l.DebugEnabled = newLogger.DebugEnabled
 	l.NoColor = newLogger.NoColor
 	if newLogger.writer != nil {
 		l.SetWriter(newLogger.writer)
@@ -58,7 +58,7 @@ func (l *Logger) Configure(newLogger Logger) {
 
 // Debug prints a message when Debugg is set to true on the Logger
 func (l Logger) Debug(format string, a ...interface{}) {
-	if l.Debugg {
+	if l.DebugEnabled {
 		message := fmt.Sprintf(format, a...)
 		l.println(message)
 	}
@@ -66,7 +66,7 @@ func (l Logger) Debug(format string, a ...interface{}) {
 
 // Verbose prints a message when Verbosee is set to true on the Logger
 func (l Logger) Verbose(format string, a ...interface{}) {
-	if l.Verbosee {
+	if l.VerboseEnabled {
 		message := fmt.Sprintf(format, a...)
 		l.println(message)
 	}

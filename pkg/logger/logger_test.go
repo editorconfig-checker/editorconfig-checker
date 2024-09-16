@@ -28,7 +28,7 @@ func TestLoggerDebug(t *testing.T) {
 	})
 
 	snapHelper(t, &logger, func() {
-		logger.Debugg = true
+		logger.DebugEnabled = true
 		logger.Debug("this text should be printed when debug was enabled")
 	})
 }
@@ -41,7 +41,7 @@ func TestLoggerVerbose(t *testing.T) {
 	})
 
 	snapHelper(t, &logger, func() {
-		logger.Verbosee = true
+		logger.VerboseEnabled = true
 		logger.Verbose("hello")
 	})
 }
@@ -88,16 +88,16 @@ func TestPrintColor(t *testing.T) {
 
 func TestConfigure(t *testing.T) {
 	modifiableLogger := Logger{
-		Verbosee: false,
-		Debugg:   false,
-		NoColor:  false,
-		writer:   nil,
+		VerboseEnabled: false,
+		DebugEnabled:   false,
+		NoColor:        false,
+		writer:         nil,
 	}
 
-	if modifiableLogger.Verbosee {
+	if modifiableLogger.VerboseEnabled {
 		t.Errorf("Assumption broken: VerboseEnabled was true already")
 	}
-	if modifiableLogger.Debugg {
+	if modifiableLogger.DebugEnabled {
 		t.Errorf("Assumption broken: DebugEnabled was true already")
 	}
 	if modifiableLogger.NoColor {
@@ -108,18 +108,18 @@ func TestConfigure(t *testing.T) {
 	}
 
 	configLogger := Logger{
-		Verbosee: true,
-		Debugg:   true,
-		NoColor:  true,
-		writer:   os.Stderr,
+		VerboseEnabled: true,
+		DebugEnabled:   true,
+		NoColor:        true,
+		writer:         os.Stderr,
 	}
 
 	modifiableLogger.Configure(configLogger)
 
-	if !modifiableLogger.Verbosee {
+	if !modifiableLogger.VerboseEnabled {
 		t.Errorf("Configuring a logger with another logger did not lead to VerboseEnabled becoming true")
 	}
-	if !modifiableLogger.Debugg {
+	if !modifiableLogger.DebugEnabled {
 		t.Errorf("Configuring a logger with another logger did not lead to DebugEnabled becoming true")
 	}
 	if !modifiableLogger.NoColor {

@@ -143,8 +143,8 @@ func TestMerge(t *testing.T) {
 
 	expected := mergeConfig
 	// the following set the properties that cannot be specified directly in mergeConfig above, but would cause the test to fail if left unchanged
-	expected.Logger.Verbosee = true
-	expected.Logger.Debugg = true
+	expected.Logger.VerboseEnabled = true
+	expected.Logger.DebugEnabled = true
 	expected.Logger.NoColor = true
 	expected.EditorconfigConfig = modifiedConfig.EditorconfigConfig
 
