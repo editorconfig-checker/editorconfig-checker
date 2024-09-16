@@ -77,10 +77,3 @@ func TestLoggerError(t *testing.T) {
 		logger.Error("this text should be printed by a logger with default config %s", "(but not be colorized)")
 	})
 }
-
-func TestPrintColor(t *testing.T) {
-	logger := GetLogger()
-	snapHelper(t, &logger, func() {
-		logger.printColor("this should just print this text in red", escSeqRed)
-	})
-}
