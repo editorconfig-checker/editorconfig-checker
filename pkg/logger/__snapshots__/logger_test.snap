@@ -8,6 +8,21 @@ this text should be printed when debug was enabled
 
 ---
 
+[TestLoggerError - 1]
+[31;1mthis text should be printed by a logger with default config (and in color)[33;0m
+
+---
+
+[TestLoggerError - 2]
+this text should be printed by a logger with default config (but not be colorized)
+
+---
+
+[TestLoggerOutput - 1]
+plain output should be printed always (also supporting format strings)
+
+---
+
 [TestLoggerVerbose - 1]
 
 ---
@@ -23,21 +38,6 @@ hello
 ---
 
 [TestLoggerWarning - 2]
-this text should be printed by a logger with default config (but not be colorized)
-
----
-
-[TestLoggerOutput - 1]
-plain output should be printed always (also supporting format strings)
-
----
-
-[TestLoggerError - 1]
-[31;1mthis text should be printed by a logger with default config (and in color)[33;0m
-
----
-
-[TestLoggerError - 2]
 this text should be printed by a logger with default config (but not be colorized)
 
 ---
