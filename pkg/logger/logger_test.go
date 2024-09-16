@@ -2,6 +2,7 @@ package logger
 
 import (
 	"bytes"
+	"os"
 	"testing"
 
 	"github.com/gkampitakis/go-snaps/snaps"
@@ -76,4 +77,13 @@ func TestLoggerError(t *testing.T) {
 		logger.NoColor = true
 		logger.Error("this text should be printed by a logger with default config %s", "(but not be colorized)")
 	})
+}
+
+func TestMain(m *testing.M) {
+	v := m.Run()
+
+	// After all tests have run `go-snaps` will sort snapshots
+	snaps.Clean(m, snaps.CleanOpts{Sort: true})
+
+	os.Exit(v)
 }
