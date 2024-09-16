@@ -25,8 +25,11 @@ var defaultConfigFileNames = []string{".editorconfig-checker.json", ".ecrc"}
 // currentConfig is the config used in this run
 var currentConfig *config.Config
 
-// Init function, runs on start automagically
-func init() {
+// exitProxy is there to be replaced while running the tests
+var exitProxy = os.Exit
+
+// parse the arguments from os.Args
+func parseArguments() {
 	var configFilePath string
 	var tmpExclude string
 	var c config.Config
@@ -72,16 +75,16 @@ func init() {
 		err := currentConfig.Save(version)
 		if err != nil {
 			currentConfig.Logger.Error(err.Error())
-			os.Exit(1)
+			exitProxy(1)
 		}
 
-		os.Exit(0)
+		exitProxy(0)
 	}
 
 	err := currentConfig.Parse()
 	if err != nil {
 		currentConfig.Logger.Error(err.Error())
-		os.Exit(2)
+		exitProxy(2)
 	}
 
 	if tmpExclude != "" {
@@ -102,6 +105,8 @@ func init() {
 
 // Main function, dude
 func main() {
+	parseArguments()
+
 	config := *currentConfig
 	config.Logger.Debug("Config: %s", config)
 	config.Logger.Verbose("Exclude Regexp: %s", config.GetExcludesAsRegularExpression())
@@ -109,13 +114,13 @@ func main() {
 	if utils.FileExists(config.Path) && config.Version != "" && config.Version != version {
 		config.Logger.Error("Version from config file is not the same as the version of the binary")
 		config.Logger.Error(fmt.Sprintf("Binary: %s, Config %s", version, config.Version))
-		os.Exit(1)
+		exitProxy(1)
 	}
 
 	// Check for returnworthy arguments
 	shouldExit := ReturnableFlags(config)
 	if shouldExit {
-		os.Exit(0)
+		exitProxy(0)
 	}
 
 	// contains all files which should be checked
@@ -123,7 +128,7 @@ func main() {
 
 	if err != nil {
 		config.Logger.Error(err.Error())
-		os.Exit(1)
+		exitProxy(1)
 	}
 
 	if config.DryRun {
@@ -131,7 +136,7 @@ func main() {
 			config.Logger.Output(file)
 		}
 
-		os.Exit(0)
+		exitProxy(0)
 	}
 
 	errors := validation.ProcessValidation(filePaths, config)
@@ -141,10 +146,10 @@ func main() {
 	config.Logger.Verbose("%d files checked", len(filePaths))
 
 	if error.GetErrorCount(errors) != 0 {
-		os.Exit(1)
+		exitProxy(1)
 	}
 
-	os.Exit(0)
+	exitProxy(0)
 }
 
 // ReturnableFlags returns whether a flag passed should exit the program
