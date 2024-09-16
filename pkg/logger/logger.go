@@ -101,7 +101,7 @@ func (l Logger) Error(format string, a ...interface{}) {
 // println prints a message with a trailing newline
 func (l Logger) println(message string) {
 	l.lazyInit()
-	fmt.Fprintf(l.writer, "%s\n", message)
+	fmt.Fprintln(l.writer, message)
 }
 
 // printColor prints a message in a given ANSI-color
