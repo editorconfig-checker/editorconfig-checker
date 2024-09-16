@@ -122,3 +122,12 @@ func TestConfigure(t *testing.T) {
 		t.Errorf("Configuring a logger with another logger did not lead to writer becoming set to os.Stderr")
 	}
 }
+
+func TestMain(m *testing.M) {
+	v := m.Run()
+
+	// After all tests have run `go-snaps` will sort snapshots
+	snaps.Clean(m, snaps.CleanOpts{Sort: true})
+
+	os.Exit(v)
+}
