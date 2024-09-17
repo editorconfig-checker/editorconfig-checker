@@ -27,9 +27,7 @@ var defaultConfigFileNames = []string{".editorconfig-checker.json", ".ecrc"}
 var currentConfig *config.Config
 
 // exitStub is there to be replaced while running the tests
-var exitStub = func(code int) {
-	os.Exit(code)
-}
+var exitStub = os.Exit
 
 // parse the arguments from os.Args
 func parseArguments() {
