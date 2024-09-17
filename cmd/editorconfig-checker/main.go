@@ -30,33 +30,42 @@ var currentConfig *config.Config
 // exitProxy is there to be replaced while running the tests
 var exitProxy = os.Exit
 
+// these must be globals, since they are referenced by init(), parseArguments
+var configFilePath string
+var cmdlineExclude string
+var cmdlineConfig config.Config
+var writeConfigFile bool
+
+func init() {
+	flag.BoolVar(&writeConfigFile, "init", false, "creates an initial configuration")
+	flag.StringVar(&configFilePath, "config", "", "config")
+	flag.StringVar(&cmdlineExclude, "exclude", "", "a regex which files should be excluded from checking - needs to be a valid regular expression")
+	flag.BoolVar(&cmdlineConfig.IgnoreDefaults, "ignore-defaults", false, "ignore default excludes")
+	flag.BoolVar(&cmdlineConfig.DryRun, "dry-run", false, "show which files would be checked")
+	flag.BoolVar(&cmdlineConfig.ShowVersion, "version", false, "print the version number")
+	flag.BoolVar(&cmdlineConfig.Help, "help", false, "print the help")
+	flag.BoolVar(&cmdlineConfig.Help, "h", false, "print the help")
+	flag.TextVar(&cmdlineConfig.Format, "format", outputformat.Default, "specify the output format: "+outputformat.GetArgumentChoiceText())
+	flag.TextVar(&cmdlineConfig.Format, "f", outputformat.Default, "specify the output format: "+outputformat.GetArgumentChoiceText())
+	flag.BoolVar(&cmdlineConfig.Verbose, "verbose", false, "print debugging information")
+	flag.BoolVar(&cmdlineConfig.Verbose, "v", false, "print debugging information")
+	flag.BoolVar(&cmdlineConfig.Debug, "debug", false, "print debugging information")
+	flag.BoolVar(&cmdlineConfig.NoColor, "no-color", false, "dont print colors")
+	flag.BoolVar(&cmdlineConfig.Disable.TrimTrailingWhitespace, "disable-trim-trailing-whitespace", false, "disables the trailing whitespace check")
+	flag.BoolVar(&cmdlineConfig.Disable.EndOfLine, "disable-end-of-line", false, "disables the trailing whitespace check")
+	flag.BoolVar(&cmdlineConfig.Disable.InsertFinalNewline, "disable-insert-final-newline", false, "disables the final newline check")
+	flag.BoolVar(&cmdlineConfig.Disable.Indentation, "disable-indentation", false, "disables the indentation check")
+	flag.BoolVar(&cmdlineConfig.Disable.IndentSize, "disable-indent-size", false, "disables only the indent-size check")
+	flag.BoolVar(&cmdlineConfig.Disable.MaxLineLength, "disable-max-line-length", false, "disables only the max-line-length check")
+}
+
 // parse the arguments from os.Args
 func parseArguments() {
-	var configFilePath string
-	var tmpExclude string
-	var c config.Config
-	var init bool
-
-	flag.BoolVar(&init, "init", false, "creates an initial configuration")
-	flag.StringVar(&configFilePath, "config", "", "config")
-	flag.StringVar(&tmpExclude, "exclude", "", "a regex which files should be excluded from checking - needs to be a valid regular expression")
-	flag.BoolVar(&c.IgnoreDefaults, "ignore-defaults", false, "ignore default excludes")
-	flag.BoolVar(&c.DryRun, "dry-run", false, "show which files would be checked")
-	flag.BoolVar(&c.ShowVersion, "version", false, "print the version number")
-	flag.BoolVar(&c.Help, "help", false, "print the help")
-	flag.BoolVar(&c.Help, "h", false, "print the help")
-	flag.TextVar(&c.Format, "format", outputformat.Default, "specify the output format: "+outputformat.GetArgumentChoiceText())
-	flag.TextVar(&c.Format, "f", outputformat.Default, "specify the output format: "+outputformat.GetArgumentChoiceText())
-	flag.BoolVar(&c.Verbose, "verbose", false, "print debugging information")
-	flag.BoolVar(&c.Verbose, "v", false, "print debugging information")
-	flag.BoolVar(&c.Debug, "debug", false, "print debugging information")
-	flag.BoolVar(&c.NoColor, "no-color", false, "dont print colors")
-	flag.BoolVar(&c.Disable.TrimTrailingWhitespace, "disable-trim-trailing-whitespace", false, "disables the trailing whitespace check")
-	flag.BoolVar(&c.Disable.EndOfLine, "disable-end-of-line", false, "disables the trailing whitespace check")
-	flag.BoolVar(&c.Disable.InsertFinalNewline, "disable-insert-final-newline", false, "disables the final newline check")
-	flag.BoolVar(&c.Disable.Indentation, "disable-indentation", false, "disables the indentation check")
-	flag.BoolVar(&c.Disable.IndentSize, "disable-indent-size", false, "disables only the indent-size check")
-	flag.BoolVar(&c.Disable.MaxLineLength, "disable-max-line-length", false, "disables only the max-line-length check")
+	// reset the global variables used to receive the arguments, so parseArguments can be called multiple times without reusing arguments from the previous run
+	configFilePath = ""
+	cmdlineExclude = ""
+	cmdlineConfig = config.Config{}
+	writeConfigFile = false
 
 	flag.Parse()
 
@@ -73,7 +82,7 @@ func parseArguments() {
 		currentConfig.Logger.Warning("The default configuration file name `.ecrc` is deprecated. Use `.editorconfig-checker.json` instead. You can simply rename it")
 	}
 
-	if init {
+	if writeConfigFile {
 		err := currentConfig.Save(version)
 		if err != nil {
 			currentConfig.Logger.Error(err.Error())
@@ -91,8 +100,8 @@ func parseArguments() {
 		exitProxy(2)
 	}
 
-	if tmpExclude != "" {
-		c.Exclude = append(c.Exclude, tmpExclude)
+	if cmdlineExclude != "" {
+		cmdlineConfig.Exclude = append(cmdlineConfig.Exclude, cmdlineExclude)
 	}
 
 	// Some wrapping tools pass an empty string as arguments so
@@ -100,11 +109,11 @@ func parseArguments() {
 	// empty files and will cause the program to crash
 	for _, arg := range flag.Args() {
 		if arg != "" {
-			c.PassedFiles = append(c.PassedFiles, arg)
+			cmdlineConfig.PassedFiles = append(cmdlineConfig.PassedFiles, arg)
 		}
 	}
 
-	currentConfig.Merge(c)
+	currentConfig.Merge(cmdlineConfig)
 }
 
 // Main function, dude
