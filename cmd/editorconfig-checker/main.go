@@ -18,7 +18,7 @@ import (
 
 // version is used vor the help
 // version is dynamically set at compiletime
-var version string
+var version string = "development"
 
 // defaultConfigFileNames determines the file names where the config is located
 var defaultConfigFileNames = []string{".editorconfig-checker.json", ".ecrc"}
@@ -119,7 +119,7 @@ func main() {
 	config.Logger.Debug("Config: %s", config)
 	config.Logger.Verbose("Exclude Regexp: %s", config.GetExcludesAsRegularExpression())
 
-	if utils.FileExists(config.Path) && config.Version != "" && config.Version != version {
+	if version != "development" && utils.FileExists(config.Path) && config.Version != "" && config.Version != version {
 		config.Logger.Error("Version from config file is not the same as the version of the binary")
 		config.Logger.Error(fmt.Sprintf("Binary: %s, Config %s", version, config.Version))
 		exitStub(1)
