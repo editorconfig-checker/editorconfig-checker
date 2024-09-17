@@ -13,25 +13,110 @@ func captureReturnCode(code int) {
 	runtime.Goexit()
 }
 
-func TestMainFunc(t *testing.T) {
-	lastSeenCode := -1
+func setArguments(t *testing.T, args ...string) {
+	t.Helper()
 
-	os.Args = []string{"--debug", "--verbose", "--exclude", "\\.git", "--exclude", "\\.exe$"}
+	initialArgs := os.Args
+	t.Cleanup(func() {
+		os.Args = initialArgs
+	})
+
+	// os.Args needs to have the binary as the first element
+	os.Args = append([]string{"editorconfig-checker"}, args...)
+}
+
+func runWithArguments(t *testing.T, args ...string) int {
+	t.Helper()
+	setArguments(t, args...)
 	go main()
-	lastSeenCode = <-mainHasRun
-	if lastSeenCode != 0 {
-		t.Errorf("main exited with return code %d, but we expected 0", lastSeenCode)
+	return <-mainHasRun
+}
+
+func TestMainOurCodebase(t *testing.T) {
+	cdRelativeToRepo(t, "")
+	lastSeenCode := runWithArguments(t, "--debug", "--verbose", "--exclude", `\.git`, "--exclude", `\.exe$`)
+	if lastSeenCode != exitCodeNormal {
+		t.Errorf("main exited with return code %d, but we expected %d", lastSeenCode, exitCodeNormal)
+	}
+}
+
+func TestMainMissingExplicitConfig(t *testing.T) {
+	cdRelativeToRepo(t, "")
+	lastSeenCode := runWithArguments(t, "--debug", "--verbose", "--exclude", `\.git`, "--exclude", `\.exe$`, "--config", "/nonexistant")
+	if lastSeenCode != exitCodeConfigFileNotFound {
+		t.Errorf("main exited with return code %d, but we expected %d", lastSeenCode, exitCodeConfigFileNotFound)
+	}
+}
+func TestMainWithFilesGiven(t *testing.T) {
+	cdRelativeToRepo(t, "")
+	lastSeenCode := runWithArguments(t, "--debug", "--verbose", "README.md")
+	if lastSeenCode != exitCodeNormal {
+		t.Errorf("main exited with return code %d, but we expected %d", lastSeenCode, exitCodeNormal)
+	}
+}
+
+func TestMainInitializingANewConfig(t *testing.T) {
+	dir := t.TempDir()
+
+	lastSeenCode := runWithArguments(t, "--debug", "--verbose", "--init", "--config", dir+"/testwriteconfig.json")
+	if lastSeenCode != exitCodeNormal {
+		t.Errorf("main exited with return code %d, but we expected %d", lastSeenCode, exitCodeNormal)
 	}
 
-	/*
-		the following does not work yet, since flags can only be initialized once
-		but keeping the flag parsing in an init func is not an option either, since it would not be executed the second time around
-	*/ /*
-		os.Args = []string{"--debug", "--verbose", "--exclude", "\\.git", "--exclude", "\\.exe$", "--config", "/nonexistant"}
-		go main()
-		lastSeenCode = <-mainHasRun
-		t.Logf("Exit Code 1: %d", lastSeenCode)
-	*/
+	// do the same test a second time, trying to "overwrite" the existing file
+	lastSeenCode = runWithArguments(t, "--debug", "--verbose", "--init", "--config", dir+"/testwriteconfig.json")
+	// but now we expect it to fail since it does not want to overwrite the existing file
+	if lastSeenCode != exitCodeErrorOccurred {
+		t.Errorf("main exited with return code %d, but we expected %d", lastSeenCode, exitCodeErrorOccurred)
+	}
+}
+
+func TestMainLoadingAncientConfig(t *testing.T) {
+	lastSeenCode := runWithArguments(t, "--debug", "--verbose", "--config", "testdata/ancient-config.json")
+	if lastSeenCode != exitCodeErrorOccurred {
+		t.Errorf("main exited with return code %d, but we expected %d", lastSeenCode, exitCodeErrorOccurred)
+	}
+}
+
+func TestMainShowVersion(t *testing.T) {
+	lastSeenCode := runWithArguments(t, "--version")
+	if lastSeenCode != exitCodeNormal {
+		t.Errorf("main exited with return code %d, but we expected %d", lastSeenCode, exitCodeNormal)
+	}
+}
+
+func TestMainShowHelp(t *testing.T) {
+	lastSeenCode := runWithArguments(t, "--help")
+	if lastSeenCode != exitCodeNormal {
+		t.Errorf("main exited with return code %d, but we expected %d", lastSeenCode, exitCodeNormal)
+	}
+}
+
+func TestMainDryRun(t *testing.T) {
+	cdRelativeToRepo(t, "")
+	lastSeenCode := runWithArguments(t, "--dry-run")
+	if lastSeenCode != exitCodeNormal {
+		t.Errorf("main exited with return code %d, but we expected %d", lastSeenCode, exitCodeNormal)
+	}
+}
+
+// a little Helper to set the current working dir relative to the repository root,
+// and return to the previous working directory once the test completes
+func cdRelativeToRepo(t *testing.T, path string) {
+	newdir := "../../" + path
+
+	startingDir, err := os.Getwd()
+	if err != nil {
+		t.Fatalf("Could not obtain current working directory: %s", err)
+	}
+	t.Cleanup(func() {
+		if err := os.Chdir(startingDir); err != nil {
+			t.Fatalf("Could not restore old working directory %s: %s", startingDir, err)
+		}
+	})
+	if err := os.Chdir(newdir); err != nil {
+		t.Fatalf("Could not chdir to %s: %s", newdir, err)
+	}
 }
 
 func TestReturnCodeInterface(t *testing.T) {
