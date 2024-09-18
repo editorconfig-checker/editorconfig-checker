@@ -1,0 +1,5 @@
+-   id: editorconfig-checker
+    name: run editorconfig-checker
+    description: This runs editorconfig-checker to validate files against your .editorconfig
+    language: golang
+    entry: editorconfig-checker
