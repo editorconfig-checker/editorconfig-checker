@@ -10,17 +10,17 @@ repos:
         args: []
   - repo: local
     hooks:
-      - id: no-FIXME
-        name: check for FIXME
-        description: 'Detect lines containing FIXME'
-        entry: 'FIXME'
+      - id: no-fixmes
+        name: check for fixmes
+        description: 'Detect lines containing uppercase fixme'
+        entry: '[F][I][X][M][E]'
         language: pygrep
         stages:
           - pre-commit
-      - id: no-TODO
-        name: check for TODO
-        description: 'Detect lines containing TODO'
-        entry: 'TODO'
+      - id: no-todo
+        name: check for todos
+        description: 'Detect lines containing uppercase todo'
+        entry: '[T][O][D][O]'
         language: pygrep
         stages:
           - pre-commit
