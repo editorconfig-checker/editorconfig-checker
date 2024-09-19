@@ -50,7 +50,7 @@ builds:
       - amd64
       - arm64
       - arm
-      - 386
+      - '386'
     # Set the modified timestamp on the output binary, typically
     # you would do this to ensure a build was reproducible. Pass
     # empty string to skip modifying the output.
@@ -300,7 +300,7 @@ dockers:
     ids:
       - editorconfig-checker
     goos: linux
-    goarch: 386
+    goarch: '386'
     # skip_push: auto
     use: buildx
     dockerfile: goreleaser.Dockerfile
