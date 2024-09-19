@@ -1,5 +1,6 @@
 # This is an example .goreleaser.yml file with some sensible defaults.
 # Make sure to check the documentation at https://goreleaser.com
+version: 2
 project_name: editorconfig-checker
 env:
   - REPO_LICENSE=MIT
@@ -98,14 +99,6 @@ archives:
     format_overrides:
       - goos: windows
         format: zip
-    # This will make the destination paths be relative to the longest common
-    # path prefix between all the files matched and the source glob.
-    # Enabling this essentially mimic the behavior of nfpm's contents section.
-    # It will be the default by June 2023.
-    #
-    # Default: false
-    # Since: v1.14.
-    rlcp: true
 
 # GoReleaser can be wired to nfpm to generate and publish `.deb`, `.rpm`, `.apk`, and Archlinux packages.
 nfpms:
