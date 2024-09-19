@@ -16,7 +16,7 @@ import (
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/validation"
 )
 
-// version is used vor the help
+// version is used for the help and to verify against the version stored in the config file
 // version is dynamically set at compiletime
 var version string = "development"
 
