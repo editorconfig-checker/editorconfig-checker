@@ -12,6 +12,12 @@ repos:
     rev: v3.8.0
     hooks:
       - id: validate_manifest
+  - repo: https://github.com/editorconfig-checker/editorconfig-checker
+    rev: main
+    hooks:
+      - id: editorconfig-checker
+        stages:
+          - pre-commit
   - repo: local
     hooks:
       - id: pass-tests
