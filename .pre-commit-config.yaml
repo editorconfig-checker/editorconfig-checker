@@ -8,6 +8,10 @@ repos:
         stages:
           - commit-msg
         args: []
+  - repo: https://github.com/pre-commit/pre-commit.git
+    rev: v3.8.0
+    hooks:
+      - id: validate_manifest
   - repo: local
     hooks:
       - id: pass-tests
