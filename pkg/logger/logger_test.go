@@ -79,6 +79,50 @@ func TestLoggerError(t *testing.T) {
 	})
 }
 
+func TestConfigure(t *testing.T) {
+	modifiableLogger := Logger{
+		VerboseEnabled: false,
+		DebugEnabled:   false,
+		NoColor:        false,
+		writer:         nil,
+	}
+
+	if modifiableLogger.VerboseEnabled {
+		t.Errorf("Assumption broken: VerboseEnabled was true already")
+	}
+	if modifiableLogger.DebugEnabled {
+		t.Errorf("Assumption broken: DebugEnabled was true already")
+	}
+	if modifiableLogger.NoColor {
+		t.Errorf("Assumption broken: NoColor was true already")
+	}
+	if modifiableLogger.writer != nil {
+		t.Errorf("Assumption broken: writer was set already")
+	}
+
+	configLogger := Logger{
+		VerboseEnabled: true,
+		DebugEnabled:   true,
+		NoColor:        true,
+		writer:         os.Stderr,
+	}
+
+	modifiableLogger.Configure(configLogger)
+
+	if !modifiableLogger.VerboseEnabled {
+		t.Errorf("Configuring a logger with another logger did not lead to VerboseEnabled becoming true")
+	}
+	if !modifiableLogger.DebugEnabled {
+		t.Errorf("Configuring a logger with another logger did not lead to DebugEnabled becoming true")
+	}
+	if !modifiableLogger.NoColor {
+		t.Errorf("Configuring a logger with another logger did not lead to NoColor becoming true")
+	}
+	if modifiableLogger.writer != os.Stderr {
+		t.Errorf("Configuring a logger with another logger did not lead to writer becoming set to os.Stderr")
+	}
+}
+
 func TestMain(m *testing.M) {
 	v := m.Run()
 
