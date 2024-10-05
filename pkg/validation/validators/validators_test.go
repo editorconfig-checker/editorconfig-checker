@@ -115,7 +115,7 @@ func TestLineEnding(t *testing.T) {
 }
 
 func TestIndentation(t *testing.T) {
-	configuration := config.Config{SpacesAftertabs: false}
+	configuration := config.Config{SpacesAfterTabs: false}
 
 	indentationTests := []struct {
 		line        string
@@ -183,8 +183,8 @@ func TestSpace(t *testing.T) {
 }
 
 func TestTab(t *testing.T) {
-	spacesAllowed := config.Config{SpacesAftertabs: true}
-	spacesForbidden := config.Config{SpacesAftertabs: false}
+	spacesAllowed := config.Config{SpacesAfterTabs: true}
+	spacesForbidden := config.Config{SpacesAfterTabs: false}
 	tabTests := []struct {
 		line     string
 		config   config.Config
