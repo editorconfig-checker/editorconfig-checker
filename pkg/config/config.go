@@ -90,6 +90,7 @@ type Config struct {
 	Format              outputformat.OutputFormat
 	Debug               bool
 	IgnoreDefaults      bool
+	SpacesAftertabs     bool
 	SpacesAfterTabs     bool
 	NoColor             bool
 	Exclude             []string
@@ -201,6 +202,12 @@ func (c *Config) Merge(config Config) {
 
 	if config.IgnoreDefaults {
 		c.IgnoreDefaults = config.IgnoreDefaults
+	}
+
+	if config.SpacesAftertabs {
+		c.Logger.Warning("The configuration key `SpacesAftertabs` is deprecated. Use `SpacesAfterTabs` instead.")
+
+		c.SpacesAfterTabs = config.SpacesAftertabs
 	}
 
 	if config.SpacesAfterTabs {
