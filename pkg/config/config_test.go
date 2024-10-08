@@ -4,8 +4,10 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
-	"strings"
 	"testing"
+
+	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/outputformat"
+	"github.com/gkampitakis/go-snaps/snaps"
 )
 
 var rootConfigFilePath = []string{"../../.ecrc"}
@@ -22,7 +24,7 @@ func TestNewConfig(t *testing.T) {
 
 func TestNoConfigFileFound(t *testing.T) {
 	_, err := NewConfig([]string{"abc"})
-	var expected = "No file found at abc"
+	var expected = "no file found at abc"
 	if err == nil || err.Error() != expected {
 		t.Errorf("expected an error (%s), got %v", expected, err)
 	}
@@ -30,7 +32,7 @@ func TestNoConfigFileFound(t *testing.T) {
 
 func TestNoConfigs(t *testing.T) {
 	_, err := NewConfig([]string{})
-	var expected = "No config paths provided"
+	var expected = "no config paths provided"
 	if err == nil || err.Error() != expected {
 		t.Errorf("expected an error (%s), got %v", expected, err)
 	}
@@ -38,7 +40,7 @@ func TestNoConfigs(t *testing.T) {
 
 func TestNoConfigFileFoundInMultiplePaths(t *testing.T) {
 	_, err := NewConfig([]string{"abc", "def"})
-	var expected = "No file found at abc"
+	var expected = "no file found at abc"
 	if err == nil || err.Error() != expected {
 		t.Errorf("expected an error (%s), got %v", expected, err)
 	}
@@ -89,27 +91,27 @@ func TestGetExcludesAsRegularExpression(t *testing.T) {
 }
 
 func TestMerge(t *testing.T) {
-	c1, err := NewConfig([]string{"../../.ecrc"})
+	modifiedConfig, err := NewConfig([]string{"../../.ecrc"})
 	if err != nil {
 		t.Errorf("Expected to create a config without errors, got %v", err)
 	}
 
-	err = c1.Parse()
+	err = modifiedConfig.Parse()
 	if err != nil {
 		t.Errorf("Expected to parse a config without errors, got %v", err)
 	}
 
-	mergeConfig := Config{}
-	c1.Merge(mergeConfig)
+	emptyConfig := Config{}
+	modifiedConfig.Merge(emptyConfig)
 
-	c2, _ := NewConfig([]string{"../../.ecrc"})
-	_ = c2.Parse()
+	parsedConfig, _ := NewConfig([]string{"../../.ecrc"})
+	_ = parsedConfig.Parse()
 
-	if !reflect.DeepEqual(c1, c2) {
-		t.Errorf("Expected a parsed config and a parsed config merged with an empty config to be the same config, got %v and %v", c1, c2)
+	if !reflect.DeepEqual(modifiedConfig, parsedConfig) {
+		t.Errorf("Expected a parsed config and a parsed config merged with an empty config to be the same config, got %v and %v", modifiedConfig, parsedConfig)
 	}
 
-	mergeConfig = Config{
+	mergeConfig := Config{
 		ShowVersion:         true,
 		Version:             "v3.0.3",
 		Help:                true,
@@ -134,21 +136,23 @@ func TestMerge(t *testing.T) {
 		},
 	}
 
-	c1.Merge(mergeConfig)
+	modifiedConfig.Merge(mergeConfig)
 
 	mergeConfig.AllowedContentTypes = []string{"text/", "application/octet-stream", "application/ecmascript", "application/json", "application/x-ndjson", "application/xml", "+json", "+xml", "xml/"}
 	mergeConfig.Exclude = []string{"testfiles", "testdata", "some-other"}
 
 	expected := mergeConfig
-	expected.Logger.Verbosee = true
-	expected.Logger.Debugg = true
+	// the following set the properties that cannot be specified directly in mergeConfig above, but would cause the test to fail if left unchanged
+	expected.Logger.VerboseEnabled = true
+	expected.Logger.DebugEnabled = true
 	expected.Logger.NoColor = true
-	expected.EditorconfigConfig = c1.EditorconfigConfig
+	expected.Logger.Init()
+	expected.EditorconfigConfig = modifiedConfig.EditorconfigConfig
 
-	if !reflect.DeepEqual(c1, &expected) {
+	if !reflect.DeepEqual(modifiedConfig, &expected) {
 		t.Errorf("%#v", &expected)
-		t.Errorf("%#v", c1)
-		t.Errorf("Expected, got %#v and %#v", c1, &expected)
+		t.Errorf("%#v", modifiedConfig)
+		t.Errorf("Expected, got %#v and %#v", modifiedConfig, &expected)
 	}
 
 	config := Config{Path: "./.ecrc"}
@@ -199,14 +203,10 @@ func TestSave(t *testing.T) {
 	}
 }
 
-func TestGetAsString(t *testing.T) {
+func TestString(t *testing.T) {
 	c, _ := NewConfig([]string{"../../.ecrc"})
 	_ = c.Parse()
+	c.Format = outputformat.Default
 
-	actual := c.GetAsString()
-	expected := "Config: {ShowVersion:false Help:false DryRun:false Path:../../.ecrc Version:v3.0.3 Verbose:false Format: Debug:false IgnoreDefaults:false SpacesAftertabs:false NoColor:false Exclude:[testfiles testdata] AllowedContentTypes:[text/ application/octet-stream application/ecmascript application/json application/x-ndjson application/xml +json +xml] PassedFiles:[] Disable:{EndOfLine:false Indentation:false InsertFinalNewline:false TrimTrailingWhitespace:false IndentSize:false MaxLineLength:false} Logger:{Verbosee:false Debugg:false NoColor:false} EditorconfigConfig:0x"
-
-	if !strings.HasPrefix(actual, expected) {
-		t.Errorf("Expected: %v, got: %v ", expected, actual)
-	}
+	snaps.MatchJSON(t, c.String())
 }

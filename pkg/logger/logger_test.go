@@ -1,80 +1,133 @@
 package logger
 
 import (
+	"bytes"
+	"os"
 	"testing"
+
+	"github.com/gkampitakis/go-snaps/snaps"
 )
 
-// Wannbe tests
+// interface for the closures passed to snapHelper
+type loggerTest func()
+
+// a helper function, that runs a closure with a logger, but redirects the Logger to write into a buffer, and then does snapshot testing on the buffer content
+func snapHelper(t *testing.T, logger *Logger, test loggerTest) {
+	t.Helper()
+	buffer := bytes.Buffer{}
+	logger.SetWriter(&buffer)
+	test()
+	snaps.MatchSnapshot(t, buffer.String())
+}
 
 func TestLoggerDebug(t *testing.T) {
-	logger := Logger{}
+	logger := GetLogger()
 
-	logger.Debug("hello")
+	snapHelper(t, &logger, func() {
+		logger.Debug("this text should not be printed by a logger with default config")
+	})
 
-	logger = Logger{Debugg: true}
-	logger.Debug("hello")
+	snapHelper(t, &logger, func() {
+		logger.DebugEnabled = true
+		logger.Debug("this text should be printed when debug was enabled")
+	})
 }
 
 func TestLoggerVerbose(t *testing.T) {
-	logger := Logger{}
+	logger := GetLogger()
 
-	logger.Verbose("hello")
+	snapHelper(t, &logger, func() {
+		logger.Verbose("this text should not be printed by a logger with default config")
+	})
 
-	logger = Logger{Verbosee: true}
-	logger.Verbose("hello")
+	snapHelper(t, &logger, func() {
+		logger.VerboseEnabled = true
+		logger.Verbose("hello")
+	})
 }
 
 func TestLoggerWarning(t *testing.T) {
-	logger := Logger{}
-	logger.Warning("bla%s", "hey")
+	logger := GetLogger()
 
-	logger.NoColor = true
-	logger.Warning("bla%s", "hey")
-}
+	snapHelper(t, &logger, func() {
+		logger.Warning("this text should be printed by a logger with default config %s", "(and in color)")
+	})
 
-func TestWarning(t *testing.T) {
-	Warning("bla%s", "hey")
+	snapHelper(t, &logger, func() {
+		logger.NoColor = true
+		logger.Warning("this text should be printed by a logger with default config %s", "(but not be colorized)")
+	})
 }
 
 func TestLoggerOutput(t *testing.T) {
-	logger := Logger{}
-	logger.Output("bla%s", "hey")
-}
+	logger := GetLogger()
 
-func TestOutput(t *testing.T) {
-	Output("bla%s", "hey")
+	snapHelper(t, &logger, func() {
+		logger.Output("plain output should be printed always %s", "(also supporting format strings)")
+	})
 }
 
 func TestLoggerError(t *testing.T) {
-	logger := Logger{}
-	logger.Error("bla%s", "hey")
+	logger := GetLogger()
+	snapHelper(t, &logger, func() {
+		logger.Error("this text should be printed by a logger with default config %s", "(and in color)")
+	})
 
-	logger.NoColor = true
-	logger.Error("bla%s", "hey")
+	snapHelper(t, &logger, func() {
+		logger.NoColor = true
+		logger.Error("this text should be printed by a logger with default config %s", "(but not be colorized)")
+	})
 }
 
-func TestError(t *testing.T) {
-	Error("bla%s", "hey")
-}
-
-func TestPrintColor(t *testing.T) {
-	PrintColor("Hello", RED)
-}
-
-func TestPrint(t *testing.T) {
-	Print("Hello")
-}
-
-func TestPrintLogMessage(t *testing.T) {
-	logger := Logger{}
-
-	messages := []LogMessage{
-		{Level: "debug", Message: "debug message"},
-		{Level: "verbose", Message: "verbose message"},
-		{Level: "warning", Message: "warning message"},
-		{Level: "error", Message: "error message"},
-		{Level: "output", Message: "normal message"},
+func TestConfigure(t *testing.T) {
+	modifiableLogger := Logger{
+		VerboseEnabled: false,
+		DebugEnabled:   false,
+		NoColor:        false,
+		writer:         nil,
 	}
 
-	logger.PrintLogMessages(messages)
+	if modifiableLogger.VerboseEnabled {
+		t.Errorf("Assumption broken: VerboseEnabled was true already")
+	}
+	if modifiableLogger.DebugEnabled {
+		t.Errorf("Assumption broken: DebugEnabled was true already")
+	}
+	if modifiableLogger.NoColor {
+		t.Errorf("Assumption broken: NoColor was true already")
+	}
+	if modifiableLogger.writer != nil {
+		t.Errorf("Assumption broken: writer was set already")
+	}
+
+	configLogger := Logger{
+		VerboseEnabled: true,
+		DebugEnabled:   true,
+		NoColor:        true,
+		writer:         os.Stderr,
+	}
+
+	modifiableLogger.Configure(configLogger)
+
+	if !modifiableLogger.VerboseEnabled {
+		t.Errorf("Configuring a logger with another logger did not lead to VerboseEnabled becoming true")
+	}
+	if !modifiableLogger.DebugEnabled {
+		t.Errorf("Configuring a logger with another logger did not lead to DebugEnabled becoming true")
+	}
+	if !modifiableLogger.NoColor {
+		t.Errorf("Configuring a logger with another logger did not lead to NoColor becoming true")
+	}
+	if modifiableLogger.writer != os.Stderr {
+		t.Errorf("Configuring a logger with another logger did not lead to writer becoming set to os.Stderr")
+	}
+}
+
+func TestMain(m *testing.M) {
+	v := m.Run()
+
+	// After all tests have run `go-snaps` will sort snapshots
+	snaps.Clean(m, snaps.CleanOpts{Sort: true})
+
+	os.Exit(v)
 }
