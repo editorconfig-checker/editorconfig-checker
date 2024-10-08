@@ -30,3 +30,12 @@ The Pull Request must **pass all CI checks**, including tests and build.
 The commit messages should follow the [Conventional Commits](https://www.conventionalcommits.org/) format.
 
 Maintainers are responsible for reviewing and merging PRs, and they follow the [Maintainers](MAINTAINERS.md) guidelines.
+
+## Software development
+
+Our [Makefile](Makefile) provide a lot of targets that should prove helpful.
+- `make run` runs a typical use case of editorconfig-checker - in this case against this very repo
+- `make build` is a convenient shortcut to build the binary for your current platform
+- `make test` runs all the tests, govet and asks you to gofmt if you did not already
+
+If you want to run most of the checks the Continous Integration in GitHub does, you can also enable [pre-commit](https://pre-commit.com/). We provided a config that helps you notice problems with Conventional Commit messages or failing tests before you commit.
