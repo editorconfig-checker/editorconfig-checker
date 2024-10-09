@@ -91,6 +91,7 @@ type Config struct {
 	Debug               bool
 	IgnoreDefaults      bool
 	SpacesAftertabs     bool
+	SpacesAfterTabs     bool
 	NoColor             bool
 	Exclude             []string
 	AllowedContentTypes []string
@@ -204,7 +205,13 @@ func (c *Config) Merge(config Config) {
 	}
 
 	if config.SpacesAftertabs {
-		c.SpacesAftertabs = config.SpacesAftertabs
+		c.Logger.Warning("The configuration key `SpacesAftertabs` is deprecated. Use `SpacesAfterTabs` instead.")
+
+		c.SpacesAfterTabs = config.SpacesAftertabs
+	}
+
+	if config.SpacesAfterTabs {
+		c.SpacesAfterTabs = config.SpacesAfterTabs
 	}
 
 	if config.Path != "" {
@@ -280,7 +287,7 @@ func (c Config) Save(version string) error {
 		Format              string
 		Debug               bool
 		IgnoreDefaults      bool
-		SpacesAftertabs     bool
+		SpacesAfterTabs     bool
 		NoColor             bool
 		Exclude             []string
 		AllowedContentTypes []string

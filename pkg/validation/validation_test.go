@@ -51,13 +51,13 @@ func TestValidateFile(t *testing.T) {
 		t.Error("Should have no errors, got", result)
 	}
 
-	configuration = config.Config{SpacesAftertabs: true}
+	configuration = config.Config{SpacesAfterTabs: true}
 	result = ValidateFile("./../../testfiles/spaces-after-tabs.txt", configuration)
 	if len(result) != 0 {
 		t.Error("Should have no errors when validating valid file, got", result)
 	}
 
-	configuration = config.Config{SpacesAftertabs: false}
+	configuration = config.Config{SpacesAfterTabs: false}
 	result = ValidateFile("./../../testfiles/zero-indent.txt", configuration)
 	if len(result) != 0 {
 		t.Error("Should have no errors when validating valid file, got", result)
@@ -83,7 +83,7 @@ func TestValidateFile(t *testing.T) {
 		t.Error("Should have one error, got", result)
 	}
 
-	configuration = config.Config{SpacesAftertabs: false}
+	configuration = config.Config{SpacesAfterTabs: false}
 	result = ValidateFile("./../../testfiles/spaces-after-tabs.txt", configuration)
 	if len(result) != 1 {
 		t.Error("Should have one error, got", result)
