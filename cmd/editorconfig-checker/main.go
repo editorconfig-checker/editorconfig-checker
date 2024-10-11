@@ -60,6 +60,9 @@ func init() {
 		configPaths = append(configPaths, defaultConfigFileNames[:]...)
 	} else {
 		configPaths = append(configPaths, configFilePath)
+		if configFilePath == ".ecrc" {
+			logger.Warning("The default configuration file name `.ecrc` is deprecated. Use `.editorconfig-checker.json` instead.")
+		}
 	}
 
 	currentConfig, _ = config.NewConfig(configPaths)
