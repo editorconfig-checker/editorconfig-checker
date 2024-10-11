@@ -61,7 +61,6 @@ func init() {
 		configPaths = append(configPaths, defaultConfigFileNames[:]...)
 	} else {
 		configPaths = append(configPaths, configFilePath)
-
 	}
 
 	currentConfig, _ = config.NewConfig(configPaths)
