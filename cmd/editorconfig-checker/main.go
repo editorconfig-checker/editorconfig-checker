@@ -67,7 +67,7 @@ func init() {
 	currentConfig, _ = config.NewConfig(configPaths)
 
 	if strings.Contains(currentConfig.Path, ".ecrc") {
-		logger.Warning("The default configuration file name `.ecrc` is deprecated. Use `.editorconfig-checker.json` instead.  You can simply rename it")
+		logger.Warning("The default configuration file name `.ecrc` is deprecated. Use `.editorconfig-checker.json` instead. You can simply rename it")
 	}
 
 	if init {
