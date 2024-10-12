@@ -19,3 +19,7 @@ The delay serves to:
 - Prevent issues that could arise from changes being merged too quickly.
 
 This collaborative process ensures that all perspectives are considered, and helps improve the project quality as a whole.
+
+## Releasing new versions
+
+With goreleaser the only thing required is to create or push a new tag to GitHub. A GitHub action then will build the binaries, archives and container images, and upload them to the right places.
