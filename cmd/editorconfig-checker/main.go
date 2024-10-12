@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/config"
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/error"
@@ -60,12 +61,14 @@ func init() {
 		configPaths = append(configPaths, defaultConfigFileNames[:]...)
 	} else {
 		configPaths = append(configPaths, configFilePath)
-		if configFilePath == ".ecrc" {
-			logger.Warning("The default configuration file name `.ecrc` is deprecated. Use `.editorconfig-checker.json` instead.")
-		}
+
 	}
 
 	currentConfig, _ = config.NewConfig(configPaths)
+
+	if strings.Contains(currentConfig.Path, ".ecrc") {
+		logger.Warning("The default configuration file name `.ecrc` is deprecated. Use `.editorconfig-checker.json` instead.  You can simply rename it")
+	}
 
 	if init {
 		err := currentConfig.Save(version)
