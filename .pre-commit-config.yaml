@@ -13,7 +13,8 @@ repos:
     hooks:
       - id: validate_manifest
   - repo: https://github.com/editorconfig-checker/editorconfig-checker
-    rev: main
+    # after next release: replace with the newly created tag
+    rev: 10f16fc843581773830f0cbf3a3f8c285ee1edc3
     hooks:
       - id: editorconfig-checker
         stages:
