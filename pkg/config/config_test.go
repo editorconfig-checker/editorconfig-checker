@@ -8,8 +8,8 @@ import (
 	"testing"
 )
 
-var rootConfigFilePath = []string{"../../.ecrc"}
-var configWithIgnoredDefaults = []string{"../../testfiles/.ecrc"}
+var rootConfigFilePath = []string{"../../.editorconfig-checker.json"}
+var configWithIgnoredDefaults = []string{"../../testfiles/.editorconfig-checker.json"}
 
 func TestNewConfig(t *testing.T) {
 	actual, _ := NewConfig([]string{"abc"})
@@ -89,7 +89,7 @@ func TestGetExcludesAsRegularExpression(t *testing.T) {
 }
 
 func TestMerge(t *testing.T) {
-	c1, err := NewConfig([]string{"../../.ecrc"})
+	c1, err := NewConfig([]string{"../../.editorconfig-checker.json"})
 	if err != nil {
 		t.Errorf("Expected to create a config without errors, got %v", err)
 	}
@@ -102,7 +102,7 @@ func TestMerge(t *testing.T) {
 	mergeConfig := Config{}
 	c1.Merge(mergeConfig)
 
-	c2, _ := NewConfig([]string{"../../.ecrc"})
+	c2, _ := NewConfig([]string{"../../.editorconfig-checker.json"})
 	_ = c2.Parse()
 
 	if !reflect.DeepEqual(c1, c2) {
@@ -151,14 +151,14 @@ func TestMerge(t *testing.T) {
 		t.Errorf("Expected, got %#v and %#v", c1, &expected)
 	}
 
-	config := Config{Path: "./.ecrc"}
+	config := Config{Path: "./.editorconfig-checker.json"}
 	err = config.Parse()
 
 	if err == nil {
 		t.Errorf("Expected an error to happen when parsing an unexisting file, got %v", err)
 	}
 
-	config = Config{Path: "./../../testfiles/.malformed.ecrc"}
+	config = Config{Path: "./../../testfiles/.malformed.editorconfig-checker.json"}
 	err = config.Parse()
 
 	if err == nil {
@@ -167,7 +167,7 @@ func TestMerge(t *testing.T) {
 }
 
 func TestParse(t *testing.T) {
-	c, _ := NewConfig([]string{"../../testfiles/.ecrc"})
+	c, _ := NewConfig([]string{"../../testfiles/.editorconfig-checker.json"})
 	_ = c.Parse()
 
 	if c.Verbose != true ||
@@ -200,11 +200,11 @@ func TestSave(t *testing.T) {
 }
 
 func TestGetAsString(t *testing.T) {
-	c, _ := NewConfig([]string{"../../.ecrc"})
+	c, _ := NewConfig([]string{"../../.editorconfig-checker.json"})
 	_ = c.Parse()
 
 	actual := c.GetAsString()
-	expected := "Config: {ShowVersion:false Help:false DryRun:false Path:../../.ecrc Version:v3.0.3 Verbose:false Format: Debug:false IgnoreDefaults:false SpacesAftertabs:<nil> SpacesAfterTabs:false NoColor:false Exclude:[testfiles testdata] AllowedContentTypes:[text/ application/octet-stream application/ecmascript application/json application/x-ndjson application/xml +json +xml] PassedFiles:[] Disable:{EndOfLine:false Indentation:false InsertFinalNewline:false TrimTrailingWhitespace:false IndentSize:false MaxLineLength:false} Logger:{Verbosee:false Debugg:false NoColor:false} EditorconfigConfig:0x"
+	expected := "Config: {ShowVersion:false Help:false DryRun:false Path:../../.editorconfig-checker.json Version:v3.0.3 Verbose:false Format: Debug:false IgnoreDefaults:false SpacesAftertabs:<nil> SpacesAfterTabs:false NoColor:false Exclude:[testfiles testdata] AllowedContentTypes:[text/ application/octet-stream application/ecmascript application/json application/x-ndjson application/xml +json +xml] PassedFiles:[] Disable:{EndOfLine:false Indentation:false InsertFinalNewline:false TrimTrailingWhitespace:false IndentSize:false MaxLineLength:false} Logger:{Verbosee:false Debugg:false NoColor:false} EditorconfigConfig:0x"
 
 	if !strings.HasPrefix(actual, expected) {
 		t.Errorf("Expected: %v, got: %v ", expected, actual)
