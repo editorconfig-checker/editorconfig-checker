@@ -1,22 +1,22 @@
 {
-  "Version": "v3.0.3",
-  "Verbose": false,
-  "Debug": false,
-  "IgnoreDefaults": false,
-  "SpacesAfterTabs": false,
-  "NoColor": false,
-  "exclude": [
-    "testfiles",
-    "testdata"
-  ],
-  "AllowedContentTypes": [],
-  "PassedFiles": [],
-  "Disable": {
-    "EndOfLine": false,
-    "Indentation": false,
-    "InsertFinalNewline": false,
-    "TrimTrailingWhitespace": false,
-    "IndentSize": false,
-    "MaxLineLength": false
-  }
+    "Version": "v3.0.3",
+    "Verbose": false,
+    "Debug": false,
+    "IgnoreDefaults": false,
+    "SpacesAfterTabs": false,
+    "NoColor": false,
+    "exclude": [
+        "testfiles",
+        "testdata"
+    ],
+    "AllowedContentTypes": [],
+    "PassedFiles": [],
+    "Disable": {
+        "EndOfLine": false,
+        "Indentation": false,
+        "InsertFinalNewline": false,
+        "TrimTrailingWhitespace": false,
+        "IndentSize": false,
+        "MaxLineLength": false
+    }
 }
