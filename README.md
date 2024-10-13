@@ -182,7 +182,7 @@ A sample configuration file can look like this and will be used from your curren
   "Verbose": false,
   "Debug": false,
   "IgnoreDefaults": false,
-  "SpacesAftertabs": false,
+  "SpacesAfterTabs": false,
   "NoColor": false,
   "Exclude": [],
   "AllowedContentTypes": [],

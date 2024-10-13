@@ -120,7 +120,7 @@ func TestMerge(t *testing.T) {
 		Debug:               true,
 		NoColor:             true,
 		IgnoreDefaults:      true,
-		SpacesAftertabs:     true,
+		SpacesAfterTabs:     true,
 		Exclude:             []string{"some-other"},
 		PassedFiles:         []string{"src"},
 		AllowedContentTypes: []string{"xml/"},
@@ -175,7 +175,7 @@ func TestParse(t *testing.T) {
 		c.IgnoreDefaults != true ||
 		!reflect.DeepEqual(c.Exclude, []string{"testfiles"}) ||
 		!reflect.DeepEqual(c.AllowedContentTypes, []string{"text/", "application/octet-stream", "application/ecmascript", "application/json", "application/x-ndjson", "application/xml", "+json", "+xml", "hey"}) ||
-		c.SpacesAftertabs != true ||
+		c.SpacesAfterTabs != true ||
 		c.Disable.EndOfLine != false ||
 		c.Disable.TrimTrailingWhitespace != false ||
 		c.Disable.InsertFinalNewline != false ||
@@ -204,7 +204,7 @@ func TestGetAsString(t *testing.T) {
 	_ = c.Parse()
 
 	actual := c.GetAsString()
-	expected := "Config: {ShowVersion:false Help:false DryRun:false Path:../../.ecrc Version:v3.0.3 Verbose:false Format: Debug:false IgnoreDefaults:false SpacesAftertabs:false NoColor:false Exclude:[testfiles testdata] AllowedContentTypes:[text/ application/octet-stream application/ecmascript application/json application/x-ndjson application/xml +json +xml] PassedFiles:[] Disable:{EndOfLine:false Indentation:false InsertFinalNewline:false TrimTrailingWhitespace:false IndentSize:false MaxLineLength:false} Logger:{Verbosee:false Debugg:false NoColor:false} EditorconfigConfig:0x"
+	expected := "Config: {ShowVersion:false Help:false DryRun:false Path:../../.ecrc Version:v3.0.3 Verbose:false Format: Debug:false IgnoreDefaults:false SpacesAftertabs:<nil> SpacesAfterTabs:false NoColor:false Exclude:[testfiles testdata] AllowedContentTypes:[text/ application/octet-stream application/ecmascript application/json application/x-ndjson application/xml +json +xml] PassedFiles:[] Disable:{EndOfLine:false Indentation:false InsertFinalNewline:false TrimTrailingWhitespace:false IndentSize:false MaxLineLength:false} Logger:{Verbosee:false Debugg:false NoColor:false} EditorconfigConfig:0x"
 
 	if !strings.HasPrefix(actual, expected) {
 		t.Errorf("Expected: %v, got: %v ", expected, actual)
