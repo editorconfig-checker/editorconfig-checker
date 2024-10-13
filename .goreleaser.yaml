@@ -33,6 +33,31 @@ builds:
       - -X main.commit={{.Commit}} -X main.date={{.CommitDate}}
       - -X main.builtBy=goreleaser
 
+  # this build is used to provide the legacy-style archives
+  - id: "ec-compat"
+    main: ./cmd/editorconfig-checker
+    binary: bin/ec-{{- .Os }}-{{ .Arch }}{{- if .Arm }}v{{ .Arm }}{{ end }}
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - windows
+      - darwin
+
+    goarch:
+      - amd64
+      - arm64
+      - arm
+      - '386'
+    mod_timestamp: "{{ .CommitTimestamp }}"
+    flags:
+      - -trimpath
+    ldflags:
+      - -s -w -X main.version={{.Version}}
+      - -X main.commit={{.Commit}} -X main.date={{.CommitDate}}
+      - -X main.builtBy=goreleaser
+
+
 universal_binaries:
   - replace: true
 archives:
@@ -43,6 +68,16 @@ archives:
     format: tar.gz
     name_template: >-
       {{ .ProjectName }}-{{- .Os }}-{{ .Arch }}{{- if .Arm }}v{{ .Arm }}{{ end }}
+    format_overrides:
+      - goos: windows
+        format: zip
+  - id: archive-ec
+    builds:
+      - ec-compat
+
+    format: tar.gz
+    name_template: >-
+      ec-{{- .Os }}-{{ .Arch }}{{- if .Arm }}v{{ .Arm }}{{ end }}
     format_overrides:
       - goos: windows
         format: zip
