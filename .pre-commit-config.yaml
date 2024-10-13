@@ -9,7 +9,7 @@ repos:
           - commit-msg
         args: []
   - repo: https://github.com/pre-commit/pre-commit.git
-    rev: v3.8.0
+    rev: v4.0.1
     hooks:
       - id: validate_manifest
   - repo: https://github.com/editorconfig-checker/editorconfig-checker
