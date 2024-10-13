@@ -12,6 +12,7 @@ before:
 builds:
   - id: "editorconfig-checker"
     main: ./cmd/editorconfig-checker
+    binary: editorconfig-checker
     env:
       - CGO_ENABLED=0
     goos:
