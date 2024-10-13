@@ -204,7 +204,7 @@ func TestGetAsString(t *testing.T) {
 	_ = c.Parse()
 
 	actual := c.GetAsString()
-	expected := "Config: {ShowVersion:false Help:false DryRun:false Path:../../.ecrc Version:v3.0.3 Verbose:false Format: Debug:false IgnoreDefaults:false SpacesAftertabs:false SpacesAfterTabs:false NoColor:false Exclude:[testfiles testdata] AllowedContentTypes:[text/ application/octet-stream application/ecmascript application/json application/x-ndjson application/xml +json +xml] PassedFiles:[] Disable:{EndOfLine:false Indentation:false InsertFinalNewline:false TrimTrailingWhitespace:false IndentSize:false MaxLineLength:false} Logger:{Verbosee:false Debugg:false NoColor:false} EditorconfigConfig:0x"
+	expected := "Config: {ShowVersion:false Help:false DryRun:false Path:../../.ecrc Version:v3.0.3 Verbose:false Format: Debug:false IgnoreDefaults:false SpacesAftertabs:<nil> SpacesAfterTabs:false NoColor:false Exclude:[testfiles testdata] AllowedContentTypes:[text/ application/octet-stream application/ecmascript application/json application/x-ndjson application/xml +json +xml] PassedFiles:[] Disable:{EndOfLine:false Indentation:false InsertFinalNewline:false TrimTrailingWhitespace:false IndentSize:false MaxLineLength:false} Logger:{Verbosee:false Debugg:false NoColor:false} EditorconfigConfig:0x"
 
 	if !strings.HasPrefix(actual, expected) {
 		t.Errorf("Expected: %v, got: %v ", expected, actual)
