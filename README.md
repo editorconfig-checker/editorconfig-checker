@@ -4,7 +4,7 @@
 
 [![ci](https://github.com/editorconfig-checker/editorconfig-checker/actions/workflows/ci.yml/badge.svg)](https://github.com/editorconfig-checker/editorconfig-checker/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/editorconfig-checker/editorconfig-checker/branch/main/graph/badge.svg)](https://codecov.io/gh/editorconfig-checker/editorconfig-checker)
-[![Hits-of-Code](https://hitsofcode.com/github/editorconfig-checker/editorconfig-checker)](https://hitsofcode.com/view/github/editorconfig-checker/editorconfig-checker)
+[![Hits-of-Code](https://hitsofcode.com/github/editorconfig-checker/editorconfig-checker?branch=main&label=Hits-of-Code)](https://hitsofcode.com/github/editorconfig-checker/editorconfig-checker/view?branch=main&label=Hits-of-Code)
 [![Go Report Card](https://goreportcard.com/badge/github.com/editorconfig-checker/editorconfig-checker/v3)](https://goreportcard.com/report/github.com/editorconfig-checker/editorconfig-checker/v3)
 
 ![Logo](docs/logo.png)
