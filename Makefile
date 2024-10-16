@@ -57,7 +57,6 @@ run-verbose: build ## Build and run bin/ec --verbose
 patch-files-with-version:
 	@read -p "Enter version to release: " version && \
 	[[ $$version == v* ]]  && \
-	echo $${version} > VERSION && \
 	sed -i "s/\"Version\": \".*\",/\"Version\": \"$${version}\",/" testfiles/generated-config.json
 
 nix-build: ## Build for nix
