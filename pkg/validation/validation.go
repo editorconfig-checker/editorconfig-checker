@@ -8,11 +8,15 @@ import (
 	"strconv"
 	"strings"
 
+	// x-release-please-start-major
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/config"
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/encoding"
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/error"
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/files"
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/validation/validators"
+
+	// x-release-please-end
+
 	"github.com/editorconfig/editorconfig-core-go/v2"
 )
 

@@ -58,10 +58,8 @@ patch-files-with-version:
 	@read -p "Enter version to release: " version && \
 	[[ $$version == v* ]]  && \
 	echo $${version} > VERSION && \
-	sed -i "s/VERSION=".*"/VERSION=\"$${version}\"/" ./README.md && \
 	sed -i "s/\"Version\": \".*\",/\"Version\": \"$${version}\",/" .ecrc && \
-	sed -i "s/\"Version\": \".*\",/\"Version\": \"$${version}\",/" testfiles/generated-config.json && \
-	sed -i "s/${CURRENT_VERSION}/$${version}/" ./pkg/config/config_test.go
+	sed -i "s/\"Version\": \".*\",/\"Version\": \"$${version}\",/" testfiles/generated-config.json
 
 nix-build: ## Build for nix
 	nix-build -E 'with import <nixpkgs> { }; callPackage ./default.nix {}'

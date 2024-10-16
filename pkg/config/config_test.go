@@ -6,7 +6,10 @@ import (
 	"reflect"
 	"testing"
 
+	// x-release-please-start-major
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/outputformat"
+	// x-release-please-end
+
 	"github.com/gkampitakis/go-snaps/snaps"
 )
 
@@ -110,7 +113,7 @@ func TestMerge(t *testing.T) {
 
 	mergeConfig := Config{
 		ShowVersion:         true,
-		Version:             "v3.0.3",
+		Version:             "v3.0.3", // x-release-please-version
 		Help:                true,
 		DryRun:              true,
 		Path:                "some-other",

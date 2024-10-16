@@ -8,8 +8,10 @@ import (
 	"strings"
 	"unicode/utf8"
 
+	// x-release-please-start-major
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/config"
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/utils"
+	// x-release-please-end
 )
 
 // Indentation validates a files indentation
