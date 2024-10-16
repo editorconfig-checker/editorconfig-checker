@@ -53,12 +53,6 @@ run: build ## Build and run bin/ec
 run-verbose: build ## Build and run bin/ec --verbose
 	@./bin/ec --verbose --exclude "\\.git" --exclude "\\.exe$$"
 
-# FIXME: this must be done by release-please
-patch-files-with-version:
-	@read -p "Enter version to release: " version && \
-	[[ $$version == v* ]]  && \
-	sed -i "s/\"Version\": \".*\",/\"Version\": \"$${version}\",/" testfiles/generated-config.json
-
 nix-build: ## Build for nix
 	nix-build -E 'with import <nixpkgs> { }; callPackage ./default.nix {}'
 
