@@ -45,6 +45,14 @@ func TestConfigFileFirstFoundInMultiplePaths(t *testing.T) {
 	}
 }
 
+func TestParsingAnConfigWithoutSettingAFile(t *testing.T) {
+	c := NewConfig([]string{})
+	err := c.Parse()
+	if err != nil {
+		t.Error("parsing an config without setting a file to parse failed unexpectedly")
+	}
+}
+
 func TestGetExcludesAsRegularExpression(t *testing.T) {
 	c := NewConfig(configWithIgnoredDefaults)
 	err := c.Parse()
