@@ -30,6 +30,12 @@ var currentConfig *config.Config
 // exitProxy is there to be replaced while running the tests
 var exitProxy = os.Exit
 
+const (
+	exitCodeNormal             = iota
+	exitCodeErrorOccurred      = iota
+	exitCodeConfigFileNotFound = iota
+)
+
 // these must be globals, since they are referenced by init(), parseArguments
 var configFilePath string
 var cmdlineExclude string
@@ -86,10 +92,10 @@ func parseArguments() {
 		err := currentConfig.Save(version)
 		if err != nil {
 			currentConfig.Logger.Error(err.Error())
-			exitProxy(1)
+			exitProxy(exitCodeErrorOccurred)
 		}
 
-		exitProxy(0)
+		exitProxy(exitCodeNormal)
 	}
 
 	err := currentConfig.Parse()
@@ -97,7 +103,7 @@ func parseArguments() {
 	// since the default config paths could trigger this
 	if err != nil && !(configFilePath == "" && errors.Is(err, fs.ErrNotExist)) {
 		currentConfig.Logger.Error(err.Error())
-		exitProxy(2)
+		exitProxy(exitCodeConfigFileNotFound)
 	}
 
 	if cmdlineExclude != "" {
@@ -127,13 +133,13 @@ func main() {
 	if utils.FileExists(config.Path) && config.Version != "" && config.Version != version {
 		config.Logger.Error("Version from config file is not the same as the version of the binary")
 		config.Logger.Error(fmt.Sprintf("Binary: %s, Config %s", version, config.Version))
-		exitProxy(1)
+		exitProxy(exitCodeErrorOccurred)
 	}
 
 	// Check for returnworthy arguments
 	shouldExit := ReturnableFlags(config)
 	if shouldExit {
-		exitProxy(0)
+		exitProxy(exitCodeNormal)
 	}
 
 	// contains all files which should be checked
@@ -141,7 +147,7 @@ func main() {
 
 	if err != nil {
 		config.Logger.Error(err.Error())
-		exitProxy(1)
+		exitProxy(exitCodeErrorOccurred)
 	}
 
 	if config.DryRun {
@@ -149,7 +155,7 @@ func main() {
 			config.Logger.Output(file)
 		}
 
-		exitProxy(0)
+		exitProxy(exitCodeNormal)
 	}
 
 	errors := validation.ProcessValidation(filePaths, config)
@@ -159,10 +165,10 @@ func main() {
 	config.Logger.Verbose("%d files checked", len(filePaths))
 
 	if error.GetErrorCount(errors) != 0 {
-		exitProxy(1)
+		exitProxy(exitCodeErrorOccurred)
 	}
 
-	exitProxy(0)
+	exitProxy(exitCodeNormal)
 }
 
 // ReturnableFlags returns whether a flag passed should exit the program
