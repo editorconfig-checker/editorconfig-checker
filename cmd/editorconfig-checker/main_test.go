@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"os"
 	"runtime"
+	"strings"
 	"testing"
 )
 
@@ -78,9 +79,23 @@ func TestMainInitializingANewConfig(t *testing.T) {
 }
 
 func TestMainLoadingAncientConfig(t *testing.T) {
-	_, lastSeenCode := runWithArguments(t, "--debug", "--verbose", "--config", "testdata/ancient-config.json")
+	output, lastSeenCode := runWithArguments(t, "--debug", "--verbose", "--config", "testdata/ancient-config.json")
 	if lastSeenCode != exitCodeErrorOccurred {
 		t.Errorf("main exited with return code %d, but we expected %d", lastSeenCode, exitCodeErrorOccurred)
+	}
+	if !strings.Contains(output, "SpacesAftertabs") {
+		t.Errorf("main did not produce a warning that SpacesAftertabs is deprecated\nOutput:\n%s", output)
+	}
+}
+
+func TestMainWithEcrc(t *testing.T) {
+	// feed a symlink named .ecrc pointing to our actual .editorconfig-checker.json
+	output, lastSeenCode := runWithArguments(t, "--config", "testdata/.ecrc")
+	if lastSeenCode != exitCodeNormal {
+		t.Errorf("main exited with return code %d, but we expected %d\nOutput:\n%s", lastSeenCode, exitCodeNormal, output)
+	}
+	if !strings.Contains(output, "`.ecrc` is deprecated") {
+		t.Errorf("main did not produce a warning that .ecrc is deprecated despite being give a file named .ecrc.\nOutput:\n%s", output)
 	}
 }
 
