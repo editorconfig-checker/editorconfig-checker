@@ -182,7 +182,9 @@ func ReturnableFlags(config config.Config) bool {
 		config.Logger.Output(version)
 	case config.Help:
 		config.Logger.Output("USAGE:")
+		flag.CommandLine.SetOutput(config.Logger.GetWriter())
 		flag.PrintDefaults()
+		flag.CommandLine.SetOutput(nil)
 	}
 
 	return config.ShowVersion || config.Help
