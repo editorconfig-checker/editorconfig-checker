@@ -146,7 +146,6 @@ func TestMerge(t *testing.T) {
 	expected.Logger.Verbosee = true
 	expected.Logger.Debugg = true
 	expected.Logger.NoColor = true
-	expected.Logger.Init()
 	expected.EditorconfigConfig = modifiedConfig.EditorconfigConfig
 
 	if !reflect.DeepEqual(modifiedConfig, &expected) {
