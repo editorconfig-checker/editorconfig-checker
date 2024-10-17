@@ -41,6 +41,10 @@ func (l *Logger) lazyInit() {
 	}
 }
 
+func (l Logger) GetWriter() io.Writer {
+	return l.writer
+}
+
 // allow users to overwrite the writer used
 func (l *Logger) SetWriter(w io.Writer) {
 	l.writer = w
