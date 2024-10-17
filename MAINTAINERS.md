@@ -22,4 +22,4 @@ This collaborative process ensures that all perspectives are considered, and hel
 
 ## Releasing new versions
 
-With goreleaser the only thing required is to create or push a new tag to GitHub. A GitHub action then will build the binaries, archives and container images, and upload them to the right places.
+With goreleaser the only thing required is to create or push a new tag to GitHub. A GitHub action then will build the binaries, archives and container images, and upload them to the right places. But since we now also have release-please, all you need to do is merge the Pull Request created and maintained by release-please when you are ready to release the next version. It will then have updated all the files that need version updates (if one is missed check the `release-please-config.json` if `extra-files` contains the file, and that the concerning lines are marked with either the block or inline version of the release-please markers)
