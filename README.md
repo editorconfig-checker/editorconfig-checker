@@ -5,7 +5,7 @@
 [![ci](https://github.com/editorconfig-checker/editorconfig-checker/actions/workflows/ci.yml/badge.svg)](https://github.com/editorconfig-checker/editorconfig-checker/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/editorconfig-checker/editorconfig-checker/branch/main/graph/badge.svg)](https://codecov.io/gh/editorconfig-checker/editorconfig-checker)
 [![Hits-of-Code](https://hitsofcode.com/github/editorconfig-checker/editorconfig-checker?branch=main&label=Hits-of-Code)](https://hitsofcode.com/github/editorconfig-checker/editorconfig-checker/view?branch=main&label=Hits-of-Code)
-[![Go Report Card](https://goreportcard.com/badge/github.com/editorconfig-checker/editorconfig-checker/v3)](https://goreportcard.com/report/github.com/editorconfig-checker/editorconfig-checker/v3)
+[![Go Report Card](https://goreportcard.com/badge/github.com/editorconfig-checker/editorconfig-checker/v3)](https://goreportcard.com/report/github.com/editorconfig-checker/editorconfig-checker/v3)<!-- x-release-please-major -->
 
 ![Logo](docs/logo.png)
 
@@ -55,6 +55,7 @@ Unsupported features are:
 
 ## Quickstart
 
+<!-- x-release-please-start-version -->
 ```shell
 VERSION="v3.0.3"
 OS="linux"
@@ -63,12 +64,14 @@ curl -O -L -C - https://github.com/editorconfig-checker/editorconfig-checker/rel
 tar xzf ec-$OS-$ARCH.tar.gz && \
 ./bin/ec-$OS-$ARCH
 ```
+<!-- x-release-please-end -->
 
 ## Installation
 
 Grab a binary from the [release page](https://github.com/editorconfig-checker/editorconfig-checker/releases).
 
-If you have go installed you can run `go get github.com/editorconfig-checker/editorconfig-checker/v3` and run `make build` inside the project folder.
+If you have go installed you can run `go get github.com/editorconfig-checker/editorconfig-checker/v3` <!-- x-release-please-major -->
+and run `make build` inside the project folder.
 This will place a binary called `ec` into the `bin` directory.
 
 If you are using Arch Linux, you can use [pacman](https://wiki.archlinux.org/title/Pacman) to install from [extra repository](https://archlinux.org/packages/extra/x86_64/editorconfig-checker/):

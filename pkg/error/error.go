@@ -5,10 +5,10 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/config"
-	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/files"
-	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/logger"
-	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/outputformat"
+	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/config"       // x-release-please-major
+	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/files"        // x-release-please-major
+	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/logger"       // x-release-please-major
+	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/outputformat" // x-release-please-major
 )
 
 // ValidationError represents one validation error

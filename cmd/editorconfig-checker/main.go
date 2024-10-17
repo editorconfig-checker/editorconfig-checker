@@ -7,18 +7,18 @@ import (
 	"os"
 	"strings"
 
-	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/config"
-	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/error"
-	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/files"
-	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/logger"
-	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/outputformat"
-	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/utils"
-	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/validation"
+	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/config"       // x-release-please-major
+	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/error"        // x-release-please-major
+	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/files"        // x-release-please-major
+	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/logger"       // x-release-please-major
+	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/outputformat" // x-release-please-major
+	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/utils"        // x-release-please-major
+	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/validation"   // x-release-please-major
 )
 
 // version is used vor the help
 // version is dynamically set at compiletime
-var version string
+var version string = "v3.0.3" // x-release-please-version
 
 // defaultConfigFileNames determines the file names where the config is located
 var defaultConfigFileNames = []string{".editorconfig-checker.json", ".ecrc"}

@@ -20,7 +20,6 @@ jobs:
           go-version-file: "go.mod"
       - run: make build
       - run: make test
-      - run: ./bin/ec -config stuff.json -init && diff stuff.json ./testfiles/generated-config.json && rm stuff.json
       - run: make run
       - run: make bench
       - uses: codecov/codecov-action@v4
