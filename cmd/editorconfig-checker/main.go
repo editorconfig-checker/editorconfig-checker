@@ -30,6 +30,9 @@ var currentConfig *config.Config
 // exitProxy is there to be replaced while running the tests
 var exitProxy = os.Exit
 
+//  loggerInjectionHook is there to be replaced while running the tests
+var loggerInjectionHook = func() {}
+
 const (
 	exitCodeNormal             = iota
 	exitCodeErrorOccurred      = iota
@@ -83,6 +86,7 @@ func parseArguments() {
 	}
 
 	currentConfig = config.NewConfig(configPaths)
+	loggerInjectionHook()
 
 	if strings.HasSuffix(currentConfig.Path, ".ecrc") {
 		currentConfig.Logger.Warning("The default configuration file name `.ecrc` is deprecated. Use `.editorconfig-checker.json` instead. You can simply rename it")

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"os"
 	"runtime"
 	"testing"
@@ -25,16 +26,21 @@ func setArguments(t *testing.T, args ...string) {
 	os.Args = append([]string{"editorconfig-checker"}, args...)
 }
 
-func runWithArguments(t *testing.T, args ...string) int {
+func runWithArguments(t *testing.T, args ...string) (string, int) {
 	t.Helper()
 	setArguments(t, args...)
+	outputBuffer := new(bytes.Buffer)
+	loggerInjectionHook = func() {
+		currentConfig.Logger.SetWriter(outputBuffer)
+	}
 	go main()
-	return <-mainHasRun
+	exitCode := <-mainHasRun // must not be inlined into the return statement, since we need to wait for main() to exist before trying to read the buffer
+	return outputBuffer.String(), exitCode
 }
 
 func TestMainOurCodebase(t *testing.T) {
 	cdRelativeToRepo(t, "")
-	lastSeenCode := runWithArguments(t, "--debug", "--verbose", "--exclude", `\.git`, "--exclude", `\.exe$`)
+	_, lastSeenCode := runWithArguments(t, "--debug", "--verbose", "--exclude", `\.git`, "--exclude", `\.exe$`)
 	if lastSeenCode != exitCodeNormal {
 		t.Errorf("main exited with return code %d, but we expected %d", lastSeenCode, exitCodeNormal)
 	}
@@ -42,14 +48,14 @@ func TestMainOurCodebase(t *testing.T) {
 
 func TestMainMissingExplicitConfig(t *testing.T) {
 	cdRelativeToRepo(t, "")
-	lastSeenCode := runWithArguments(t, "--debug", "--verbose", "--exclude", `\.git`, "--exclude", `\.exe$`, "--config", "/nonexistant")
+	_, lastSeenCode := runWithArguments(t, "--debug", "--verbose", "--exclude", `\.git`, "--exclude", `\.exe$`, "--config", "/nonexistant")
 	if lastSeenCode != exitCodeConfigFileNotFound {
 		t.Errorf("main exited with return code %d, but we expected %d", lastSeenCode, exitCodeConfigFileNotFound)
 	}
 }
 func TestMainWithFilesGiven(t *testing.T) {
 	cdRelativeToRepo(t, "")
-	lastSeenCode := runWithArguments(t, "--debug", "--verbose", "README.md")
+	_, lastSeenCode := runWithArguments(t, "--debug", "--verbose", "README.md")
 	if lastSeenCode != exitCodeNormal {
 		t.Errorf("main exited with return code %d, but we expected %d", lastSeenCode, exitCodeNormal)
 	}
@@ -58,13 +64,13 @@ func TestMainWithFilesGiven(t *testing.T) {
 func TestMainInitializingANewConfig(t *testing.T) {
 	dir := t.TempDir()
 
-	lastSeenCode := runWithArguments(t, "--debug", "--verbose", "--init", "--config", dir+"/testwriteconfig.json")
+	_, lastSeenCode := runWithArguments(t, "--debug", "--verbose", "--init", "--config", dir+"/testwriteconfig.json")
 	if lastSeenCode != exitCodeNormal {
 		t.Errorf("main exited with return code %d, but we expected %d", lastSeenCode, exitCodeNormal)
 	}
 
 	// do the same test a second time, trying to "overwrite" the existing file
-	lastSeenCode = runWithArguments(t, "--debug", "--verbose", "--init", "--config", dir+"/testwriteconfig.json")
+	_, lastSeenCode = runWithArguments(t, "--debug", "--verbose", "--init", "--config", dir+"/testwriteconfig.json")
 	// but now we expect it to fail since it does not want to overwrite the existing file
 	if lastSeenCode != exitCodeErrorOccurred {
 		t.Errorf("main exited with return code %d, but we expected %d", lastSeenCode, exitCodeErrorOccurred)
@@ -72,21 +78,21 @@ func TestMainInitializingANewConfig(t *testing.T) {
 }
 
 func TestMainLoadingAncientConfig(t *testing.T) {
-	lastSeenCode := runWithArguments(t, "--debug", "--verbose", "--config", "testdata/ancient-config.json")
+	_, lastSeenCode := runWithArguments(t, "--debug", "--verbose", "--config", "testdata/ancient-config.json")
 	if lastSeenCode != exitCodeErrorOccurred {
 		t.Errorf("main exited with return code %d, but we expected %d", lastSeenCode, exitCodeErrorOccurred)
 	}
 }
 
 func TestMainShowVersion(t *testing.T) {
-	lastSeenCode := runWithArguments(t, "--version")
+	_, lastSeenCode := runWithArguments(t, "--version")
 	if lastSeenCode != exitCodeNormal {
 		t.Errorf("main exited with return code %d, but we expected %d", lastSeenCode, exitCodeNormal)
 	}
 }
 
 func TestMainShowHelp(t *testing.T) {
-	lastSeenCode := runWithArguments(t, "--help")
+	_, lastSeenCode := runWithArguments(t, "--help")
 	if lastSeenCode != exitCodeNormal {
 		t.Errorf("main exited with return code %d, but we expected %d", lastSeenCode, exitCodeNormal)
 	}
@@ -94,7 +100,7 @@ func TestMainShowHelp(t *testing.T) {
 
 func TestMainDryRun(t *testing.T) {
 	cdRelativeToRepo(t, "")
-	lastSeenCode := runWithArguments(t, "--dry-run")
+	_, lastSeenCode := runWithArguments(t, "--dry-run")
 	if lastSeenCode != exitCodeNormal {
 		t.Errorf("main exited with return code %d, but we expected %d", lastSeenCode, exitCodeNormal)
 	}
