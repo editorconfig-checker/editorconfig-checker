@@ -34,6 +34,19 @@ func TestMainFunc(t *testing.T) {
 	*/
 }
 
+func TestReturnCodeInterface(t *testing.T) {
+	// These constants are possibly used by external processes, so we must not change them
+	if exitCodeNormal != 0 {
+		t.Errorf("Return code for a normal condition was %d, but we expected 0", exitCodeNormal)
+	}
+	if exitCodeErrorOccurred != 1 {
+		t.Errorf("Return code for an error condition was %d, but we expected 1", exitCodeErrorOccurred)
+	}
+	if exitCodeConfigFileNotFound != 2 {
+		t.Errorf("Return code for a nonexistant config file was %d, but we expected 2", exitCodeConfigFileNotFound)
+	}
+}
+
 func TestMain(m *testing.M) {
 	exitProxy = captureReturnCode
 	mainHasRun = make(chan int)
