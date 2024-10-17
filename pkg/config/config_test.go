@@ -14,7 +14,7 @@ var rootConfigFilePath = []string{"../../.editorconfig-checker.json"}
 var configWithIgnoredDefaults = []string{"../../testfiles/.editorconfig-checker.json"}
 
 func TestNewConfig(t *testing.T) {
-	actual, _ := NewConfig([]string{"abc"})
+	actual := NewConfig([]string{"abc"})
 	var expected Config
 
 	if actual == &expected {
@@ -22,39 +22,31 @@ func TestNewConfig(t *testing.T) {
 	}
 }
 
-func TestNoConfigFileFound(t *testing.T) {
-	_, err := NewConfig([]string{"abc"})
-	var expected = "no file found at abc"
-	if err == nil || err.Error() != expected {
-		t.Errorf("expected an error (%s), got %v", expected, err)
+func TestConfigFileNotFoundReturnsFirstPath(t *testing.T) {
+	configFileName := "abc"
+	c := NewConfig([]string{configFileName})
+	if c.Path != configFileName {
+		t.Errorf("expected NewConfig.Path to be set to %s, but it was set to %s", configFileName, c.Path)
 	}
 }
 
-func TestNoConfigs(t *testing.T) {
-	_, err := NewConfig([]string{})
-	var expected = "no config paths provided"
-	if err == nil || err.Error() != expected {
-		t.Errorf("expected an error (%s), got %v", expected, err)
-	}
-}
-
-func TestNoConfigFileFoundInMultiplePaths(t *testing.T) {
-	_, err := NewConfig([]string{"abc", "def"})
-	var expected = "no file found at abc"
-	if err == nil || err.Error() != expected {
-		t.Errorf("expected an error (%s), got %v", expected, err)
+func TestNoConfigFileFoundInMultiplePathsReturnsFirstPath(t *testing.T) {
+	configFileName := "abc"
+	c := NewConfig([]string{configFileName, "irrelevant, but nonexistant config file"})
+	if c.Path != configFileName {
+		t.Errorf("expected NewConfig.Path to be set to %s, but it was set to %s", configFileName, c.Path)
 	}
 }
 
 func TestConfigFileFirstFoundInMultiplePaths(t *testing.T) {
-	c, _ := NewConfig([]string{"abc", rootConfigFilePath[0], configWithIgnoredDefaults[0]})
+	c := NewConfig([]string{"abc", rootConfigFilePath[0], configWithIgnoredDefaults[0]})
 	if c.Path != rootConfigFilePath[0] {
 		t.Errorf("expected %s, got %s", rootConfigFilePath[0], c.Path)
 	}
 }
 
 func TestGetExcludesAsRegularExpression(t *testing.T) {
-	c, _ := NewConfig(configWithIgnoredDefaults)
+	c := NewConfig(configWithIgnoredDefaults)
 	err := c.Parse()
 	if err != nil {
 		t.Errorf("Should parse without an error, got: %v", err)
@@ -76,7 +68,7 @@ func TestGetExcludesAsRegularExpression(t *testing.T) {
 		t.Errorf("expected %s, got %s", expected, actual)
 	}
 
-	c, _ = NewConfig(rootConfigFilePath)
+	c = NewConfig(rootConfigFilePath)
 	err = c.Parse()
 	if err != nil {
 		t.Errorf("Should parse without an error, got: %v", err)
@@ -91,12 +83,9 @@ func TestGetExcludesAsRegularExpression(t *testing.T) {
 }
 
 func TestMerge(t *testing.T) {
-	modifiedConfig, err := NewConfig([]string{"../../.editorconfig-checker.json"})
-	if err != nil {
-		t.Errorf("Expected to create a config without errors, got %v", err)
-	}
+	modifiedConfig := NewConfig([]string{"../../.editorconfig-checker.json"})
 
-	err = modifiedConfig.Parse()
+	err := modifiedConfig.Parse()
 	if err != nil {
 		t.Errorf("Expected to parse a config without errors, got %v", err)
 	}
@@ -104,7 +93,7 @@ func TestMerge(t *testing.T) {
 	emptyConfig := Config{}
 	modifiedConfig.Merge(emptyConfig)
 
-	parsedConfig, _ := NewConfig([]string{"../../.editorconfig-checker.json"})
+	parsedConfig := NewConfig([]string{"../../.editorconfig-checker.json"})
 	_ = parsedConfig.Parse()
 
 	if !reflect.DeepEqual(modifiedConfig, parsedConfig) {
@@ -170,7 +159,7 @@ func TestMerge(t *testing.T) {
 }
 
 func TestParse(t *testing.T) {
-	c, _ := NewConfig([]string{"../../testfiles/.editorconfig-checker.json"})
+	c := NewConfig([]string{"../../testfiles/.editorconfig-checker.json"})
 	_ = c.Parse()
 
 	if c.Verbose != true ||
@@ -192,7 +181,7 @@ func TestSave(t *testing.T) {
 	dir, _ := os.MkdirTemp("", "example")
 	defer os.RemoveAll(dir)
 	configFile := filepath.Join(dir, "config")
-	c, _ := NewConfig([]string{configFile})
+	c := NewConfig([]string{configFile})
 	if c.Save("VERSION") != nil {
 		t.Error("Should create the config")
 	}
@@ -203,7 +192,7 @@ func TestSave(t *testing.T) {
 }
 
 func TestString(t *testing.T) {
-	c, _ := NewConfig([]string{"../../.editorconfig-checker.json"})
+	c := NewConfig([]string{"../../.editorconfig-checker.json"})
 	_ = c.Parse()
 	c.Format = outputformat.Default
 

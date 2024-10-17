@@ -114,11 +114,7 @@ type DisabledChecks struct {
 }
 
 // NewConfig initializes a new config
-func NewConfig(configPaths []string) (*Config, error) {
-	if len(configPaths) == 0 {
-		return nil, fmt.Errorf("no config paths provided")
-	}
-
+func NewConfig(configPaths []string) *Config {
 	var config Config
 
 	config.AllowedContentTypes = defaultAllowedContentTypes
@@ -136,14 +132,12 @@ func NewConfig(configPaths []string) (*Config, error) {
 			break
 		}
 	}
-	if configPath == "" {
-		var configPath string = configPaths[0]
-		config.Path = configPath
-		return &config, fmt.Errorf("no file found at %s", configPath)
+	if configPath == "" && len(configPaths) >= 1 {
+		configPath = configPaths[0]
 	}
 	config.Path = configPath
 
-	return &config, nil
+	return &config
 }
 
 // Parse parses a config at a given path
