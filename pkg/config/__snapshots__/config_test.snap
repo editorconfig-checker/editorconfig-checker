@@ -1,0 +1,51 @@
+[TestString - 1]
+{
+ "AllowedContentTypes": [
+  "text/",
+  "application/octet-stream",
+  "application/ecmascript",
+  "application/json",
+  "application/x-ndjson",
+  "application/xml",
+  "+json",
+  "+xml"
+ ],
+ "Debug": false,
+ "Disable": {
+  "EndOfLine": false,
+  "IndentSize": false,
+  "Indentation": false,
+  "InsertFinalNewline": false,
+  "MaxLineLength": false,
+  "TrimTrailingWhitespace": false
+ },
+ "DryRun": false,
+ "EditorconfigConfig": {
+  "Graceful": false,
+  "Name": "",
+  "Parser": {},
+  "Path": "",
+  "Version": ""
+ },
+ "Exclude": [
+  "testfiles",
+  "testdata"
+ ],
+ "Format": "default",
+ "Help": false,
+ "IgnoreDefaults": false,
+ "Logger": {
+  "DebugEnabled": false,
+  "NoColor": false,
+  "VerboseEnabled": false
+ },
+ "NoColor": false,
+ "PassedFiles": [],
+ "Path": "../../.editorconfig-checker.json",
+ "ShowVersion": false,
+ "SpacesAfterTabs": false,
+ "SpacesAftertabs": null,
+ "Verbose": false,
+ "Version": "v3.0.3"
+}
+---

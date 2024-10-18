@@ -114,11 +114,7 @@ type DisabledChecks struct {
 }
 
 // NewConfig initializes a new config
-func NewConfig(configPaths []string) (*Config, error) {
-	if len(configPaths) == 0 {
-		return nil, fmt.Errorf("No config paths provided")
-	}
-
+func NewConfig(configPaths []string) *Config {
 	var config Config
 
 	config.AllowedContentTypes = defaultAllowedContentTypes
@@ -136,32 +132,32 @@ func NewConfig(configPaths []string) (*Config, error) {
 			break
 		}
 	}
-	if configPath == "" {
-		var configPath string = configPaths[0]
-		config.Path = configPath
-		return &config, fmt.Errorf("No file found at %s", configPath)
+	if configPath == "" && len(configPaths) >= 1 {
+		configPath = configPaths[0]
 	}
 	config.Path = configPath
 
-	return &config, nil
+	return &config
 }
 
 // Parse parses a config at a given path
 func (c *Config) Parse() error {
-	if c.Path != "" {
-		configString, err := os.ReadFile(c.Path)
-		if err != nil {
-			return err
-		}
-
-		tmpConfg := Config{}
-		err = json.Unmarshal(configString, &tmpConfg)
-		if err != nil {
-			return err
-		}
-
-		c.Merge(tmpConfg)
+	if c.Path == "" {
+		return nil
 	}
+
+	configString, err := os.ReadFile(c.Path)
+	if err != nil {
+		return err
+	}
+
+	tmpConfg := Config{}
+	err = json.Unmarshal(configString, &tmpConfg)
+	if err != nil {
+		return err
+	}
+
+	c.Merge(tmpConfg)
 
 	return nil
 }
@@ -231,11 +227,12 @@ func (c *Config) Merge(config Config) {
 	}
 
 	c.mergeDisabled(config.Disable)
-	c.Logger = logger.Logger{
-		Verbosee: c.Verbose || config.Verbose,
-		Debugg:   c.Debug || config.Debug,
-		NoColor:  c.NoColor || config.NoColor,
-	}
+
+	c.Logger.Configure(logger.Logger{
+		VerboseEnabled: c.Verbose || config.Verbose,
+		DebugEnabled:   c.Debug || config.Debug,
+		NoColor:        c.NoColor || config.NoColor,
+	})
 }
 
 // mergeDisabled merges the disabled checks into the config
@@ -278,7 +275,7 @@ func (c Config) GetExcludesAsRegularExpression() string {
 // Save saves the config to it's Path
 func (c Config) Save(version string) error {
 	if utils.IsRegularFile(c.Path) {
-		return fmt.Errorf("File `%v` already exists", c.Path)
+		return fmt.Errorf("file `%s` already exists", c.Path)
 	}
 
 	type writtenConfig struct {
@@ -302,7 +299,8 @@ func (c Config) Save(version string) error {
 	return err
 }
 
-// GetAsString returns the config in a readable form
-func (c Config) GetAsString() string {
-	return fmt.Sprintf("Config: %+v", c)
+// String returns the config in a readable form
+func (c Config) String() string {
+	j, _ := json.Marshal(c)
+	return string(j)
 }
