@@ -23,7 +23,7 @@ clean: ## Clean bin/ directory
 	rm -f ./bin/*
 
 define _build
-go build -ldflags "-X main.version=$(CURRENT_VERSION)" -o $1 ./cmd/editorconfig-checker/main.go
+go build -o $1 ./cmd/editorconfig-checker/main.go
 endef
 
 $(EXE): $(SOURCES) VERSION

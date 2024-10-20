@@ -30,7 +30,7 @@ builds:
     flags:
       - -trimpath
     ldflags:
-      - -s -w -X main.version={{.Version}}
+      - -s -w
       - -X main.commit={{.Commit}} -X main.date={{.CommitDate}}
       - -X main.builtBy=goreleaser
 
@@ -54,7 +54,7 @@ builds:
     flags:
       - -trimpath
     ldflags:
-      - -s -w -X main.version={{.Version}}
+      - -s -w
       - -X main.commit={{.Commit}} -X main.date={{.CommitDate}}
       - -X main.builtBy=goreleaser
 
