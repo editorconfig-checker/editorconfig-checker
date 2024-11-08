@@ -21,8 +21,10 @@ var DefaultExcludes = strings.Join(defaultExcludes, "|")
 
 // defaultExcludes are an array to produce the correct string from
 var defaultExcludes = []string{
+	// source control related files and folders
 	"\\.git[\\/]",
 	"^\\.jj/",
+	// package manager, generated, & lock files
 	"[\\/]node_modules[\\/]",
 	"^\\.yarn/",
 	"^yarn\\.lock$",
@@ -34,11 +36,13 @@ var defaultExcludes = []string{
 	"^\\.pnp\\.js$",
 	"^\\.pnp\\.loader\\.mjs$",
 	"\\.snap$",
+	// font files
 	"\\.otf$",
 	"\\.woff$",
 	"\\.woff2$",
 	"\\.eot$",
 	"\\.ttf$",
+	// image & video formats
 	"\\.gif$",
 	"\\.png$",
 	"\\.jpg$",
@@ -53,16 +57,20 @@ var defaultExcludes = []string{
 	"\\.wmv$",
 	"\\.svg$",
 	"\\.ico$",
+	// other binary or container formats
 	"\\.bak$",
 	"\\.bin$",
 	"\\.pdf$",
+	// archive formats
 	"\\.zip$",
 	"\\.gz$",
 	"\\.tar$",
 	"\\.7z$",
 	"\\.bz2$",
+	// log & (git) patch files
 	"\\.log$",
 	"\\.patch$",
+	// generated or minified CSS and JavaScript files
 	"\\.css\\.map$",
 	"\\.js\\.map$",
 	"min\\.css$",
