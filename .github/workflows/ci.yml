@@ -23,6 +23,6 @@ jobs:
       - run: ./bin/ec -config stuff.json -init && diff stuff.json ./testfiles/generated-config.json && rm stuff.json
       - run: make run
       - run: make bench
-      - uses: codecov/codecov-action@v4
+      - uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
