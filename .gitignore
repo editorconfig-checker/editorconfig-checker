@@ -4,3 +4,4 @@ coverage.txt
 result-bin
 path
 node_modules
+dist/

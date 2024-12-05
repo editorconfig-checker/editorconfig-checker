@@ -9,9 +9,11 @@ import (
 
 	"github.com/editorconfig/editorconfig-core-go/v2"
 
+	// x-release-please-start-major
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/logger"
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/outputformat"
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/utils"
+	// x-release-please-end
 )
 
 // DefaultExcludes is the regular expression for ignored files
