@@ -5,8 +5,8 @@ go 1.21
 require (
 	github.com/baulk/chardet v0.1.0
 	github.com/editorconfig/editorconfig-core-go/v2 v2.6.2
-	github.com/gabriel-vasile/mimetype v1.4.6
-	golang.org/x/text v0.19.0
+	github.com/gabriel-vasile/mimetype v1.4.7
+	golang.org/x/text v0.21.0
 )
 
 require (
@@ -27,7 +27,7 @@ require (
 	github.com/gkampitakis/go-snaps v0.5.7
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	golang.org/x/mod v0.17.0 // indirect
-	golang.org/x/net v0.30.0 // indirect
+	golang.org/x/net v0.31.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
