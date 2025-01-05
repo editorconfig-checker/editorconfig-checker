@@ -4,9 +4,11 @@ package error
 import (
 	"encoding/json"
 
+	// x-release-please-start-major
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/config"
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/files"
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/outputformat"
+	// x-release-please-end
 )
 
 // ValidationError represents one validation error

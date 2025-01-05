@@ -1,0 +1,287 @@
+# Documentation at https://goreleaser.com
+version: 2
+project_name: editorconfig-checker
+env:
+  - REPO_LICENSE=MIT
+  - DOCKERHUB_USERNAME={{ if index .Env "DOCKERHUB_USERNAME"  }}{{ .Env.DOCKERHUB_USERNAME }}{{ else }}echoix{{ end }}
+  - GHCR_USERNAME={{ if index .Env "GHCR_USERNAME"  }}{{ .Env.GHCR_USERNAME }}{{ else }}echoix{{ end }}
+before:
+  hooks:
+    - echo {{.Version}} > VERSION
+    - go mod tidy
+    - go generate ./...
+builds:
+  - id: "editorconfig-checker"
+    main: ./cmd/editorconfig-checker
+    binary: editorconfig-checker
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - windows
+      - darwin
+
+    goarch:
+      - amd64
+      - arm64
+      - arm
+      - '386'
+    mod_timestamp: "{{ .CommitTimestamp }}"
+    flags:
+      - -trimpath
+    ldflags:
+      - -s -w
+      - -X main.commit={{.Commit}} -X main.date={{.CommitDate}}
+      - -X main.builtBy=goreleaser
+
+  # this build is used to provide the legacy-style archives
+  - id: "ec-compat"
+    main: ./cmd/editorconfig-checker
+    binary: bin/ec-{{- .Os }}-{{ .Arch }}{{- if .Arm }}v{{ .Arm }}{{ end }}
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - windows
+      - darwin
+
+    goarch:
+      - amd64
+      - arm64
+      - arm
+      - '386'
+    mod_timestamp: "{{ .CommitTimestamp }}"
+    flags:
+      - -trimpath
+    ldflags:
+      - -s -w
+      - -X main.commit={{.Commit}} -X main.date={{.CommitDate}}
+      - -X main.builtBy=goreleaser
+
+
+universal_binaries:
+  - replace: true
+archives:
+  - id: archive-editorconfig-checker
+    builds:
+      - editorconfig-checker
+
+    format: tar.gz
+    name_template: >-
+      {{ .ProjectName }}-{{- .Os }}-{{ .Arch }}{{- if .Arm }}v{{ .Arm }}{{ end }}
+    format_overrides:
+      - goos: windows
+        format: zip
+  - id: archive-ec
+    builds:
+      - ec-compat
+
+    format: tar.gz
+    name_template: >-
+      ec-{{- .Os }}-{{ .Arch }}{{- if .Arm }}v{{ .Arm }}{{ end }}
+    format_overrides:
+      - goos: windows
+        format: zip
+
+nfpms:
+  - vendor: Editorconfig-Checker
+    homepage: https://editorconfig-checker.github.io/
+    maintainer: Max Strübing <mxstrbng@gmail.com>
+    description: |-
+      A tool to verify that your files are in harmony with your .editorconfig
+    license: "{{ .Env.REPO_LICENSE }}"
+    formats:
+      - apk
+      - deb
+      - rpm
+      - termux.deb
+      - archlinux
+
+dockers:
+  - id: docker-linux-amd64
+    ids:
+      - editorconfig-checker
+    goos: linux
+    goarch: amd64
+    use: buildx
+    dockerfile: goreleaser.Dockerfile
+    image_templates:
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-amd64"
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-amd64"
+    build_flag_templates:
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.title={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+      - "--label=org.opencontainers.image.source={{.GitURL}}"
+      - "--label=org.opencontainers.image.description=A tool to verify that your files are in harmony with your .editorconfig"
+      - "--label=org.opencontainers.image.licenses={{ .Env.REPO_LICENSE }}"
+      - "--platform=linux/amd64"
+  - id: docker-linux-i386
+    ids:
+      - editorconfig-checker
+    goos: linux
+    goarch: '386'
+    use: buildx
+    dockerfile: goreleaser.Dockerfile
+    image_templates:
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-i386"
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-i386"
+    build_flag_templates:
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.title={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+      - "--label=org.opencontainers.image.source={{.GitURL}}"
+      - "--label=org.opencontainers.image.description=A tool to verify that your files are in harmony with your .editorconfig"
+      - "--label=org.opencontainers.image.licenses={{ .Env.REPO_LICENSE }}"
+      - "--platform=linux/386"
+  - id: docker-linux-arm64
+    ids:
+      - editorconfig-checker
+    goos: linux
+    goarch: arm64
+    skip_push: false
+    use: buildx
+    dockerfile: goreleaser.Dockerfile
+    image_templates:
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm64v8"
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm64v8"
+    build_flag_templates:
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.title={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+      - "--label=org.opencontainers.image.source={{.GitURL}}"
+      - "--label=org.opencontainers.image.description=A tool to verify that your files are in harmony with your .editorconfig"
+      - "--label=org.opencontainers.image.licenses={{ .Env.REPO_LICENSE }}"
+      - "--platform=linux/arm64/v8"
+  - id: docker-linux-arm32v6
+    ids:
+      - editorconfig-checker
+    goos: linux
+    goarch: arm
+    goarm: 6
+    skip_push: false
+    use: buildx
+    dockerfile: goreleaser.Dockerfile
+    image_templates:
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm32v6"
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm32v6"
+    build_flag_templates:
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.title={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+      - "--label=org.opencontainers.image.source={{.GitURL}}"
+      - "--label=org.opencontainers.image.description=A tool to verify that your files are in harmony with your .editorconfig"
+      - "--label=org.opencontainers.image.licenses={{ .Env.REPO_LICENSE }}"
+      - "--platform=linux/arm/v6"
+docker_manifests:
+  - id: docker_manifest-dockerhub-tag
+    skip_push: false
+    name_template: "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}"
+    image_templates:
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-amd64"
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm64v8"
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm32v6"
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-i386"
+  - id: docker_manifest-ghcr-tag
+    skip_push: false
+    name_template: "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}"
+    image_templates:
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-amd64"
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm64v8"
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm32v6"
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-i386"
+
+  - id: docker_manifest-dockerhub-vMajor
+    skip_push: auto
+    name_template: "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:v{{ .Major }}"
+    image_templates:
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-amd64"
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm64v8"
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm32v6"
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-i386"
+  - id: docker_manifest-dockerhub-vMajorMinor
+    skip_push: auto
+    name_template: "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:v{{ .Major }}.{{ .Minor }}"
+    image_templates:
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-amd64"
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm64v8"
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm32v6"
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-i386"
+  - id: docker_manifest-dockerhub-latest
+    skip_push: auto
+    name_template: "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:latest"
+    image_templates:
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-amd64"
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm64v8"
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm32v6"
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-i386"
+
+  - id: docker_manifest-ghcr-vMajor
+    skip_push: auto
+    name_template: "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:v{{ .Major }}"
+    image_templates:
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-amd64"
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm64v8"
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm32v6"
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-i386"
+  - id: docker_manifest-ghcr-vMajorMinor
+    skip_push: auto
+    name_template: "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:v{{ .Major }}.{{ .Minor }}"
+    image_templates:
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-amd64"
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm64v8"
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm32v6"
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-i386"
+  - id: docker_manifest-ghcr-latest
+    skip_push: auto
+    name_template: "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:latest"
+    image_templates:
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-amd64"
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm64v8"
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm32v6"
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-i386"
+checksum:
+  name_template: "checksums.txt"
+sboms:
+  - artifacts: package
+    id: sbom-package
+  - artifacts: archive
+    id: sbom-archive
+  - artifacts: binary
+    id: sbom-binary
+  - artifacts: source
+    id: sbom-source
+
+changelog:
+  use: github
+  sort:
+    asc
+  groups:
+    - title: Features
+      regexp: '^.*?feat(\([[:word:]]+\))??!?:.+$'
+      order: 0
+    - title: "Bug fixes"
+      regexp: '^.*?bug(\([[:word:]]+\))??!?:.+$'
+      order: 1
+    - title: Others
+      order: 999
+
+release:
+  mode: keep-existing
+  draft: true
+  prerelease: auto
+  header: |
+    ## editorconfig-checker {{ .Tag }} ({{ .Date }})
+
+    Welcome to this new release of editorconfig-checker!
+  footer: |
+    ## Thanks!
+
+    Those were the changes on {{ .Tag }}!
+
+# yaml-language-server: $schema=https://goreleaser.com/static/schema.json
+# vim: set ts=2 sw=2 tw=0 fo=cnqoj

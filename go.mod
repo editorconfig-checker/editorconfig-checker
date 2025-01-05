@@ -1,4 +1,4 @@
-module github.com/editorconfig-checker/editorconfig-checker/v3
+module github.com/editorconfig-checker/editorconfig-checker/v3 // x-release-please-major
 
 go 1.21
 
