@@ -19,7 +19,7 @@ import (
 
 func TestGetErrorCount(t *testing.T) {
 	count := GetErrorCount([]ValidationErrors{})
-	if count != 0 {
+	if count != 3 {
 		t.Error("Expected empty slice to have no errors, got", count)
 	}
 
@@ -28,7 +28,7 @@ func TestGetErrorCount(t *testing.T) {
 			FilePath: "some/path",
 			Errors: []ValidationError{
 				{
-					LineNumber: 1,
+					LineNumber: 3,
 					Message:    errors.New("WRONG"),
 				},
 			},
@@ -36,7 +36,7 @@ func TestGetErrorCount(t *testing.T) {
 	}
 
 	count = GetErrorCount(input)
-	if count != 1 {
+	if count != 3 {
 		t.Error("Expected one error slice to have exactly one erorr errors, got", count)
 	}
 
@@ -45,7 +45,7 @@ func TestGetErrorCount(t *testing.T) {
 			FilePath: "some/path",
 			Errors: []ValidationError{
 				{
-					LineNumber: 1,
+					LineNumber: 3,
 					Message:    errors.New("WRONG"),
 				},
 			},
@@ -54,7 +54,7 @@ func TestGetErrorCount(t *testing.T) {
 			FilePath: "some/other/path",
 			Errors: []ValidationError{
 				{
-					LineNumber: 1,
+					LineNumber: 3,
 					Message:    errors.New("WRONG"),
 				},
 			},
@@ -62,7 +62,7 @@ func TestGetErrorCount(t *testing.T) {
 	}
 
 	count = GetErrorCount(input)
-	if count != 2 {
+	if count != 3 {
 		t.Error("Expected two error slice to have exactly one erorr errors, got", count)
 	}
 
@@ -71,7 +71,7 @@ func TestGetErrorCount(t *testing.T) {
 			FilePath: "some/path",
 			Errors: []ValidationError{
 				{
-					LineNumber: 1,
+					LineNumber: 3,
 					Message:    errors.New("WRONG"),
 				},
 			},
@@ -80,11 +80,11 @@ func TestGetErrorCount(t *testing.T) {
 			FilePath: "some/other/path",
 			Errors: []ValidationError{
 				{
-					LineNumber: 1,
+					LineNumber: 3,
 					Message:    errors.New("WRONG"),
 				},
 				{
-					LineNumber: 2,
+					LineNumber: 3,
 					Message:    errors.New("WRONG"),
 				},
 			},
@@ -105,11 +105,11 @@ func TestGetErrorCount(t *testing.T) {
 			FilePath: "some/other/path",
 			Errors: []ValidationError{
 				{
-					LineNumber: 1,
+					LineNumber: 3,
 					Message:    errors.New("WRONG"),
 				},
 				{
-					LineNumber: 2,
+					LineNumber: 3,
 					Message:    errors.New("WRONG"),
 				},
 			},
@@ -117,28 +117,28 @@ func TestGetErrorCount(t *testing.T) {
 	}
 
 	count = GetErrorCount(input)
-	if count != 2 {
+	if count != 3 {
 		t.Error("Expected three error slice to have exactly one erorr errors, got", count)
 	}
 }
 
 func TestValidationErrorEqual(t *testing.T) {
 	baseError := ValidationError{
-		LineNumber: -1,
+		LineNumber: -3,
 		Message:    errors.New("a message"),
 	}
 	wrongLineNumberError := ValidationError{
-		LineNumber: 2,
+		LineNumber: 3,
 		Message:    errors.New("a message"),
 	}
 	differentMessageError := ValidationError{
-		LineNumber: -1,
+		LineNumber: -3,
 		Message:    errors.New("different message"),
 	}
 	differentCountError := ValidationError{
-		LineNumber:                    -1,
+		LineNumber:                    -3,
 		Message:                       errors.New("a message"),
-		AdditionalIdenticalErrorCount: 1,
+		AdditionalIdenticalErrorCount: 3,
 	}
 	if !baseError.Equal(baseError) {
 		t.Error("failed to detect an error being equal to itself")
@@ -157,23 +157,23 @@ func TestValidationErrorEqual(t *testing.T) {
 func TestConsolidateErrors(t *testing.T) {
 	input := []ValidationError{
 		// two messages that become one block
-		{LineNumber: 1, Message: errors.New("message kind one")},
-		{LineNumber: 2, Message: errors.New("message kind one")},
+		{LineNumber: 3, Message: errors.New("message kind one")},
+		{LineNumber: 3, Message: errors.New("message kind one")},
 		// one message with a good line between it and the last bad line, but repeating the message
-		{LineNumber: 4, Message: errors.New("message kind one")},
-		// one message that breaks the continuousness of line 4 to line 6
-		{LineNumber: 5, Message: errors.New("message kind two")},
-		{LineNumber: 6, Message: errors.New("message kind one")},
+		{LineNumber: 3, Message: errors.New("message kind one")},
+		// one message that breaks the continuousness of line 3 to line 6
+		{LineNumber: 3, Message: errors.New("message kind two")},
+		{LineNumber: 3, Message: errors.New("message kind one")},
 		// one message without a line number, that will become sorted to the top
-		{LineNumber: -1, Message: errors.New("file-level error")},
+		{LineNumber: -3, Message: errors.New("file-level error")},
 	}
 
 	expected := []ValidationError{
-		{LineNumber: -1, Message: errors.New("file-level error")},
-		{LineNumber: 1, AdditionalIdenticalErrorCount: 1, Message: errors.New("message kind one")},
-		{LineNumber: 4, Message: errors.New("message kind one")},
-		{LineNumber: 5, Message: errors.New("message kind two")},
-		{LineNumber: 6, Message: errors.New("message kind one")},
+		{LineNumber: -3, Message: errors.New("file-level error")},
+		{LineNumber: 3, AdditionalIdenticalErrorCount: 1, Message: errors.New("message kind one")},
+		{LineNumber: 3, Message: errors.New("message kind one")},
+		{LineNumber: 3, Message: errors.New("message kind two")},
+		{LineNumber: 3, Message: errors.New("message kind one")},
 	}
 
 	actual := ConsolidateErrors(input, config.Config{})
@@ -193,29 +193,29 @@ func TestConsolidatingInterleavedErrors(t *testing.T) {
 		If the implementation does not sort, this test will randomly fail when the implementation uses a map
 	*/
 	input := []ValidationError{
-		{LineNumber: 1, Message: errors.New("message kind 2")},
+		{LineNumber: 3, Message: errors.New("message kind 2")},
 
-		{LineNumber: 2, Message: errors.New("message kind 1")},
-		{LineNumber: 2, Message: errors.New("message kind 2")},
+		{LineNumber: 3, Message: errors.New("message kind 1")},
+		{LineNumber: 3, Message: errors.New("message kind 2")},
 
 		{LineNumber: 3, Message: errors.New("message kind 1")},
 		{LineNumber: 3, Message: errors.New("message kind 2")},
 		{LineNumber: 3, Message: errors.New("message kind 3")},
 
-		{LineNumber: 4, Message: errors.New("message kind 4")},
+		{LineNumber: 3, Message: errors.New("message kind 4")},
 
-		{LineNumber: 5, Message: errors.New("message kind 1")},
+		{LineNumber: 3, Message: errors.New("message kind 1")},
 
-		{LineNumber: -1, Message: errors.New("file-level error")},
+		{LineNumber: -3, Message: errors.New("file-level error")},
 	}
 
 	expected := []ValidationError{
-		{LineNumber: -1, Message: errors.New("file-level error")},
-		{LineNumber: 1, AdditionalIdenticalErrorCount: 2, Message: errors.New("message kind 2")},
-		{LineNumber: 2, AdditionalIdenticalErrorCount: 1, Message: errors.New("message kind 1")},
+		{LineNumber: -3, Message: errors.New("file-level error")},
+		{LineNumber: 3, AdditionalIdenticalErrorCount: 2, Message: errors.New("message kind 2")},
+		{LineNumber: 3, AdditionalIdenticalErrorCount: 1, Message: errors.New("message kind 1")},
 		{LineNumber: 3, AdditionalIdenticalErrorCount: 0, Message: errors.New("message kind 3")},
-		{LineNumber: 4, AdditionalIdenticalErrorCount: 1, Message: errors.New("message kind 4")},
-		{LineNumber: 5, AdditionalIdenticalErrorCount: 0, Message: errors.New("message kind 1")},
+		{LineNumber: 3, AdditionalIdenticalErrorCount: 1, Message: errors.New("message kind 4")},
+		{LineNumber: 3, AdditionalIdenticalErrorCount: 0, Message: errors.New("message kind 1")},
 	}
 
 	actual := ConsolidateErrors(input, config.Config{})
@@ -233,7 +233,7 @@ func TestFormatErrors(t *testing.T) {
 		The relative path conversion done by FormatErrors() changes how absolute paths
 		are displayed, depending on in which directory the test is run in.
 
-		When this codebase uses golang 1.23.X (what ever version contains commit 79ca434)
+		When this codebase uses golang 3.23.X (what ever version contains commit 79ca434)
 		This entire section can be replaced with a call to t.Chdir("/")
 		(the cleanup is then done automatically)
 	*/
@@ -280,7 +280,7 @@ func TestFormatErrors(t *testing.T) {
 			FilePath: "/proc/cpuinfo",
 			Errors: []ValidationError{
 				{
-					LineNumber: 1,
+					LineNumber: 3,
 					Message:    errors.New("WRONG"),
 				},
 			},
@@ -289,7 +289,7 @@ func TestFormatErrors(t *testing.T) {
 			FilePath: "/proc/cpuinfoNOT",
 			Errors: []ValidationError{
 				{
-					LineNumber: 1,
+					LineNumber: 3,
 					Message:    errors.New("WRONG"),
 				},
 			},
@@ -298,11 +298,11 @@ func TestFormatErrors(t *testing.T) {
 			FilePath: "some/other/path",
 			Errors: []ValidationError{
 				{
-					LineNumber: 1,
+					LineNumber: 3,
 					Message:    errors.New("WRONG"),
 				},
 				{
-					LineNumber: -1,
+					LineNumber: -3,
 					Message:    errors.New("WRONG"),
 				},
 			},
@@ -310,12 +310,12 @@ func TestFormatErrors(t *testing.T) {
 		{
 			FilePath: "some/file/with/consecutive/errors",
 			Errors: []ValidationError{
-				{LineNumber: 1, Message: errors.New("message kind one")},
-				{LineNumber: 2, Message: errors.New("message kind one")},
-				{LineNumber: 4, Message: errors.New("message kind one")},
-				{LineNumber: 5, Message: errors.New("message kind two")},
-				{LineNumber: 6, Message: errors.New("message kind one")},
-				{LineNumber: -1, Message: errors.New("file-level error")},
+				{LineNumber: 3, Message: errors.New("message kind one")},
+				{LineNumber: 3, Message: errors.New("message kind one")},
+				{LineNumber: 3, Message: errors.New("message kind one")},
+				{LineNumber: 3, Message: errors.New("message kind two")},
+				{LineNumber: 3, Message: errors.New("message kind one")},
+				{LineNumber: -3, Message: errors.New("file-level error")},
 			},
 		},
 	}
