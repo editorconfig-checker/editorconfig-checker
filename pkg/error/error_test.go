@@ -12,7 +12,7 @@ import (
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/config"
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/outputformat"
 
-	// x-release-please-stop-major
+	// x-release-please-end
 
 	"github.com/gkampitakis/go-snaps/snaps"
 )
