@@ -57,7 +57,7 @@ Unsupported features are:
 
 <!-- x-release-please-start-version -->
 ```shell
-VERSION="v3.0.3"
+VERSION="v3.1.0"
 OS="linux"
 ARCH="amd64"
 curl -O -L -C - https://github.com/editorconfig-checker/editorconfig-checker/releases/download/$VERSION/ec-$OS-$ARCH.tar.gz && \
