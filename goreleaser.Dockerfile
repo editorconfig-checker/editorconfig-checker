@@ -10,4 +10,4 @@ COPY editorconfig-checker /usr/bin/
 # (found at https://github.com/super-linter/super-linter/blob/7b76efbd69ef471b83d5273d4b5d8b3cbd8e5e3f/Dockerfile#L335C34-L335C45)
 RUN ln /usr/bin/editorconfig-checker /usr/bin/ec
 
-CMD ["/editorconfig-checker"]
+CMD ["/usr/bin/editorconfig-checker"]
