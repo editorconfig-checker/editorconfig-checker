@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.1.1](https://github.com/editorconfig-checker/editorconfig-checker/compare/v3.1.0...v3.1.1) (2025-01-08)
+
+
+### Bug Fixes
+
+* dockerfile expected binary at /, not /usr/bin/ [#410](https://github.com/editorconfig-checker/editorconfig-checker/issues/410) ([#411](https://github.com/editorconfig-checker/editorconfig-checker/issues/411)) ([2c82197](https://github.com/editorconfig-checker/editorconfig-checker/commit/2c821979c0b3ea291f65ec813cae3fa265603528))
+
 ## [3.1.0](https://github.com/editorconfig-checker/editorconfig-checker/compare/v3.0.3...v3.1.0) (2025-01-06)
 
 
