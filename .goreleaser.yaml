@@ -3,8 +3,8 @@ version: 2
 project_name: editorconfig-checker
 env:
   - REPO_LICENSE=MIT
-  - DOCKERHUB_USERNAME={{ if index .Env "DOCKERHUB_USERNAME"  }}{{ .Env.DOCKERHUB_USERNAME }}{{ else }}echoix{{ end }}
-  - GHCR_USERNAME={{ if index .Env "GHCR_USERNAME"  }}{{ .Env.GHCR_USERNAME }}{{ else }}echoix{{ end }}
+  - DOCKERHUB_USERNAME={{ if index .Env "DOCKERHUB_USERNAME"  }}{{ .Env.DOCKERHUB_USERNAME }}{{ else }}mstruebing{{ end }}
+  - GHCR_USERNAME={{ if index .Env "GHCR_USERNAME"  }}{{ .Env.GHCR_USERNAME }}{{ else }}editorconfig-checker{{ end }}
 before:
   hooks:
     - echo {{.Version}} > VERSION
