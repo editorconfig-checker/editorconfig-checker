@@ -21,7 +21,7 @@ import (
 
 // version is used for the help and to verify against the version stored in the config file
 // version is dynamically set at compiletime
-var version string = "v3.1.1" // x-release-please-version
+var version string = "v3.1.2" // x-release-please-version
 
 // defaultConfigFileNames determines the file names where the config is located
 var defaultConfigFileNames = []string{".editorconfig-checker.json", ".ecrc"}

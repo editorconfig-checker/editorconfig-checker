@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.1.2](https://github.com/editorconfig-checker/editorconfig-checker/compare/v3.1.1...v3.1.2) (2025-01-10)
+
+
+### Bug Fixes
+
+* provide both .tar.gz as well as .zip archives ([#416](https://github.com/editorconfig-checker/editorconfig-checker/issues/416)) ([00e9890](https://github.com/editorconfig-checker/editorconfig-checker/commit/00e9890847982b2503ec3a11ff539bf2ac4c34c6)), closes [#415](https://github.com/editorconfig-checker/editorconfig-checker/issues/415)
+
 ## [3.1.1](https://github.com/editorconfig-checker/editorconfig-checker/compare/v3.1.0...v3.1.1) (2025-01-08)
 
 
