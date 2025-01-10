@@ -3,8 +3,8 @@ version: 2
 project_name: editorconfig-checker
 env:
   - REPO_LICENSE=MIT
-  - DOCKERHUB_USERNAME={{ if index .Env "DOCKERHUB_USERNAME"  }}{{ .Env.DOCKERHUB_USERNAME }}{{ else }}echoix{{ end }}
-  - GHCR_USERNAME={{ if index .Env "GHCR_USERNAME"  }}{{ .Env.GHCR_USERNAME }}{{ else }}echoix{{ end }}
+  - DOCKERHUB_USERNAME={{ if index .Env "DOCKERHUB_USERNAME"  }}{{ .Env.DOCKERHUB_USERNAME }}{{ else }}mstruebing{{ end }}
+  - GHCR_USERNAME={{ if index .Env "GHCR_USERNAME"  }}{{ .Env.GHCR_USERNAME }}{{ else }}editorconfig-checker{{ end }}
 before:
   hooks:
     - echo {{.Version}} > VERSION
@@ -58,30 +58,33 @@ builds:
       - -X main.commit={{.Commit}} -X main.date={{.CommitDate}}
       - -X main.builtBy=goreleaser
 
-
 universal_binaries:
   - replace: true
+
 archives:
   - id: archive-editorconfig-checker
     builds:
       - editorconfig-checker
-
     format: tar.gz
     name_template: >-
       {{ .ProjectName }}-{{- .Os }}-{{ .Arch }}{{- if .Arm }}v{{ .Arm }}{{ end }}
     format_overrides:
       - goos: windows
         format: zip
+
   - id: archive-ec
     builds:
       - ec-compat
-
     format: tar.gz
     name_template: >-
       ec-{{- .Os }}-{{ .Arch }}{{- if .Arm }}v{{ .Arm }}{{ end }}
-    format_overrides:
-      - goos: windows
-        format: zip
+
+  - id: archive-ec-zip
+    builds:
+      - ec-compat
+    format: zip
+    name_template: >-
+      ec-{{- .Os }}-{{ .Arch }}{{- if .Arm }}v{{ .Arm }}{{ end }}
 
 nfpms:
   - vendor: Editorconfig-Checker
