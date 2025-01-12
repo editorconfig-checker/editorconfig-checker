@@ -107,7 +107,7 @@ dockers:
     goos: linux
     goarch: amd64
     use: buildx
-    dockerfile: goreleaser.Dockerfile
+    dockerfile: Dockerfile
     image_templates:
       - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-amd64"
       - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-amd64"
@@ -126,7 +126,7 @@ dockers:
     goos: linux
     goarch: '386'
     use: buildx
-    dockerfile: goreleaser.Dockerfile
+    dockerfile: Dockerfile
     image_templates:
       - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-i386"
       - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-i386"
@@ -146,7 +146,7 @@ dockers:
     goarch: arm64
     skip_push: false
     use: buildx
-    dockerfile: goreleaser.Dockerfile
+    dockerfile: Dockerfile
     image_templates:
       - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm64v8"
       - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm64v8"
@@ -167,7 +167,7 @@ dockers:
     goarm: 6
     skip_push: false
     use: buildx
-    dockerfile: goreleaser.Dockerfile
+    dockerfile: Dockerfile
     image_templates:
       - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm32v6"
       - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm32v6"
