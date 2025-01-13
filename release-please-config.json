@@ -6,6 +6,7 @@
             "extra-files": [
                 "README.md",
                 "go.mod",
+                "default.nix",
                 "cmd/editorconfig-checker/main.go",
                 "pkg/config/config.go",
                 "pkg/config/config_test.go",
