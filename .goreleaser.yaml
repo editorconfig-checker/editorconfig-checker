@@ -7,7 +7,6 @@ env:
   - GHCR_USERNAME={{ if index .Env "GHCR_USERNAME"  }}{{ .Env.GHCR_USERNAME }}{{ else }}editorconfig-checker{{ end }}
 before:
   hooks:
-    - echo {{.Version}} > VERSION
     - go mod tidy
     - go generate ./...
 builds:

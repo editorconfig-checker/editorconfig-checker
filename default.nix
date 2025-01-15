@@ -2,17 +2,7 @@
 with pkgs;
 
 buildGoPackage rec {
-  # load version from file
-  versionPath = toString ./VERSION;
-  versionData = builtins.readFile versionPath;
-  versionLen = lib.stringLength versionData;
-  # trim trailing newline
-  version = lib.substring 0 (versionLen - 1) versionData;
-
-  # set the version dynamically at build time
-  buildFlagsArray = ''
-    -ldflags=-X main.version=${version}
-  '';
+  version = "v3.1.2" # x-release-please-version
 
   # create link so the tool can also be executed as `ec`
   postInstall = ''
