@@ -64,26 +64,28 @@ archives:
   - id: archive-editorconfig-checker
     builds:
       - editorconfig-checker
-    format: tar.gz
+    formats:
+      - tar.gz
     name_template: >-
       {{ .ProjectName }}-{{- .Os }}-{{ .Arch }}{{- if .Arm }}v{{ .Arm }}{{ end }}
     format_overrides:
       - goos: windows
-        format: zip
+        formats:
+          - tar.gz
+          - zip
 
   - id: archive-ec
     builds:
       - ec-compat
-    format: tar.gz
+    formats:
+      - tar.gz
     name_template: >-
       ec-{{- .Os }}-{{ .Arch }}{{- if .Arm }}v{{ .Arm }}{{ end }}
-
-  - id: archive-ec-zip
-    builds:
-      - ec-compat
-    format: zip
-    name_template: >-
-      ec-{{- .Os }}-{{ .Arch }}{{- if .Arm }}v{{ .Arm }}{{ end }}
+    format_overrides:
+      - goos: windows
+        formats:
+          - tar.gz
+          - zip
 
 nfpms:
   - vendor: Editorconfig-Checker
