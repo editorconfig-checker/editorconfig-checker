@@ -1,0 +1,22 @@
+
+[TestPrintErrorCount/nonverbose-ten - 1]
+[31;1m
+10 errors found[33;0m
+
+---
+
+[TestPrintErrorCount/nonverbose-zero - 1]
+
+---
+
+[TestPrintErrorCount/verbose-ten - 1]
+[31;1m
+10 errors found[33;0m
+
+---
+
+[TestPrintErrorCount/verbose-zero - 1]
+
+0 errors found
+
+---

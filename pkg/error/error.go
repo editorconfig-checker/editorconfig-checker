@@ -87,6 +87,14 @@ func ConsolidateErrors(errors []ValidationError, config config.Config) []Validat
 	return append(lineLessErrors, consolidatedErrors...)
 }
 
+func PrintErrorCount(errorCount int, config config.Config) {
+	if errorCount == 0 {
+		config.Logger.Verbose("\n%d errors found", errorCount)
+		return
+	}
+	config.Logger.Error("\n%d errors found", errorCount)
+}
+
 func PrintErrorsAsHumanReadable(errors []ValidationErrors, config config.Config) {
 	errorCount := 0
 	for _, fileErrors := range errors {
@@ -119,7 +127,7 @@ func PrintErrorsAsHumanReadable(errors []ValidationErrors, config config.Config)
 			config.Logger.Error("\t%d-%d: %s", singleError.LineNumber, singleError.LineNumber+singleError.AdditionalIdenticalErrorCount, singleError.Message)
 		}
 	}
-	config.Logger.Error("\n%d errors found", errorCount)
+	PrintErrorCount(errorCount, config)
 }
 
 func PrintErrorsAsGHA(errors []ValidationErrors, config config.Config) {
@@ -154,7 +162,7 @@ func PrintErrorsAsGHA(errors []ValidationErrors, config config.Config) {
 			config.Logger.Error("::error file=%s,line=%d,endLine=%d::%s", relativeFilePath, singleError.LineNumber, singleError.LineNumber+singleError.AdditionalIdenticalErrorCount, singleError.Message)
 		}
 	}
-	config.Logger.Error("\n%d errors found", errorCount)
+	PrintErrorCount(errorCount, config)
 }
 
 // gcc: A format mimicking the error format from GCC.
@@ -181,7 +189,7 @@ func PrintErrorsAsGCC(errors []ValidationErrors, config config.Config) {
 			config.Logger.Error("%s:%d:%d: %s: %s", relativeFilePath, lineNo, 0, "error", singleError.Message)
 		}
 	}
-	config.Logger.Error("\n%d errors found", errorCount)
+	PrintErrorCount(errorCount, config)
 }
 
 // codeclimate: A format that is compatible with the codeclimate format for GitLab CI.

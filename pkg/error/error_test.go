@@ -331,6 +331,30 @@ func TestFormatErrors(t *testing.T) {
 	}
 }
 
+func TestPrintErrorCount(t *testing.T) {
+	tests := []struct {
+		name       string
+		verbose    bool
+		errorcount int
+	}{
+		{"nonverbose-zero", false, 0},
+		{"verbose-zero", true, 0},
+		{"nonverbose-ten", false, 10},
+		{"verbose-ten", true, 10},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			buffer := bytes.Buffer{}
+			var config config.Config
+			config.Logger.VerboseEnabled = test.verbose
+			config.Logger.SetWriter(&buffer)
+			PrintErrorCount(test.errorcount, config)
+			snaps.MatchSnapshot(t, buffer.String())
+		})
+	}
+}
+
 func TestMain(m *testing.M) {
 	v := m.Run()
 
