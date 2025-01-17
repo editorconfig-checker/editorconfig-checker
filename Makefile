@@ -11,7 +11,6 @@ endif
 EXE=bin/ec$(EXEEXT)
 SRC_DIR := $(shell dirname "$(realpath "$(firstword $(MAKEFILE_LIST))")")
 SOURCES = $(shell find "$(SRC_DIR)" -type f -name "*.go")
-CURRENT_VERSION = $(shell cat VERSION | tr -d "\n")
 
 prefix = /usr/local
 bindir = /bin
@@ -26,7 +25,7 @@ define _build
 go build -o $1 ./cmd/editorconfig-checker/main.go
 endef
 
-$(EXE): $(SOURCES) VERSION
+$(EXE): $(SOURCES)
 	$(call _build,$(EXE))
 
 build: $(EXE) ## Build bin/ec
@@ -40,7 +39,7 @@ uninstall: ## Remove executable from PATH
 	rm -f $(DESTDIR)$(prefix)$(mandir)/man1/editorconfig-checker.1
 
 test: ## Run test suite
-	@go test -ldflags "-X github.com/editorconfig-checker/editorconfig-checker/v3/cmd/editorconfig-checker.version=$(CURRENT_VERSION)" -race -coverprofile=coverage.txt -covermode=atomic ./...
+	@go test -ldflags -race -coverprofile=coverage.txt -covermode=atomic ./...
 	@go vet ./...
 	@test -z $(shell gofmt -s -l . | tee $(STDERR)) || (echo "[ERROR] Fix formatting issues with 'gofmt'" && exit 1)
 
@@ -68,7 +67,6 @@ help: ## Display available commands
 
 PHONY += dumpvars
 dumpvars: ## Dump variables
-	@echo CURRENT_VERSION=$(CURRENT_VERSION)
 	@echo EXE=$(EXE)
 	@echo EXEEXT=$(EXEEXT)
 	@echo STDERR=$(STDERR)
