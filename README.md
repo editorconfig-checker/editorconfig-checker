@@ -287,6 +287,7 @@ If you choose to [ignore them](#ignoring-default-excludes), these paths are excl
 
 ```txt
 "\\.git[\\/]",
+"[\\/]node_modules[\\/]",
 "^\\.yarn/",
 "^yarn\\.lock$",
 "^package-lock\\.json$",

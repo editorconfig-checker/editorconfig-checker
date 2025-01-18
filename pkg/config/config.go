@@ -22,6 +22,7 @@ var DefaultExcludes = strings.Join(defaultExcludes, "|")
 // defaultExcludes are an array to produce the correct string from
 var defaultExcludes = []string{
 	"\\.git[\\/]",
+	"[\\/]node_modules[\\/]",
 	"^\\.yarn/",
 	"^yarn\\.lock$",
 	"^package-lock\\.json$",
