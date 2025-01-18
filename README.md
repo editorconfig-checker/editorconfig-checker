@@ -286,6 +286,7 @@ add x y =
 If you choose to [ignore them](#ignoring-default-excludes), these paths are excluded automatically:
 
 ```txt
+"\\.git[\\/]",
 "^\\.yarn/",
 "^yarn\\.lock$",
 "^package-lock\\.json$",
