@@ -292,6 +292,7 @@ If you choose to [ignore them](#ignoring-default-excludes), these paths are excl
 "^package-lock\\.json$",
 "^composer\\.lock$",
 "^Cargo\\.lock$",
+"^Gemfile\\.lock$",
 "^\\.pnp\\.cjs$",
 "^\\.pnp\\.js$",
 "^\\.pnp\\.loader\\.mjs$",
@@ -306,11 +307,11 @@ If you choose to [ignore them](#ignoring-default-excludes), these paths are excl
 "\\.jpg$",
 "\\.jpeg$",
 "\\.webp$",
-"\\.avif",
-"\\.pnm",
-"\\.pbm",
-"\\.pgm",
-"\\.ppm",
+"\\.avif$",
+"\\.pnm$",
+"\\.pbm$",
+"\\.pgm$",
+"\\.ppm$",
 "\\.mp4$",
 "\\.wmv$",
 "\\.svg$",
@@ -328,7 +329,7 @@ If you choose to [ignore them](#ignoring-default-excludes), these paths are excl
 "\\.css\\.map$",
 "\\.js\\.map$",
 "min\\.css$",
-"min\\.js$"
+"min\\.js$",
 ```
 
 #### Ignoring Default Excludes
