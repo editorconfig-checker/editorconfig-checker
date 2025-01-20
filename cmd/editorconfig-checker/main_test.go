@@ -6,6 +6,8 @@ import (
 	"runtime"
 	"strings"
 	"testing"
+
+	"github.com/gkampitakis/go-snaps/snaps"
 )
 
 var mainHasRun chan int
@@ -130,6 +132,65 @@ func TestMainDryRun(t *testing.T) {
 	if lastSeenCode != exitCodeNormal {
 		t.Errorf("main exited with return code %d, but we expected %d", lastSeenCode, exitCodeNormal)
 		t.Logf("Output:\n%s", output)
+	}
+}
+
+// helper to set a map of environment variables and return a function to use in t.Cleanup to reset once the test completed
+// thanks to https://dev.to/arxeiss/auto-reset-environment-variables-when-testing-in-go-5ec
+func envSetter(envs map[string]string) (closer func()) {
+	originalEnvs := map[string]string{}
+
+	for name, value := range envs {
+		if originalValue, ok := os.LookupEnv(name); ok {
+			originalEnvs[name] = originalValue
+		}
+		_ = os.Setenv(name, value)
+	}
+
+	return func() {
+		for name := range envs {
+			origValue, has := originalEnvs[name]
+			if has {
+				_ = os.Setenv(name, origValue)
+			} else {
+				_ = os.Unsetenv(name)
+			}
+		}
+	}
+}
+
+func TestMainColorSupport(t *testing.T) {
+	type env map[string]string
+	type args []string
+
+	tests := []struct {
+		name string
+		env  env
+		args args
+	}{
+		{"no-envvar-no-arg", env{}, args{}},
+		{"envvar-no-arg", env{"NO_COLOR": "1"}, args{}},
+		{"no-envvar-color-off", env{}, args{"--no-color"}},
+		{"no-envvar-color-on", env{}, args{"--color"}},
+		{"envvar-color-off", env{"NO_COLOR": "1"}, args{"--no-color"}},
+		{"envvar-color-on", env{"NO_COLOR": "1"}, args{"--color"}},
+		{"no-envvar-color-offon", env{}, args{"--no-color", "--color"}},
+		{"no-envvar-color-onoffon", env{}, args{"--color", "--no-color", "--color"}},
+	}
+
+	// we use the error message of a missing config file to test the coloredness of the output
+	defaultArgs := []string{
+		`--exclude=""`, "--ignore-defaults",
+		"testdata/trailing-whitespace.txt",
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Cleanup(envSetter(test.env)) // set environment (which automatically resets)
+			args := append(test.args, defaultArgs...)
+			output, _ := runWithArguments(t, args...)
+			snaps.MatchSnapshot(t, output)
+		})
 	}
 }
 
