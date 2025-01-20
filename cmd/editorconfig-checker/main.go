@@ -47,11 +47,11 @@ var cmdlineExclude string
 var cmdlineConfig config.Config
 var writeConfigFile bool
 
-func enableNoColor(s string) error {
+func enableNoColor(string) error {
 	cmdlineConfig.NoColor = true
 	return nil
 }
-func disableNoColor(s string) error {
+func disableNoColor(string) error {
 	cmdlineConfig.NoColor = false
 	return nil
 }
