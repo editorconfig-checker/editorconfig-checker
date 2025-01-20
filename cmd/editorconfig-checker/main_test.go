@@ -176,6 +176,9 @@ func TestMainColorSupport(t *testing.T) {
 		{"envvar-color-on", env{"NO_COLOR": "1"}, args{"--color"}},
 		{"no-envvar-color-offon", env{}, args{"--no-color", "--color"}},
 		{"no-envvar-color-onoffon", env{}, args{"--color", "--no-color", "--color"}},
+		{"envvar-true", env{"NO_COLOR": "true"}, args{}},
+		{"envvar-false", env{"NO_COLOR": "false"}, args{}},
+		{"envvar-zero", env{"NO_COLOR": "0"}, args{}},
 	}
 
 	// we use the error message of a missing config file to test the coloredness of the output
