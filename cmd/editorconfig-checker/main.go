@@ -11,7 +11,7 @@ import (
 
 	// x-release-please-start-major
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/config"
-	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/error"
+	eccerror "github.com/editorconfig-checker/editorconfig-checker/v3/pkg/error"
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/files"
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/outputformat"
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/utils"
@@ -166,11 +166,11 @@ func main() {
 
 	errors := validation.ProcessValidation(filePaths, config)
 
-	error.PrintErrors(errors, config)
+	eccerror.PrintErrors(errors, config)
 
 	config.Logger.Verbose("%d files checked", len(filePaths))
 
-	if error.GetErrorCount(errors) != 0 {
+	if eccerror.GetErrorCount(errors) != 0 {
 		exitProxy(exitCodeErrorOccurred)
 	}
 
