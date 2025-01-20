@@ -47,6 +47,15 @@ var cmdlineExclude string
 var cmdlineConfig config.Config
 var writeConfigFile bool
 
+func enableNoColor(s string) error {
+	cmdlineConfig.NoColor = true
+	return nil
+}
+func disableNoColor(s string) error {
+	cmdlineConfig.NoColor = false
+	return nil
+}
+
 func init() {
 	flag.BoolVar(&writeConfigFile, "init", false, "creates an initial configuration")
 	flag.StringVar(&configFilePath, "config", "", "config")
@@ -61,7 +70,8 @@ func init() {
 	flag.BoolVar(&cmdlineConfig.Verbose, "verbose", false, "print debugging information")
 	flag.BoolVar(&cmdlineConfig.Verbose, "v", false, "print debugging information")
 	flag.BoolVar(&cmdlineConfig.Debug, "debug", false, "print debugging information")
-	flag.BoolVar(&cmdlineConfig.NoColor, "no-color", false, "dont print colors")
+	flag.BoolFunc("no-color", "disables printing color", enableNoColor)
+	flag.BoolFunc("color", "enables printing color", disableNoColor)
 	flag.BoolVar(&cmdlineConfig.Disable.TrimTrailingWhitespace, "disable-trim-trailing-whitespace", false, "disables the trailing whitespace check")
 	flag.BoolVar(&cmdlineConfig.Disable.EndOfLine, "disable-end-of-line", false, "disables the trailing whitespace check")
 	flag.BoolVar(&cmdlineConfig.Disable.InsertFinalNewline, "disable-insert-final-newline", false, "disables the final newline check")
@@ -77,6 +87,11 @@ func parseArguments() {
 	cmdlineExclude = ""
 	cmdlineConfig = config.Config{}
 	writeConfigFile = false
+
+	// check the NO_COLOR environment variable before parsing the arguments, so the arguments can override
+	if os.Getenv("NO_COLOR") != "" {
+		enableNoColor("")
+	}
 
 	flag.Parse()
 
