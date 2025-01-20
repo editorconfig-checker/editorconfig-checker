@@ -89,7 +89,7 @@ func parseArguments() {
 	writeConfigFile = false
 
 	// check the NO_COLOR environment variable before parsing the arguments, so the arguments can override
-	if os.Getenv("NO_COLOR") != "" {
+	if nocolor := os.Getenv("NO_COLOR"); nocolor != "" && nocolor != "0" {
 		enableNoColor("")
 	}
 
