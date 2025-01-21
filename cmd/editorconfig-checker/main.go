@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io/fs"
 	"os"
+	"strconv"
 	"strings"
 
 	// x-release-please-start-major
@@ -89,8 +90,14 @@ func parseArguments() {
 	writeConfigFile = false
 
 	// check the NO_COLOR environment variable before parsing the arguments, so the arguments can override
-	if nocolor := os.Getenv("NO_COLOR"); nocolor != "" && nocolor != "0" && !strings.EqualFold(nocolor, "false") {
-		enableNoColor("")
+	if nocolor := os.Getenv("NO_COLOR"); nocolor != "" {
+		if nocolorParsedAsBool, err := strconv.ParseBool(nocolor); err == nil {
+			if nocolorParsedAsBool {
+				enableNoColor("")
+			}
+		} else {
+			enableNoColor("")
+		}
 	}
 
 	flag.Parse()
