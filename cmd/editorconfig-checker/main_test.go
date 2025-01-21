@@ -172,10 +172,13 @@ func TestMainColorSupport(t *testing.T) {
 		{"envvar-no-arg", env{"NO_COLOR": "1"}, args{}},
 		{"no-envvar-color-off", env{}, args{"--no-color"}},
 		{"no-envvar-color-on", env{}, args{"--color"}},
+		// test that arguments win over env var
 		{"envvar-color-off", env{"NO_COLOR": "1"}, args{"--no-color"}},
 		{"envvar-color-on", env{"NO_COLOR": "1"}, args{"--color"}},
+		// test that the last argument wins
 		{"no-envvar-color-offon", env{}, args{"--no-color", "--color"}},
 		{"no-envvar-color-onoffon", env{}, args{"--color", "--no-color", "--color"}},
+		// test that boolean values in the env var work correctly
 		{"envvar-true", env{"NO_COLOR": "true"}, args{}},
 		{"envvar-false", env{"NO_COLOR": "false"}, args{}},
 		{"envvar-zero", env{"NO_COLOR": "0"}, args{}},
