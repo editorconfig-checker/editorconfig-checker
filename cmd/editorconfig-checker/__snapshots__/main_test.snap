@@ -102,3 +102,11 @@ testdata/trailing-whitespace.txt:
 1 errors found
 
 ---
+
+[TestMainColorSupport/envvar-stringval - 1]
+testdata/trailing-whitespace.txt:
+    1: Trailing whitespace
+
+1 errors found
+
+---

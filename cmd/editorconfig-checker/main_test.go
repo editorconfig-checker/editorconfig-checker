@@ -161,6 +161,7 @@ func TestMainColorSupport(t *testing.T) {
 		// test that pure string values are correctly handled as setting NoColor
 		{"envvar-yes", env{"NO_COLOR": "yes"}, args{}},
 		{"envvar-no", env{"NO_COLOR": "no"}, args{}},
+		{"envvar-stringval", env{"NO_COLOR": "some test value that nobody would set"}, args{}},
 	}
 
 	// we use the error message of a missing config file to test the coloredness of the output
