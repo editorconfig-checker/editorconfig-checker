@@ -135,30 +135,6 @@ func TestMainDryRun(t *testing.T) {
 	}
 }
 
-// helper to set a map of environment variables and return a function to use in t.Cleanup to reset once the test completed
-// thanks to https://dev.to/arxeiss/auto-reset-environment-variables-when-testing-in-go-5ec
-func envSetter(envs map[string]string) (closer func()) {
-	originalEnvs := map[string]string{}
-
-	for name, value := range envs {
-		if originalValue, ok := os.LookupEnv(name); ok {
-			originalEnvs[name] = originalValue
-		}
-		_ = os.Setenv(name, value)
-	}
-
-	return func() {
-		for name := range envs {
-			origValue, has := originalEnvs[name]
-			if has {
-				_ = os.Setenv(name, origValue)
-			} else {
-				_ = os.Unsetenv(name)
-			}
-		}
-	}
-}
-
 func TestMainColorSupport(t *testing.T) {
 	type env map[string]string
 	type args []string
@@ -195,7 +171,9 @@ func TestMainColorSupport(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			t.Cleanup(envSetter(test.env)) // set environment (which automatically resets)
+			for name, value := range test.env {
+				t.Setenv(name, value)
+			}
 			args := append(test.args, defaultArgs...)
 			output, _ := runWithArguments(t, args...)
 			snaps.MatchSnapshot(t, output)
