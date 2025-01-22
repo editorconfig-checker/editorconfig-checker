@@ -91,11 +91,13 @@ func parseArguments() {
 
 	// check the NO_COLOR environment variable before parsing the arguments, so the arguments can override
 	if nocolor := os.Getenv("NO_COLOR"); nocolor != "" {
-		if nocolorParsedAsBool, err := strconv.ParseBool(nocolor); err == nil {
-			if nocolorParsedAsBool {
-				enableNoColor("")
-			}
-		} else {
+		nocolorParsedAsBool, err := strconv.ParseBool(nocolor)
+		if err != nil {
+			// value did not parse as a boolean,
+			// so the user intended to enable NoColor by setting an arbitrary value
+			nocolorParsedAsBool = true
+		}
+		if nocolorParsedAsBool {
 			enableNoColor("")
 		}
 	}
