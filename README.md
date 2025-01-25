@@ -127,7 +127,9 @@ USAGE:
   -init
         creates an initial configuration
   -no-color
-        dont print colors
+        disables printing color
+  -color
+        enables printing color
   -v    print debugging information
   -verbose
         print debugging information

@@ -6,6 +6,8 @@ import (
 	"runtime"
 	"strings"
 	"testing"
+
+	"github.com/gkampitakis/go-snaps/snaps"
 )
 
 var mainHasRun chan int
@@ -130,6 +132,53 @@ func TestMainDryRun(t *testing.T) {
 	if lastSeenCode != exitCodeNormal {
 		t.Errorf("main exited with return code %d, but we expected %d", lastSeenCode, exitCodeNormal)
 		t.Logf("Output:\n%s", output)
+	}
+}
+
+func TestMainColorSupport(t *testing.T) {
+	type env map[string]string
+	type args []string
+
+	tests := []struct {
+		name string
+		env  env
+		args args
+	}{
+		{"no-envvar-no-arg", env{}, args{}},
+		{"envvar-no-arg", env{"NO_COLOR": "1"}, args{}},
+		{"no-envvar-color-off", env{}, args{"--no-color"}},
+		{"no-envvar-color-on", env{}, args{"--color"}},
+		// test that arguments win over env var
+		{"envvar-color-off", env{"NO_COLOR": "1"}, args{"--no-color"}},
+		{"envvar-color-on", env{"NO_COLOR": "1"}, args{"--color"}},
+		// test that the last argument wins
+		{"no-envvar-color-offon", env{}, args{"--no-color", "--color"}},
+		{"no-envvar-color-onoffon", env{}, args{"--color", "--no-color", "--color"}},
+		// test that boolean values in the env var work correctly
+		{"envvar-true", env{"NO_COLOR": "true"}, args{}},
+		{"envvar-false", env{"NO_COLOR": "false"}, args{}},
+		{"envvar-zero", env{"NO_COLOR": "0"}, args{}},
+		// test that pure string values are correctly handled as setting NoColor
+		{"envvar-yes", env{"NO_COLOR": "yes"}, args{}},
+		{"envvar-no", env{"NO_COLOR": "no"}, args{}},
+		{"envvar-stringval", env{"NO_COLOR": "some test value that nobody would set"}, args{}},
+	}
+
+	// we use the error message of a missing config file to test the coloredness of the output
+	defaultArgs := []string{
+		`--exclude=""`, "--ignore-defaults",
+		"testdata/trailing-whitespace.txt",
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			for name, value := range test.env {
+				t.Setenv(name, value)
+			}
+			args := append(test.args, defaultArgs...)
+			output, _ := runWithArguments(t, args...)
+			snaps.MatchSnapshot(t, output)
+		})
 	}
 }
 

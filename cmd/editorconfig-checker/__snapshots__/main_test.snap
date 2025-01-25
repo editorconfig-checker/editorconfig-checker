@@ -1,0 +1,112 @@
+
+[TestMainColorSupport/no-envvar-no-arg - 1]
+[33;1mtestdata/trailing-whitespace.txt:[33;0m
+[31;1m 1: Trailing whitespace[33;0m
+[31;1m
+1 errors found[33;0m
+
+---
+
+[TestMainColorSupport/envvar-no-arg - 1]
+testdata/trailing-whitespace.txt:
+    1: Trailing whitespace
+
+1 errors found
+
+---
+
+[TestMainColorSupport/no-envvar-color-off - 1]
+testdata/trailing-whitespace.txt:
+    1: Trailing whitespace
+
+1 errors found
+
+---
+
+[TestMainColorSupport/no-envvar-color-on - 1]
+[33;1mtestdata/trailing-whitespace.txt:[33;0m
+[31;1m 1: Trailing whitespace[33;0m
+[31;1m
+1 errors found[33;0m
+
+---
+
+[TestMainColorSupport/envvar-color-off - 1]
+testdata/trailing-whitespace.txt:
+    1: Trailing whitespace
+
+1 errors found
+
+---
+
+[TestMainColorSupport/envvar-color-on - 1]
+[33;1mtestdata/trailing-whitespace.txt:[33;0m
+[31;1m 1: Trailing whitespace[33;0m
+[31;1m
+1 errors found[33;0m
+
+---
+
+[TestMainColorSupport/no-envvar-color-offon - 1]
+[33;1mtestdata/trailing-whitespace.txt:[33;0m
+[31;1m 1: Trailing whitespace[33;0m
+[31;1m
+1 errors found[33;0m
+
+---
+
+[TestMainColorSupport/no-envvar-color-onoffon - 1]
+[33;1mtestdata/trailing-whitespace.txt:[33;0m
+[31;1m 1: Trailing whitespace[33;0m
+[31;1m
+1 errors found[33;0m
+
+---
+
+[TestMainColorSupport/envvar-true - 1]
+testdata/trailing-whitespace.txt:
+    1: Trailing whitespace
+
+1 errors found
+
+---
+
+[TestMainColorSupport/envvar-false - 1]
+[33;1mtestdata/trailing-whitespace.txt:[33;0m
+[31;1m 1: Trailing whitespace[33;0m
+[31;1m
+1 errors found[33;0m
+
+---
+
+[TestMainColorSupport/envvar-zero - 1]
+[33;1mtestdata/trailing-whitespace.txt:[33;0m
+[31;1m 1: Trailing whitespace[33;0m
+[31;1m
+1 errors found[33;0m
+
+---
+
+[TestMainColorSupport/envvar-yes - 1]
+testdata/trailing-whitespace.txt:
+    1: Trailing whitespace
+
+1 errors found
+
+---
+
+[TestMainColorSupport/envvar-no - 1]
+testdata/trailing-whitespace.txt:
+    1: Trailing whitespace
+
+1 errors found
+
+---
+
+[TestMainColorSupport/envvar-stringval - 1]
+testdata/trailing-whitespace.txt:
+    1: Trailing whitespace
+
+1 errors found
+
+---

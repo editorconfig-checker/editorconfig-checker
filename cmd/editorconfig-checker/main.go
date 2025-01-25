@@ -7,11 +7,12 @@ import (
 	"fmt"
 	"io/fs"
 	"os"
+	"strconv"
 	"strings"
 
 	// x-release-please-start-major
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/config"
-	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/error"
+	eccerror "github.com/editorconfig-checker/editorconfig-checker/v3/pkg/error"
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/files"
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/outputformat"
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/utils"
@@ -47,6 +48,15 @@ var cmdlineExclude string
 var cmdlineConfig config.Config
 var writeConfigFile bool
 
+func enableNoColor(string) error {
+	cmdlineConfig.NoColor = true
+	return nil
+}
+func disableNoColor(string) error {
+	cmdlineConfig.NoColor = false
+	return nil
+}
+
 func init() {
 	flag.BoolVar(&writeConfigFile, "init", false, "creates an initial configuration")
 	flag.StringVar(&configFilePath, "config", "", "config")
@@ -61,7 +71,8 @@ func init() {
 	flag.BoolVar(&cmdlineConfig.Verbose, "verbose", false, "print debugging information")
 	flag.BoolVar(&cmdlineConfig.Verbose, "v", false, "print debugging information")
 	flag.BoolVar(&cmdlineConfig.Debug, "debug", false, "print debugging information")
-	flag.BoolVar(&cmdlineConfig.NoColor, "no-color", false, "dont print colors")
+	flag.BoolFunc("no-color", "disables printing color", enableNoColor)
+	flag.BoolFunc("color", "enables printing color", disableNoColor)
 	flag.BoolVar(&cmdlineConfig.Disable.TrimTrailingWhitespace, "disable-trim-trailing-whitespace", false, "disables the trailing whitespace check")
 	flag.BoolVar(&cmdlineConfig.Disable.EndOfLine, "disable-end-of-line", false, "disables the trailing whitespace check")
 	flag.BoolVar(&cmdlineConfig.Disable.InsertFinalNewline, "disable-insert-final-newline", false, "disables the final newline check")
@@ -77,6 +88,19 @@ func parseArguments() {
 	cmdlineExclude = ""
 	cmdlineConfig = config.Config{}
 	writeConfigFile = false
+
+	// check the NO_COLOR environment variable before parsing the arguments, so the arguments can override
+	if nocolor := os.Getenv("NO_COLOR"); nocolor != "" {
+		nocolorParsedAsBool, err := strconv.ParseBool(nocolor)
+		if err != nil {
+			// value did not parse as a boolean,
+			// so the user intended to enable NoColor by setting an arbitrary value
+			nocolorParsedAsBool = true
+		}
+		if nocolorParsedAsBool {
+			enableNoColor("")
+		}
+	}
 
 	flag.Parse()
 
@@ -166,11 +190,11 @@ func main() {
 
 	errors := validation.ProcessValidation(filePaths, config)
 
-	error.PrintErrors(errors, config)
+	eccerror.PrintErrors(errors, config)
 
 	config.Logger.Verbose("%d files checked", len(filePaths))
 
-	if error.GetErrorCount(errors) != 0 {
+	if eccerror.GetErrorCount(errors) != 0 {
 		exitProxy(exitCodeErrorOccurred)
 	}
 
