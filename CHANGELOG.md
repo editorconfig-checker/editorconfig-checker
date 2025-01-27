@@ -1,5 +1,18 @@
 # Changelog
 
+## [3.2.0](https://github.com/editorconfig-checker/editorconfig-checker/compare/v3.1.2...v3.2.0) (2025-01-25)
+
+
+### Features
+
+* add support for env var NO_COLOR ([#429](https://github.com/editorconfig-checker/editorconfig-checker/issues/429)) ([9135f53](https://github.com/editorconfig-checker/editorconfig-checker/commit/9135f531e762ad4c02f4bf45f03888771773da56))
+* only output "0 errors found" when verbose output is enabled ([#423](https://github.com/editorconfig-checker/editorconfig-checker/issues/423)) ([1d29a8b](https://github.com/editorconfig-checker/editorconfig-checker/commit/1d29a8b16b4cde8d46f80db29e60330c5bd16095))
+
+
+### Bug Fixes
+
+* improve default excludes ([#427](https://github.com/editorconfig-checker/editorconfig-checker/issues/427)) ([d0cbd25](https://github.com/editorconfig-checker/editorconfig-checker/commit/d0cbd250caa46a07994b6161ccf2bb4910571a23))
+
 ## [3.1.2](https://github.com/editorconfig-checker/editorconfig-checker/compare/v3.1.1...v3.1.2) (2025-01-10)
 
 

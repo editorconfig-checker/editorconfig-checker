@@ -2,7 +2,7 @@
 with pkgs;
 
 buildGoPackage rec {
-  version = "v3.1.2" # x-release-please-version
+  version = "v3.2.0" # x-release-please-version
 
   # create link so the tool can also be executed as `ec`
   postInstall = ''
