@@ -1,6 +1,13 @@
 {
     "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
     "release-type": "go",
+    "extra-files": [
+        {
+            "type": "yaml",
+            "path": ".pre-commit-config.yaml",
+            "jsonpath": "$.repos.[?(@.repo==\"https://github.com/editorconfig-checker/editorconfig-checker\")].rev"
+        }
+    ],
     "packages": {
         ".": {
             "extra-files": [
