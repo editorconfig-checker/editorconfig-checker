@@ -1,2 +1,7 @@
 linters:
   enable-all: true
+  disable:
+    # all currently deprecated linters
+    - execinquery
+    - exportloopref
+    - gomnd
