@@ -119,7 +119,7 @@ func parseArguments() {
 			nocolorParsedAsBool = true
 		}
 		if nocolorParsedAsBool {
-			enableNoColor("")
+			_ = enableNoColor("")
 		}
 	}
 
