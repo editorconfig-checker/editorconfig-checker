@@ -122,7 +122,7 @@ func PrintErrorsAsHumanReadable(errors []ValidationErrors, config config.Config)
 
 		relativeFilePath, err := files.GetRelativePath(fileErrors.FilePath)
 		if err != nil {
-			config.Logger.Error("%v", err.Error())
+			config.Logger.Error("%s", err)
 			continue
 		}
 
@@ -157,7 +157,7 @@ func PrintErrorsAsGHA(errors []ValidationErrors, config config.Config) {
 
 		relativeFilePath, err := files.GetRelativePath(fileErrors.FilePath)
 		if err != nil {
-			config.Logger.Error("%v", err.Error())
+			config.Logger.Error("%s", err)
 			continue
 		}
 
@@ -193,7 +193,7 @@ func PrintErrorsAsGCC(errors []ValidationErrors, config config.Config) {
 
 		relativeFilePath, err := files.GetRelativePath(fileErrors.FilePath)
 		if err != nil {
-			config.Logger.Error("%v", err.Error())
+			config.Logger.Error("%s", err)
 			continue
 		}
 
@@ -222,7 +222,7 @@ func PrintErrorsAsCodeclimate(errors []ValidationErrors, config config.Config) {
 
 		relativeFilePath, err := files.GetRelativePath(fileErrors.FilePath)
 		if err != nil {
-			config.Logger.Error("%v", err.Error())
+			config.Logger.Error("%s", err)
 			continue
 		}
 

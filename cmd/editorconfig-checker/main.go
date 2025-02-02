@@ -140,7 +140,7 @@ func parseArguments() {
 	if writeConfigFile {
 		err := currentConfig.Save(version)
 		if err != nil {
-			currentConfig.Logger.Error("%v", err.Error())
+			currentConfig.Logger.Error("%s", err)
 			exitProxy(exitCodeErrorOccurred)
 		}
 
@@ -151,7 +151,7 @@ func parseArguments() {
 	// this error should be surpressed if the configFilePath was not set by the user
 	// since the default config paths could trigger this
 	if err != nil && !(configFilePath == "" && errors.Is(err, fs.ErrNotExist)) {
-		currentConfig.Logger.Error("%v", err.Error())
+		currentConfig.Logger.Error("%s", err)
 		exitProxy(exitCodeConfigFileNotFound)
 	}
 
@@ -230,7 +230,7 @@ func main() {
 	// contains all files which should be checked
 	filePaths, err := files.GetFiles(config)
 	if err != nil {
-		config.Logger.Error("%v", err.Error())
+		config.Logger.Error("%s", err)
 		exitProxy(exitCodeErrorOccurred)
 	}
 
