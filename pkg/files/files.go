@@ -61,7 +61,7 @@ func AddToFiles(filePaths []string, filePath string, config config.Config) []str
 
 	if err != nil {
 		config.Logger.Error("Could not get the ContentType of file: %s", filePath)
-		config.Logger.Error(err.Error())
+		config.Logger.Error("%s", err)
 	}
 
 	isExcluded, err := IsExcluded(filePath, config)
