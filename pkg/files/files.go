@@ -66,7 +66,7 @@ func AddToFiles(filePaths []string, filePath string, config config.Config) []str
 	contentType, err := GetContentType(filePath, config)
 	if err != nil {
 		config.Logger.Error("Could not get the ContentType of file: %s", filePath)
-		config.Logger.Error("%v", err.Error())
+		config.Logger.Error("%s", err)
 	}
 	config.Logger.Debug("AddToFiles: detected ContentType %s on file %s", contentType, filePath)
 

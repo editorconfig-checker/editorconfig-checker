@@ -61,7 +61,7 @@ func ValidateFile(filePath string, config config.Config) []error.ValidationError
 					charset = "unknown"
 				}
 				config.Logger.Error("Could not decode the %s encoded file: %s", charset, filePath)
-				config.Logger.Error("%v", err.Error())
+				config.Logger.Error("%s", err)
 			}
 			break
 		}
@@ -84,7 +84,7 @@ func ValidateFile(filePath string, config config.Config) []error.ValidationError
 		return validationErrors
 	}
 	if warnings != nil {
-		config.Logger.Warning("%v", warnings.Error())
+		config.Logger.Warning("%s", warnings)
 	}
 
 	fileInformation := files.FileInformation{Content: fileContent, FilePath: filePath, Editorconfig: definition}
