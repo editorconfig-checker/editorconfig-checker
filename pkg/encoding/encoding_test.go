@@ -98,6 +98,7 @@ func TestDecodeBytesText(t *testing.T) {
 }
 
 func listAllCharsets(t *testing.T, contentBytes []byte) {
+	t.Helper()
 	detector := chardet.NewTextDetector()
 	results, err := detector.DetectAll(contentBytes)
 	if err != nil {
