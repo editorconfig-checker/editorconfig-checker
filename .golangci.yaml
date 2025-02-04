@@ -202,9 +202,8 @@ linters:
 
       # List of words to ignore
       # among the one defined in https://github.com/golangci/misspell/blob/master/words.go
-      ignore-rules: []
-      #  - valor
-      #  - and
+      ignore-rules:
+        - baulk # username in an imported module path
 
       # Extra word corrections.
       extra-words: []
