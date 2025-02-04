@@ -32,7 +32,10 @@ linters:
     - revive
 
     # check imports order and makes it always deterministic.
-    - gci
+    #- gci
+    # prefer goimports for now, since gci cannot deal with the release-please-end markers
+    # (it tries to delete them, keeping only the starting markers)
+    - goimports
 
     # make sure to use t.Helper() when needed
     - thelper
@@ -64,6 +67,9 @@ linters-settings:
       - default
       # linters that related to local tool, so they should be separated
       - localmodule
+
+  goimports:
+    local-prefixes: github.com/editorconfig-checker
 
   revive:
     rules:
