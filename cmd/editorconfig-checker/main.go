@@ -128,7 +128,7 @@ func parseArguments() {
 	}
 
 	err := currentConfig.Parse()
-	// this error should be surpressed if the configFilePath was not set by the user
+	// this error should be suppressed if the configFilePath was not set by the user
 	// since the default config paths could trigger this
 	if err != nil && !(configFilePath == "" && errors.Is(err, fs.ErrNotExist)) {
 		currentConfig.Logger.Error("%s", err)
