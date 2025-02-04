@@ -65,7 +65,7 @@ func ValidateFileWithDefinition(filePath string, config config.Config, def *edit
 	const directiveEnable = directivePrefix + "enable"
 
 	var validationErrors []error.ValidationError
-	var isDisabled bool = false
+	var isDisabled = false
 
 	var charset string
 
