@@ -185,6 +185,7 @@ func TestMainColorSupport(t *testing.T) {
 // a little Helper to set the current working dir relative to the repository root,
 // and return to the previous working directory once the test completes
 func cdRelativeToRepo(t *testing.T, path string) {
+	t.Helper()
 	newdir := "../../" + path
 
 	startingDir, err := os.Getwd()
