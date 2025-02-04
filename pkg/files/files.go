@@ -55,7 +55,7 @@ func IsExcluded(filePath string, config config.Config) (bool, error) {
 // AddToFiles adds a file to a slice if it isn't already in there
 // and meets the requirements and returns the new slice
 func AddToFiles(filePaths []string, filePath string, config config.Config) []string {
-	contentType, err := GetContentType(filePath, config)
+	contentType, err := GetContentType(filePath)
 
 	config.Logger.Debug("AddToFiles: filePath: %s, contentType: %s", filePath, contentType)
 
@@ -163,7 +163,7 @@ func ReadLines(content string) []string {
 }
 
 // GetContentType returns the content type of a file
-func GetContentType(path string, config config.Config) (string, error) {
+func GetContentType(path string) (string, error) {
 	fileStat, err := os.Stat(path)
 	if err != nil {
 		return "", err
@@ -181,11 +181,11 @@ func GetContentType(path string, config config.Config) (string, error) {
 	if err != nil {
 		panic(err)
 	}
-	return GetContentTypeBytes(rawFileContent, config)
+	return GetContentTypeBytes(rawFileContent)
 }
 
 // GetContentTypeBytes returns the content type of a byte slice
-func GetContentTypeBytes(rawFileContent []byte, config config.Config) (string, error) {
+func GetContentTypeBytes(rawFileContent []byte) (string, error) {
 	bytesReader := bytes.NewReader(rawFileContent)
 
 	mimeType, err := mimetype.DetectReader(bytesReader)

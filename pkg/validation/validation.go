@@ -47,7 +47,7 @@ func ValidateFile(filePath string, config config.Config) []error.ValidationError
 		panic(err)
 	}
 	fileContent := string(rawFileContent)
-	mime, err := files.GetContentTypeBytes(rawFileContent, config)
+	mime, err := files.GetContentTypeBytes(rawFileContent)
 	if err != nil {
 		panic(err)
 	}
