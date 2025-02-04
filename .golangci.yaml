@@ -13,7 +13,10 @@ formatters:
     # format the code
     - gofmt
     # format the block of imports
-    - gci
+    #- gci
+    # prefer goimports for now, since gci cannot deal with the release-please-end markers
+    # (it tries to delete them, keeping only the starting markers)
+    - goimports
 
   settings:
     # format the code with Go standard library
@@ -36,6 +39,10 @@ formatters:
         - default
         # linters that related to local tool, so they should be separated
         - localmodule
+
+    goimports:
+      local-prefixes:
+        - github.com/editorconfig-checker
 
 linters:
   exclusions:
