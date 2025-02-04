@@ -221,7 +221,7 @@ func PrintErrorsAsCodeclimate(errors []ValidationErrors, config config.Config) {
 		if err != nil {
 			config.Logger.Error("Error creating codeclimate json: %s", err.Error())
 		} else {
-			config.Logger.Output(string(codeclimateIssuesJSON))
+			config.Logger.Output("%s", string(codeclimateIssuesJSON))
 		}
 	}
 }
