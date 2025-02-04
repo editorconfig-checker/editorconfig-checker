@@ -37,7 +37,7 @@ func TestMarshalling(t *testing.T) {
 		}
 
 		if f != u {
-			t.Errorf("marshalling and then unmarshalling of format %s failed to survive the roundtrip", f)
+			t.Errorf("marshaling and then unmarshalling of format %s failed to survive the roundtrip", f)
 		}
 	}
 }
@@ -46,13 +46,13 @@ func TestMarshallingBrokenInputFails(t *testing.T) {
 	broken := OutputFormat("invalid")
 	_, err := broken.MarshalText()
 	if err == nil {
-		t.Error("marshalling did not recognize an invalid value and marshalled it anyway")
+		t.Error("marshaling did not recognize an invalid value and marshaled it anyway")
 	}
 }
 func TestUnmarshallingBrokenInputFails(t *testing.T) {
 	var broken OutputFormat
 	err := broken.UnmarshalText([]byte("invalid"))
 	if err == nil {
-		t.Error("unmarshalling did not recognize an invalid value and unmarshalled it anyway")
+		t.Error("unmarshaling did not recognize an invalid value and unmarshaled it anyway")
 	}
 }
