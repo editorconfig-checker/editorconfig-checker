@@ -129,7 +129,7 @@ func NewConfig(configPaths []string) *Config {
 		Parser: editorconfig.NewCachedParser(),
 	}
 
-	var configPath string = ""
+	var configPath string
 	for _, path := range configPaths {
 		if utils.IsRegularFile(path) {
 			configPath = path
