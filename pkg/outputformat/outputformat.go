@@ -51,6 +51,6 @@ func (format OutputFormat) IsValid() bool {
 	return slices.Contains(ValidOutputFormats, format)
 }
 
-func (f OutputFormat) String() string {
-	return string(f)
+func (format OutputFormat) String() string {
+	return string(format)
 }
