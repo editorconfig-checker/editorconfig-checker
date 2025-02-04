@@ -40,7 +40,7 @@ func ValidateFile(filePath string, config config.Config) []error.ValidationError
 	const directiveEnable = directivePrefix + "enable"
 
 	var validationErrors []error.ValidationError
-	var isDisabled bool = false
+	var isDisabled = false
 
 	rawFileContent, err := os.ReadFile(filePath)
 	if err != nil {
