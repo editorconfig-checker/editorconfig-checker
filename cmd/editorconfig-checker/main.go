@@ -4,7 +4,6 @@ package main
 import (
 	"errors"
 	"flag"
-	"fmt"
 	"io/fs"
 	"os"
 	"strconv"
@@ -22,7 +21,7 @@ import (
 
 // version is used for the help and to verify against the version stored in the config file
 // version is dynamically set at compiletime
-var version string = "v3.2.0" // x-release-please-version
+var version = "v3.2.0" // x-release-please-version
 
 // defaultConfigFileNames determines the file names where the config is located
 var defaultConfigFileNames = []string{".editorconfig-checker.json", ".ecrc"}
@@ -98,7 +97,7 @@ func parseArguments() {
 			nocolorParsedAsBool = true
 		}
 		if nocolorParsedAsBool {
-			enableNoColor("")
+			_ = enableNoColor("")
 		}
 	}
 
@@ -121,7 +120,7 @@ func parseArguments() {
 	if writeConfigFile {
 		err := currentConfig.Save(version)
 		if err != nil {
-			currentConfig.Logger.Error(err.Error())
+			currentConfig.Logger.Error("%s", err)
 			exitProxy(exitCodeErrorOccurred)
 		}
 
@@ -129,10 +128,10 @@ func parseArguments() {
 	}
 
 	err := currentConfig.Parse()
-	// this error should be surpressed if the configFilePath was not set by the user
+	// this error should be suppressed if the configFilePath was not set by the user
 	// since the default config paths could trigger this
 	if err != nil && !(configFilePath == "" && errors.Is(err, fs.ErrNotExist)) {
-		currentConfig.Logger.Error(err.Error())
+		currentConfig.Logger.Error("%s", err)
 		exitProxy(exitCodeConfigFileNotFound)
 	}
 
@@ -162,7 +161,7 @@ func main() {
 
 	if utils.FileExists(config.Path) && config.Version != "" && config.Version != version {
 		config.Logger.Error("Version from config file is not the same as the version of the binary")
-		config.Logger.Error(fmt.Sprintf("Binary: %s, Config %s", version, config.Version))
+		config.Logger.Error("Binary: %s, Config %s", version, config.Version)
 		exitProxy(exitCodeErrorOccurred)
 	}
 
@@ -176,13 +175,13 @@ func main() {
 	filePaths, err := files.GetFiles(config)
 
 	if err != nil {
-		config.Logger.Error(err.Error())
+		config.Logger.Error("%s", err)
 		exitProxy(exitCodeErrorOccurred)
 	}
 
 	if config.DryRun {
 		for _, file := range filePaths {
-			config.Logger.Output(file)
+			config.Logger.Output("%s", file)
 		}
 
 		exitProxy(exitCodeNormal)
@@ -205,7 +204,7 @@ func main() {
 func ReturnableFlags(config config.Config) bool {
 	switch {
 	case config.ShowVersion:
-		config.Logger.Output(version)
+		config.Logger.Output("%s", version)
 	case config.Help:
 		config.Logger.Output("USAGE:")
 		flag.CommandLine.SetOutput(config.Logger.GetWriter())
