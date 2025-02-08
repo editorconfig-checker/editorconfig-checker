@@ -38,3 +38,15 @@ jobs:
       - run: make test
       - run: make run
       - run: make bench
+
+  ci-windows:
+    name: CI on Windows
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: "go.mod"
+      - run: make test
+      - run: make run
+      - run: make bench
