@@ -268,7 +268,7 @@ func TestFormatErrors(t *testing.T) {
 		t.Fatal("current path separator is unexpected - please fix test to handle this path separator")
 	}
 	s := snaps.WithConfig(
-		snaps.Dir(filepath.Join("__snapshots__", "pathseparator-"+safePathSep)),
+		snaps.Dir(filepath.Join(startingDir, "__snapshots__", "pathseparator-"+safePathSep)),
 	)
 
 	input := []ValidationErrors{
