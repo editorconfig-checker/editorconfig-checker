@@ -1,8 +1,8 @@
 module github.com/editorconfig-checker/editorconfig-checker/v3 // x-release-please-major
 
-go 1.23
+go 1.24
 
-toolchain go1.23.4
+toolchain go1.24.0
 
 require (
 	github.com/baulk/chardet v0.1.0
