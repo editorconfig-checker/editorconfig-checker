@@ -116,10 +116,7 @@ func TestGetRelativePath(t *testing.T) {
 		panic(err)
 	}
 
-	err = os.Chdir(DIR)
-	if err != nil {
-		panic(err)
-	}
+	t.Chdir(DIR)
 
 	// Check with the current directory ("/tmp/stuff") in the middle of the given file path
 	relativeFilePath, _ = GetRelativePath("/foo" + DIR + filePath)
@@ -136,11 +133,6 @@ func TestGetRelativePath(t *testing.T) {
 
 	if err == nil {
 		t.Error("Expected an error for a not existing directory")
-	}
-
-	err = os.Chdir(cwd)
-	if err != nil {
-		panic(err)
 	}
 }
 
