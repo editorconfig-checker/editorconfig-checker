@@ -238,6 +238,10 @@ func GetRelativePath(filePath string) (string, error) {
 // IsAllowedContentType returns whether the contentType is
 // an allowed content type to check or not
 func IsAllowedContentType(contentType string, config config.Config) bool {
+	/*
+		why not use mimetype.EqualsAny:
+		it would only match types exactly, but we allow our users to give an entire type/ category
+	*/
 	for _, allowedContentType := range config.AllowedContentTypes {
 		if strings.Contains(contentType, allowedContentType) {
 			return true
