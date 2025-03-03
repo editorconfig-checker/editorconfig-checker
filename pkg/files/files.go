@@ -238,11 +238,11 @@ func GetRelativePath(filePath string) (string, error) {
 // IsAllowedContentType returns whether the contentType is
 // an allowed content type to check or not
 func IsAllowedContentType(contentType string, config config.Config) bool {
-	result := false
-
 	for _, allowedContentType := range config.AllowedContentTypes {
-		result = result || strings.Contains(contentType, allowedContentType)
+		if strings.Contains(contentType, allowedContentType) {
+			return true
+		}
 	}
 
-	return result
+	return false
 }
