@@ -39,7 +39,11 @@ func (format OutputFormat) MarshalText() ([]byte, error) {
 }
 
 func (format *OutputFormat) UnmarshalText(data []byte) error {
-	*format = OutputFormat(string(data))
+	formatValue := string(data)
+	if formatValue == "" {
+		formatValue = "default"
+	}
+	*format = OutputFormat(formatValue)
 	if !format.IsValid() {
 		return fmt.Errorf("%q is not a valid output format", data)
 	}
