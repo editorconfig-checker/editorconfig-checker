@@ -55,24 +55,28 @@ func IsExcluded(filePath string, config config.Config) (bool, error) {
 // AddToFiles adds a file to a slice if it isn't already in there
 // and meets the requirements and returns the new slice
 func AddToFiles(filePaths []string, filePath string, config config.Config) []string {
+	config.Logger.Debug("AddToFiles: investigating file %s", filePath)
+
+	isExcluded, err := IsExcluded(filePath, config)
+	if err == nil && isExcluded {
+		config.Logger.Verbose("Not adding %s to be checked, it is excluded", filePath)
+		return filePaths
+	}
+
 	contentType, err := GetContentType(filePath, config)
-
-	config.Logger.Debug("AddToFiles: filePath: %s, contentType: %s", filePath, contentType)
-
 	if err != nil {
 		config.Logger.Error("Could not get the ContentType of file: %s", filePath)
 		config.Logger.Error("%v", err.Error())
 	}
+	config.Logger.Debug("AddToFiles: detected ContentType %s on file %s", contentType, filePath)
 
-	isExcluded, err := IsExcluded(filePath, config)
-
-	if err == nil && !isExcluded && IsAllowedContentType(contentType, config) {
-		config.Logger.Verbose("Add %s to be checked", filePath)
-		return append(filePaths, filePath)
+	if err == nil && !IsAllowedContentType(contentType, config) {
+		config.Logger.Verbose("Not adding %s to be checked, it does not have an allowed ContentType", filePath)
+		return filePaths
 	}
 
-	config.Logger.Verbose("Don't add %s to be checked", filePath)
-	return filePaths
+	config.Logger.Verbose("Adding %s to be checked", filePath)
+	return append(filePaths, filePath)
 }
 
 // GetFiles returns all files which should be checked
@@ -234,11 +238,15 @@ func GetRelativePath(filePath string) (string, error) {
 // IsAllowedContentType returns whether the contentType is
 // an allowed content type to check or not
 func IsAllowedContentType(contentType string, config config.Config) bool {
-	result := false
-
+	/*
+		why not use mimetype.EqualsAny:
+		it would only match types exactly, but we allow our users to give an entire type/ category
+	*/
 	for _, allowedContentType := range config.AllowedContentTypes {
-		result = result || strings.Contains(contentType, allowedContentType)
+		if strings.Contains(contentType, allowedContentType) {
+			return true
+		}
 	}
 
-	return result
+	return false
 }
