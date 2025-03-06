@@ -2,7 +2,6 @@
 package validation
 
 import (
-	"fmt"
 	"os"
 	"regexp"
 	"strconv"
@@ -62,7 +61,7 @@ func ValidateFile(filePath string, config config.Config) []error.ValidationError
 					charset = "unknown"
 				}
 				config.Logger.Error("Could not decode the %s encoded file: %s", charset, filePath)
-				config.Logger.Error(err.Error())
+				config.Logger.Error("%v", err.Error())
 			}
 			break
 		}
@@ -85,7 +84,7 @@ func ValidateFile(filePath string, config config.Config) []error.ValidationError
 		return validationErrors
 	}
 	if warnings != nil {
-		config.Logger.Warning(warnings.Error())
+		config.Logger.Warning("%v", warnings.Error())
 	}
 
 	fileInformation := files.FileInformation{Content: fileContent, FilePath: filePath, Editorconfig: definition}
@@ -180,7 +179,7 @@ func ValidateFinalNewline(fileInformation files.FileInformation, config config.C
 		fileInformation.Content,
 		fileInformation.Editorconfig.Raw["insert_final_newline"],
 		fileInformation.Editorconfig.Raw["end_of_line"]); !config.Disable.InsertFinalNewline && currentError != nil {
-		config.Logger.Verbose(fmt.Sprintf("Final newline error found in %s", fileInformation.FilePath))
+		config.Logger.Verbose("Final newline error found in %s", fileInformation.FilePath)
 		return error.ValidationError{LineNumber: -1, Message: currentError}
 	}
 
@@ -192,7 +191,7 @@ func ValidateLineEnding(fileInformation files.FileInformation, config config.Con
 	if currentError := validators.LineEnding(
 		fileInformation.Content,
 		fileInformation.Editorconfig.Raw["end_of_line"]); !config.Disable.EndOfLine && currentError != nil {
-		config.Logger.Verbose(fmt.Sprintf("Line ending error found in %s", fileInformation.FilePath))
+		config.Logger.Verbose("Line ending error found in %s", fileInformation.FilePath)
 		return error.ValidationError{LineNumber: -1, Message: currentError}
 	}
 
@@ -212,7 +211,7 @@ func ValidateIndentation(fileInformation files.FileInformation, config config.Co
 		fileInformation.Line,
 		fileInformation.Editorconfig.Raw["indent_style"],
 		indentSize, config); !config.Disable.Indentation && currentError != nil {
-		config.Logger.Verbose(fmt.Sprintf("Indentation error found in %s on line %d", fileInformation.FilePath, fileInformation.LineNumber))
+		config.Logger.Verbose("Indentation error found in %s on line %d", fileInformation.FilePath, fileInformation.LineNumber)
 		return error.ValidationError{LineNumber: fileInformation.LineNumber + 1, Message: currentError}
 	}
 
@@ -224,7 +223,7 @@ func ValidateTrailingWhitespace(fileInformation files.FileInformation, config co
 	if currentError := validators.TrailingWhitespace(
 		fileInformation.Line,
 		fileInformation.Editorconfig.Raw["trim_trailing_whitespace"] == "true"); !config.Disable.TrimTrailingWhitespace && currentError != nil {
-		config.Logger.Verbose(fmt.Sprintf("Trailing whitespace error found in %s on line %d", fileInformation.FilePath, fileInformation.LineNumber))
+		config.Logger.Verbose("Trailing whitespace error found in %s on line %d", fileInformation.FilePath, fileInformation.LineNumber)
 		return error.ValidationError{LineNumber: fileInformation.LineNumber + 1, Message: currentError}
 	}
 
@@ -241,7 +240,7 @@ func ValidateMaxLineLength(fileInformation files.FileInformation, config config.
 	charSet := fileInformation.Editorconfig.Raw["charset"]
 
 	if currentError := validators.MaxLineLength(fileInformation.Line, maxLineLength, charSet); !config.Disable.MaxLineLength && currentError != nil {
-		config.Logger.Verbose(fmt.Sprintf("Max line length error found in %s on %d", fileInformation.FilePath, fileInformation.LineNumber))
+		config.Logger.Verbose("Max line length error found in %s on %d", fileInformation.FilePath, fileInformation.LineNumber)
 		return error.ValidationError{LineNumber: fileInformation.LineNumber + 1, Message: currentError}
 	}
 
@@ -253,7 +252,7 @@ func ProcessValidation(files []string, config config.Config) []error.ValidationE
 	var validationErrors []error.ValidationErrors
 
 	for _, filePath := range files {
-		config.Logger.Verbose(fmt.Sprintf("Validate %s", filePath))
+		config.Logger.Verbose("Validate %s", filePath)
 		validationErrors = append(validationErrors, error.ValidationErrors{FilePath: filePath, Errors: ValidateFile(filePath, config)})
 	}
 

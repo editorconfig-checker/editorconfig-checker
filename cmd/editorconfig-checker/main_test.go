@@ -185,20 +185,9 @@ func TestMainColorSupport(t *testing.T) {
 // a little Helper to set the current working dir relative to the repository root,
 // and return to the previous working directory once the test completes
 func cdRelativeToRepo(t *testing.T, path string) {
+	t.Helper()
 	newdir := "../../" + path
-
-	startingDir, err := os.Getwd()
-	if err != nil {
-		t.Fatalf("Could not obtain current working directory: %s", err)
-	}
-	t.Cleanup(func() {
-		if err := os.Chdir(startingDir); err != nil {
-			t.Fatalf("Could not restore old working directory %s: %s", startingDir, err)
-		}
-	})
-	if err := os.Chdir(newdir); err != nil {
-		t.Fatalf("Could not chdir to %s: %s", newdir, err)
-	}
+	t.Chdir(newdir)
 }
 
 func TestReturnCodeInterface(t *testing.T) {

@@ -232,23 +232,8 @@ func TestFormatErrors(t *testing.T) {
 		why change directory?
 		The relative path conversion done by FormatErrors() changes how absolute paths
 		are displayed, depending on in which directory the test is run in.
-
-		When this codebase uses golang 1.23.X (what ever version contains commit 79ca434)
-		This entire section can be replaced with a call to t.Chdir("/")
-		(the cleanup is then done automatically)
 	*/
-	startingDir, err := os.Getwd()
-	if err != nil {
-		t.Fatalf("Could not obtain current working directory: %s", err)
-	}
-	t.Cleanup(func() {
-		if err := os.Chdir(startingDir); err != nil {
-			t.Fatalf("Could not restore old working directory %s: %s", startingDir, err)
-		}
-	})
-	if err := os.Chdir("/"); err != nil {
-		t.Fatalf("Could not chdir to /: %s", err)
-	}
+	t.Chdir("/")
 
 	/*
 		why care about the path separators?
