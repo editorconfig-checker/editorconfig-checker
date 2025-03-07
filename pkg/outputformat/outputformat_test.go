@@ -56,3 +56,14 @@ func TestUnmarshallingBrokenInputFails(t *testing.T) {
 		t.Error("unmarshalling did not recognize an invalid value and unmarshalled it anyway")
 	}
 }
+
+func TestUnmarshallingEmptyFormat(t *testing.T) {
+	var working OutputFormat
+	err := working.UnmarshalText([]byte(""))
+	if err != nil {
+		t.Errorf("unmarshalling an empty string as the default output format failed: %v", err)
+	}
+	if working != Default {
+		t.Error("unmarshalling an empty string did not return the default output format")
+	}
+}
