@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.2.1](https://github.com/editorconfig-checker/editorconfig-checker/compare/v3.2.0...v3.2.1) (2025-03-07)
+
+
+### Bug Fixes
+
+* check for exclusion before MIME type ([#447](https://github.com/editorconfig-checker/editorconfig-checker/issues/447)) ([cd9976b](https://github.com/editorconfig-checker/editorconfig-checker/commit/cd9976ba25738a02a2130a7fc5e729ed9d6b7251))
+* **test:** we no longer need -ldflags at all ([#444](https://github.com/editorconfig-checker/editorconfig-checker/issues/444)) ([9ffcae2](https://github.com/editorconfig-checker/editorconfig-checker/commit/9ffcae2b7d984c6bf48fde83aaf55ab8962a927a))
+
 ## [3.2.0](https://github.com/editorconfig-checker/editorconfig-checker/compare/v3.1.2...v3.2.0) (2025-01-25)
 
 
