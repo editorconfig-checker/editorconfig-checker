@@ -86,7 +86,7 @@ func TestDecodeBytesText(t *testing.T) {
 		errored := err != nil
 		if charset != tt.charset {
 			t.Errorf("DecodeBytes(%s): charset: expected: %v, got: %v (changed=%v, errored=%v)", tt.filename, tt.charset, charset, changed, errored)
-			listAllCharsets(rawFileContent, t)
+			listAllCharsets(t, rawFileContent)
 		}
 		if changed != tt.changed {
 			t.Errorf("DecodeBytes(%s): content changed: expected: %v, got: %v (charset=%v, errored=%v)", tt.filename, tt.changed, changed, charset, errored)
@@ -97,7 +97,8 @@ func TestDecodeBytesText(t *testing.T) {
 	}
 }
 
-func listAllCharsets(contentBytes []byte, t *testing.T) {
+func listAllCharsets(t *testing.T, contentBytes []byte) {
+	t.Helper()
 	detector := chardet.NewTextDetector()
 	results, err := detector.DetectAll(contentBytes)
 	if err != nil {
