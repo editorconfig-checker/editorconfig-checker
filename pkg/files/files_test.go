@@ -109,7 +109,13 @@ func TestGetRelativePath(t *testing.T) {
 		t.Skip("Windows fails if current directory is deleted")
 	}
 
-	DIR := "/tmp/stuff"
+	var DIR string
+	expectedPath := "../.."
+	if runtime.GOOS == "darwin" {
+		DIR = "/private"
+		expectedPath += "/.."
+	}
+	DIR += "/tmp/stuff"
 	os.Remove(DIR)
 	err := os.Mkdir(DIR, 0755)
 	if err != nil {
@@ -118,10 +124,13 @@ func TestGetRelativePath(t *testing.T) {
 
 	t.Chdir(DIR)
 
+	arg := "/foo" + DIR + filePath
+	expectedPath += arg
+
 	// Check with the current directory ("/tmp/stuff") in the middle of the given file path
-	relativeFilePath, _ = GetRelativePath("/foo" + DIR + filePath)
-	if relativeFilePath != "../../foo"+DIR+filePath {
-		t.Errorf("GetRelativePath(%s): expected: %v, got: %v", "/foo"+DIR+filePath, "../../foo"+DIR+filePath, relativeFilePath)
+	relativeFilePath, _ = GetRelativePath(arg)
+	if relativeFilePath != expectedPath {
+		t.Errorf("GetRelativePath(%s): expected: %v, got: %v", arg, expectedPath, relativeFilePath)
 	}
 
 	err = os.Remove(DIR)
@@ -129,6 +138,9 @@ func TestGetRelativePath(t *testing.T) {
 		panic(err)
 	}
 
+	if runtime.GOOS == "darwin" {
+		t.Skip("Darwin can obtain the current working directory even if it is deleted")
+	}
 	_, err = GetRelativePath(cwd + filePath)
 
 	if err == nil {
