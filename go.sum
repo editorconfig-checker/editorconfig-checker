@@ -13,6 +13,8 @@ github.com/gkampitakis/go-diff v1.3.2 h1:Qyn0J9XJSDTgnsgHRdz9Zp24RaJeKMUHg2+PDZZ
 github.com/gkampitakis/go-diff v1.3.2/go.mod h1:LLgOrpqleQe26cte8s36HTWcTmMEur6OPYerdAAS9tk=
 github.com/gkampitakis/go-snaps v0.5.9 h1:jO2Fe2q2fhLNcMQjYh/EAGUzrZiIdwD/CkM8+QSs5cE=
 github.com/gkampitakis/go-snaps v0.5.9/go.mod h1:PcKmy8q5Se7p48ywpogN5Td13reipz1Iivah4wrTIvY=
+github.com/gkampitakis/go-snaps v0.5.10 h1:yZ6YrFAkXpJaKZ5Bjee+NKXCd2l4e+1HjBz1/dnGzd4=
+github.com/gkampitakis/go-snaps v0.5.10/go.mod h1:PcKmy8q5Se7p48ywpogN5Td13reipz1Iivah4wrTIvY=
 github.com/goccy/go-yaml v1.15.13 h1:Xd87Yddmr2rC1SLLTm2MNDcTjeO/GYo0JGiww6gSTDg=
 github.com/goccy/go-yaml v1.15.13/go.mod h1:XBurs7gK8ATbW4ZPGKgcbrY1Br56PdM69F7LkFRi1kA=
 github.com/google/go-cmp v0.6.0 h1:ofyhxvXcZhMsU5ulbFiLKl/XBFqE1GSq7atu8tAmTRI=

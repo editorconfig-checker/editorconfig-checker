@@ -232,7 +232,13 @@ func TestFormatErrors(t *testing.T) {
 		why change directory?
 		The relative path conversion done by FormatErrors() changes how absolute paths
 		are displayed, depending on in which directory the test is run in.
+
+		We however still need to keep track of where we started, else we could to give snaps the path to the snapshots.
 	*/
+	startingDir, err := os.Getwd()
+	if err != nil {
+		t.Fatalf("Could not obtain current working directory: %s", err)
+	}
 	t.Chdir("/")
 
 	/*
@@ -253,7 +259,7 @@ func TestFormatErrors(t *testing.T) {
 		t.Fatal("current path separator is unexpected - please fix test to handle this path separator")
 	}
 	s := snaps.WithConfig(
-		snaps.Dir(filepath.Join("__snapshots__", "pathseparator-"+safePathSep)),
+		snaps.Dir(filepath.Join(startingDir, "__snapshots__", "pathseparator-"+safePathSep)),
 	)
 
 	input := []ValidationErrors{
