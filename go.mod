@@ -30,7 +30,7 @@ require (
 	github.com/gkampitakis/go-snaps v0.5.11
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	golang.org/x/mod v0.23.0 // indirect
-	golang.org/x/net v0.33.0 // indirect
+	golang.org/x/net v0.36.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
