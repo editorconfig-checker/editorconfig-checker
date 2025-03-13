@@ -24,11 +24,11 @@ var ValidOutputFormats = []OutputFormat{
 }
 
 func GetArgumentChoiceText() string {
-	var output_strings []string
+	var outputStrings []string
 	for _, f := range ValidOutputFormats {
-		output_strings = append(output_strings, string(f))
+		outputStrings = append(outputStrings, string(f))
 	}
-	return strings.Join(output_strings, ", ")
+	return strings.Join(outputStrings, ", ")
 }
 
 func (format OutputFormat) MarshalText() ([]byte, error) {
@@ -50,6 +50,6 @@ func (format OutputFormat) IsValid() bool {
 	return slices.Contains(ValidOutputFormats, format)
 }
 
-func (f OutputFormat) String() string {
-	return string(f)
+func (format OutputFormat) String() string {
+	return string(format)
 }

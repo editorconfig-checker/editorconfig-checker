@@ -14,35 +14,34 @@ import (
 )
 
 func TestGetContentType(t *testing.T) {
-	configuration := config.Config{}
 	inputFile := "./files.go"
 	expected := "text/plain"
-	contentType, _ := GetContentType(inputFile, configuration)
+	contentType, _ := GetContentType(inputFile)
 	if !strings.Contains(contentType, expected) {
 		t.Errorf("GetContentType(%q): expected %v, got %v", inputFile, expected, contentType)
 	}
 
 	inputFile = "./../../docs/logo.png"
 	expected = "image/png"
-	contentType, _ = GetContentType(inputFile, configuration)
+	contentType, _ = GetContentType(inputFile)
 	if !strings.Contains(contentType, expected) {
 		t.Errorf("GetContentType(%q): expected %v, got %v", inputFile, expected, contentType)
 	}
 
 	inputFile = "."
-	_, err := GetContentType(inputFile, configuration)
+	_, err := GetContentType(inputFile)
 	if err == nil {
 		t.Errorf("GetContentType(%q): expected %v, got %v", inputFile, "an error", "nil")
 	}
 
 	inputFile = "a non-existent file"
-	_, err = GetContentType(inputFile, configuration)
+	_, err = GetContentType(inputFile)
 	if err == nil {
 		t.Errorf("GetContentType(%q): expected %v, got %v", inputFile, "an error", "nil")
 	}
 
 	inputFile = "testdata/empty.txt"
-	contentType, err = GetContentType(inputFile, configuration)
+	contentType, err = GetContentType(inputFile)
 	if err != nil {
 		t.Errorf("GetContentType(%q): expected %v, got %v", inputFile, "nil", err.Error())
 	}
@@ -268,10 +267,9 @@ var getContentTypeFilesTests = []getContentTypeFilesTest{
 }
 
 func TestGetContentTypeFiles(t *testing.T) {
-	configuration := config.Config{}
 	for _, tt := range getContentTypeFilesTests {
 		filePath := "../encoding/testdata/" + tt.filename
-		contentType, err := GetContentType(filePath, configuration)
+		contentType, err := GetContentType(filePath)
 		if err != nil {
 			t.Errorf("GetContentType(%q): expected %v, got %v", tt.filename, "nil", err.Error())
 		}
