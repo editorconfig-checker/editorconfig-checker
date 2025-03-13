@@ -2,6 +2,7 @@
 package outputformat
 
 import (
+	"cmp"
 	"fmt"
 	"slices"
 	"strings"
@@ -39,11 +40,7 @@ func (format OutputFormat) MarshalText() ([]byte, error) {
 }
 
 func (format *OutputFormat) UnmarshalText(data []byte) error {
-	formatValue := string(data)
-	if formatValue == "" {
-		formatValue = "default"
-	}
-	*format = OutputFormat(formatValue)
+	*format = OutputFormat(cmp.Or(string(data), "default"))
 	if !format.IsValid() {
 		return fmt.Errorf("%q is not a valid output format", data)
 	}
