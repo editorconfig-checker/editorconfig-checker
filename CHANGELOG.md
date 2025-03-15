@@ -1,5 +1,16 @@
 # Changelog
 
+## [3.2.1](https://github.com/editorconfig-checker/editorconfig-checker/compare/v3.2.0...v3.2.1) (2025-03-15)
+
+
+### Bug Fixes
+
+* check for exclusion before MIME type ([#447](https://github.com/editorconfig-checker/editorconfig-checker/issues/447)) ([cd9976b](https://github.com/editorconfig-checker/editorconfig-checker/commit/cd9976ba25738a02a2130a7fc5e729ed9d6b7251))
+* empty format in the config file should be treated as Default ([#448](https://github.com/editorconfig-checker/editorconfig-checker/issues/448)) ([f8799d0](https://github.com/editorconfig-checker/editorconfig-checker/commit/f8799d0915e6c7a3c82941c14b5bafcf472283cf)), closes [#430](https://github.com/editorconfig-checker/editorconfig-checker/issues/430)
+* **test:** make TestGetRelativePath work under Darwin ([#445](https://github.com/editorconfig-checker/editorconfig-checker/issues/445)) ([d956561](https://github.com/editorconfig-checker/editorconfig-checker/commit/d95656138c991c47847015902c75f46aeccb8d06))
+* **test:** support running our test suite under `-trimpath`, closes [#397](https://github.com/editorconfig-checker/editorconfig-checker/issues/397) ([#439](https://github.com/editorconfig-checker/editorconfig-checker/issues/439)) ([fc78406](https://github.com/editorconfig-checker/editorconfig-checker/commit/fc78406ae4d64dc63256c5b37db61b770bf5e436))
+* **test:** we no longer need -ldflags at all ([#444](https://github.com/editorconfig-checker/editorconfig-checker/issues/444)) ([9ffcae2](https://github.com/editorconfig-checker/editorconfig-checker/commit/9ffcae2b7d984c6bf48fde83aaf55ab8962a927a))
+
 ## [3.2.0](https://github.com/editorconfig-checker/editorconfig-checker/compare/v3.1.2...v3.2.0) (2025-01-25)
 
 
