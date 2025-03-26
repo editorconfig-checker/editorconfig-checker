@@ -48,10 +48,12 @@ Currently, implemented editorconfig features are:
 - `indent_style`
 - `indent_size`
 - `max_line_length`
+- `charset`
 
 Unsupported features are:
 
-- `charset`
+- `spelling_language`
+- `tab_width`
 
 ## Quickstart
 
@@ -103,6 +105,8 @@ USAGE:
         config
   -debug
         print debugging information
+  -disable-charset
+        disables the charset check
   -disable-end-of-line
         disables the trailing whitespace check
   -disable-indent-size
