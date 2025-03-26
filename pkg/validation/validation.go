@@ -25,6 +25,7 @@ import (
 // keep synced with /pkg/config/config.go#L59
 var textRegexes = []string{
 	"^text/",
+	"application/octet-stream",
 	"^application/ecmascript$",
 	"^application/json$",
 	"^application/x-ndjson$",
@@ -66,6 +67,8 @@ func ValidateFileWithDefinition(filePath string, config config.Config, def *edit
 	var validationErrors []error.ValidationError
 	var isDisabled bool = false
 
+	var charset string
+
 	rawFileContent, err := os.ReadFile(filePath)
 	if err != nil {
 		panic(err)
@@ -78,14 +81,9 @@ func ValidateFileWithDefinition(filePath string, config config.Config, def *edit
 	for _, regex := range textRegexes {
 		match, _ := regexp.MatchString(regex, mime)
 		if match {
-			var charset string
-			fileContent, charset, err = encoding.DecodeBytes(rawFileContent)
+			fileContent, charset, err = encoding.Decode(rawFileContent)
 			if err != nil {
-				if charset == "" {
-					charset = "unknown"
-				}
-				config.Logger.Error("Could not decode the %s encoded file: %s", charset, filePath)
-				config.Logger.Error("%v", err.Error())
+				config.Logger.Error("Could not decode the %q encoded file %q: %s", charset, filePath, err.Error())
 			}
 			break
 		}
@@ -105,6 +103,12 @@ func ValidateFileWithDefinition(filePath string, config config.Config, def *edit
 
 	fileInformation = files.FileInformation{Content: fileContent, FilePath: filePath, Editorconfig: def}
 	validationError = ValidateLineEnding(fileInformation, config)
+	if validationError.Message != nil {
+		validationErrors = append(validationErrors, validationError)
+	}
+
+	fileInformation = files.FileInformation{Content: fileContent, FilePath: filePath, Editorconfig: def}
+	validationError = ValidateCharset(fileInformation, config, charset)
 	if validationError.Message != nil {
 		validationErrors = append(validationErrors, validationError)
 	}
@@ -252,6 +256,19 @@ func ValidateMaxLineLength(fileInformation files.FileInformation, config config.
 	if currentError := validators.MaxLineLength(fileInformation.Line, maxLineLength, charSet); !config.Disable.MaxLineLength && currentError != nil {
 		config.Logger.Verbose("Max line length error found in %s on %d", fileInformation.FilePath, fileInformation.LineNumber)
 		return error.ValidationError{LineNumber: fileInformation.LineNumber + 1, Message: currentError}
+	}
+
+	return error.ValidationError{}
+}
+
+// ValidateCharset runs the charset validator and processes the error into the proper type
+func ValidateCharset(fileInformation files.FileInformation, config config.Config, charset string) error.ValidationError {
+	if currentError := validators.Charset(
+		fileInformation.Editorconfig.Raw["charset"],
+		charset,
+		config); !config.Disable.Charset && currentError != nil {
+		config.Logger.Verbose("Wrong charset found in %s", fileInformation.FilePath)
+		return error.ValidationError{LineNumber: -1, Message: currentError}
 	}
 
 	return error.ValidationError{}

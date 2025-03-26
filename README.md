@@ -24,11 +24,12 @@
       4. [Manually Excluding](#manually-excluding)
          1. [via configuration](#via-configuration)
          2. [via arguments](#via-arguments)
-7. [Docker](#docker)
-8. [Continuous Integration](#continuous-integration)
-9. [Support](#support)
-10. [Contributing](#contributing)
-11. [Semantic Versioning Policy](#semantic-versioning-policy)
+7. [Charset Setting](#charset-setting)
+8. [Docker](#docker)
+9. [Continuous Integration](#continuous-integration)
+10. [Support](#support)
+11. [Contributing](#contributing)
+12. [Semantic Versioning Policy](#semantic-versioning-policy)
 
 ## What?
 
@@ -48,10 +49,12 @@ Currently, implemented editorconfig features are:
 - `indent_style`
 - `indent_size`
 - `max_line_length`
+- `charset` (see [Charset Setting](#charset-setting) below)
 
 Unsupported features are:
 
-- `charset`
+- `spelling_language`
+- `tab_width`
 
 ## Quickstart
 
@@ -103,6 +106,8 @@ USAGE:
         config
   -debug
         print debugging information
+  -disable-charset
+        disables the charset check
   -disable-end-of-line
         disables the trailing whitespace check
   -disable-indent-size
@@ -198,7 +203,8 @@ A sample configuration file can look like this and will be used from your curren
     "IndentSize": false,
     "InsertFinalNewline": false,
     "TrimTrailingWhitespace": false,
-    "MaxLineLength": false
+    "MaxLineLength": false,
+    "Charset": false
   }
 }
 ```
@@ -397,7 +403,8 @@ A [configuration file](#configuration) which would ignore all test files and all
     "IndentSize": false,
     "InsertFinalNewline": false,
     "TrimTrailingWhitespace": false,
-    "MaxLineLength": false
+    "MaxLineLength": false,
+    "Charset": false
   }
 }
 ```
@@ -407,6 +414,75 @@ A [configuration file](#configuration) which would ignore all test files and all
 If you want to play around how the tool would behave you can also pass the `--exclude` argument to the binary. This will accept a regular expression as well. The argument given will be added to the excludes as defined by your [configuration file](#configuration) (respecting both its [`Exclude`](#via-configuration) and [`IgnoreDefaults`](#ignoring-default-excludes) settings).
 
 For example: `ec --exclude node_modules`
+
+## Charset Setting
+
+Our current charset detector accurately identifies the encoding scheme for files
+encoded in `utf-8`, `utf-8-bom`, `utf-16be`, and `utf-16le`.
+We also accurately identify UTF32-encoded files (which are rarely used).
+
+Unfortunately, our detectors sometimes misidentifies non-UTF
+encoded files, such as those encoded in `iso-8859-2` or `windows-1252`, as
+being `iso-8859-1` encoded. And `latin1` is an alias for the `iso-8859-1`
+encoding scheme.
+
+Therefore, to avoid false-positives, if the charset config option is set to
+`latin1` we will accept files encoded in any encoding other than the following:
+`utf-8`, `utf-8-bom`, `utf-16be` and `utf-16le`.
+
+If you want to explictly check if a file is `latin1` encoded, set the charset
+option to `iso-8859-1`.
+
+If you want to disable charset checking entirely, set the `charset` option to
+`unset`:
+
+```
+[dont_check_me_bro!.txt]
+charset = unset
+```
+
+Here's a list of all the encodings we currently attempt to identify:
+
+```text
+ascii                  big5                   cp932
+cp949                  euc-jp                 euc-kr
+euc-tw                 gb2312                 hz-gb-2312
+ibm855                 ibm866                 iso-2022-cn
+iso-2022-jp            iso-2022-kr            iso-8859-1
+iso-8859-13            iso-8859-2             iso-8859-5
+iso-8859-6             iso-8859-7             iso-8859-8
+iso-8859-9             johab                  koi8-r
+latin1                 maccyrillic            macroman
+shift_jis              tis-620                utf-16
+utf-16be               utf-16le               utf-32
+utf-32be               utf-32le               utf-8
+utf-8-bom              windows-1250           windows-1251
+windows-1252           windows-1253           windows-1254
+windows-1255           windows-1256           windows-1257
+x-iso-10646-ucs-4-2143 x-iso-10646-ucs-4-3412
+```
+
+Note that `ascii` is an alias for `iso-8859-1`, `utf-16` is an alias for
+`utf-16le`,
+and `utf-32` is an alias for `utf-32le`. Dashes and underscores are allowed
+anywhere in the names, but they are not required, and are ignored.
+
+Also note that we don't have a specialized decoder to decode files encoded in
+any of the following encodings:
+
+```text
+cp932                  cp949                  euc-tw
+euc-tw                 gb2312                 ibm866
+iso-2022-cn            iso-2022-kr            johab
+tis-620                x-iso-10646-ucs-4-2143 x-iso-10646-ucs-4-3412
+```
+
+We do decode these files using the default (non-encoding aware) decoder, but
+this may lead to issues, such as mis-identifying line lengths.
+
+If a file's encoding can't be determined, we will identify the encoding as
+`unknown`, and will report the issue, and decode the file using the default
+decoder.
 
 ## Docker
 

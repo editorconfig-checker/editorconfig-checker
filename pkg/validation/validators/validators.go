@@ -10,6 +10,7 @@ import (
 
 	// x-release-please-start-major
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/config"
+	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/encoding"
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/utils"
 	// x-release-please-end
 )
@@ -167,5 +168,21 @@ func MaxLineLength(line string, maxLineLength int, charSet string) error {
 		return fmt.Errorf("Line too long (%d instead of %d)", length, maxLineLength)
 	}
 
+	return nil
+}
+
+// Charset validates a file's charset
+func Charset(charsetWanted string, charsetFound string, config config.Config) error {
+	if charsetWanted == "unset" {
+		return nil
+	}
+	if charsetFound == encoding.UnknownEncoding {
+		return nil
+	}
+	if !encoding.CharsetsMatch(charsetFound, charsetWanted) {
+		// lowercase it as that's how they're listed in the ec spec.
+		charsetWanted = strings.ToLower(charsetWanted)
+		return fmt.Errorf("Wrong character encoding (%q instead of %q)", charsetFound, charsetWanted)
+	}
 	return nil
 }

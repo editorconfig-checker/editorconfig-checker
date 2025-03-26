@@ -84,6 +84,7 @@ func init() {
 	flag.BoolVar(&cmdlineConfig.Disable.IndentSize, "disable-indent-size", false, "disables only the indent-size check")
 	flag.BoolVar(&cmdlineConfig.Disable.MaxLineLength, "disable-max-line-length", false, "disables only the max-line-length check")
 	flag.StringVar(&cpuprofile, "cpuprofile", "", "write cpu profile to file")
+	flag.BoolVar(&cmdlineConfig.Disable.Charset, "disable-charset", false, "disables only the charset check")
 }
 
 // parse the arguments from os.Args

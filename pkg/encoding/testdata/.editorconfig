@@ -1,0 +1,74 @@
+root = true
+
+[*]
+charset = latin1
+end_of_line=lf
+
+[*utf8*]
+charset = utf8
+[*utf-8*]
+charset = utf8
+[*UTF-8*]
+charset = utf8
+
+[*utf8*bom*]
+charset = utf-8-bom
+[*bom*utf-8*]
+charset = utf-8-bom
+
+[*utf16*be]
+charset = utf-16be
+[*utf16be*]
+charset = utf-16be
+[*utf16*be*]
+charset = utf-16be
+[*utf-16*be*]
+charset = utf-16be
+
+[*utf16*le]
+charset = utf-16le
+charset = utf-16le
+[*utf16le*]
+[*utf16*le*]
+charset = utf-16le
+[*utf-16*le*]
+charset = utf-16le
+[utf16.txt]
+charset = utf-16le
+
+[*utf32*be*]
+charset = utf-32be
+[*utf-32*be]
+charset = utf-32be
+[*utf-32*be*]
+charset = utf-32be
+[*utf-32*big*]
+charset = utf-32be
+
+[*utf32*le*]
+charset = utf-32le
+[*utf-32*le]
+charset = utf-32le
+[*utf-32*le*]
+charset = utf-32le
+[*utf-32*little*]
+charset = utf-32le
+
+# UTF-8 decoder capability and stress test. See
+# https://github.com/libsdl-org/SDL/blob/main/test/utf8.txt
+[utf8-sdl.txt]
+charset = Windows-1254
+
+# Not UTF8, but our detection code identifies them as such
+[wpt/legacy-mb-japanese/euc-jp/eucjp-decode-errors.html] 
+charset = utf8
+[wpt/legacy-mb-japanese/iso-2022-jp/iso2022jp-decode-errors.html]
+charset = utf8
+[wpt/legacy-mb-japanese/iso-2022-jp/iso2022jp-encode-form-errors-stateful.html]
+charset = utf8
+[wpt/legacy-mb-japanese/shift_jis/sjis-decode-errors.html]
+charset = utf8
+[wpt/legacy-mb-korean/euc-kr/euckr-decode-errors.html]
+charset = utf8
+[wpt/legacy-mb-tchinese/big5/big5-decode-errors.html]
+charset = utf8

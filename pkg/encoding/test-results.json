@@ -1,0 +1,3233 @@
+[
+    {
+        "Filename": "testdata/chardet/8859_1_da.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/chardet/8859_1_de.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/chardet/8859_1_en.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/chardet/8859_1_es.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/chardet/8859_1_fr.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/chardet/8859_1_pt.html",
+        "Encoding": "Windows-1252",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/chardet/big5.html",
+        "Encoding": "Big5",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/chardet/euc_jp.html",
+        "Encoding": "EUC-JP",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/chardet/euc_kr.html",
+        "Encoding": "EUC-KR",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/chardet/gb18030.html",
+        "Encoding": "GB2312",
+        "Charset": "latin1",
+        "Errored": true,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": "Should be gb18030?!"
+    },
+    {
+        "Filename": "testdata/chardet/shift_jis.html",
+        "Encoding": "SHIFT_JIS",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/chardet/utf8.html",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/chardet/utf8_bom.html",
+        "Encoding": "UTF-8-SIG",
+        "Charset": "utf-8-bom",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/encoding-test-files/ascii.txt",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/encoding-test-files/cp865.txt",
+        "Encoding": "Windows-1254",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 71.17638747933579,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/encoding-test-files/koi8_r.txt",
+        "Encoding": "KOI8-R",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 92.79634159702888,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/encoding-test-files/latin1.txt",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/encoding-test-files/utf16.txt",
+        "Encoding": "UTF-16LE",
+        "Charset": "utf-16le",
+        "Errored": false,
+        "Binary": true,
+        "Confidence": 100,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/encoding-test-files/utf8.txt",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 51.327003451668304,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/issues/issue252.txt",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/mimetype/html.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/mimetype/html.iso88591.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/mimetype/html.svg.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/mimetype/html.usascii.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/mimetype/html.utf8.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be UTF-8?"
+    },
+    {
+        "Filename": "testdata/mimetype/html.utf8bom.html",
+        "Encoding": "UTF-8-SIG",
+        "Charset": "utf-8-bom",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/mimetype/html.utf8bomdetect.html",
+        "Encoding": "UTF-8-SIG",
+        "Charset": "utf-8-bom",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/mimetype/html.utf8bomws.html",
+        "Encoding": "UTF-8-SIG",
+        "Charset": "utf-8-bom",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/mimetype/html.withbr.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/mimetype/iso88591.txt",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/mimetype/utf16bebom.txt",
+        "Encoding": "UTF-16BE",
+        "Charset": "utf-16be",
+        "Errored": false,
+        "Binary": true,
+        "Confidence": 100,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/mimetype/utf16lebom.txt",
+        "Encoding": "UTF-16LE",
+        "Charset": "utf-16le",
+        "Errored": false,
+        "Binary": true,
+        "Confidence": 100,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/mimetype/utf32bebom.txt",
+        "Encoding": "UTF-32BE",
+        "Charset": "utf-32be",
+        "Errored": false,
+        "Binary": true,
+        "Confidence": 100,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/mimetype/utf32lebom.txt",
+        "Encoding": "UTF-32LE",
+        "Charset": "utf-32le",
+        "Errored": false,
+        "Binary": true,
+        "Confidence": 100,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/mimetype/utf8.txt",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/sdl/utf8-sdl.txt",
+        "Encoding": "Windows-1254",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 52.50663680561672,
+        "Comment": "Should be UTF-8?"
+    },
+    {
+        "Filename": "testdata/text/candide-gb18030.txt",
+        "Encoding": "GB2312",
+        "Charset": "latin1",
+        "Errored": true,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": "Should be gb18030?!"
+    },
+    {
+        "Filename": "testdata/text/candide-utf-16le.txt",
+        "Encoding": "UTF-16LE",
+        "Charset": "utf-16le",
+        "Errored": false,
+        "Binary": true,
+        "Confidence": 85,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/text/candide-utf-32be.txt",
+        "Encoding": "UTF-32BE",
+        "Charset": "utf-32be",
+        "Errored": false,
+        "Binary": true,
+        "Confidence": 85,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/text/candide-utf-8.txt",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/text/candide-windows-1252.txt",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 72.93802554980596,
+        "Comment": "Should be Windows-1252?"
+    },
+    {
+        "Filename": "testdata/text/rashomon-euc-jp.txt",
+        "Encoding": "EUC-JP",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/text/rashomon-iso-2022-jp.txt",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": true,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/text/rashomon-shift-jis.txt",
+        "Encoding": "SHIFT_JIS",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/text/rashomon-utf-8.txt",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/text/sunzi-bingfa-gb-levels-1-and-2-hz-gb2312.txt",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": "Should be GB2312?"
+    },
+    {
+        "Filename": "testdata/text/sunzi-bingfa-gb-levels-1-and-2-utf-8.txt",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/text/sunzi-bingfa-simplified-gbk.txt",
+        "Encoding": "GB2312",
+        "Charset": "latin1",
+        "Errored": true,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": "Should be gbk?!"
+    },
+    {
+        "Filename": "testdata/text/sunzi-bingfa-simplified-utf-8.txt",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/text/sunzi-bingfa-traditional-big5.txt",
+        "Encoding": "Big5",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/text/sunzi-bingfa-traditional-utf-8.txt",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/text/unsu-joh-eun-nal-euc-kr.txt",
+        "Encoding": "EUC-KR",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/text/unsu-joh-eun-nal-utf-8.txt",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/ar/iso-8859-6.txt",
+        "Encoding": "ISO-8859-8",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 28.699307789318347,
+        "Comment": "Should be ISO-8859-6?"
+    },
+    {
+        "Filename": "testdata/uchardet/ar/utf-8.txt",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/ar/windows-1256.txt",
+        "Encoding": "MacCyrillic",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 35.41998725022138,
+        "Comment": "Should be Windows-1256?"
+    },
+    {
+        "Filename": "testdata/uchardet/be/iso-8859-5.txt",
+        "Encoding": "ISO-8859-5",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 81.08012187356661,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/be/utf-8.txt",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/be/windows-1251.txt",
+        "Encoding": "Windows-1251",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 78.73922596645576,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/bg/iso-8859-5.txt",
+        "Encoding": "ISO-8859-5",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/bg/utf-8.txt",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/bg/windows-1251.txt",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": "Should be Windows-1251?"
+    },
+    {
+        "Filename": "testdata/uchardet/ca/iso-8859-1.txt",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/ca/utf-8.txt",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/ca/windows-1252.txt",
+        "Encoding": "Windows-1252",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/cs/ibm852.txt",
+        "Encoding": "Windows-1254",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 49.24077056847659,
+        "Comment": "Should be ibm852?"
+    },
+    {
+        "Filename": "testdata/uchardet/cs/iso-8859-2.txt",
+        "Encoding": "ISO-8859-9",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 52.285750952469115,
+        "Comment": "Should be ISO-8859-2?"
+    },
+    {
+        "Filename": "testdata/uchardet/cs/mac-centraleurope.txt",
+        "Encoding": "Windows-1254",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 48.464034746175805,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/cs/utf-8.txt",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/cs/windows-1250.txt",
+        "Encoding": "Windows-1254",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 52.285750952469115,
+        "Comment": "Should be Windows-1250?"
+    },
+    {
+        "Filename": "testdata/uchardet/da/ibm865.txt",
+        "Encoding": "Windows-1252",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": "Should be ibm865?"
+    },
+    {
+        "Filename": "testdata/uchardet/da/iso-8859-1.txt",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/da/iso-8859-15.txt",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/da/utf-8.txt",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/da/windows-1252.txt",
+        "Encoding": "Windows-1252",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/de/iso-8859-1.txt",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 70.6195652173913,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/de/utf-8.txt",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/de/windows-1252.txt",
+        "Encoding": "Windows-1252",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 70.64516129032258,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/el/cp737.txt",
+        "Encoding": "IBM866",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 30.49859281990191,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/el/iso-8859-7.txt",
+        "Encoding": "ISO-8859-7",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/el/utf-8.txt",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/el/windows-1253.txt",
+        "Encoding": "ISO-8859-7",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": "Should be Windows-1253?"
+    },
+    {
+        "Filename": "testdata/uchardet/en/ascii.txt",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": true,
+        "Confidence": 1,
+        "Comment": "binary"
+    },
+    {
+        "Filename": "testdata/uchardet/en/utf-8.txt",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 70.75219941348973,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/eo/iso-8859-3.txt",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": "Should be iso88593?"
+    },
+    {
+        "Filename": "testdata/uchardet/eo/utf-8.txt",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/es/iso-8859-1.txt",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/es/iso-8859-15.txt",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/es/utf-8.txt",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/es/windows-1252.txt",
+        "Encoding": "Windows-1252",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/et/iso-8859-13.txt",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": "Should be ISO-8859-13?"
+    },
+    {
+        "Filename": "testdata/uchardet/et/iso-8859-15.txt",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/et/iso-8859-4.txt",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": "Should be iso88594?"
+    },
+    {
+        "Filename": "testdata/uchardet/et/utf-8.txt",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/et/windows-1252.txt",
+        "Encoding": "Windows-1252",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/et/windows-1257.txt",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": "Should be Windows-1257?"
+    },
+    {
+        "Filename": "testdata/uchardet/fi/iso-8859-1.txt",
+        "Encoding": "MacRoman",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 71.59344894026975,
+        "Comment": "Should be ISO-8859-1?"
+    },
+    {
+        "Filename": "testdata/uchardet/fi/utf-8.txt",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/fr/iso-8859-1.txt",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 71.54966887417218,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/fr/iso-8859-15.txt",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/fr/utf-16.be",
+        "Encoding": "UTF-16BE",
+        "Charset": "utf-16be",
+        "Errored": false,
+        "Binary": true,
+        "Confidence": 100,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/fr/utf-32.le",
+        "Encoding": "UTF-32LE",
+        "Charset": "utf-32le",
+        "Errored": false,
+        "Binary": true,
+        "Confidence": 100,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/fr/utf-8.txt",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/fr/windows-1252.txt",
+        "Encoding": "Windows-1252",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/ga/iso-8859-1.txt",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/ga/utf-8.txt",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/ga/windows-1252.txt",
+        "Encoding": "Windows-1252",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/he/ibm862.logical.txt",
+        "Encoding": "unknown",
+        "Charset": "latin1",
+        "Errored": true,
+        "Binary": false,
+        "Confidence": 0,
+        "Comment": "Should be ibm862?!"
+    },
+    {
+        "Filename": "testdata/uchardet/he/ibm862.visual.txt",
+        "Encoding": "unknown",
+        "Charset": "latin1",
+        "Errored": true,
+        "Binary": false,
+        "Confidence": 0,
+        "Comment": "Should be ibm862?!"
+    },
+    {
+        "Filename": "testdata/uchardet/he/iso-8859-8.txt",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": "Should be ISO-8859-8?"
+    },
+    {
+        "Filename": "testdata/uchardet/he/utf-8.txt",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/he/windows-1255.txt",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 97.73686833361968,
+        "Comment": "Should be Windows-1255?"
+    },
+    {
+        "Filename": "testdata/uchardet/hi/utf-8.txt",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/hr/ibm852.txt",
+        "Encoding": "Windows-1252",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 65.5219512195122,
+        "Comment": "Should be ibm852?"
+    },
+    {
+        "Filename": "testdata/uchardet/hr/iso-8859-13.txt",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/hr/iso-8859-16.txt",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/hr/iso-8859-2.txt",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": "Should be ISO-8859-2?"
+    },
+    {
+        "Filename": "testdata/uchardet/hr/mac-centraleurope.txt",
+        "Encoding": "MacRoman",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 62.94222222222222,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/hr/utf-8.txt",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 87.625,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/hr/windows-1250.txt",
+        "Encoding": "Windows-1252",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": "Should be Windows-1250?"
+    },
+    {
+        "Filename": "testdata/uchardet/hu/iso-8859-2.txt",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": "Should be ISO-8859-2?"
+    },
+    {
+        "Filename": "testdata/uchardet/hu/utf-8.txt",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/hu/windows-1250.txt",
+        "Encoding": "Windows-1252",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": "Should be Windows-1250?"
+    },
+    {
+        "Filename": "testdata/uchardet/it/iso-8859-1.txt",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/it/utf-8.txt",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/ja/euc-jp.txt",
+        "Encoding": "EUC-JP",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/ja/iso-2022-jp.txt",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": true,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/ja/shift_jis.txt",
+        "Encoding": "SHIFT_JIS",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/ja/utf-16be.txt",
+        "Encoding": "UTF-16BE",
+        "Charset": "utf-16be",
+        "Errored": false,
+        "Binary": true,
+        "Confidence": 29.711629153561613,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/ja/utf-16le.txt",
+        "Encoding": "UTF-16LE",
+        "Charset": "utf-16le",
+        "Errored": false,
+        "Binary": true,
+        "Confidence": 0,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/ja/utf-8.txt",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/ka/georgian-academy.txt",
+        "Encoding": "KOI8-R",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 39.93346297439607,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/ka/georgian-ps.txt",
+        "Encoding": "KOI8-R",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 57.286747931856155,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/ka/utf-8.txt",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/ko/iso-2022-kr.txt",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": true,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/ko/johab.txt",
+        "Encoding": "Johab",
+        "Charset": "latin1",
+        "Errored": true,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/ko/uhc.smi",
+        "Encoding": "EUC-KR",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/ko/utf-16.le",
+        "Encoding": "UTF-16LE",
+        "Charset": "utf-16le",
+        "Errored": false,
+        "Binary": true,
+        "Confidence": 100,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/ko/utf-32.be",
+        "Encoding": "UTF-32BE",
+        "Charset": "utf-32be",
+        "Errored": false,
+        "Binary": true,
+        "Confidence": 100,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/ko/utf-8.txt",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/lt/iso-8859-10.txt",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/lt/iso-8859-13.txt",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": "Should be ISO-8859-13?"
+    },
+    {
+        "Filename": "testdata/uchardet/lt/iso-8859-4.txt",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": "Should be iso88594?"
+    },
+    {
+        "Filename": "testdata/uchardet/lt/utf-8.txt",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 93.8125,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/lv/iso-8859-10.txt",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/lv/iso-8859-13.txt",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": "Should be ISO-8859-13?"
+    },
+    {
+        "Filename": "testdata/uchardet/lv/iso-8859-4.txt",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": "Should be iso88594?"
+    },
+    {
+        "Filename": "testdata/uchardet/lv/utf-8.txt",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/mk/ibm855.txt",
+        "Encoding": "IBM855",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 97.29256355831826,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/mk/iso-8859-5.txt",
+        "Encoding": "ISO-8859-5",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 98.07492712013864,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/mk/utf-8.txt",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/mk/windows-1251.txt",
+        "Encoding": "Windows-1251",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 97.73731979786622,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/mt/iso-8859-3.txt",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": "Should be iso88593?"
+    },
+    {
+        "Filename": "testdata/uchardet/mt/utf-8.txt",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/no/ibm865.txt",
+        "Encoding": "Windows-1252",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": "Should be ibm865?"
+    },
+    {
+        "Filename": "testdata/uchardet/no/iso-8859-1.txt",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/no/iso-8859-15.txt",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/no/utf-8.txt",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/no/windows-1252.txt",
+        "Encoding": "Windows-1252",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/pl/ibm852.txt",
+        "Encoding": "Windows-1252",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": "Should be ibm852?"
+    },
+    {
+        "Filename": "testdata/uchardet/pl/iso-8859-13.txt",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 63.65243902439024,
+        "Comment": "Should be ISO-8859-13?"
+    },
+    {
+        "Filename": "testdata/uchardet/pl/iso-8859-16.txt",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/pl/iso-8859-2.txt",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": "Should be ISO-8859-2?"
+    },
+    {
+        "Filename": "testdata/uchardet/pl/mac-centraleurope.txt",
+        "Encoding": "Windows-1252",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 63.65243902439024,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/pl/utf-8.txt",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/pl/windows-1250.txt",
+        "Encoding": "Windows-1252",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": "Should be Windows-1250?"
+    },
+    {
+        "Filename": "testdata/uchardet/pt/iso-8859-1.txt",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/pt/utf-8.txt",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/ro/ibm852.txt",
+        "Encoding": "MacRoman",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 67.39290989660265,
+        "Comment": "Should be ibm852?"
+    },
+    {
+        "Filename": "testdata/uchardet/ro/iso-8859-16.txt",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/ro/utf-8.txt",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/ro/windows-1250.txt",
+        "Encoding": "Windows-1252",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": "Should be Windows-1250?"
+    },
+    {
+        "Filename": "testdata/uchardet/ru/ibm855.txt",
+        "Encoding": "IBM855",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99.7394640977825,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/ru/ibm866.txt",
+        "Encoding": "IBM866",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 98.6251574449464,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/ru/iso-8859-5.txt",
+        "Encoding": "ISO-8859-5",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/ru/koi8-r.txt",
+        "Encoding": "KOI8-R",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 98.53404642823635,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/ru/mac-cyrillic.txt",
+        "Encoding": "MacCyrillic",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 98.05975224605034,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/ru/utf-8.txt",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/ru/windows-1251.txt",
+        "Encoding": "MacCyrillic",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 98.15611438523918,
+        "Comment": "Should be Windows-1251?"
+    },
+    {
+        "Filename": "testdata/uchardet/sk/ibm852.txt",
+        "Encoding": "Windows-1252",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 65.86976744186046,
+        "Comment": "Should be ibm852?"
+    },
+    {
+        "Filename": "testdata/uchardet/sk/iso-8859-2.txt",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 65.86976744186046,
+        "Comment": "Should be ISO-8859-2?"
+    },
+    {
+        "Filename": "testdata/uchardet/sk/mac-centraleurope.txt",
+        "Encoding": "Windows-1254",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 56.98905542860504,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/sk/utf-8.txt",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/sk/windows-1250.txt",
+        "Encoding": "Windows-1252",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 65.86976744186046,
+        "Comment": "Should be Windows-1250?"
+    },
+    {
+        "Filename": "testdata/uchardet/sl/ibm852.txt",
+        "Encoding": "MacRoman",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 69.07118055555556,
+        "Comment": "Should be ibm852?"
+    },
+    {
+        "Filename": "testdata/uchardet/sl/iso-8859-16.txt",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/sl/iso-8859-2.txt",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": "Should be ISO-8859-2?"
+    },
+    {
+        "Filename": "testdata/uchardet/sl/mac-centraleurope.txt",
+        "Encoding": "Windows-1252",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 70.20765027322405,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/sl/utf-8.txt",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/sl/windows-1250.txt",
+        "Encoding": "Windows-1252",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": "Should be Windows-1250?"
+    },
+    {
+        "Filename": "testdata/uchardet/sr/iso-8859-5.txt",
+        "Encoding": "ISO-8859-5",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 96.0264070535533,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/sr/utf-8.txt",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/sr/windows-1251.txt",
+        "Encoding": "Windows-1251",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 95.6520350962295,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/sv/iso-8859-1.txt",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/sv/utf-8.txt",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/sv/windows-1252.txt",
+        "Encoding": "Windows-1252",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/th/iso-8859-11.txt",
+        "Encoding": "TIS-620",
+        "Charset": "latin1",
+        "Errored": true,
+        "Binary": false,
+        "Confidence": 87.13037237916016,
+        "Comment": "Should be ISO-8859-1?!"
+    },
+    {
+        "Filename": "testdata/uchardet/th/tis-620.txt",
+        "Encoding": "TIS-620",
+        "Charset": "latin1",
+        "Errored": true,
+        "Binary": false,
+        "Confidence": 87.44492245995134,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/th/utf-8.txt",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/tr/iso-8859-3.txt",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": "Should be iso88593?"
+    },
+    {
+        "Filename": "testdata/uchardet/tr/iso-8859-9.txt",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": "Should be ISO-8859-9?"
+    },
+    {
+        "Filename": "testdata/uchardet/tr/utf-8.txt",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/uk/utf-8.txt",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/uk/windows-1251.txt",
+        "Encoding": "MacCyrillic",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 87.9786321060568,
+        "Comment": "Should be Windows-1251?"
+    },
+    {
+        "Filename": "testdata/uchardet/vi/utf-8.txt",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/vi/viscii.txt",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 59.61135371179039,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/vi/windows-1258.txt",
+        "Encoding": "ISO-8859-9",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 35.42101090842932,
+        "Comment": "Should be windows1258?"
+    },
+    {
+        "Filename": "testdata/uchardet/zh/big5.txt",
+        "Encoding": "Big5",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/uchardet/zh/euc-tw.txt",
+        "Encoding": "unknown",
+        "Charset": "latin1",
+        "Errored": true,
+        "Binary": false,
+        "Confidence": 0,
+        "Comment": "Should be EUC-TW?!"
+    },
+    {
+        "Filename": "testdata/uchardet/zh/gb18030.txt",
+        "Encoding": "GB2312",
+        "Charset": "latin1",
+        "Errored": true,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": "Should be gb18030?!"
+    },
+    {
+        "Filename": "testdata/uchardet/zh/utf-8.txt",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/utf-8-test/UTF-8-demo.html",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/euc-jp/eucjp-decode-cseucpkdfmtjapanese.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be EUC-JP?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/euc-jp/eucjp-decode-errors.html",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": "Should be EUC-JP?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/euc-jp/eucjp-decode-x-euc-jp.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be EUC-JP?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/euc-jp/eucjp-decode.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be EUC-JP?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/euc-jp/eucjp-encode-form-cseucpkdfmtjapanese.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be EUC-JP?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/euc-jp/eucjp-encode-form-errors-han.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be EUC-JP?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/euc-jp/eucjp-encode-form-errors-hangul.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be EUC-JP?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/euc-jp/eucjp-encode-form-errors-misc.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be EUC-JP?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/euc-jp/eucjp-encode-form-x-euc-jp.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be EUC-JP?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/euc-jp/eucjp-encode-form.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be EUC-JP?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/euc-jp/eucjp-encode-href-errors-han.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be EUC-JP?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/euc-jp/eucjp-encode-href-errors-hangul.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be EUC-JP?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/euc-jp/eucjp-encode-href-errors-misc.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be EUC-JP?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/euc-jp/eucjp-encode-href.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be EUC-JP?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/euc-jp/eucjp_chars-cseucpkdfmtjapanese.html",
+        "Encoding": "Windows-1252",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": "Should be EUC-JP?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/euc-jp/eucjp_chars-x-euc-jp.html",
+        "Encoding": "Windows-1252",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": "Should be EUC-JP?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/euc-jp/eucjp_chars.html",
+        "Encoding": "Windows-1252",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": "Should be EUC-JP?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/euc-jp/eucjp_errors.html",
+        "Encoding": "Windows-1252",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": "Should be EUC-JP?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/iso-2022-jp/iso2022jp-decode-csiso2022jp.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be ISO-2022-JP?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/iso-2022-jp/iso2022jp-decode-errors.html",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": "Should be ISO-2022-JP?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/iso-2022-jp/iso2022jp-decode.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be ISO-2022-JP?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/iso-2022-jp/iso2022jp-encode-form-csiso2022jp.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be ISO-2022-JP?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/iso-2022-jp/iso2022jp-encode-form-errors-han.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be ISO-2022-JP?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/iso-2022-jp/iso2022jp-encode-form-errors-hangul.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be ISO-2022-JP?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/iso-2022-jp/iso2022jp-encode-form-errors-misc.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be ISO-2022-JP?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/iso-2022-jp/iso2022jp-encode-form-errors-stateful.html",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 72.03097345132743,
+        "Comment": "Should be ISO-2022-JP?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/iso-2022-jp/iso2022jp-encode-form.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be ISO-2022-JP?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/iso-2022-jp/iso2022jp-encode-href-errors-han.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be ISO-2022-JP?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/iso-2022-jp/iso2022jp-encode-href-errors-hangul.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be ISO-2022-JP?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/iso-2022-jp/iso2022jp-encode-href-errors-misc.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be ISO-2022-JP?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/iso-2022-jp/iso2022jp-encode-href.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be ISO-2022-JP?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/iso-2022-jp/iso2022jp_chars-csiso2022jp.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": true,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/iso-2022-jp/iso2022jp_chars.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": true,
+        "Confidence": 99,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/iso-2022-jp/iso2022jp_errors.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": true,
+        "Confidence": 1,
+        "Comment": "binary,Should be ISO-2022-JP?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis-decode-csshiftjis.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be SHIFT_JIS?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis-decode-errors.html",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": "Should be SHIFT_JIS?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis-decode-ms932.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be SHIFT_JIS?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis-decode-ms_kanji.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be SHIFT_JIS?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis-decode-shift-jis.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be SHIFT_JIS?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis-decode-sjis.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be SHIFT_JIS?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis-decode-windows-31j.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be SHIFT_JIS?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis-decode-x-sjis.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be SHIFT_JIS?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis-decode.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be SHIFT_JIS?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis-encode-form-csshiftjis.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be SHIFT_JIS?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis-encode-form-errors-han.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be SHIFT_JIS?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis-encode-form-errors-hangul.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be SHIFT_JIS?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis-encode-form-errors-misc.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be SHIFT_JIS?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis-encode-form-ms932.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be SHIFT_JIS?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis-encode-form-ms_kanji.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be SHIFT_JIS?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis-encode-form-shift-jis.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be SHIFT_JIS?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis-encode-form-sjis.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be SHIFT_JIS?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis-encode-form-windows-31j.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be SHIFT_JIS?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis-encode-form-x-sjis.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be SHIFT_JIS?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis-encode-form.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be SHIFT_JIS?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis-encode-href-errors-han.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be SHIFT_JIS?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis-encode-href-errors-hangul.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be SHIFT_JIS?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis-encode-href-errors-misc.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be SHIFT_JIS?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis-encode-href.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be SHIFT_JIS?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis_chars-csshiftjis.html",
+        "Encoding": "unknown",
+        "Charset": "latin1",
+        "Errored": true,
+        "Binary": false,
+        "Confidence": 0,
+        "Comment": "Should be SHIFT_JIS?!"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis_chars-ms932.html",
+        "Encoding": "unknown",
+        "Charset": "latin1",
+        "Errored": true,
+        "Binary": false,
+        "Confidence": 0,
+        "Comment": "Should be SHIFT_JIS?!"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis_chars-ms_kanji.html",
+        "Encoding": "unknown",
+        "Charset": "latin1",
+        "Errored": true,
+        "Binary": false,
+        "Confidence": 0,
+        "Comment": "Should be SHIFT_JIS?!"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis_chars-shift-jis.html",
+        "Encoding": "unknown",
+        "Charset": "latin1",
+        "Errored": true,
+        "Binary": false,
+        "Confidence": 0,
+        "Comment": "Should be SHIFT_JIS?!"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis_chars-sjis.html",
+        "Encoding": "unknown",
+        "Charset": "latin1",
+        "Errored": true,
+        "Binary": false,
+        "Confidence": 0,
+        "Comment": "Should be SHIFT_JIS?!"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis_chars-windows-31j.html",
+        "Encoding": "unknown",
+        "Charset": "latin1",
+        "Errored": true,
+        "Binary": false,
+        "Confidence": 0,
+        "Comment": "Should be SHIFT_JIS?!"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis_chars-x-sjis.html",
+        "Encoding": "unknown",
+        "Charset": "latin1",
+        "Errored": true,
+        "Binary": false,
+        "Confidence": 0,
+        "Comment": "Should be SHIFT_JIS?!"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis_chars.html",
+        "Encoding": "unknown",
+        "Charset": "latin1",
+        "Errored": true,
+        "Binary": false,
+        "Confidence": 0,
+        "Comment": "Should be SHIFT_JIS?!"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis_errors.html",
+        "Encoding": "Windows-1252",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": "Should be SHIFT_JIS?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr-decode-cseuckr.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be EUC-KR?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr-decode-csksc56011987.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be EUC-KR?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr-decode-errors.html",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": "Should be EUC-KR?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr-decode-iso-ir-149.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be EUC-KR?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr-decode-korean.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be EUC-KR?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr-decode-ks_c_5601-1987.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be EUC-KR?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr-decode-ks_c_5601-1989.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be EUC-KR?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr-decode-ksc5601.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be EUC-KR?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr-decode-ksc_5601.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be EUC-KR?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr-decode-windows-949.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be EUC-KR?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr-decode.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be EUC-KR?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr-encode-form-cseuckr.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be EUC-KR?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr-encode-form-csksc56011987.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be EUC-KR?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr-encode-form-errors-han.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be EUC-KR?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr-encode-form-errors-misc.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be EUC-KR?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr-encode-form-iso-ir-149.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be EUC-KR?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr-encode-form-korean.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be EUC-KR?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr-encode-form-ks_c_5601-1987.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be EUC-KR?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr-encode-form-ks_c_5601-1989.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be EUC-KR?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr-encode-form-ksc5601.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be EUC-KR?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr-encode-form-ksc_5601.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be EUC-KR?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr-encode-form-windows-949.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be EUC-KR?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr-encode-form.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be EUC-KR?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr-encode-href-errors-han.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be EUC-KR?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr-encode-href-errors-misc.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be EUC-KR?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr-encode-href.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be EUC-KR?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr_chars-cseuckr.html",
+        "Encoding": "Windows-1252",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": "Should be EUC-KR?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr_chars-csksc56011987.html",
+        "Encoding": "Windows-1252",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": "Should be EUC-KR?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr_chars-iso-ir-149.html",
+        "Encoding": "Windows-1252",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": "Should be EUC-KR?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr_chars-korean.html",
+        "Encoding": "Windows-1252",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": "Should be EUC-KR?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr_chars-ks_c_5601-1987.html",
+        "Encoding": "Windows-1252",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": "Should be EUC-KR?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr_chars-ks_c_5601-1989.html",
+        "Encoding": "Windows-1252",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": "Should be EUC-KR?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr_chars-ksc5601.html",
+        "Encoding": "Windows-1252",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": "Should be EUC-KR?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr_chars-ksc_5601.html",
+        "Encoding": "Windows-1252",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": "Should be EUC-KR?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr_chars-windows-949.html",
+        "Encoding": "Windows-1252",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": "Should be EUC-KR?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr_chars.html",
+        "Encoding": "Windows-1252",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": "Should be EUC-KR?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr_errors.html",
+        "Encoding": "Windows-1254",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 31.1333037889016,
+        "Comment": "Should be EUC-KR?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-schinese/gb18030/gb18030-encoder.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be gb18030?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-schinese/gbk/gbk-encoder.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be gbk?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-tchinese/big5/big5-decode-big5-hkscs.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be Big5?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-tchinese/big5/big5-decode-cn-big5.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be Big5?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-tchinese/big5/big5-decode-csbig5.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be Big5?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-tchinese/big5/big5-decode-errors.html",
+        "Encoding": "UTF-8",
+        "Charset": "utf-8",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 99,
+        "Comment": "Should be Big5?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-tchinese/big5/big5-decode-extra.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be Big5?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-tchinese/big5/big5-decode-x-x-big5.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be Big5?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-tchinese/big5/big5-decode.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be Big5?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-tchinese/big5/big5-enc-ascii.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-tchinese/big5/big5-encode-form-big5-hkscs.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be Big5?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-tchinese/big5/big5-encode-form-cn-big5.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be Big5?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-tchinese/big5/big5-encode-form-csbig5.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be Big5?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-tchinese/big5/big5-encode-form-errors-extBa.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be Big5?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-tchinese/big5/big5-encode-form-errors-extBb.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be Big5?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-tchinese/big5/big5-encode-form-errors-han.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be Big5?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-tchinese/big5/big5-encode-form-errors-hangul.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be Big5?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-tchinese/big5/big5-encode-form-errors-misc.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be Big5?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-tchinese/big5/big5-encode-form-errors-pua.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be Big5?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-tchinese/big5/big5-encode-form-x-x-big5.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be Big5?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-tchinese/big5/big5-encode-form.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be Big5?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-tchinese/big5/big5-encode-href-errors-han.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be Big5?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-tchinese/big5/big5-encode-href-errors-hangul.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be Big5?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-tchinese/big5/big5-encode-href-errors-misc.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be Big5?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-tchinese/big5/big5-encode-href.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": "Should be Big5?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-tchinese/big5/big5_chars-big5-hkscs.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": "Should be Big5?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-tchinese/big5/big5_chars-cn-big5.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": "Should be Big5?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-tchinese/big5/big5_chars-csbig5.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": "Should be Big5?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-tchinese/big5/big5_chars-x-x-big5.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": "Should be Big5?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-tchinese/big5/big5_chars.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": "Should be Big5?"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-tchinese/big5/big5_chars_extra.html",
+        "Encoding": "unknown",
+        "Charset": "latin1",
+        "Errored": true,
+        "Binary": false,
+        "Confidence": 0,
+        "Comment": "Should be Big5?!"
+    },
+    {
+        "Filename": "testdata/wpt/legacy-mb-tchinese/big5/big5_errors.html",
+        "Encoding": "ISO-8859-1",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 73,
+        "Comment": "Should be Big5?"
+    },
+    {
+        "Filename": "testdata/wpt/resources/two-boms-utf-16be.html",
+        "Encoding": "UTF-16BE",
+        "Charset": "utf-16be",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/wpt/resources/two-boms-utf-16le.html",
+        "Encoding": "UTF-16LE",
+        "Charset": "utf-16le",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/wpt/resources/two-boms-utf-8.html",
+        "Encoding": "UTF-8-SIG",
+        "Charset": "utf-8-bom",
+        "Errored": false,
+        "Binary": false,
+        "Confidence": 100,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/wpt/resources/utf-32-big-endian-bom.html",
+        "Encoding": "UTF-32BE",
+        "Charset": "utf-32be",
+        "Errored": false,
+        "Binary": true,
+        "Confidence": 100,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/wpt/resources/utf-32-big-endian-bom.xml",
+        "Encoding": "UTF-32BE",
+        "Charset": "utf-32be",
+        "Errored": false,
+        "Binary": true,
+        "Confidence": 100,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/wpt/resources/utf-32-big-endian-nobom.html",
+        "Encoding": "UTF-32BE",
+        "Charset": "utf-32be",
+        "Errored": false,
+        "Binary": true,
+        "Confidence": 85,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/wpt/resources/utf-32-big-endian-nobom.xml",
+        "Encoding": "UTF-32BE",
+        "Charset": "utf-32be",
+        "Errored": false,
+        "Binary": true,
+        "Confidence": 85,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/wpt/resources/utf-32-little-endian-bom.html",
+        "Encoding": "UTF-32LE",
+        "Charset": "utf-32le",
+        "Errored": false,
+        "Binary": true,
+        "Confidence": 100,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/wpt/resources/utf-32-little-endian-bom.xml",
+        "Encoding": "UTF-32LE",
+        "Charset": "utf-32le",
+        "Errored": false,
+        "Binary": true,
+        "Confidence": 100,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/wpt/resources/utf-32-little-endian-nobom.html",
+        "Encoding": "UTF-32LE",
+        "Charset": "utf-32le",
+        "Errored": false,
+        "Binary": true,
+        "Confidence": 85,
+        "Comment": ""
+    },
+    {
+        "Filename": "testdata/wpt/resources/utf-32-little-endian-nobom.xml",
+        "Encoding": "UTF-32LE",
+        "Charset": "utf-32le",
+        "Errored": false,
+        "Binary": true,
+        "Confidence": 85,
+        "Comment": ""
+    }
+]
