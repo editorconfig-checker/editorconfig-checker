@@ -48,10 +48,12 @@ Currently, implemented editorconfig features are:
 - `indent_style`
 - `indent_size`
 - `max_line_length`
+- `charset` (see [Charset setting](#Charset-setting) below)
 
 Unsupported features are:
 
-- `charset`
+- `spelling_language`
+- `tab_width`
 
 ## Quickstart
 
@@ -103,6 +105,8 @@ USAGE:
         config
   -debug
         print debugging information
+  -disable-charset
+        disables the charset check
   -disable-end-of-line
         disables the trailing whitespace check
   -disable-indent-size
@@ -370,6 +374,45 @@ A [configuration file](#configuration) which would ignore all test files and all
 If you want to play around how the tool would behave you can also pass the `--exclude` argument to the binary. This will accept a regular expression as well. The argument given will be added to the excludes as defined by your [configuration file](#configuration) (respecting both its [`Exclude`](#via-configuration) and [`IgnoreDefaults`](#ignoring-default-excludes) settings).
 
 For example: `ec --exclude node_modules`
+
+## Charset setting
+
+Our current charset detector accurately identifies `utf-8`, `utf-8-bom`, `utf-16be`, and `utf-16le` encodings, as well
+as files that are UTF32 encoded.
+Unfortunately, it struggles to correctly indentify `latin1` (aka ISO-8859-1) encoded files. So, by default, we don't
+check if a file is `latin1` encoded. If you want to enable this check, you will need to add the following to your
+configuration file:
+
+```json
+{
+  ...
+  "Charset": {
+    "Latin1": 1
+  }
+  ...
+}
+```
+
+In the example above, the number `1` identifies the minimum confidence level (between 0 and 100) that is found that the
+file is instead `latin1` encoded. A higher number indicates more confidence, and a lower number indicates less confidence.
+A value of `0`, disables the `latin1` charset check.
+
+Since our charset detector accurately identifies `utf-8`, `utf-8-bom`, `utf-16be`, and `utf-16le`, this check is enabled
+by default, with a inherent confidence factor of 50. If you are seeing files are being identified incorrectly, you can
+disable this charset check by adding any of the the following entries to your configuration file:
+
+```json
+{
+  ...
+  "Charset": {
+    "UTF8": 0,
+    "UTF8BOM": 0,
+    "UTF16BE": 0,
+    "UTF16LE": 0
+  }
+  ...
+}
+```
 
 ## Docker
 

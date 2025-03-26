@@ -12,6 +12,7 @@
  ],
  "Debug": false,
  "Disable": {
+  "Charset": false,
   "EndOfLine": false,
   "IndentSize": false,
   "Indentation": false,
