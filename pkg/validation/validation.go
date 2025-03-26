@@ -42,6 +42,8 @@ func ValidateFile(filePath string, config config.Config) []error.ValidationError
 	var validationErrors []error.ValidationError
 	var isDisabled bool = false
 
+	var charset string
+
 	rawFileContent, err := os.ReadFile(filePath)
 	if err != nil {
 		panic(err)
@@ -54,7 +56,6 @@ func ValidateFile(filePath string, config config.Config) []error.ValidationError
 	for _, regex := range textRegexes {
 		match, _ := regexp.MatchString(regex, mime)
 		if match {
-			var charset string
 			fileContent, charset, err = encoding.DecodeBytes(rawFileContent)
 			if err != nil {
 				if charset == "" {
@@ -95,6 +96,12 @@ func ValidateFile(filePath string, config config.Config) []error.ValidationError
 
 	fileInformation = files.FileInformation{Content: fileContent, FilePath: filePath, Editorconfig: definition}
 	validationError = ValidateLineEnding(fileInformation, config)
+	if validationError.Message != nil {
+		validationErrors = append(validationErrors, validationError)
+	}
+
+	fileInformation = files.FileInformation{Content: fileContent, FilePath: filePath, Editorconfig: definition}
+	validationError = ValidateCharset(fileInformation, config, charset)
 	if validationError.Message != nil {
 		validationErrors = append(validationErrors, validationError)
 	}
@@ -242,6 +249,20 @@ func ValidateMaxLineLength(fileInformation files.FileInformation, config config.
 	if currentError := validators.MaxLineLength(fileInformation.Line, maxLineLength, charSet); !config.Disable.MaxLineLength && currentError != nil {
 		config.Logger.Verbose("Max line length error found in %s on %d", fileInformation.FilePath, fileInformation.LineNumber)
 		return error.ValidationError{LineNumber: fileInformation.LineNumber + 1, Message: currentError}
+	}
+
+	return error.ValidationError{}
+}
+
+// ValidateCharset runs the charset validator and processes the error into the proper type
+func ValidateCharset(fileInformation files.FileInformation, config config.Config, charset string) error.ValidationError {
+	if currentError := validators.Charset(
+		fileInformation.Content,
+		fileInformation.Editorconfig.Raw["charset"],
+		charset,
+		config); !config.Disable.Charset && currentError != nil {
+		config.Logger.Verbose("Wrong charset found in %s", fileInformation.FilePath)
+		return error.ValidationError{LineNumber: -1, Message: currentError}
 	}
 
 	return error.ValidationError{}

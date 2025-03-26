@@ -3,6 +3,7 @@ package encoding
 
 import (
 	"fmt"
+	"slices"
 	"sort"
 	"strings"
 	"unicode/utf8"
@@ -19,6 +20,23 @@ import (
 )
 
 const BinaryData = "binary"
+
+const (
+	// See https://spec.editorconfig.org/#supported-pairs
+	CharsetLatin1  = "latin1"
+	CharsetUTF8    = "utf-8"
+	CharsetUTF8BOM = "utf-8-bom"
+	CharsetUTF16BE = "utf-16be"
+	CharsetUTF16LE = "utf-16le"
+)
+
+var ValidCharsets = []string{
+	CharsetLatin1,
+	CharsetUTF8,
+	CharsetUTF8BOM,
+	CharsetUTF16BE,
+	CharsetUTF16LE,
+}
 
 var encodings = map[string]encoding.Encoding{
 	// In https://github.com/golang/text/blob/HEAD/encoding/htmlindex/map.go#L64 and
@@ -156,20 +174,32 @@ func decodeText(contentBytes []byte, charset string) (string, error) {
 	return string(contentBytes), nil
 }
 
-func getEncoding(charset string) (encoding.Encoding, bool) {
+func normalizeCharsetName(charset string) string {
 	r := strings.NewReplacer("-", "", "_", "")
-	key := strings.ToLower(r.Replace(charset))
+	return strings.ToLower(r.Replace(charset))
+}
+
+func getEncoding(charset string) (encoding.Encoding, bool) {
+	key := normalizeCharsetName(charset)
 	enc, ok := encodings[key]
 	return enc, ok
 }
 
 var binaryChars = [256]bool{}
 
+var normalizedCharsets []string
+
 func init() {
 	// Allow tab (9), lf (10), ff (12), and cr (13)
 	trues := []byte{0, 1, 2, 3, 4, 5, 6, 7, 8, 11, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31}
 	for _, i := range trues {
 		binaryChars[i] = true
+	}
+
+	normalizedCharsets = make([]string, len(ValidCharsets))
+
+	for i, charset := range ValidCharsets {
+		normalizedCharsets[i] = normalizeCharsetName(charset)
 	}
 }
 
@@ -181,4 +211,52 @@ func IsBinaryFile(rawFileContent []byte) bool {
 		}
 	}
 	return false
+}
+
+// IsValid checks charset is supported by the editorconfig spec.
+func IsValid(charset string) bool {
+	charset = normalizeCharsetName(charset)
+	return slices.Contains(normalizedCharsets, charset)
+}
+
+var configCharsetMap = map[string]string{
+	"iso88591": CharsetLatin1,
+	// These files are almost always iso88591, so we don't want to annoy users
+	// with false negatives.
+	"windows1252": CharsetLatin1,
+}
+
+// ToConfigCharset returns the encoding found in the config file that matches,
+// the file's actual encoing.
+func ToConfigCharset(charset string) string {
+	charset = normalizeCharsetName(charset)
+	if charset == "iso88591" {
+		return CharsetLatin1
+	}
+	return charset
+}
+
+// Equal checks the two charset names for equality
+func Equal(charsetFound, charsetWanted string, bom bool) bool {
+	charsetFound = normalizeCharsetName(charsetFound)
+	charsetWanted = normalizeCharsetName(charsetWanted)
+	latin1, ok := configCharsetMap[charsetFound]
+	if ok {
+		charsetFound = latin1
+	}
+	if bom {
+		charsetFound += "bom"
+	}
+
+	latin1, ok = configCharsetMap[charsetWanted]
+	if ok {
+		charsetWanted = latin1
+	}
+
+	// latin1 files are utf8 files, too.
+	if strings.HasPrefix(charsetWanted, "utf8") && charsetFound == CharsetLatin1 {
+		return true
+	}
+
+	return charsetFound == charsetWanted
 }

@@ -183,3 +183,94 @@ func TestIsBinaryFile(t *testing.T) {
 		}
 	}
 }
+
+type isEqualTest struct {
+	filename string
+	charset  string // empty for invalid charset
+}
+
+var isEqualTests = []isEqualTest{
+	{"8859_1_da.html", "latin1"},
+	{"8859_1_de.html", "latin1"},
+	{"8859_1_en.html", "latin1"},
+	{"8859_1_es.html", "latin1"},
+	{"8859_1_fr.html", "latin1"},
+	{"8859_1_pt.html", "latin1"},
+	{"ascii.txt", "latin1"},
+	{"big5.html", ""},
+	{"candide-gb18030.txt", ""},
+	// This file fails the test, but it may not be a valid UTF-16LE file.
+	// For example, the Linux file command doesn't identify the file as
+	// "Unicode text, UTF-16, little-endian text"
+	// but simply
+	// "data"
+	// but since the file is from
+	// https://cs.opensource.google/go/x/text/+/master:encoding/testdata/
+	// I think it's correct to fail the test, and fix the chardet package.
+	// {"candide-utf-16le.txt", "utf16le"},
+	{"candide-utf-32be.txt", ""},
+	{"candide-utf-8.txt", "utf8"},
+	{"candide-windows-1252.txt", "latin1"},
+	{"cp865.txt", ""},
+	{"euc_jp.html", ""},
+	{"euc_kr.html", ""},
+	{"gb18030.html", ""},
+	{"html.html", "latin1"},
+	{"html.iso88591.html", "latin1"},
+	{"html.svg.html", "latin1"},
+	{"html.usascii.html", "latin1"},
+	{"html.utf8bomdetect.html", "utf8bom"},
+	{"html.utf8bom.html", "utf8bom"},
+	{"html.utf8bomws.html", "utf8bom"},
+	{"html.utf8.html", "latin1"}, // File is misnamed
+	{"html.withbr.html", "latin1"},
+	{"iso88591.txt", "latin1"},
+	{"koi8_r.txt", ""},
+	{"latin1.txt", "latin1"},
+	{"rashomon-euc-jp.txt", ""},
+	{"rashomon-iso-2022-jp.txt", ""}, // byte 89 is an Esc (ASCII 27)
+	{"rashomon-shift-jis.txt", ""},
+	{"rashomon-utf-8.txt", "utf8"},
+	{"shift_jis.html", ""},
+	{"sunzi-bingfa-gb-levels-1-and-2-hz-gb2312.txt", ""},
+	{"sunzi-bingfa-gb-levels-1-and-2-utf-8.txt", "utf8"},
+	{"sunzi-bingfa-simplified-gbk.txt", ""},
+	{"sunzi-bingfa-simplified-utf-8.txt", "utf8"},
+	{"sunzi-bingfa-traditional-big5.txt", ""},
+	{"sunzi-bingfa-traditional-utf-8.txt", "utf8"},
+	{"unsu-joh-eun-nal-euc-kr.txt", ""},
+	{"unsu-joh-eun-nal-utf-8.txt", "utf8"},
+	{"utf16bebom.txt", "utf16be"},
+	{"utf16lebom.txt", "utf16le"},
+	{"utf16.txt", "utf16le"},
+	{"utf32bebom.txt", ""},
+	{"utf32lebom.txt", ""},
+	{"utf8_bom.html", "utf8bom"},
+	{"utf8.html", "utf8"},
+	{"utf8-sdl.txt", "latin1"}, // should be utf8
+	{"utf8.txt", "utf8"},
+	{"utf8.txt-encoding-test-files.txt", "utf8"},
+}
+
+func TestEqual(t *testing.T) {
+	for _, tt := range isEqualTests {
+		filename := "testdata/" + tt.filename
+		rawFileContent, err := os.ReadFile(filename)
+		if err != nil {
+			panic(err)
+		}
+		_, charset, err := DecodeBytes(rawFileContent)
+		charset = normalizeCharsetName(charset)
+		if tt.charset == "" {
+			if IsValid(charset) {
+				t.Errorf("Equal(): %q: expected: %v, got: %v", tt.filename, tt.charset, charset)
+			}
+			continue
+		}
+		bom := tt.charset == "utf8bom"
+		// t.Logf("%q: %q %q %v", tt.filename, charset, tt.charset, bom)
+		if !Equal(charset, tt.charset, bom) {
+			t.Errorf("Equal(): %q: expected: %v, got: %v", tt.filename, tt.charset, charset)
+		}
+	}
+}
