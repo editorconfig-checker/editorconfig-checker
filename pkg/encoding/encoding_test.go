@@ -622,7 +622,8 @@ func teardown() {
 	}
 	defer f.Close()
 	enc := json.NewEncoder(f)
-	enc.SetIndent("", "  ")
+	// Need 4 spaces to pass tests.
+	enc.SetIndent("", "    ")
 	_ = enc.Encode(tests)
 }
 
