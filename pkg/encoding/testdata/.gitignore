@@ -1,4 +1,1 @@
-/chardet/
-/encoding-test-files/
-/mimetype/
-/text/
+*.tmp
