@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.3.0](https://github.com/editorconfig-checker/editorconfig-checker/compare/v3.2.1...v3.3.0) (2025-04-04)
+
+
+### Features
+
+* add `.jj` (Jujutsu) directory to default exclude list ([#458](https://github.com/editorconfig-checker/editorconfig-checker/issues/458)) ([ac903a0](https://github.com/editorconfig-checker/editorconfig-checker/commit/ac903a0a7f5506a80b3c5d2e76584b5e277b896a))
+
 ## [3.2.1](https://github.com/editorconfig-checker/editorconfig-checker/compare/v3.2.0...v3.2.1) (2025-03-15)
 
 
