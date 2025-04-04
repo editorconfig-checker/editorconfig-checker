@@ -20,8 +20,16 @@ import (
 	"golang.org/x/text/encoding/unicode/utf32"
 )
 
+// HitMissRatioForUTF1632Checks defines the ratio of hits to misses that must
+// be met for the IsUTF* functions to return true. For example, the number 1.1
+// requires the function find 10% more hits than misses. This number was chosen
+// empiricallly, but may need to be adjusted as we gather more test results.
+const HitMissRatioForUTF1632Checks = 1.01
+
 // MinConfidenceForUTF1632Checks defines the minimum confidence factor to use
-// our own check for if a file is UTF16/UTF32 encoded.
+// our own check for if a file is UTF16/UTF32 encoded. The number 1.0 represents
+// a 100% confidence level, and may be too high a setting, as it may not ever be
+// returned by our chardet library.
 const MinConfidenceForUTF1632Checks = 0.5
 
 // BinaryData contains the string to return if the data contains binary
@@ -376,7 +384,7 @@ func IsUTF16BE(b []byte) bool {
 		miss++
 	}
 
-	return hit > miss
+	return float64(hit)/float64(miss) >= HitMissRatioForUTF1632Checks
 }
 
 // IsUTF16LE returns true if the file is UTF16LE encoded.
@@ -403,7 +411,7 @@ func IsUTF16LE(b []byte) bool {
 		miss++
 	}
 
-	return hit > miss
+	return float64(hit)/float64(miss) >= HitMissRatioForUTF1632Checks
 }
 
 // IsUTF32BE returns true if the file is UTF32BE encoded.
@@ -431,7 +439,7 @@ func IsUTF32BE(b []byte) bool {
 		miss++
 	}
 
-	return hit > miss
+	return float64(hit)/float64(miss) >= HitMissRatioForUTF1632Checks
 }
 
 // IsUTF32LE returns true if the file is UTF32LE encoded.
@@ -459,7 +467,7 @@ func IsUTF32LE(b []byte) bool {
 		miss++
 	}
 
-	return hit > miss
+	return float64(hit)/float64(miss) >= HitMissRatioForUTF1632Checks
 }
 
 func decodeText(contentBytes []byte, encoding string) (string, error) {
