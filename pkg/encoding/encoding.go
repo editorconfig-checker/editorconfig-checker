@@ -203,7 +203,7 @@ func CharsetsEqual(charsetFound, charsetWanted string, bomEncoding string) bool 
 		return false
 	}
 	if charsetFound == "utf8" && bomEncoding == consts.UTF8 {
-		charsetFound += "bom"
+		charsetFound = "utf8bom"
 	}
 
 	// latin1 (iso88591) files are utf8 files, too.
