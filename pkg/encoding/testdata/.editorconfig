@@ -72,3 +72,7 @@ charset = utf8
 charset = utf8
 [wpt/legacy-mb-tchinese/big5/big5-decode-errors.html]
 charset = utf8
+
+# ignore the licenses
+[licenses/*]
+charset = unset

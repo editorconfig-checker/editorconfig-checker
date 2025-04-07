@@ -51,7 +51,7 @@
         "Errored": false,
         "Binary": false,
         "Confidence": 73,
-        "Comment": ""
+        "Comment": "Should be ISO-8859-1?"
     },
     {
         "Filename": "testdata/chardet/big5.html",
@@ -118,7 +118,7 @@
     },
     {
         "Filename": "testdata/encoding-test-files/ascii.txt",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -172,7 +172,7 @@
     },
     {
         "Filename": "testdata/issues/issue252.txt",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -181,7 +181,7 @@
     },
     {
         "Filename": "testdata/mimetype/html.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -190,16 +190,16 @@
     },
     {
         "Filename": "testdata/mimetype/html.iso88591.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
         "Confidence": 100,
-        "Comment": ""
+        "Comment": "Should be ISO-8859-1?"
     },
     {
         "Filename": "testdata/mimetype/html.svg.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -208,7 +208,7 @@
     },
     {
         "Filename": "testdata/mimetype/html.usascii.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -217,7 +217,7 @@
     },
     {
         "Filename": "testdata/mimetype/html.utf8.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -253,7 +253,7 @@
     },
     {
         "Filename": "testdata/mimetype/html.withbr.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -406,12 +406,12 @@
     },
     {
         "Filename": "testdata/text/sunzi-bingfa-gb-levels-1-and-2-hz-gb2312.txt",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
         "Confidence": 99,
-        "Comment": "Should be GB2312?"
+        "Comment": "Should be HZ-GB-2312?"
     },
     {
         "Filename": "testdata/text/sunzi-bingfa-gb-levels-1-and-2-utf-8.txt",
@@ -816,7 +816,7 @@
         "Errored": false,
         "Binary": false,
         "Confidence": 73,
-        "Comment": "Should be ISO-8859-13?"
+        "Comment": ""
     },
     {
         "Filename": "testdata/uchardet/et/iso-8859-15.txt",
@@ -1275,7 +1275,7 @@
         "Errored": false,
         "Binary": false,
         "Confidence": 73,
-        "Comment": "Should be ISO-8859-13?"
+        "Comment": ""
     },
     {
         "Filename": "testdata/uchardet/lt/iso-8859-4.txt",
@@ -1311,7 +1311,7 @@
         "Errored": false,
         "Binary": false,
         "Confidence": 73,
-        "Comment": "Should be ISO-8859-13?"
+        "Comment": ""
     },
     {
         "Filename": "testdata/uchardet/lv/iso-8859-4.txt",
@@ -1446,7 +1446,7 @@
         "Errored": false,
         "Binary": false,
         "Confidence": 63.65243902439024,
-        "Comment": "Should be ISO-8859-13?"
+        "Comment": ""
     },
     {
         "Filename": "testdata/uchardet/pl/iso-8859-16.txt",
@@ -1909,7 +1909,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-japanese/euc-jp/eucjp-decode-cseucpkdfmtjapanese.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -1927,7 +1927,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-japanese/euc-jp/eucjp-decode-x-euc-jp.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -1936,7 +1936,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-japanese/euc-jp/eucjp-decode.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -1945,7 +1945,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-japanese/euc-jp/eucjp-encode-form-cseucpkdfmtjapanese.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -1954,7 +1954,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-japanese/euc-jp/eucjp-encode-form-errors-han.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -1963,7 +1963,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-japanese/euc-jp/eucjp-encode-form-errors-hangul.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -1972,7 +1972,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-japanese/euc-jp/eucjp-encode-form-errors-misc.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -1981,7 +1981,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-japanese/euc-jp/eucjp-encode-form-x-euc-jp.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -1990,7 +1990,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-japanese/euc-jp/eucjp-encode-form.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -1999,7 +1999,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-japanese/euc-jp/eucjp-encode-href-errors-han.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2008,7 +2008,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-japanese/euc-jp/eucjp-encode-href-errors-hangul.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2017,7 +2017,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-japanese/euc-jp/eucjp-encode-href-errors-misc.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2026,7 +2026,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-japanese/euc-jp/eucjp-encode-href.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2071,7 +2071,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-japanese/iso-2022-jp/iso2022jp-decode-csiso2022jp.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2089,7 +2089,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-japanese/iso-2022-jp/iso2022jp-decode.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2098,7 +2098,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-japanese/iso-2022-jp/iso2022jp-encode-form-csiso2022jp.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2107,7 +2107,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-japanese/iso-2022-jp/iso2022jp-encode-form-errors-han.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2116,7 +2116,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-japanese/iso-2022-jp/iso2022jp-encode-form-errors-hangul.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2125,7 +2125,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-japanese/iso-2022-jp/iso2022jp-encode-form-errors-misc.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2143,7 +2143,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-japanese/iso-2022-jp/iso2022jp-encode-form.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2152,7 +2152,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-japanese/iso-2022-jp/iso2022jp-encode-href-errors-han.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2161,7 +2161,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-japanese/iso-2022-jp/iso2022jp-encode-href-errors-hangul.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2170,7 +2170,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-japanese/iso-2022-jp/iso2022jp-encode-href-errors-misc.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2179,7 +2179,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-japanese/iso-2022-jp/iso2022jp-encode-href.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2215,7 +2215,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis-decode-csshiftjis.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2233,7 +2233,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis-decode-ms932.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2242,7 +2242,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis-decode-ms_kanji.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2251,7 +2251,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis-decode-shift-jis.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2260,7 +2260,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis-decode-sjis.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2269,7 +2269,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis-decode-windows-31j.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2278,7 +2278,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis-decode-x-sjis.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2287,7 +2287,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis-decode.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2296,7 +2296,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis-encode-form-csshiftjis.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2305,7 +2305,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis-encode-form-errors-han.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2314,7 +2314,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis-encode-form-errors-hangul.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2323,7 +2323,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis-encode-form-errors-misc.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2332,7 +2332,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis-encode-form-ms932.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2341,7 +2341,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis-encode-form-ms_kanji.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2350,7 +2350,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis-encode-form-shift-jis.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2359,7 +2359,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis-encode-form-sjis.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2368,7 +2368,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis-encode-form-windows-31j.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2377,7 +2377,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis-encode-form-x-sjis.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2386,7 +2386,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis-encode-form.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2395,7 +2395,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis-encode-href-errors-han.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2404,7 +2404,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis-encode-href-errors-hangul.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2413,7 +2413,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis-encode-href-errors-misc.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2422,7 +2422,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-japanese/shift_jis/sjis-encode-href.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2512,7 +2512,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr-decode-cseuckr.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2521,7 +2521,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr-decode-csksc56011987.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2539,7 +2539,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr-decode-iso-ir-149.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2548,7 +2548,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr-decode-korean.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2557,7 +2557,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr-decode-ks_c_5601-1987.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2566,7 +2566,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr-decode-ks_c_5601-1989.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2575,7 +2575,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr-decode-ksc5601.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2584,7 +2584,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr-decode-ksc_5601.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2593,7 +2593,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr-decode-windows-949.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2602,7 +2602,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr-decode.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2611,7 +2611,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr-encode-form-cseuckr.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2620,7 +2620,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr-encode-form-csksc56011987.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2629,7 +2629,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr-encode-form-errors-han.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2638,7 +2638,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr-encode-form-errors-misc.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2647,7 +2647,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr-encode-form-iso-ir-149.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2656,7 +2656,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr-encode-form-korean.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2665,7 +2665,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr-encode-form-ks_c_5601-1987.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2674,7 +2674,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr-encode-form-ks_c_5601-1989.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2683,7 +2683,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr-encode-form-ksc5601.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2692,7 +2692,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr-encode-form-ksc_5601.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2701,7 +2701,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr-encode-form-windows-949.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2710,7 +2710,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr-encode-form.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2719,7 +2719,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr-encode-href-errors-han.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2728,7 +2728,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr-encode-href-errors-misc.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2737,7 +2737,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-korean/euc-kr/euckr-encode-href.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2845,7 +2845,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-schinese/gb18030/gb18030-encoder.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2854,7 +2854,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-schinese/gbk/gbk-encoder.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2863,7 +2863,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-tchinese/big5/big5-decode-big5-hkscs.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2872,7 +2872,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-tchinese/big5/big5-decode-cn-big5.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2881,7 +2881,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-tchinese/big5/big5-decode-csbig5.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2899,7 +2899,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-tchinese/big5/big5-decode-extra.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2908,7 +2908,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-tchinese/big5/big5-decode-x-x-big5.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2917,7 +2917,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-tchinese/big5/big5-decode.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2926,16 +2926,16 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-tchinese/big5/big5-enc-ascii.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
         "Confidence": 100,
-        "Comment": ""
+        "Comment": "Should be Big5?"
     },
     {
         "Filename": "testdata/wpt/legacy-mb-tchinese/big5/big5-encode-form-big5-hkscs.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2944,7 +2944,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-tchinese/big5/big5-encode-form-cn-big5.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2953,7 +2953,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-tchinese/big5/big5-encode-form-csbig5.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2962,7 +2962,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-tchinese/big5/big5-encode-form-errors-extBa.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2971,7 +2971,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-tchinese/big5/big5-encode-form-errors-extBb.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2980,7 +2980,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-tchinese/big5/big5-encode-form-errors-han.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2989,7 +2989,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-tchinese/big5/big5-encode-form-errors-hangul.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -2998,7 +2998,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-tchinese/big5/big5-encode-form-errors-misc.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -3007,7 +3007,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-tchinese/big5/big5-encode-form-errors-pua.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -3016,7 +3016,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-tchinese/big5/big5-encode-form-x-x-big5.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -3025,7 +3025,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-tchinese/big5/big5-encode-form.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -3034,7 +3034,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-tchinese/big5/big5-encode-href-errors-han.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -3043,7 +3043,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-tchinese/big5/big5-encode-href-errors-hangul.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -3052,7 +3052,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-tchinese/big5/big5-encode-href-errors-misc.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,
@@ -3061,7 +3061,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-tchinese/big5/big5-encode-href.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": false,

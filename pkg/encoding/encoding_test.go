@@ -696,6 +696,9 @@ func setup() {
 			// There are no test files in the root of testdata/ any more.
 			return nil
 		}
+		if dir == "testdata/licenses/" {
+			return nil
+		}
 		for _, test := range tests {
 			if strings.HasSuffix(test.Filename, filename) {
 				return nil
@@ -721,6 +724,10 @@ func setup() {
 					break
 				}
 			}
+		}
+
+		if ok, _ := regexp.MatchString(`(8859_?1|latin1)`, normalized); ok {
+			encoding = consts.ISO88591
 		}
 
 		if encoding == "" {

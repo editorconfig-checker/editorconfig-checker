@@ -421,17 +421,22 @@ Our current charset detector accurately identifies the encoding scheme for files
 encoded in `utf-8`, `utf-8-bom`, `utf-16be`, and `utf-16le`.
 We also accurately identify UTF32-encoded files (which are rarely used).
 
-Unfortunately, our detectors sometimes misidentifies non-UTF
-encoded files, such as those encoded in `iso-8859-2` or `windows-1252`, as
-being `iso-8859-1` encoded. And `latin1` is an alias for the `iso-8859-1`
-encoding scheme.
+Unfortunately, our detector sometimes misidentifies non-UTF encoded files, such
+as those encoded in `iso-8859-2` or `windows-1252`, as being `iso-8859-1`
+encoded. And `latin1` is an alias for the `iso-8859-1` encoding scheme.
 
 Therefore, to avoid false-positives, if the charset config option is set to
 `latin1` we will accept files encoded in any encoding other than the following:
-`utf-8`, `utf-8-bom`, `utf-16be` and `utf-16le`.
+`utf-8`, `utf-8-bom`, `utf-16be` and `utf-16le`. To understand these different
+encodings visit
+[Comparison_of_Unicode_encodings](https://en.wikipedia.org/wiki/Comparison_of_Unicode_encodings).
 
 If you want to explictly check if a file is `latin1` encoded, set the charset
-option to `iso-8859-1`.
+option to `iso-8859-1`. For more information on this encoding, visit
+[here](https://en.wikipedia.org/wiki/ISO/IEC_8859-1).
+
+If you want check if a file is a simple [ASCII](https://en.wikipedia.org/wiki/ASCII)
+file, set the charset option to `ascii`.
 
 If you want to disable charset checking entirely, set the `charset` option to
 `unset`:
@@ -462,10 +467,9 @@ windows-1255           windows-1256           windows-1257
 x-iso-10646-ucs-4-2143 x-iso-10646-ucs-4-3412
 ```
 
-Note that `ascii` is an alias for `iso-8859-1`, `utf-16` is an alias for
-`utf-16le`,
-and `utf-32` is an alias for `utf-32le`. Dashes and underscores are allowed
-anywhere in the names, but they are not required, and are ignored.
+Note that `utf-16` is an alias for `utf-16le`, and `utf-32` is an alias for
+`utf-32le`. Dashes and underscores are allowed anywhere in the names, but they
+are not required, and are ignored.
 
 Also note that we don't have a specialized decoder to decode files encoded in
 any of the following encodings:
