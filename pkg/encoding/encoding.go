@@ -313,7 +313,6 @@ func Detect(contentBytes []byte) (string, float64, string) {
 		}
 
 		if encoding == consts.Ascii {
-			encoding = consts.ISO88591
 			break
 		}
 
@@ -341,8 +340,16 @@ func Detect(contentBytes []byte) (string, float64, string) {
 			}
 		}
 
+		hasC0 := containsAnyByte(contentBytes, c0Chars)
+		hasC1 := containsAnyByte(contentBytes, c1Chars)
+		hasHI := containsAnyByte(contentBytes, hiChars)
+
 		if utf8.Valid(contentBytes) {
-			hasHI := containsAnyByte(contentBytes, hiChars)
+			if !hasC0 && !hasC1 && !hasHI {
+				encoding = consts.Ascii
+				break
+			}
+
 			if !hasHI {
 				encoding = consts.ISO88591
 				break
@@ -365,14 +372,11 @@ func Detect(contentBytes []byte) (string, float64, string) {
 			break
 		}
 
-		if strings.HasPrefix(strings.ToLower(encoding), "windows") {
+		if strings.HasPrefix(strings.ToLower(encoding), "windows") && !hasC1 {
 			// This is a false positive, as all Windows-* encodings include
 			// C1 chars.
-			hasC1 := containsAnyByte(contentBytes, c1Chars)
-			if !hasC1 {
-				encoding = consts.ISO88591
-				break
-			}
+			encoding = consts.ISO88591
+			break
 		}
 
 		break

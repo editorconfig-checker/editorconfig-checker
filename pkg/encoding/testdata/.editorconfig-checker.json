@@ -5,6 +5,7 @@
     "AllowedContentTypes": [],
     "PassedFiles": [],
     "exclude": [
+        "licenses",
         "chardet/gb18030.html",
         "text/candide-gb18030.txt",
         "text/sunzi-bingfa-simplified-gbk.txt",
