@@ -418,25 +418,25 @@ For example: `ec --exclude node_modules`
 ## Charset Setting
 
 Our current charset detector accurately identifies the encoding scheme for files
-encoded in `utf-8`, `utf-8-bom`, `utf-16be`, and `utf-16le`.
+using the `utf-8`, `utf-8-bom`, `utf-16be`, and `utf-16le` character encodings.
 We also accurately identify UTF32-encoded files (which are rarely used).
 
 Unfortunately, our detector sometimes misidentifies non-UTF encoded files, such
 as those encoded in `iso-8859-2` or `windows-1252`, as being `iso-8859-1`
 encoded. And `latin1` is an alias for the `iso-8859-1` encoding scheme.
 
-Therefore, to avoid false-positives, if the charset config option is set to
-`latin1` we will accept files encoded in any encoding other than the following:
-`utf-8`, `utf-8-bom`, `utf-16be` and `utf-16le`. To understand these different
+Therefore, to avoid false-positives, if the charset option is set to `latin1`,
+we will accept files encoded in any encoding other than the `utf-8`,
+`utf-8-bom`, `utf-16be` and `utf-16le` encodings. To understand these different
 encodings visit
-[Comparison_of_Unicode_encodings](https://en.wikipedia.org/wiki/Comparison_of_Unicode_encodings).
+[Comparison of Unicode encodings](https://en.wikipedia.org/wiki/Comparison_of_Unicode_encodings).
 
-If you want to explictly check if a file is `latin1` encoded, set the charset
+If you want to explictly check if files are `latin1` encoded, set the charset
 option to `iso-8859-1`. For more information on this encoding, visit
 [here](https://en.wikipedia.org/wiki/ISO/IEC_8859-1).
 
-If you want check if a file is a simple [ASCII](https://en.wikipedia.org/wiki/ASCII)
-file, set the charset option to `ascii`.
+If you want check if files are simple [ASCII](https://en.wikipedia.org/wiki/ASCII)
+encoded, set the charset option to `ascii`.
 
 If you want to disable charset checking entirely, set the `charset` option to
 `unset`:
@@ -446,7 +446,7 @@ If you want to disable charset checking entirely, set the `charset` option to
 charset = unset
 ```
 
-Here's a list of all the encodings we currently attempt to identify:
+Here are the character encodings we attempt to identify:
 
 ```text
 ascii                  big5                   cp932
@@ -471,8 +471,7 @@ Note that `utf-16` is an alias for `utf-16le`, and `utf-32` is an alias for
 `utf-32le`. Dashes and underscores are allowed anywhere in the names, but they
 are not required, and are ignored.
 
-Also note that we don't have a specialized decoder to decode files encoded in
-any of the following encodings:
+We don't have specialized decoders to decode files using any of these encodings:
 
 ```text
 cp932                  cp949                  euc-tw
@@ -481,12 +480,11 @@ iso-2022-cn            iso-2022-kr            johab
 tis-620                x-iso-10646-ucs-4-2143 x-iso-10646-ucs-4-3412
 ```
 
-We do decode these files using the default (non-encoding aware) decoder, but
+We decode these files using the default (non-encoding aware) decoder, but
 this may lead to issues, such as mis-identifying line lengths.
 
-If a file's encoding can't be determined, we will identify the encoding as
-`unknown`, and will report the issue, and decode the file using the default
-decoder.
+If a file's encoding can't be determined, we identify the encoding as `unknown`,
+report the issue, and decode the file using the default decoder.
 
 ## Docker
 
