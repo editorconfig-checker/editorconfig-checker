@@ -594,6 +594,8 @@ func TestPrintSupportedEncodings(t *testing.T) {
 		return
 	}
 
+	t.Log("Here's a table of the encodings we support (to update our README if need be):")
+
 	entries := encodings
 
 	i := slices.Index(entries, consts.UTF8SIG)
@@ -707,7 +709,8 @@ func setup() {
 
 		normalized := normalizeName(filename)
 
-		encoding, ok := normalizedEncodings[normalized]
+		encoding := normalizedEncodings[normalized]
+
 		if encoding == "" {
 			for k, v := range normalizedEncodings {
 				if ok, _ := regexp.MatchString(k, normalized); ok {

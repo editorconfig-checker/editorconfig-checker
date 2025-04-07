@@ -203,8 +203,6 @@ var (
 		"utf8bom",
 	}
 
-	utfEncodingMap map[string]string
-
 	// encodingToDecoderMap maps wlynxg/chardet's encoding name to a name used by go.
 	encodingToDecoderMap map[string]string
 
@@ -255,13 +253,13 @@ func CharsetsMatch(charsetFound, charsetWanted string) bool {
 		charsetFound = "utf8bom"
 	}
 
-	if !Supported(charsetFound) {
+	if !supported(charsetFound) {
 		if charsetWanted == CharsetLatin1 {
 			return true
 		}
 	}
 
-	// latin1 (iso88591) files are utf8 files, too.
+	// latin1 (iso88591), and ascii files are utf8 files, too.
 	if charsetWanted == "utf8" && slices.Contains(latin1Encodings, charsetFound) {
 		return true
 	}
@@ -379,7 +377,7 @@ func Detect(contentBytes []byte) (string, float64, string) {
 			break
 		}
 
-		break
+		break //nolint:staticcheck
 	}
 
 	return encoding, confidence, result.Language
@@ -550,7 +548,7 @@ func IsUTF32LE(b []byte) float64 {
 	return float64(hit) / float64(miss)
 }
 
-func Supported(encoding string) bool {
+func supported(encoding string) bool {
 	normalized := normalizeName(encoding)
 	_, ok := supportedUTFEncodingMap[normalized]
 
@@ -584,13 +582,13 @@ func decodeText(contentBytes []byte, encoding string) (string, error) {
 func getDecoder(encoding string) (encoding.Encoding, bool) {
 	normalized := normalizeName(encoding)
 
-	decoder, ok := decoders[normalized]
+	_, ok := decoders[normalized]
 
 	if !ok {
-		normalized, _ = encodingToDecoderMap[normalized]
+		normalized = encodingToDecoderMap[normalized]
 	}
 
-	decoder, ok = decoders[normalized]
+	decoder, ok := decoders[normalized]
 
 	return decoder, ok
 }
