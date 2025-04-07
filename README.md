@@ -295,6 +295,7 @@ If you choose to [ignore them](#ignoring-default-excludes), these paths are excl
 
 ```txt
 "\\.git[\\/]",
+"^\\.jj/",
 "[\\/]node_modules[\\/]",
 "^\\.yarn/",
 "^yarn\\.lock$",
