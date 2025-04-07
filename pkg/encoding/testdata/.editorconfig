@@ -1,0 +1,62 @@
+root = true
+
+[*]
+charset = latin1
+end_of_line=lf
+
+[*{utf8,utf-8,UTF-8}*]
+charset = utf8
+
+[*{utf8*bom,bom*utf-8}*]
+charset = utf-8-bom
+
+[*{utf16*be,utf16be,utf16*be,utf-16*be}*]
+charset = utf-16be
+
+[*{utf16*le,utf16le,utf16*le,utf-16*le,utf16.}*]
+charset = utf-16le
+
+[*{utf32*be,utf-32*be,utf-32*be,utf-32*big}*]
+charset = utf-32be
+
+[*{utf32*le,utf-32*le,utf-32*le,utf-32*little}*]
+charset = utf-32le
+
+# It's understandable that this file misidentifies, as it's a 
+# "UTF-8 decoder capability and stress test". See
+# https://github.com/libsdl-org/SDL/blob/main/test/utf8.txt
+[utf8-sdl.txt]
+charset = Windows-1254
+
+# Both the uchardet command, and python's chardet library identify these files
+# as UTF8:
+[wpt/legacy-mb-japanese/euc-jp/eucjp-decode-errors.html] 
+charset = utf8
+[wpt/legacy-mb-japanese/iso-2022-jp/iso2022jp-decode-errors.html]
+charset = utf8
+[wpt/legacy-mb-japanese/iso-2022-jp/iso2022jp-encode-form-errors-stateful.html]
+charset = utf8
+[wpt/legacy-mb-japanese/shift_jis/sjis-decode-errors.html]
+charset = utf8
+[wpt/legacy-mb-korean/euc-kr/euckr-decode-errors.html]
+charset = utf8
+[wpt/legacy-mb-tchinese/big5/big5-decode-errors.html]
+charset = utf8
+
+# $ uchardet ...
+# wpt/legacy-mb-japanese/euc-jp/eucjp-decode-errors.html: UTF-8
+# wpt/legacy-mb-japanese/iso-2022-jp/iso2022jp-decode-errors.html: UTF-8
+# wpt/legacy-mb-japanese/iso-2022-jp/iso2022jp-encode-form-errors-stateful.html: UTF-8
+# wpt/legacy-mb-japanese/shift_jis/sjis-decode-errors.html: UTF-8
+# wpt/legacy-mb-tchinese/big5/big5-decode-errors.html: UTF-8
+
+# $ python -m chardet ...
+# wpt/legacy-mb-japanese/euc-jp/eucjp-decode-errors.html: utf-8 with confidence 0.99
+# wpt/legacy-mb-japanese/iso-2022-jp/iso2022jp-decode-errors.html: utf-8 with confidence 0.99
+# wpt/legacy-mb-japanese/iso-2022-jp/iso2022jp-encode-form-errors-stateful.html: Windows-1252 with confidence 0.6952380952380952
+# wpt/legacy-mb-japanese/shift_jis/sjis-decode-errors.html: utf-8 with confidence 0.99
+# wpt/legacy-mb-tchinese/big5/big5-decode-errors.html: utf-8 with confidence 0.99
+
+# ignore the licenses
+[licenses/*]
+charset = unset

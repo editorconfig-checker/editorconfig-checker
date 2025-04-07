@@ -133,6 +133,7 @@ func TestMerge(t *testing.T) {
 			Indentation:            true,
 			IndentSize:             true,
 			MaxLineLength:          true,
+			Charset:                true,
 		},
 	}
 
@@ -182,7 +183,8 @@ func TestParse(t *testing.T) {
 		c.Disable.EndOfLine != false ||
 		c.Disable.TrimTrailingWhitespace != false ||
 		c.Disable.InsertFinalNewline != false ||
-		c.Disable.Indentation != false {
+		c.Disable.Indentation != false ||
+		c.Disable.Charset != false {
 		t.Error(c.AllowedContentTypes)
 		t.Errorf("Expected config to have values from test file, got %v", c)
 	}
