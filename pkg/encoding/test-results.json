@@ -411,7 +411,7 @@
         "Errored": false,
         "Binary": false,
         "Confidence": 99,
-        "Comment": "Should be HZ-GB-2312?"
+        "Comment": "Should be GB2312?"
     },
     {
         "Filename": "testdata/text/sunzi-bingfa-gb-levels-1-and-2-utf-8.txt",
@@ -2931,7 +2931,7 @@
         "Errored": false,
         "Binary": false,
         "Confidence": 100,
-        "Comment": "Should be Big5?"
+        "Comment": ""
     },
     {
         "Filename": "testdata/wpt/legacy-mb-tchinese/big5/big5-encode-form-big5-hkscs.html",
