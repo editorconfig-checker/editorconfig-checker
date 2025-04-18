@@ -7,7 +7,7 @@ toolchain go1.24.0
 require (
 	github.com/baulk/chardet v0.1.0
 	github.com/editorconfig/editorconfig-core-go/v2 v2.6.3
-	github.com/gabriel-vasile/mimetype v1.4.8
+	github.com/gabriel-vasile/mimetype v1.4.9
 	golang.org/x/text v0.24.0
 )
 
@@ -30,7 +30,7 @@ require (
 	github.com/gkampitakis/go-snaps v0.5.11
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	golang.org/x/mod v0.23.0 // indirect
-	golang.org/x/net v0.36.0 // indirect
+	golang.org/x/net v0.39.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
