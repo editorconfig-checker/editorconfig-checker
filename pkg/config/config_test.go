@@ -86,7 +86,7 @@ func TestGetExcludesAsRegularExpression(t *testing.T) {
 	}
 
 	actual = c.GetExcludesAsRegularExpression()
-	expected = `testfiles|testdata|\.git[\/]|^\.jj/|^Cargo\.lock$|^composer\.lock$|^Gemfile\.lock$|[\/]node_modules[\/]|^package-lock\.json$|^\.pnp\.cjs$|^\.pnp\.js$|^\.pnp\.loader\.mjs$|^\.yarn/|^yarn\.lock$|\.eot$|\.otf$|\.ttf$|\.woff$|\.woff2$|\.avif$|\.gif$|\.ico$|\.jpeg$|\.jpg$|\.mp4$|\.pbm$|\.pgm$|\.png$|\.pnm$|\.ppm$|\.svg$|\.webp$|\.wmv$|\.bak$|\.bin$|\.pdf$|\.snap$|\.7z$|\.bz2$|\.gz$|\.tar$|\.zip$|\.log$|\.patch$|\.css\.map$|\.js\.map$|min\.css$|min\.js$`
+	expected = `testfiles|testdata|\.git[\/]|^\.jj[\/]|^Cargo\.lock$|^composer\.lock$|^Gemfile\.lock$|[\/]node_modules[\/]|^package-lock\.json$|^\.pnp\.cjs$|^\.pnp\.js$|^\.pnp\.loader\.mjs$|^\.yarn[\/]|^yarn\.lock$|\.eot$|\.otf$|\.ttf$|\.woff$|\.woff2$|\.avif$|\.gif$|\.ico$|\.jpeg$|\.jpg$|\.mp4$|\.pbm$|\.pgm$|\.png$|\.pnm$|\.ppm$|\.svg$|\.webp$|\.wmv$|\.bak$|\.bin$|\.pdf$|\.snap$|\.7z$|\.bz2$|\.gz$|\.tar$|\.zip$|\.log$|\.patch$|\.css\.map$|\.js\.map$|min\.css$|min\.js$`
 
 	if actual != expected {
 		t.Errorf("expected %s, got %s", expected, actual)
