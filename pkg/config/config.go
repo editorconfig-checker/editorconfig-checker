@@ -31,10 +31,31 @@ var defaultExcludes = []string{
 	"^composer\\.lock$",
 	// RubyGems (Ruby)
 	"^Gemfile\\.lock$",
+	// Go Modules (Go)
+	"^go\\.(mod|sum)$",
+	// Gradle (Java)
+	"gradle[\\/]wrapper[\\/]gradle-wrapper\\.properties$",
+	"^gradlew(\\.bat)?$",
+	"^(buildscript-)?gradle\\.lockfile?$",
+	// Maven (Java)
+	"\\.mvn[\\/]wrapper[\\/]maven-wrapper\\.properties$",
+	"\\.mvn[\\/]wrapper[\\/]MavenWrapperDownloader\\.java$",
+	"^mvnw(\\.cmd)?$",
 	// NodeJS
 	"[\\/]node_modules[\\/]",
 	// npm (NodeJS)
+	"^npm-shrinkwrap\\.json$",
 	"^package-lock\\.json$",
+	// pip (Python)
+	"^Pipfile\\.lock$",
+	// Poetry (Python)
+	"^poetry\\.lock$",
+	// pnpm (NodeJS)
+	"^pnpm-lock\\.yaml$",
+	// Terraform & OpenTofu
+	"\\.terraform\\.lock\\.hcl$",
+	// uv (Python)
+	"^uv\\.lock$",
 	// yarn (NodeJS)
 	"^\\.pnp\\.cjs$",
 	"^\\.pnp\\.js$",
@@ -60,18 +81,24 @@ var defaultExcludes = []string{
 	"\\.pnm$",
 	"\\.ppm$",
 	"\\.svg$",
+	"\\.tiff$",
 	"\\.webp$",
 	"\\.wmv$",
 	// other binary or container formats
 	"\\.bak$",
 	"\\.bin$",
+	"\\.docx?$",
 	"\\.pdf$",
 	"\\.snap$",
+	"\\.xlsx?$",
 	// archive formats
 	"\\.7z$",
 	"\\.bz2$",
 	"\\.gz$",
+	"\\.jar$",
 	"\\.tar$",
+	"\\.tgz$",
+	"\\.war$",
 	"\\.zip$",
 	// log & (git) patch files
 	"\\.log$",
