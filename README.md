@@ -288,48 +288,89 @@ add x y =
 If you choose to [ignore them](#ignoring-default-excludes), these paths are excluded automatically:
 
 ```txt
+// source control related files and folders
 "\\.git[\\/]",
-"^\\.jj/",
-"[\\/]node_modules[\\/]",
-"^\\.yarn/",
-"^yarn\\.lock$",
-"^package-lock\\.json$",
-"^composer\\.lock$",
+"^\\.jj[\\/]",
+// package manager, generated, & lock files
+// Cargo (Rust)
 "^Cargo\\.lock$",
+// Composer (PHP)
+"^composer\\.lock$",
+// RubyGems (Ruby)
 "^Gemfile\\.lock$",
+// Go Modules (Go)
+"^go\\.(mod|sum)$",
+// Gradle (Java)
+"gradle[\\/]wrapper[\\/]gradle-wrapper\\.properties$",
+"^gradlew(\\.bat)?$",
+"^(buildscript-)?gradle\\.lockfile?$",
+// Maven (Java)
+"\\.mvn[\\/]wrapper[\\/]maven-wrapper\\.properties$",
+"\\.mvn[\\/]wrapper[\\/]MavenWrapperDownloader\\.java$",
+"^mvnw(\\.cmd)?$",
+// NodeJS
+"[\\/]node_modules[\\/]",
+// npm (NodeJS)
+"^npm-shrinkwrap\\.json$",
+"^package-lock\\.json$",
+// pip (Python)
+"^Pipfile\\.lock$",
+// Poetry (Python)
+"^poetry\\.lock$",
+// pnpm (NodeJS)
+"^pnpm-lock\\.yaml$",
+// Terraform & OpenTofu
+"\\.terraform\\.lock\\.hcl$",
+// uv (Python)
+"^uv\\.lock$",
+// yarn (NodeJS)
 "^\\.pnp\\.cjs$",
 "^\\.pnp\\.js$",
 "^\\.pnp\\.loader\\.mjs$",
-"\\.snap$",
+"^\\.yarn[\\/]",
+"^yarn\\.lock$",
+// font files
+"\\.eot$",
 "\\.otf$",
+"\\.ttf$",
 "\\.woff$",
 "\\.woff2$",
-"\\.eot$",
-"\\.ttf$",
-"\\.gif$",
-"\\.png$",
-"\\.jpg$",
-"\\.jpeg$",
-"\\.webp$",
+// image & video formats
 "\\.avif$",
-"\\.pnm$",
+"\\.gif$",
+"\\.ico$",
+"\\.jpeg$",
+"\\.jpg$",
+"\\.mp4$",
 "\\.pbm$",
 "\\.pgm$",
+"\\.png$",
+"\\.pnm$",
 "\\.ppm$",
-"\\.mp4$",
-"\\.wmv$",
 "\\.svg$",
-"\\.ico$",
+"\\.tiff$",
+"\\.webp$",
+"\\.wmv$",
+// other binary or container formats
 "\\.bak$",
 "\\.bin$",
+"\\.docx?$",
 "\\.pdf$",
-"\\.zip$",
-"\\.gz$",
-"\\.tar$",
+"\\.snap$",
+"\\.xlsx?$",
+// archive formats
 "\\.7z$",
 "\\.bz2$",
+"\\.gz$",
+"\\.jar$",
+"\\.tar$",
+"\\.tgz$",
+"\\.war$",
+"\\.zip$",
+// log & (git) patch files
 "\\.log$",
 "\\.patch$",
+// generated or minified CSS and JavaScript files
 "\\.css\\.map$",
 "\\.js\\.map$",
 "min\\.css$",
