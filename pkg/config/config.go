@@ -22,8 +22,8 @@ var DefaultExcludes = strings.Join(defaultExcludes, "|")
 // defaultExcludes are an array to produce the correct string from
 var defaultExcludes = []string{
 	// source control related files and folders
-	"\\.git[\\/]",
-	"^\\.jj[\\/]",
+	"\\.git/",
+	"^\\.jj/",
 	// package manager, generated, & lock files
 	// Cargo (Rust)
 	"^Cargo\\.lock$",
@@ -34,15 +34,15 @@ var defaultExcludes = []string{
 	// Go Modules (Go)
 	"^go\\.(mod|sum)$",
 	// Gradle (Java)
-	"gradle[\\/]wrapper[\\/]gradle-wrapper\\.properties$",
+	"gradle/wrapper/gradle-wrapper\\.properties$",
 	"^gradlew(\\.bat)?$",
 	"^(buildscript-)?gradle\\.lockfile?$",
 	// Maven (Java)
-	"\\.mvn[\\/]wrapper[\\/]maven-wrapper\\.properties$",
-	"\\.mvn[\\/]wrapper[\\/]MavenWrapperDownloader\\.java$",
+	"\\.mvn/wrapper/maven-wrapper\\.properties$",
+	"\\.mvn/wrapper/MavenWrapperDownloader\\.java$",
 	"^mvnw(\\.cmd)?$",
 	// NodeJS
-	"[\\/]node_modules[\\/]",
+	"/node_modules/",
 	// npm (NodeJS)
 	"^npm-shrinkwrap\\.json$",
 	"^package-lock\\.json$",
@@ -60,7 +60,7 @@ var defaultExcludes = []string{
 	"^\\.pnp\\.cjs$",
 	"^\\.pnp\\.js$",
 	"^\\.pnp\\.loader\\.mjs$",
-	"^\\.yarn[\\/]",
+	"^\\.yarn/",
 	"^yarn\\.lock$",
 	// font files
 	"\\.eot$",

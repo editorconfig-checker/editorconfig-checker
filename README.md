@@ -271,6 +271,8 @@ If you want to see which files would be checked without checking them you can pa
 
 Note that while `--dry-run` might output absolute paths, the regular expression you write must match the filenames using relative paths from where editorconfig-checker is used. This becomes especially relevant if you need to anchor your regular expression in order to only match files in the top level your checked directory.
 
+Additionally, paths will be normalized to Unix style before matching against the regex list happens. As a result you don't have to write `[\\/]` to account for Windows and Unix path styles but can just use `/` instead.
+
 #### Inline
 
 If you want to exclude a file inline you need a comment on the first line of the file that contains: `editorconfig-checker-disable-file`
@@ -289,8 +291,8 @@ If you choose to [ignore them](#ignoring-default-excludes), these paths are excl
 
 ```txt
 // source control related files and folders
-"\\.git[\\/]",
-"^\\.jj[\\/]",
+"\\.git/",
+"^\\.jj/",
 // package manager, generated, & lock files
 // Cargo (Rust)
 "^Cargo\\.lock$",
@@ -301,15 +303,15 @@ If you choose to [ignore them](#ignoring-default-excludes), these paths are excl
 // Go Modules (Go)
 "^go\\.(mod|sum)$",
 // Gradle (Java)
-"gradle[\\/]wrapper[\\/]gradle-wrapper\\.properties$",
+"gradle/wrapper/gradle-wrapper\\.properties$",
 "^gradlew(\\.bat)?$",
 "^(buildscript-)?gradle\\.lockfile?$",
 // Maven (Java)
-"\\.mvn[\\/]wrapper[\\/]maven-wrapper\\.properties$",
-"\\.mvn[\\/]wrapper[\\/]MavenWrapperDownloader\\.java$",
+"\\.mvn/wrapper/maven-wrapper\\.properties$",
+"\\.mvn/wrapper/MavenWrapperDownloader\\.java$",
 "^mvnw(\\.cmd)?$",
 // NodeJS
-"[\\/]node_modules[\\/]",
+"/node_modules/",
 // npm (NodeJS)
 "^npm-shrinkwrap\\.json$",
 "^package-lock\\.json$",
@@ -327,7 +329,7 @@ If you choose to [ignore them](#ignoring-default-excludes), these paths are excl
 "^\\.pnp\\.cjs$",
 "^\\.pnp\\.js$",
 "^\\.pnp\\.loader\\.mjs$",
-"^\\.yarn[\\/]",
+"^\\.yarn/",
 "^yarn\\.lock$",
 // font files
 "\\.eot$",
