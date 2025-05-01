@@ -23,45 +23,45 @@ var DefaultExcludes = strings.Join(defaultExcludes, "|")
 var defaultExcludes = []string{
 	// source control related files and folders
 	"\\.git/",
-	"^\\.jj/",
+	"\\.jj/",
 	// package manager, generated, & lock files
 	// Cargo (Rust)
-	"^Cargo\\.lock$",
+	"Cargo\\.lock$",
 	// Composer (PHP)
-	"^composer\\.lock$",
+	"composer\\.lock$",
 	// RubyGems (Ruby)
-	"^Gemfile\\.lock$",
+	"Gemfile\\.lock$",
 	// Go Modules (Go)
-	"^go\\.(mod|sum)$",
+	"go\\.(mod|sum)$",
 	// Gradle (Java)
 	"gradle/wrapper/gradle-wrapper\\.properties$",
-	"^gradlew(\\.bat)?$",
-	"^(buildscript-)?gradle\\.lockfile?$",
+	"gradlew(\\.bat)?$",
+	"(buildscript-)?gradle\\.lockfile?$",
 	// Maven (Java)
 	"\\.mvn/wrapper/maven-wrapper\\.properties$",
 	"\\.mvn/wrapper/MavenWrapperDownloader\\.java$",
-	"^mvnw(\\.cmd)?$",
+	"mvnw(\\.cmd)?$",
 	// NodeJS
 	"/node_modules/",
 	// npm (NodeJS)
-	"^npm-shrinkwrap\\.json$",
-	"^package-lock\\.json$",
+	"npm-shrinkwrap\\.json$",
+	"package-lock\\.json$",
 	// pip (Python)
-	"^Pipfile\\.lock$",
+	"Pipfile\\.lock$",
 	// Poetry (Python)
-	"^poetry\\.lock$",
+	"poetry\\.lock$",
 	// pnpm (NodeJS)
-	"^pnpm-lock\\.yaml$",
+	"pnpm-lock\\.yaml$",
 	// Terraform & OpenTofu
 	"\\.terraform\\.lock\\.hcl$",
 	// uv (Python)
-	"^uv\\.lock$",
+	"uv\\.lock$",
 	// yarn (NodeJS)
-	"^\\.pnp\\.cjs$",
-	"^\\.pnp\\.js$",
-	"^\\.pnp\\.loader\\.mjs$",
-	"^\\.yarn/",
-	"^yarn\\.lock$",
+	"\\.pnp\\.cjs$",
+	"\\.pnp\\.js$",
+	"\\.pnp\\.loader\\.mjs$",
+	"\\.yarn/",
+	"yarn\\.lock$",
 	// font files
 	"\\.eot$",
 	"\\.otf$",
