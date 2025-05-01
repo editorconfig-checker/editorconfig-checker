@@ -82,6 +82,7 @@ var defaultExcludes = []string{
 	"\\.bak$",
 	"\\.bin$",
 	"\\.docx?$",
+	"\\.exe$",
 	"\\.pdf$",
 	"\\.snap$",
 	"\\.xlsx?$",
