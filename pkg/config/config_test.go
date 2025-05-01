@@ -86,7 +86,7 @@ func TestGetExcludesAsRegularExpression(t *testing.T) {
 	}
 
 	actual = c.GetExcludesAsRegularExpression()
-	expected = `testfiles|testdata|\.git/|\.jj/|Cargo\.lock$|composer\.lock$|Gemfile\.lock$|go\.(mod|sum)$|gradle/wrapper/gradle-wrapper\.properties$|gradlew(\.bat)?$|(buildscript-)?gradle\.lockfile?$|\.mvn/wrapper/maven-wrapper\.properties$|\.mvn/wrapper/MavenWrapperDownloader\.java$|mvnw(\.cmd)?$|/node_modules/|npm-shrinkwrap\.json$|package-lock\.json$|Pipfile\.lock$|poetry\.lock$|pnpm-lock\.yaml$|\.terraform\.lock\.hcl$|uv\.lock$|\.pnp\.cjs$|\.pnp\.js$|\.pnp\.loader\.mjs$|\.yarn/|yarn\.lock$|\.eot$|\.otf$|\.ttf$|\.woff$|\.woff2$|\.avif$|\.gif$|\.ico$|\.jpeg$|\.jpg$|\.mp4$|\.pbm$|\.pgm$|\.png$|\.pnm$|\.ppm$|\.svg$|\.tiff$|\.webp$|\.wmv$|\.bak$|\.bin$|\.docx?$|\.pdf$|\.snap$|\.xlsx?$|\.7z$|\.bz2$|\.gz$|\.jar$|\.tar$|\.tgz$|\.war$|\.zip$|\.log$|\.patch$|\.css\.map$|\.js\.map$|min\.css$|min\.js$`
+	expected = `testfiles|testdata|\.git/|\.jj/|Cargo\.lock$|composer\.lock$|Gemfile\.lock$|go\.(mod|sum)$|gradle/wrapper/gradle-wrapper\.properties$|gradlew(\.bat)?$|(buildscript-)?gradle\.lockfile?$|\.mvn/wrapper/maven-wrapper\.properties$|\.mvn/wrapper/MavenWrapperDownloader\.java$|mvnw(\.cmd)?$|/node_modules/|npm-shrinkwrap\.json$|package-lock\.json$|Pipfile\.lock$|poetry\.lock$|pnpm-lock\.yaml$|\.terraform\.lock\.hcl$|uv\.lock$|\.pnp\.c?js$|\.pnp\.loader\.mjs$|\.yarn/|yarn\.lock$|\.eot$|\.otf$|\.ttf$|\.woff2?$|\.avif$|\.gif$|\.ico$|\.jpe?g$|\.mp4$|\.p[bgnp]m$|\.png$|\.svg$|\.tiff$|\.webp$|\.wmv$|\.bak$|\.bin$|\.docx?$|\.pdf$|\.snap$|\.xlsx?$|\.7z$|\.bz2$|\.gz$|\.jar$|\.tar$|\.tgz$|\.war$|\.zip$|\.log$|\.patch$|\.(css|js)\.map$|min\.(css|js)$`
 
 	if actual != expected {
 		t.Errorf("expected %s, got %s", expected, actual)

@@ -57,8 +57,7 @@ var defaultExcludes = []string{
 	// uv (Python)
 	"uv\\.lock$",
 	// yarn (NodeJS)
-	"\\.pnp\\.cjs$",
-	"\\.pnp\\.js$",
+	"\\.pnp\\.c?js$",
 	"\\.pnp\\.loader\\.mjs$",
 	"\\.yarn/",
 	"yarn\\.lock$",
@@ -66,20 +65,15 @@ var defaultExcludes = []string{
 	"\\.eot$",
 	"\\.otf$",
 	"\\.ttf$",
-	"\\.woff$",
-	"\\.woff2$",
+	"\\.woff2?$",
 	// image & video formats
 	"\\.avif$",
 	"\\.gif$",
 	"\\.ico$",
-	"\\.jpeg$",
-	"\\.jpg$",
+	"\\.jpe?g$",
 	"\\.mp4$",
-	"\\.pbm$",
-	"\\.pgm$",
+	"\\.p[bgnp]m$",
 	"\\.png$",
-	"\\.pnm$",
-	"\\.ppm$",
 	"\\.svg$",
 	"\\.tiff$",
 	"\\.webp$",
@@ -104,10 +98,8 @@ var defaultExcludes = []string{
 	"\\.log$",
 	"\\.patch$",
 	// generated or minified CSS and JavaScript files
-	"\\.css\\.map$",
-	"\\.js\\.map$",
-	"min\\.css$",
-	"min\\.js$",
+	"\\.(css|js)\\.map$",
+	"min\\.(css|js)$",
 }
 
 // keep synced with pkg/validation/validation.go#L20

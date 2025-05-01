@@ -326,8 +326,7 @@ If you choose to [ignore them](#ignoring-default-excludes), these paths are excl
 // uv (Python)
 "uv\\.lock$",
 // yarn (NodeJS)
-"\\.pnp\\.cjs$",
-"\\.pnp\\.js$",
+"\\.pnp\\.c?js$",
 "\\.pnp\\.loader\\.mjs$",
 "\\.yarn/",
 "yarn\\.lock$",
@@ -335,20 +334,15 @@ If you choose to [ignore them](#ignoring-default-excludes), these paths are excl
 "\\.eot$",
 "\\.otf$",
 "\\.ttf$",
-"\\.woff$",
-"\\.woff2$",
+"\\.woff2?$",
 // image & video formats
 "\\.avif$",
 "\\.gif$",
 "\\.ico$",
-"\\.jpeg$",
-"\\.jpg$",
+"\\.jpe?g$",
 "\\.mp4$",
-"\\.pbm$",
-"\\.pgm$",
+"\\.p[bgnp]m$",
 "\\.png$",
-"\\.pnm$",
-"\\.ppm$",
 "\\.svg$",
 "\\.tiff$",
 "\\.webp$",
@@ -373,10 +367,8 @@ If you choose to [ignore them](#ignoring-default-excludes), these paths are excl
 "\\.log$",
 "\\.patch$",
 // generated or minified CSS and JavaScript files
-"\\.css\\.map$",
-"\\.js\\.map$",
-"min\\.css$",
-"min\\.js$",
+"\\.(css|js)\\.map$",
+"min\\.(css|js)$",
 ```
 
 #### Ignoring Default Excludes
