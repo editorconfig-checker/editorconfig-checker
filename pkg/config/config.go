@@ -75,7 +75,7 @@ var defaultExcludes = []string{
 	"\\.p[bgnp]m$",
 	"\\.png$",
 	"\\.svg$",
-	"\\.tiff$",
+	"\\.tiff?$",
 	"\\.webp$",
 	"\\.wmv$",
 	// other binary or container formats

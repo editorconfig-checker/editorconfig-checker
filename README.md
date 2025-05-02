@@ -344,7 +344,7 @@ If you choose to [ignore them](#ignoring-default-excludes), these paths are excl
 "\\.p[bgnp]m$",
 "\\.png$",
 "\\.svg$",
-"\\.tiff$",
+"\\.tiff?$",
 "\\.webp$",
 "\\.wmv$",
 // other binary or container formats
