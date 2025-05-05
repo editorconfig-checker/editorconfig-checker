@@ -271,6 +271,8 @@ If you want to see which files would be checked without checking them you can pa
 
 Note that while `--dry-run` might output absolute paths, the regular expression you write must match the filenames using relative paths from where editorconfig-checker is used. This becomes especially relevant if you need to anchor your regular expression in order to only match files in the top level your checked directory.
 
+Additionally, paths will be normalized to Unix style before matching against the regex list happens. As a result you don't have to write `[\\/]` to account for Windows and Unix path styles but can just use `/` instead.
+
 #### Inline
 
 If you want to exclude a file inline you need a comment on the first line of the file that contains: `editorconfig-checker-disable-file`
@@ -288,52 +290,86 @@ add x y =
 If you choose to [ignore them](#ignoring-default-excludes), these paths are excluded automatically:
 
 ```txt
-"\\.git[\\/]",
-"^\\.jj/",
-"[\\/]node_modules[\\/]",
-"^\\.yarn/",
-"^yarn\\.lock$",
-"^package-lock\\.json$",
-"^composer\\.lock$",
-"^Cargo\\.lock$",
-"^Gemfile\\.lock$",
-"^\\.pnp\\.cjs$",
-"^\\.pnp\\.js$",
-"^\\.pnp\\.loader\\.mjs$",
-"\\.snap$",
-"\\.otf$",
-"\\.woff$",
-"\\.woff2$",
+// source control related files and folders
+"\\.git/",
+"\\.jj/",
+// package manager, generated, & lock files
+// Cargo (Rust)
+"Cargo\\.lock$",
+// Composer (PHP)
+"composer\\.lock$",
+// RubyGems (Ruby)
+"Gemfile\\.lock$",
+// Go Modules (Go)
+"go\\.(mod|sum)$",
+// Gradle (Java)
+"gradle/wrapper/gradle-wrapper\\.properties$",
+"gradlew(\\.bat)?$",
+"(buildscript-)?gradle\\.lockfile?$",
+// Maven (Java)
+"\\.mvn/wrapper/maven-wrapper\\.properties$",
+"\\.mvn/wrapper/MavenWrapperDownloader\\.java$",
+"mvnw(\\.cmd)?$",
+// NodeJS
+"/node_modules/",
+// npm (NodeJS)
+"npm-shrinkwrap\\.json$",
+"package-lock\\.json$",
+// pip (Python)
+"Pipfile\\.lock$",
+// Poetry (Python)
+"poetry\\.lock$",
+// pnpm (NodeJS)
+"pnpm-lock\\.yaml$",
+// Terraform & OpenTofu
+"\\.terraform\\.lock\\.hcl$",
+// uv (Python)
+"uv\\.lock$",
+// yarn (NodeJS)
+"\\.pnp\\.c?js$",
+"\\.pnp\\.loader\\.mjs$",
+"\\.yarn/",
+"yarn\\.lock$",
+// font files
 "\\.eot$",
+"\\.otf$",
 "\\.ttf$",
-"\\.gif$",
-"\\.png$",
-"\\.jpg$",
-"\\.jpeg$",
-"\\.webp$",
+"\\.woff2?$",
+// image & video formats
 "\\.avif$",
-"\\.pnm$",
-"\\.pbm$",
-"\\.pgm$",
-"\\.ppm$",
-"\\.mp4$",
-"\\.wmv$",
-"\\.svg$",
+"\\.gif$",
 "\\.ico$",
+"\\.jpe?g$",
+"\\.mp4$",
+"\\.p[bgnp]m$",
+"\\.png$",
+"\\.svg$",
+"\\.tiff?$",
+"\\.webp$",
+"\\.wmv$",
+// other binary or container formats
 "\\.bak$",
 "\\.bin$",
+"\\.docx?$",
+"\\.exe$",
 "\\.pdf$",
-"\\.zip$",
-"\\.gz$",
-"\\.tar$",
+"\\.snap$",
+"\\.xlsx?$",
+// archive formats
 "\\.7z$",
 "\\.bz2$",
+"\\.gz$",
+"\\.jar$",
+"\\.tar$",
+"\\.tgz$",
+"\\.war$",
+"\\.zip$",
+// log & (git) patch files
 "\\.log$",
 "\\.patch$",
-"\\.css\\.map$",
-"\\.js\\.map$",
-"min\\.css$",
-"min\\.js$",
+// generated or minified CSS and JavaScript files
+"\\.(css|js)\\.map$",
+"min\\.(css|js)$",
 ```
 
 #### Ignoring Default Excludes

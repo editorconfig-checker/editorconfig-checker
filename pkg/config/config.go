@@ -21,52 +21,86 @@ var DefaultExcludes = strings.Join(defaultExcludes, "|")
 
 // defaultExcludes are an array to produce the correct string from
 var defaultExcludes = []string{
-	"\\.git[\\/]",
-	"^\\.jj/",
-	"[\\/]node_modules[\\/]",
-	"^\\.yarn/",
-	"^yarn\\.lock$",
-	"^package-lock\\.json$",
-	"^composer\\.lock$",
-	"^Cargo\\.lock$",
-	"^Gemfile\\.lock$",
-	"^\\.pnp\\.cjs$",
-	"^\\.pnp\\.js$",
-	"^\\.pnp\\.loader\\.mjs$",
-	"\\.snap$",
-	"\\.otf$",
-	"\\.woff$",
-	"\\.woff2$",
+	// source control related files and folders
+	"\\.git/",
+	"\\.jj/",
+	// package manager, generated, & lock files
+	// Cargo (Rust)
+	"Cargo\\.lock$",
+	// Composer (PHP)
+	"composer\\.lock$",
+	// RubyGems (Ruby)
+	"Gemfile\\.lock$",
+	// Go Modules (Go)
+	"go\\.(mod|sum)$",
+	// Gradle (Java)
+	"gradle/wrapper/gradle-wrapper\\.properties$",
+	"gradlew(\\.bat)?$",
+	"(buildscript-)?gradle\\.lockfile?$",
+	// Maven (Java)
+	"\\.mvn/wrapper/maven-wrapper\\.properties$",
+	"\\.mvn/wrapper/MavenWrapperDownloader\\.java$",
+	"mvnw(\\.cmd)?$",
+	// NodeJS
+	"/node_modules/",
+	// npm (NodeJS)
+	"npm-shrinkwrap\\.json$",
+	"package-lock\\.json$",
+	// pip (Python)
+	"Pipfile\\.lock$",
+	// Poetry (Python)
+	"poetry\\.lock$",
+	// pnpm (NodeJS)
+	"pnpm-lock\\.yaml$",
+	// Terraform & OpenTofu
+	"\\.terraform\\.lock\\.hcl$",
+	// uv (Python)
+	"uv\\.lock$",
+	// yarn (NodeJS)
+	"\\.pnp\\.c?js$",
+	"\\.pnp\\.loader\\.mjs$",
+	"\\.yarn/",
+	"yarn\\.lock$",
+	// font files
 	"\\.eot$",
+	"\\.otf$",
 	"\\.ttf$",
-	"\\.gif$",
-	"\\.png$",
-	"\\.jpg$",
-	"\\.jpeg$",
-	"\\.webp$",
+	"\\.woff2?$",
+	// image & video formats
 	"\\.avif$",
-	"\\.pnm$",
-	"\\.pbm$",
-	"\\.pgm$",
-	"\\.ppm$",
-	"\\.mp4$",
-	"\\.wmv$",
-	"\\.svg$",
+	"\\.gif$",
 	"\\.ico$",
+	"\\.jpe?g$",
+	"\\.mp4$",
+	"\\.p[bgnp]m$",
+	"\\.png$",
+	"\\.svg$",
+	"\\.tiff?$",
+	"\\.webp$",
+	"\\.wmv$",
+	// other binary or container formats
 	"\\.bak$",
 	"\\.bin$",
+	"\\.docx?$",
+	"\\.exe$",
 	"\\.pdf$",
-	"\\.zip$",
-	"\\.gz$",
-	"\\.tar$",
+	"\\.snap$",
+	"\\.xlsx?$",
+	// archive formats
 	"\\.7z$",
 	"\\.bz2$",
+	"\\.gz$",
+	"\\.jar$",
+	"\\.tar$",
+	"\\.tgz$",
+	"\\.war$",
+	"\\.zip$",
+	// log & (git) patch files
 	"\\.log$",
 	"\\.patch$",
-	"\\.css\\.map$",
-	"\\.js\\.map$",
-	"min\\.css$",
-	"min\\.js$",
+	// generated or minified CSS and JavaScript files
+	"\\.(css|js)\\.map$",
+	"min\\.(css|js)$",
 }
 
 // keep synced with pkg/validation/validation.go#L20
