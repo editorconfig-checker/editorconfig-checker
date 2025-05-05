@@ -75,7 +75,7 @@ func ConsolidateErrors(errors []ValidationError, config config.Config) []Validat
 			config.Logger.Debug("comparing against error %d(%s)", j, nextError.Message)
 			if nextError.Message.Error() == thisError.Message.Error() && nextError.LineNumber == thisError.LineNumber+thisError.AdditionalIdenticalErrorCount+1 {
 				thisError.AdditionalIdenticalErrorCount++ // keep track of how many consecutive lines we've seen
-				i = i + j + 1                             // make sure the outer loop jumps over the consecutive errors we just found
+				i++                                       // make sure the outer loop jumps over the consecutive errors we just found
 			} else {
 				break // if they are different errors we can stop comparing messages
 			}
