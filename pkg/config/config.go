@@ -32,7 +32,7 @@ var defaultExcludes = []string{
 	// RubyGems (Ruby)
 	"Gemfile\\.lock$",
 	// Go Modules (Go)
-	"go\\.(mod|sum)$",
+	"go\\.(mod|sum|work|work\\.sum)$",
 	// Gradle (Java)
 	"gradle/wrapper/gradle-wrapper\\.properties$",
 	"gradlew(\\.bat)?$",
