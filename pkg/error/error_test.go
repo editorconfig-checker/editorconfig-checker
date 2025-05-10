@@ -185,6 +185,36 @@ func TestConsolidateErrors(t *testing.T) {
 	}
 }
 
+func TestConsolidateErrorCounts(t *testing.T) {
+	input := []ValidationError{
+		// A block of errors, followed by a small number of errors
+		{LineNumber: 2, Message: errors.New("wrong indentation type")},
+		{LineNumber: 3, Message: errors.New("wrong indentation type")},
+		{LineNumber: 4, Message: errors.New("wrong indentation type")},
+		{LineNumber: 5, Message: errors.New("wrong indentation type")},
+		// one line gap
+		{LineNumber: 7, Message: errors.New("wrong indentation type")},
+		// one line gap
+		{LineNumber: 9, Message: errors.New("wrong indentation type")},
+		{LineNumber: 10, Message: errors.New("wrong indentation type")},
+		{LineNumber: 11, Message: errors.New("wrong indentation type")},
+	}
+
+	expected := []ValidationError{
+		{LineNumber: 2, AdditionalIdenticalErrorCount: 3, Message: errors.New("wrong indentation type")},
+		{LineNumber: 7, Message: errors.New("wrong indentation type")},
+		{LineNumber: 9, AdditionalIdenticalErrorCount: 2, Message: errors.New("wrong indentation type")},
+	}
+
+	actual := ConsolidateErrors(input, config.Config{})
+
+	if !slices.EqualFunc(expected, actual, func(e1 ValidationError, e2 ValidationError) bool { return e1.Equal(e2) }) {
+		t.Log("consolidation expectation          :", expected)
+		t.Log("consolidation actual returned value:", actual)
+		t.Error("returned list of validation errors deviated from the expected set")
+	}
+}
+
 func TestConsolidatingInterleavedErrors(t *testing.T) {
 	t.Skip("Consolidating non-consecutive errors is not supported by the current implementation")
 	/*

@@ -43,7 +43,7 @@ func runWithArguments(t *testing.T, args ...string) (string, int) {
 
 func TestMainOurCodebase(t *testing.T) {
 	cdRelativeToRepo(t, "")
-	output, lastSeenCode := runWithArguments(t, "--debug", "--verbose", "--exclude", `\.git`, "--exclude", `\.exe$`)
+	output, lastSeenCode := runWithArguments(t, "--debug", "--verbose")
 	if lastSeenCode != exitCodeNormal {
 		t.Errorf("main exited with return code %d, but we expected %d", lastSeenCode, exitCodeNormal)
 		t.Logf("Output:\n%s", output)
@@ -52,7 +52,7 @@ func TestMainOurCodebase(t *testing.T) {
 
 func TestMainMissingExplicitConfig(t *testing.T) {
 	cdRelativeToRepo(t, "")
-	output, lastSeenCode := runWithArguments(t, "--debug", "--verbose", "--exclude", `\.git`, "--exclude", `\.exe$`, "--config", "/nonexistant")
+	output, lastSeenCode := runWithArguments(t, "--debug", "--verbose", "--config", "/nonexistant")
 	if lastSeenCode != exitCodeConfigFileNotFound {
 		t.Errorf("main exited with return code %d, but we expected %d", lastSeenCode, exitCodeConfigFileNotFound)
 		t.Logf("Output:\n%s", output)
