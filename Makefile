@@ -1,5 +1,6 @@
 ifeq ($(OS),Windows_NT)
 	STDERR=con
+	EXEEXT=.exe
 else
 	STDERR=/dev/stderr
 endif
@@ -44,6 +45,12 @@ test: ## Run test suite
 	go vet ./...
 	@test -z $(shell gofmt -s -l . | tee $(STDERR)) || (echo "[ERROR] Fix formatting issues with 'gofmt'" && exit 1)
 
+testnorace: ## Run test suite without -race which requires cgo
+	go test -coverprofile=coverage.txt -covermode=atomic ./...
+	go test -trimpath -coverprofile=coverage.txt -covermode=atomic ./...
+	go vet ./...
+	@test -z $(shell gofmt -s -l . | tee $(STDERR)) || (echo "[ERROR] Fix formatting issues with 'gofmt'" && exit 1)
+
 bench: ## Run benchmark
 	go test -bench=. ./**/*/
 
@@ -74,4 +81,4 @@ dumpvars: ## Dump variables
 	@echo SRC_DIR=$(SRC_DIR)
 	@echo SOURCES=$(SOURCES)
 
-.PHONY: $(PHONY) clean build install uninstall test bench run run-verbose release _is_main_branch _git_branch_is_up_to_date current_version _do_release _tag_version _build-all-binaries _compress-all-binaries _release_dockerfile _build_dockerfile _push_dockerfile nix-build nix-install nix-update-dependencies
+.PHONY: $(PHONY) clean build install uninstall test testnorace bench run run-verbose release _is_main_branch _git_branch_is_up_to_date current_version _do_release _tag_version _build-all-binaries _compress-all-binaries _release_dockerfile _build_dockerfile _push_dockerfile nix-build nix-install nix-update-dependencies
