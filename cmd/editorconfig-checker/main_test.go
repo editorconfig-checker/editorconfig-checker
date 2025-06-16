@@ -139,6 +139,9 @@ func TestMainColorSupport(t *testing.T) {
 	type env map[string]string
 	type args []string
 
+	// Otherwise the first test fails...
+	t.Setenv("NO_COLOR", "")
+
 	tests := []struct {
 		name string
 		env  env
