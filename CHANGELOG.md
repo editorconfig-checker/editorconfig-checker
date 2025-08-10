@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.4.0](https://github.com/editorconfig-checker/editorconfig-checker/compare/v3.3.0...v3.4.0) (2025-08-10)
+
+
+### Features
+
+* add *~ (emacs backup files) to default excludes ([#483](https://github.com/editorconfig-checker/editorconfig-checker/issues/483)) ([bbd722f](https://github.com/editorconfig-checker/editorconfig-checker/commit/bbd722fc4b83a22db08fc65231694cb688890226)), closes [#482](https://github.com/editorconfig-checker/editorconfig-checker/issues/482)
+* add go.work, and go.work.sum files to default excludes ([#468](https://github.com/editorconfig-checker/editorconfig-checker/issues/468)) ([05296a5](https://github.com/editorconfig-checker/editorconfig-checker/commit/05296a5b5aaa5f4413a52bacd33f8449bbe863e5))
+
 ## [3.3.0](https://github.com/editorconfig-checker/editorconfig-checker/compare/v3.2.1...v3.3.0) (2025-05-07)
 
 
