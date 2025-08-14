@@ -17,9 +17,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install syft
-        uses: anchore/sbom-action/download-syft@v0.20.2
+        uses: anchore/sbom-action/download-syft@v0.20.4
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
       - run: git fetch --force --tags

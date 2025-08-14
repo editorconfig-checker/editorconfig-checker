@@ -101,6 +101,8 @@ var defaultExcludes = []string{
 	// generated or minified CSS and JavaScript files
 	"\\.(css|js)\\.map$",
 	"min\\.(css|js)$",
+	// emacs backup files
+	"~$",
 }
 
 // keep synced with pkg/validation/validation.go#L20
