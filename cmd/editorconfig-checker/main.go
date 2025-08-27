@@ -174,6 +174,12 @@ func main() {
 	}
 
 	config := *currentConfig
+	// force the exclude regexp to be compiled and cached
+	if _, err := config.CachedExcludesAsRegexp(); err != nil {
+		config.Logger.Error("Compiling exclude regexp: %v", err.Error())
+		exitProxy(exitCodeErrorOccurred)
+	}
+
 	config.Logger.Debug("Config: %s", config)
 	config.Logger.Verbose("Exclude Regexp: %s", config.GetExcludesAsRegularExpression())
 

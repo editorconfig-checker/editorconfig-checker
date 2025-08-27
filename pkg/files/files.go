@@ -9,7 +9,6 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
-	"regexp"
 	"strings"
 
 	"github.com/gabriel-vasile/mimetype"
@@ -44,12 +43,11 @@ func IsExcluded(filePath string, config config.Config) (bool, error) {
 		return true, err
 	}
 
-	result, err := regexp.MatchString(config.GetExcludesAsRegularExpression(), relativeFilePath)
+	re, err := config.CachedExcludesAsRegexp()
 	if err != nil {
 		return true, err
 	}
-
-	return result, nil
+	return re.MatchString(relativeFilePath), nil
 }
 
 // AddToFiles adds a file to a slice if it isn't already in there

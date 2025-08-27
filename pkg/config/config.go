@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"regexp"
 	"strings"
 
 	"github.com/editorconfig/editorconfig-core-go/v2"
@@ -142,6 +143,9 @@ type Config struct {
 	// MISC
 	Logger             logger.Logger
 	EditorconfigConfig *editorconfig.Config
+
+	// CACHE
+	excludeRegexp *regexp.Regexp
 }
 
 // DisabledChecks is a Struct which represents disabled checks
@@ -305,12 +309,26 @@ func (c *Config) mergeDisabled(disabled DisabledChecks) {
 }
 
 // GetExcludesAsRegularExpression returns the excludes as a combined regular expression
-func (c Config) GetExcludesAsRegularExpression() string {
+func (c *Config) GetExcludesAsRegularExpression() string {
 	if c.IgnoreDefaults {
 		return strings.Join(c.Exclude, "|")
 	}
-
 	return strings.Join(append(c.Exclude, DefaultExcludes), "|")
+}
+
+// CachedExcludesAsRegexp returns the excludes as a compiled regular expression
+// The regexp compilation is cached
+// Note: This is not thread-safe
+func (c *Config) CachedExcludesAsRegexp() (*regexp.Regexp, error) {
+	if c.excludeRegexp == nil {
+		rawRegexp := c.GetExcludesAsRegularExpression()
+		re, err := regexp.Compile(rawRegexp)
+		if err != nil {
+			return nil, err
+		}
+		c.excludeRegexp = re
+	}
+	return c.excludeRegexp, nil
 }
 
 // Save saves the config to it's Path
@@ -335,7 +353,7 @@ func (c Config) Save(version string) error {
 
 	configJSON, _ := json.MarshalIndent(writtenConfig{Version: version}, "", "  ")
 	configString := strings.Replace(string(configJSON[:]), "null", "[]", -1)
-	err := os.WriteFile(c.Path, []byte(configString), 0644)
+	err := os.WriteFile(c.Path, []byte(configString), 0o644)
 
 	return err
 }
