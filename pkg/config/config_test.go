@@ -7,14 +7,17 @@ import (
 	"testing"
 
 	// x-release-please-start-major
+	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/logger"
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/outputformat"
 	// x-release-please-end
 
 	"github.com/gkampitakis/go-snaps/snaps"
 )
 
-var rootConfigFilePath = []string{"../../.editorconfig-checker.json"}
-var configWithIgnoredDefaults = []string{"../../testfiles/.editorconfig-checker.json"}
+var (
+	rootConfigFilePath        = []string{"../../.editorconfig-checker.json"}
+	configWithIgnoredDefaults = []string{"../../testfiles/.editorconfig-checker.json"}
+)
 
 func TestNewConfig(t *testing.T) {
 	actual := NewConfig([]string{"abc"})
@@ -134,6 +137,7 @@ func TestMerge(t *testing.T) {
 			IndentSize:             true,
 			MaxLineLength:          true,
 		},
+		Logger: logger.GetLogger(),
 	}
 
 	modifiedConfig.Merge(mergeConfig)

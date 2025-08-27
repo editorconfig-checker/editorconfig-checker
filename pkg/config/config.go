@@ -141,7 +141,7 @@ type Config struct {
 	Disable             DisabledChecks
 
 	// MISC
-	Logger             logger.Logger
+	Logger             *logger.Logger
 	EditorconfigConfig *editorconfig.Config
 
 	// CACHE
@@ -181,6 +181,8 @@ func NewConfig(configPaths []string) *Config {
 		configPath = configPaths[0]
 	}
 	config.Path = configPath
+
+	config.Logger = logger.GetLogger()
 
 	return &config
 }
@@ -273,7 +275,10 @@ func (c *Config) Merge(config Config) {
 
 	c.mergeDisabled(config.Disable)
 
-	c.Logger.Configure(logger.Logger{
+	if c.Logger == nil {
+		c.Logger = logger.GetLogger()
+	}
+	c.Logger.Configure(&logger.Logger{
 		VerboseEnabled: c.Verbose || config.Verbose,
 		DebugEnabled:   c.Debug || config.Debug,
 		NoColor:        c.NoColor || config.NoColor,
