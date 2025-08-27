@@ -2,6 +2,7 @@
 package validation
 
 import (
+	"bytes"
 	"os"
 	"regexp"
 	"runtime"
@@ -70,7 +71,7 @@ func ValidateFileWithDefinition(filePath string, config config.Config, def *edit
 		panic(err)
 	}
 	fileContent := string(rawFileContent)
-	mime, err := files.GetContentTypeBytes(rawFileContent)
+	mime, err := files.GetContentTypeBytes(bytes.NewReader(rawFileContent))
 	if err != nil {
 		panic(err)
 	}

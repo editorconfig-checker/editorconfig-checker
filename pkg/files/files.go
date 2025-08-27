@@ -3,8 +3,8 @@ package files
 
 import (
 	"bufio"
-	"bytes"
 	"fmt"
+	"io"
 	"io/fs"
 	"os"
 	"os/exec"
@@ -185,18 +185,18 @@ func GetContentType(path string) (string, error) {
 		return "", nil
 	}
 
-	rawFileContent, err := os.ReadFile(path)
+	fileContent, err := os.OpenFile(path, os.O_RDONLY, 0)
 	if err != nil {
 		panic(err)
 	}
-	return GetContentTypeBytes(rawFileContent)
+	defer fileContent.Close()
+
+	return GetContentTypeBytes(fileContent)
 }
 
 // GetContentTypeBytes returns the content type of a byte slice
-func GetContentTypeBytes(rawFileContent []byte) (string, error) {
-	bytesReader := bytes.NewReader(rawFileContent)
-
-	mimeType, err := mimetype.DetectReader(bytesReader)
+func GetContentTypeBytes(fileContent io.Reader) (string, error) {
+	mimeType, err := mimetype.DetectReader(fileContent)
 	if err != nil {
 		return "", err
 	}
