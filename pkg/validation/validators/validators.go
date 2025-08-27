@@ -14,6 +14,14 @@ import (
 	// x-release-please-end
 )
 
+var (
+	spaceRegexp              = regexp.MustCompile(`^( )*([^ \t]|$)`)
+	tabRegexp                = regexp.MustCompile("^(\t)*( \\* ?|[^ \t]|$)")
+	spacesAfterTabsRegexp    = regexp.MustCompile("(^(\t)*\\S)|(^(\t)+( )*\\S)|(^ \\S)")
+	trailingWhitespaceRegexp = regexp.MustCompile("^.*[ \t]+$")
+	finalNewlineRegexp       = regexp.MustCompile("(\n|\r|\r\n)$")
+)
+
 // Indentation validates a files indentation
 func Indentation(line string, indentStyle string, indentSize int, config config.Config) error {
 	if indentStyle == "space" {
@@ -30,8 +38,7 @@ func Indentation(line string, indentStyle string, indentSize int, config config.
 func Space(line string, indentSize int, config config.Config) error {
 	if len(line) > 0 {
 		// match recurring spaces and everything except tab characters
-		regexpPattern := `^( )*([^ \t]|$)`
-		matched, _ := regexp.MatchString(regexpPattern, line)
+		matched := spaceRegexp.MatchString(line)
 
 		if !matched {
 			return fmt.Errorf("Wrong indent style found (tabs instead of spaces)")
@@ -62,13 +69,13 @@ func Tab(line string, config config.Config) error {
 		// OR
 		// match starting with a space followed by at least one non-whitespace character
 
-		regexpPattern := "^(\t)*( \\* ?|[^ \t]|$)"
+		re := tabRegexp
 
 		if config.SpacesAfterTabs {
-			regexpPattern = "(^(\t)*\\S)|(^(\t)+( )*\\S)|(^ \\S)"
+			re = spacesAfterTabsRegexp
 		}
 
-		matched, _ := regexp.MatchString(regexpPattern, line)
+		matched := re.MatchString(line)
 
 		if !matched {
 			return errors.New("Wrong indentation type(spaces instead of tabs)")
@@ -82,8 +89,7 @@ func Tab(line string, config config.Config) error {
 // TrailingWhitespace validates if a line has trailing whitespace
 func TrailingWhitespace(line string, trimTrailingWhitespace bool) error {
 	if trimTrailingWhitespace {
-		regexpPattern := "^.*[ \t]+$"
-		matched, _ := regexp.MatchString(regexpPattern, line)
+		matched := trailingWhitespaceRegexp.MatchString(line)
 
 		if matched {
 			return errors.New("Trailing whitespace")
@@ -101,8 +107,7 @@ func FinalNewline(fileContent string, insertFinalNewline string, endOfLine strin
 			return errors.New("Wrong line endings or no final newline")
 		}
 	} else {
-		regexpPattern := "(\n|\r|\r\n)$"
-		hasFinalNewline, _ := regexp.MatchString(regexpPattern, fileContent)
+		hasFinalNewline := finalNewlineRegexp.MatchString(fileContent)
 
 		if insertFinalNewline == "false" && hasFinalNewline {
 			return errors.New("No final newline expected")
