@@ -148,8 +148,10 @@ func TestGetRelativePath(t *testing.T) {
 }
 
 func TestAddToFiles(t *testing.T) {
-	configuration := config.Config{}
-	excludedFileConfiguration := config.Config{Exclude: []string{"files"}}
+	configuration := config.NewConfig(nil)
+	configuration.AllowedContentTypes = nil
+	excludedFileConfiguration := config.NewConfig(nil)
+	excludedFileConfiguration.Exclude = []string{"files"}
 	addToFilesTests := []struct {
 		filePaths []string
 		filePath  string
@@ -159,13 +161,13 @@ func TestAddToFiles(t *testing.T) {
 		{
 			[]string{},
 			"./files.go",
-			excludedFileConfiguration,
+			*excludedFileConfiguration,
 			[]string{},
 		},
 		{
 			[]string{"./files.go"},
 			"./files.go",
-			configuration,
+			*configuration,
 			[]string{"./files.go"},
 		},
 	}
@@ -182,23 +184,21 @@ func TestAddToFiles(t *testing.T) {
 }
 
 func TestGetFiles(t *testing.T) {
-	configurations := []config.Config{
-		{},
-		{
-			PassedFiles: []string{"./../../docs/"},
-		},
+	docsConfig := config.NewConfig(nil)
+	docsConfig.PassedFiles = []string{"./../../docs/"}
+	configurations := []*config.Config{
+		config.NewConfig(nil),
+		docsConfig,
 	}
 
 	for _, configuration := range configurations {
-		configuration := configuration
-
-		_, err := GetFiles(configuration)
+		_, err := GetFiles(*configuration)
 		if err != nil {
 			t.Errorf("GetFiles(): expected nil, got %s", err.Error())
 		}
 
 		configuration.PassedFiles = []string{"."}
-		files, err := GetFiles(configuration)
+		files, err := GetFiles(*configuration)
 
 		if len(files) > 0 && err != nil {
 			t.Errorf("GetFiles(.): expected nil, got %s", err.Error())
