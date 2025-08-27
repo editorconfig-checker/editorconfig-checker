@@ -176,7 +176,7 @@ func TestConsolidateErrors(t *testing.T) {
 		{LineNumber: 6, Message: errors.New("message kind one")},
 	}
 
-	actual := ConsolidateErrors(input, config.Config{})
+	actual := ConsolidateErrors(input, *config.NewConfig(nil))
 
 	if !slices.EqualFunc(expected, actual, func(e1 ValidationError, e2 ValidationError) bool { return e1.Equal(e2) }) {
 		t.Log("consolidation expectation          :", expected)
@@ -206,7 +206,7 @@ func TestConsolidateErrorCounts(t *testing.T) {
 		{LineNumber: 9, AdditionalIdenticalErrorCount: 2, Message: errors.New("wrong indentation type")},
 	}
 
-	actual := ConsolidateErrors(input, config.Config{})
+	actual := ConsolidateErrors(input, *config.NewConfig(nil))
 
 	if !slices.EqualFunc(expected, actual, func(e1 ValidationError, e2 ValidationError) bool { return e1.Equal(e2) }) {
 		t.Log("consolidation expectation          :", expected)
@@ -248,7 +248,7 @@ func TestConsolidatingInterleavedErrors(t *testing.T) {
 		{LineNumber: 5, AdditionalIdenticalErrorCount: 0, Message: errors.New("message kind 1")},
 	}
 
-	actual := ConsolidateErrors(input, config.Config{})
+	actual := ConsolidateErrors(input, *config.NewConfig(nil))
 
 	if !slices.EqualFunc(expected, actual, func(e1 ValidationError, e2 ValidationError) bool { return e1.Equal(e2) }) {
 		t.Log("consolidation expectation          :", expected)
@@ -344,9 +344,10 @@ func TestFormatErrors(t *testing.T) {
 	for _, format := range outputformat.ValidOutputFormats {
 		t.Run(string(format), func(t *testing.T) {
 			buffer := bytes.Buffer{}
-			config := config.Config{Format: format}
+			config := config.NewConfig(nil)
+			config.Format = format
 			config.Logger.SetWriter(&buffer)
-			PrintErrors(input, config)
+			PrintErrors(input, *config)
 			s.MatchSnapshot(t, buffer.String())
 		})
 	}
@@ -367,10 +368,10 @@ func TestPrintErrorCount(t *testing.T) {
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			buffer := bytes.Buffer{}
-			var config config.Config
+			config := config.NewConfig(nil)
 			config.Logger.VerboseEnabled = test.verbose
 			config.Logger.SetWriter(&buffer)
-			PrintErrorCount(test.errorcount, config)
+			PrintErrorCount(test.errorcount, *config)
 			snaps.MatchSnapshot(t, buffer.String())
 		})
 	}
