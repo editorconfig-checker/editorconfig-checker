@@ -3,13 +3,12 @@ package files
 
 import (
 	"bufio"
-	"bytes"
 	"fmt"
+	"io"
 	"io/fs"
 	"os"
 	"os/exec"
 	"path/filepath"
-	"regexp"
 	"strings"
 
 	"github.com/gabriel-vasile/mimetype"
@@ -44,12 +43,11 @@ func IsExcluded(filePath string, config config.Config) (bool, error) {
 		return true, err
 	}
 
-	result, err := regexp.MatchString(config.GetExcludesAsRegularExpression(), relativeFilePath)
+	re, err := config.CachedExcludesAsRegexp()
 	if err != nil {
 		return true, err
 	}
-
-	return result, nil
+	return re.MatchString(relativeFilePath), nil
 }
 
 // AddToFiles adds a file to a slice if it isn't already in there
@@ -63,7 +61,7 @@ func AddToFiles(filePaths []string, filePath string, config config.Config) []str
 		return filePaths
 	}
 
-	contentType, err := GetContentType(filePath, config)
+	contentType, err := GetContentType(filePath)
 	if err != nil {
 		config.Logger.Error("Could not get the ContentType of file: %s", filePath)
 		config.Logger.Error("%v", err.Error())
@@ -79,6 +77,38 @@ func AddToFiles(filePaths []string, filePath string, config config.Config) []str
 	return append(filePaths, filePath)
 }
 
+// GetFilesFromDirectory returns all files from a directory and its subdirectories which should be checked
+func GetFilesFromDirectory(rootDir string, config config.Config) ([]string, error) {
+	filePaths := make([]string, 0)
+	err := fs.WalkDir(os.DirFS(rootDir), ".", func(path string, de fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+
+		fi, err := de.Info()
+		if err != nil {
+			return err
+		}
+
+		fullPath := filepath.Join(rootDir, path)
+		if fi.Mode().IsRegular() {
+			filePaths = AddToFiles(filePaths, fullPath, config)
+		} else if fi.IsDir() {
+			if isExcluded, err := IsExcluded(fullPath, config); err == nil && isExcluded {
+				config.Logger.Verbose("Not adding %s and subentries to be checked, it is excluded", fullPath)
+				return fs.SkipDir
+			}
+		}
+
+		return nil
+	})
+	if err != nil {
+		return nil, fmt.Errorf("walking directory %s: %w", rootDir, err)
+	}
+
+	return filePaths, nil
+}
+
 // GetFiles returns all files which should be checked
 func GetFiles(config config.Config) ([]string, error) {
 	filePaths := make([]string, 0)
@@ -86,25 +116,14 @@ func GetFiles(config config.Config) ([]string, error) {
 	// Handle explicit passed files
 	if len(config.PassedFiles) != 0 {
 		for _, passedFile := range config.PassedFiles {
-			if utils.IsDirectory(passedFile) {
-				_ = fs.WalkDir(os.DirFS(passedFile), ".", func(path string, de fs.DirEntry, err error) error {
-					if err != nil {
-						return err
-					}
-
-					fi, err := de.Info()
-					if err != nil {
-						return err
-					}
-
-					if fi.Mode().IsRegular() {
-						filePaths = AddToFiles(filePaths, filepath.Join(passedFile, path), config)
-					}
-
-					return nil
-				})
-			} else {
+			if !utils.IsDirectory(passedFile) {
 				filePaths = AddToFiles(filePaths, passedFile, config)
+			} else {
+				files, err := GetFilesFromDirectory(passedFile, config)
+				if err != nil {
+					return filePaths, err
+				}
+				filePaths = append(filePaths, files...)
 			}
 		}
 
@@ -119,27 +138,12 @@ func GetFiles(config config.Config) ([]string, error) {
 			return filePaths, err
 		}
 
-		_ = fs.WalkDir(os.DirFS(cwd), ".", func(path string, de fs.DirEntry, err error) error {
-			if err != nil {
-				return err
-			}
-
-			fi, err := de.Info()
-			if err != nil {
-				return err
-			}
-
-			if fi.Mode().IsRegular() {
-				filePaths = AddToFiles(filePaths, path, config)
-			}
-
-			return nil
-		})
+		return GetFilesFromDirectory(cwd, config)
 	}
 
-	filesSlice := strings.Split(string(byteArray[:]), "\n")
+	filesSlice := strings.SplitSeq(string(byteArray[:]), "\n")
 
-	for _, filePath := range filesSlice {
+	for filePath := range filesSlice {
 		if len(filePath) > 0 {
 			fi, err := os.Stat(filePath)
 
@@ -167,7 +171,7 @@ func ReadLines(content string) []string {
 }
 
 // GetContentType returns the content type of a file
-func GetContentType(path string, config config.Config) (string, error) {
+func GetContentType(path string) (string, error) {
 	fileStat, err := os.Stat(path)
 	if err != nil {
 		return "", err
@@ -181,18 +185,18 @@ func GetContentType(path string, config config.Config) (string, error) {
 		return "", nil
 	}
 
-	rawFileContent, err := os.ReadFile(path)
+	fileContent, err := os.OpenFile(path, os.O_RDONLY, 0)
 	if err != nil {
 		panic(err)
 	}
-	return GetContentTypeBytes(rawFileContent, config)
+	defer fileContent.Close()
+
+	return GetContentTypeBytes(fileContent)
 }
 
 // GetContentTypeBytes returns the content type of a byte slice
-func GetContentTypeBytes(rawFileContent []byte, config config.Config) (string, error) {
-	bytesReader := bytes.NewReader(rawFileContent)
-
-	mimeType, err := mimetype.DetectReader(bytesReader)
+func GetContentTypeBytes(fileContent io.Reader) (string, error) {
+	mimeType, err := mimetype.DetectReader(fileContent)
 	if err != nil {
 		return "", err
 	}

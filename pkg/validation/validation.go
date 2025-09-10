@@ -2,10 +2,13 @@
 package validation
 
 import (
+	"bytes"
 	"os"
 	"regexp"
+	"runtime"
 	"strconv"
 	"strings"
+	"sync"
 
 	// x-release-please-start-major
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/config"
@@ -31,7 +34,28 @@ var textRegexes = []string{
 }
 
 // ValidateFile Validates a single file and returns the errors
+// Note: This function is not thread safe, so it should not be called concurrently
 func ValidateFile(filePath string, config config.Config) []error.ValidationError {
+	// idiomatic Go allows empty struct
+	if config.EditorconfigConfig == nil {
+		config.EditorconfigConfig = &editorconfig.Config{}
+	}
+
+	// EditorconfigConfig isn't thread safe, so we need to lock it
+	def, warnings, err := config.EditorconfigConfig.LoadGraceful(filePath)
+	if err != nil {
+		config.Logger.Error("cannot load %s as .editorconfig: %s", filePath, err)
+		return nil
+	}
+	if warnings != nil {
+		config.Logger.Warning("%v", warnings.Error())
+	}
+
+	return ValidateFileWithDefinition(filePath, config, def)
+}
+
+// ValidateFileWithDefinition Validates a single file with a given editorconfig definition and returns the errors
+func ValidateFileWithDefinition(filePath string, config config.Config, def *editorconfig.Definition) []error.ValidationError {
 	const directivePrefix = "editorconfig-checker-"
 	const directiveDisable = directivePrefix + "disable"
 	const directiveDisableFile = directivePrefix + "disable-file"
@@ -47,7 +71,7 @@ func ValidateFile(filePath string, config config.Config) []error.ValidationError
 		panic(err)
 	}
 	fileContent := string(rawFileContent)
-	mime, err := files.GetContentTypeBytes(rawFileContent, config)
+	mime, err := files.GetContentTypeBytes(bytes.NewReader(rawFileContent))
 	if err != nil {
 		panic(err)
 	}
@@ -73,27 +97,13 @@ func ValidateFile(filePath string, config config.Config) []error.ValidationError
 		return validationErrors
 	}
 
-	// idiomatic Go allows empty struct
-	if config.EditorconfigConfig == nil {
-		config.EditorconfigConfig = &editorconfig.Config{}
-	}
-
-	definition, warnings, err := config.EditorconfigConfig.LoadGraceful(filePath)
-	if err != nil {
-		config.Logger.Error("cannot load %s as .editorconfig: %s", filePath, err)
-		return validationErrors
-	}
-	if warnings != nil {
-		config.Logger.Warning("%v", warnings.Error())
-	}
-
-	fileInformation := files.FileInformation{Content: fileContent, FilePath: filePath, Editorconfig: definition}
+	fileInformation := files.FileInformation{Content: fileContent, FilePath: filePath, Editorconfig: def}
 	validationError := ValidateFinalNewline(fileInformation, config)
 	if validationError.Message != nil {
 		validationErrors = append(validationErrors, validationError)
 	}
 
-	fileInformation = files.FileInformation{Content: fileContent, FilePath: filePath, Editorconfig: definition}
+	fileInformation = files.FileInformation{Content: fileContent, FilePath: filePath, Editorconfig: def}
 	validationError = ValidateLineEnding(fileInformation, config)
 	if validationError.Message != nil {
 		validationErrors = append(validationErrors, validationError)
@@ -153,7 +163,7 @@ func ValidateFile(filePath string, config config.Config) []error.ValidationError
 			}
 		}
 
-		fileInformation = files.FileInformation{Line: line, FilePath: filePath, LineNumber: lineNumber, Editorconfig: definition}
+		fileInformation = files.FileInformation{Line: line, FilePath: filePath, LineNumber: lineNumber, Editorconfig: def}
 		validationError = ValidateTrailingWhitespace(fileInformation, config)
 		if validationError.Message != nil {
 			validationErrors = append(validationErrors, validationError)
@@ -249,12 +259,57 @@ func ValidateMaxLineLength(fileInformation files.FileInformation, config config.
 
 // ProcessValidation Validates all files and returns an array of validation errors
 func ProcessValidation(files []string, config config.Config) []error.ValidationErrors {
-	var validationErrors []error.ValidationErrors
-
-	for _, filePath := range files {
-		config.Logger.Verbose("Validate %s", filePath)
-		validationErrors = append(validationErrors, error.ValidationErrors{FilePath: filePath, Errors: ValidateFile(filePath, config)})
+	// idiomatic Go allows empty struct
+	if config.EditorconfigConfig == nil {
+		config.EditorconfigConfig = &editorconfig.Config{}
 	}
 
-	return validationErrors
+	var (
+		validationErrors = make([]*error.ValidationErrors, len(files))
+		wg               sync.WaitGroup
+		lock             sync.Mutex
+	)
+	// Limit the number of concurrent goroutines to the number of CPUs
+	limiter := make(chan struct{}, runtime.NumCPU())
+
+	for i, filePath := range files {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			// Wait for a slot to be available in the limiter, and release it via defer
+			limiter <- struct{}{}
+			defer func() { <-limiter }()
+
+			config.Logger.Verbose("Validate %s", filePath)
+
+			// EditorconfigConfig isn't thread safe, so we need to acquire a lock
+			lock.Lock()
+			def, warnings, err := config.EditorconfigConfig.LoadGraceful(filePath)
+			lock.Unlock()
+			if err != nil {
+				config.Logger.Error("cannot load %s as .editorconfig: %s", filePath, err)
+				return
+			}
+			if warnings != nil {
+				config.Logger.Warning("%v", warnings.Error())
+			}
+			errors := ValidateFileWithDefinition(filePath, config, def)
+
+			lock.Lock()
+			validationErrors[i] = &error.ValidationErrors{FilePath: filePath, Errors: errors}
+			lock.Unlock()
+		}()
+	}
+
+	wg.Wait()
+
+	// Remove all nil values
+	result := make([]error.ValidationErrors, 0, len(validationErrors))
+	for _, validationError := range validationErrors {
+		if validationError != nil {
+			result = append(result, *validationError)
+		}
+	}
+
+	return result
 }

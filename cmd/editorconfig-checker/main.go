@@ -6,6 +6,7 @@ import (
 	"flag"
 	"io/fs"
 	"os"
+	"runtime/pprof"
 	"strconv"
 	"strings"
 
@@ -42,15 +43,19 @@ const (
 )
 
 // these must be globals, since they are referenced by init(), parseArguments
-var configFilePath string
-var cmdlineExclude string
-var cmdlineConfig config.Config
-var writeConfigFile bool
+var (
+	configFilePath  string
+	cmdlineExclude  string
+	cmdlineConfig   config.Config
+	writeConfigFile bool
+	cpuprofile      string
+)
 
 func enableNoColor(string) error {
 	cmdlineConfig.NoColor = true
 	return nil
 }
+
 func disableNoColor(string) error {
 	cmdlineConfig.NoColor = false
 	return nil
@@ -78,6 +83,7 @@ func init() {
 	flag.BoolVar(&cmdlineConfig.Disable.Indentation, "disable-indentation", false, "disables the indentation check")
 	flag.BoolVar(&cmdlineConfig.Disable.IndentSize, "disable-indent-size", false, "disables only the indent-size check")
 	flag.BoolVar(&cmdlineConfig.Disable.MaxLineLength, "disable-max-line-length", false, "disables only the max-line-length check")
+	flag.StringVar(&cpuprofile, "cpuprofile", "", "write cpu profile to file")
 }
 
 // parse the arguments from os.Args
@@ -103,7 +109,7 @@ func parseArguments() {
 
 	flag.Parse()
 
-	var configPaths = []string{}
+	configPaths := []string{}
 	if configFilePath == "" {
 		configPaths = append(configPaths, defaultConfigFileNames[:]...)
 	} else {
@@ -155,7 +161,25 @@ func parseArguments() {
 func main() {
 	parseArguments()
 
+	if cpuprofile != "" {
+		f, err := os.Create(cpuprofile)
+		if err != nil {
+			currentConfig.Logger.Error("Creating CPU profile file %s: %v", cpuprofile, err.Error())
+			exitProxy(exitCodeErrorOccurred)
+		}
+		if err := pprof.StartCPUProfile(f); err != nil {
+			currentConfig.Logger.Error("Starting CPU profile: %v", err.Error())
+			exitProxy(exitCodeErrorOccurred)
+		}
+	}
+
 	config := *currentConfig
+	// force the exclude regexp to be compiled and cached
+	if _, err := config.CachedExcludesAsRegexp(); err != nil {
+		config.Logger.Error("Compiling exclude regexp: %v", err.Error())
+		exitProxy(exitCodeErrorOccurred)
+	}
+
 	config.Logger.Debug("Config: %s", config)
 	config.Logger.Verbose("Exclude Regexp: %s", config.GetExcludesAsRegularExpression())
 
@@ -173,7 +197,6 @@ func main() {
 
 	// contains all files which should be checked
 	filePaths, err := files.GetFiles(config)
-
 	if err != nil {
 		config.Logger.Error("%v", err.Error())
 		exitProxy(exitCodeErrorOccurred)
@@ -192,6 +215,10 @@ func main() {
 	eccerror.PrintErrors(errors, config)
 
 	config.Logger.Verbose("%d files checked", len(filePaths))
+
+	if cpuprofile != "" {
+		pprof.StopCPUProfile()
+	}
 
 	if eccerror.GetErrorCount(errors) != 0 {
 		exitProxy(exitCodeErrorOccurred)

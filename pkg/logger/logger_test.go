@@ -23,11 +23,11 @@ func snapHelper(t *testing.T, logger *Logger, test loggerTest) {
 func TestLoggerDebug(t *testing.T) {
 	logger := GetLogger()
 
-	snapHelper(t, &logger, func() {
+	snapHelper(t, logger, func() {
 		logger.Debug("this text should not be printed by a logger with default config")
 	})
 
-	snapHelper(t, &logger, func() {
+	snapHelper(t, logger, func() {
 		logger.DebugEnabled = true
 		logger.Debug("this text should be printed when debug was enabled")
 	})
@@ -36,11 +36,11 @@ func TestLoggerDebug(t *testing.T) {
 func TestLoggerVerbose(t *testing.T) {
 	logger := GetLogger()
 
-	snapHelper(t, &logger, func() {
+	snapHelper(t, logger, func() {
 		logger.Verbose("this text should not be printed by a logger with default config")
 	})
 
-	snapHelper(t, &logger, func() {
+	snapHelper(t, logger, func() {
 		logger.VerboseEnabled = true
 		logger.Verbose("hello")
 	})
@@ -49,11 +49,11 @@ func TestLoggerVerbose(t *testing.T) {
 func TestLoggerWarning(t *testing.T) {
 	logger := GetLogger()
 
-	snapHelper(t, &logger, func() {
+	snapHelper(t, logger, func() {
 		logger.Warning("this text should be printed by a logger with default config %s", "(and in color)")
 	})
 
-	snapHelper(t, &logger, func() {
+	snapHelper(t, logger, func() {
 		logger.NoColor = true
 		logger.Warning("this text should be printed by a logger with default config %s", "(but not be colorized)")
 	})
@@ -62,18 +62,18 @@ func TestLoggerWarning(t *testing.T) {
 func TestLoggerOutput(t *testing.T) {
 	logger := GetLogger()
 
-	snapHelper(t, &logger, func() {
+	snapHelper(t, logger, func() {
 		logger.Output("plain output should be printed always %s", "(also supporting format strings)")
 	})
 }
 
 func TestLoggerError(t *testing.T) {
 	logger := GetLogger()
-	snapHelper(t, &logger, func() {
+	snapHelper(t, logger, func() {
 		logger.Error("this text should be printed by a logger with default config %s", "(and in color)")
 	})
 
-	snapHelper(t, &logger, func() {
+	snapHelper(t, logger, func() {
 		logger.NoColor = true
 		logger.Error("this text should be printed by a logger with default config %s", "(but not be colorized)")
 	})
@@ -100,7 +100,7 @@ func TestConfigure(t *testing.T) {
 		t.Errorf("Assumption broken: writer was set already")
 	}
 
-	configLogger := Logger{
+	configLogger := &Logger{
 		VerboseEnabled: true,
 		DebugEnabled:   true,
 		NoColor:        true,

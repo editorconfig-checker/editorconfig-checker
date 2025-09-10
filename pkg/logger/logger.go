@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"sync"
 )
 
 // Colors which can be used
@@ -21,10 +22,11 @@ type Logger struct {
 	DebugEnabled   bool
 	NoColor        bool
 	writer         io.Writer
+	lock           sync.Mutex
 }
 
-func GetLogger() Logger {
-	logger := Logger{}
+func GetLogger() *Logger {
+	logger := &Logger{}
 	logger.Init()
 	return logger
 }
@@ -41,7 +43,7 @@ func (l *Logger) lazyInit() {
 	}
 }
 
-func (l Logger) GetWriter() io.Writer {
+func (l *Logger) GetWriter() io.Writer {
 	return l.writer
 }
 
@@ -51,7 +53,7 @@ func (l *Logger) SetWriter(w io.Writer) {
 }
 
 // apply the settings from the Logger given to the instance
-func (l *Logger) Configure(newLogger Logger) {
+func (l *Logger) Configure(newLogger *Logger) {
 	l.VerboseEnabled = newLogger.VerboseEnabled
 	l.DebugEnabled = newLogger.DebugEnabled
 	l.NoColor = newLogger.NoColor
@@ -61,7 +63,7 @@ func (l *Logger) Configure(newLogger Logger) {
 }
 
 // Debug prints a message when Debugg is set to true on the Logger
-func (l Logger) Debug(format string, a ...interface{}) {
+func (l *Logger) Debug(format string, a ...interface{}) {
 	if l.DebugEnabled {
 		message := fmt.Sprintf(format, a...)
 		l.println(message)
@@ -69,7 +71,7 @@ func (l Logger) Debug(format string, a ...interface{}) {
 }
 
 // Verbose prints a message when Verbosee is set to true on the Logger
-func (l Logger) Verbose(format string, a ...interface{}) {
+func (l *Logger) Verbose(format string, a ...interface{}) {
 	if l.VerboseEnabled {
 		message := fmt.Sprintf(format, a...)
 		l.println(message)
@@ -77,7 +79,7 @@ func (l Logger) Verbose(format string, a ...interface{}) {
 }
 
 // Warning prints a warning message to Stdout in yellow
-func (l Logger) Warning(format string, a ...interface{}) {
+func (l *Logger) Warning(format string, a ...interface{}) {
 	message := fmt.Sprintf(format, a...)
 	if l.NoColor {
 		l.println(message)
@@ -87,13 +89,13 @@ func (l Logger) Warning(format string, a ...interface{}) {
 }
 
 // Output prints a message on Stdout in 'normal' color
-func (l Logger) Output(format string, a ...interface{}) {
+func (l *Logger) Output(format string, a ...interface{}) {
 	message := fmt.Sprintf(format, a...)
 	l.println(message)
 }
 
 // Error prints an error message to Stdout in red
-func (l Logger) Error(format string, a ...interface{}) {
+func (l *Logger) Error(format string, a ...interface{}) {
 	message := fmt.Sprintf(format, a...)
 	if l.NoColor {
 		l.println(message)
@@ -103,13 +105,17 @@ func (l Logger) Error(format string, a ...interface{}) {
 }
 
 // println prints a message with a trailing newline
-func (l Logger) println(message string) {
+func (l *Logger) println(message string) {
 	l.lazyInit()
+	l.lock.Lock()
 	fmt.Fprintln(l.writer, message)
+	l.lock.Unlock()
 }
 
 // printlnColor prints a message in a given ANSI-color with a trailing newline
-func (l Logger) printlnColor(message string, color string) {
+func (l *Logger) printlnColor(message string, color string) {
 	l.lazyInit()
+	l.lock.Lock()
 	fmt.Fprintf(l.writer, "%s%s%s\n", color, message, escSeqReset)
+	l.lock.Unlock()
 }
