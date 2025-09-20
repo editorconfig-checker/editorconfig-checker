@@ -25,7 +25,7 @@ require (
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
-	github.com/gkampitakis/go-snaps v0.5.14
+	github.com/gkampitakis/go-snaps v0.5.15
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	golang.org/x/mod v0.27.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
