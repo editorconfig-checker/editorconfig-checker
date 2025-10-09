@@ -58,7 +58,7 @@ jobs:
           GHCR_USERNAME: ${{ github.repository_owner }}
 
       - name: Update repo description on Docker Hub
-        uses: peter-evans/dockerhub-description@v4
+        uses: peter-evans/dockerhub-description@v5
         with:
           username: ${{ vars.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
