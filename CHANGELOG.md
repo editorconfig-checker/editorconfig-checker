@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.4.1](https://github.com/editorconfig-checker/editorconfig-checker/compare/v3.4.0...v3.4.1) (2025-10-09)
+
+
+### Performance Improvements
+
+* process files concurrently ([#488](https://github.com/editorconfig-checker/editorconfig-checker/issues/488)) ([4f39fde](https://github.com/editorconfig-checker/editorconfig-checker/commit/4f39fdec59cc2d5e62ce9a419531b08541a7d552))
+
 ## [3.4.0](https://github.com/editorconfig-checker/editorconfig-checker/compare/v3.3.0...v3.4.0) (2025-08-10)
 
 
