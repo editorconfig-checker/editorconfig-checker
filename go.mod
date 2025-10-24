@@ -5,7 +5,7 @@ go 1.24.0
 require (
 	github.com/editorconfig/editorconfig-core-go/v2 v2.6.3
 	github.com/gabriel-vasile/mimetype v1.4.11
-	github.com/wlynxg/chardet v1.0.0
+	github.com/wlynxg/chardet v1.0.4
 	golang.org/x/text v0.30.0
 )
 
@@ -29,7 +29,7 @@ require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/gkampitakis/go-snaps v0.5.15
 	github.com/pmezard/go-difflib v1.0.0 // indirect
-	golang.org/x/mod v0.28.0 // indirect
+	golang.org/x/mod v0.29.0 // indirect
 	golang.org/x/net v0.36.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 )
