@@ -150,6 +150,7 @@ type Config struct {
 
 // DisabledChecks is a Struct which represents disabled checks
 type DisabledChecks struct {
+	Charset                bool
 	EndOfLine              bool
 	Indentation            bool
 	InsertFinalNewline     bool
@@ -310,6 +311,10 @@ func (c *Config) mergeDisabled(disabled DisabledChecks) {
 
 	if disabled.MaxLineLength {
 		c.Disable.MaxLineLength = disabled.MaxLineLength
+	}
+
+	if disabled.Charset {
+		c.Disable.Charset = disabled.Charset
 	}
 }
 

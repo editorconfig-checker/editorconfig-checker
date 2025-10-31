@@ -6,6 +6,7 @@
 	"allowedContentTypes": ["hey"],
   "SpacesAfterTabs": true,
   "disable": {
+    "charset": false,
     "endOfLine": false,
     "trimTrailingWhitespace": false,
     "insertFinalNewline": false,

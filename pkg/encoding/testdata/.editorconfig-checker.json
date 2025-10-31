@@ -1,0 +1,38 @@
+{
+    "IgnoreDefaults": false,
+    "SpacesAfterTabs": false,
+    "NoColor": true,
+    "AllowedContentTypes": [],
+    "PassedFiles": [],
+    "exclude": [
+        "licenses",
+        "chardet/gb18030.html",
+        "text/candide-gb18030.txt",
+        "text/sunzi-bingfa-simplified-gbk.txt",
+        "uchardet/zh/gb18030.txt",
+        "uchardet/ko/johab.txt",
+        "uchardet/th/iso-8859-11.txt",
+        "uchardet/th/tis-620.txt",
+        "uchardet/he/ibm862.logical.txt",
+        "uchardet/he/ibm862.visual.txt",
+        "uchardet/zh/euc-tw.txt",
+        "wpt/legacy-mb-japanese/shift_jis/sjis_chars-csshiftjis.html",
+        "wpt/legacy-mb-japanese/shift_jis/sjis_chars-ms_kanji.html",
+        "wpt/legacy-mb-japanese/shift_jis/sjis_chars-ms932.html",
+        "wpt/legacy-mb-japanese/shift_jis/sjis_chars-shift-jis.html",
+        "wpt/legacy-mb-japanese/shift_jis/sjis_chars-sjis.html",
+        "wpt/legacy-mb-japanese/shift_jis/sjis_chars-windows-31j.html",
+        "wpt/legacy-mb-japanese/shift_jis/sjis_chars-x-sjis.html",
+        "wpt/legacy-mb-japanese/shift_jis/sjis_chars.html",
+        "wpt/legacy-mb-tchinese/big5/big5_chars_extra.html"
+    ],
+    "Disable": {
+        "Charset": false,
+        "EndOfLine": true,
+        "Indentation": true,
+        "InsertFinalNewline": true,
+        "TrimTrailingWhitespace": true,
+        "IndentSize": true,
+        "MaxLineLength": true
+    }
+}

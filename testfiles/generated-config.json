@@ -10,6 +10,7 @@
   "AllowedContentTypes": [],
   "PassedFiles": [],
   "Disable": {
+    "Charset": false,
     "EndOfLine": false,
     "Indentation": false,
     "InsertFinalNewline": false,

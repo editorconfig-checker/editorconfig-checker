@@ -1,10 +1,12 @@
 package files
 
 import (
+	"encoding/json"
 	"os"
 	"reflect"
 	"regexp"
 	"runtime"
+	"sort"
 	"strings"
 	"testing"
 
@@ -211,71 +213,64 @@ type getContentTypeFilesTest struct {
 	regex    string
 }
 
-var getContentTypeFilesTests = []getContentTypeFilesTest{
-	{"8859_1_da.html", "^text/"},
-	{"8859_1_de.html", "^text/"},
-	{"8859_1_en.html", "^text/"},
-	{"8859_1_es.html", "^text/"},
-	{"8859_1_fr.html", "^text/"},
-	{"8859_1_pt.html", "^text/"},
-	{"ascii.txt", "^text/"},
-	{"big5.html", "^text/"},
-	{"candide-gb18030.txt", "^text/"},
-	{"candide-utf-16le.txt", "^application/octet-stream$"}, // no BOM
-	{"candide-utf-32be.txt", "^application/octet-stream$"}, // no BOM
-	{"candide-utf-8.txt", "^text/"},                        // no BOM
-	{"candide-windows-1252.txt", "^text/"},
-	{"cp865.txt", "^text/"},
-	{"euc_jp.html", "^text/"},
-	{"euc_kr.html", "^text/"},
-	{"gb18030.html", "^text/"},
-	{"html.html", "^text/"},
-	{"html.iso88591.html", "^text/"},
-	{"html.svg.html", "^text/"},
-	{"html.usascii.html", "^text/"},
-	{"html.utf8bomdetect.html", "^text/"}, // has BOM
-	{"html.utf8bom.html", "^text/"},       // has BOM
-	{"html.utf8bomws.html", "^text/"},     // has BOM
-	{"html.utf8.html", "^text/"},          // no BOM
-	{"html.withbr.html", "^text/"},
-	{"iso88591.txt", "^text/"},
-	{"koi8_r.txt", "^text/"},
-	{"latin1.txt", "^text/"},
-	{"rashomon-euc-jp.txt", "^text/"},
-	{"rashomon-iso-2022-jp.txt", "^text/"}, // byte 89 is an Esc (ASCII 27)
-	{"rashomon-shift-jis.txt", "^text/"},
-	{"rashomon-utf-8.txt", "^text/"}, // no BOM
-	{"shift_jis.html", "^text/"},
-	{"sunzi-bingfa-gb-levels-1-and-2-hz-gb2312.txt", "^text/"},
-	{"sunzi-bingfa-gb-levels-1-and-2-utf-8.txt", "^text/"}, // no BOM
-	{"sunzi-bingfa-simplified-gbk.txt", "^text/"},
-	{"sunzi-bingfa-simplified-utf-8.txt", "^text/"}, // no BOM
-	{"sunzi-bingfa-traditional-big5.txt", "^text/"},
-	{"sunzi-bingfa-traditional-utf-8.txt", "^text/"}, // no BOM
-	{"unsu-joh-eun-nal-euc-kr.txt", "^text/"},
-	{"unsu-joh-eun-nal-utf-8.txt", "^text/"},       // no BOM
-	{"utf16bebom.txt", "^text/"},                   // has BOM
-	{"utf16lebom.txt", "^text/"},                   // has BOM
-	{"utf16.txt", "^text/"},                        // has BOM
-	{"utf32bebom.txt", "^text/"},                   // has BOM
-	{"utf32lebom.txt", "^text/"},                   // has BOM
-	{"utf8_bom.html", "^text/"},                    // has BOM
-	{"utf8.html", "^text/"},                        // no BOM
-	{"utf8-sdl.txt", "^text/"},                     // no BOM
-	{"utf8.txt", "^text/"},                         // no BOM
-	{"utf8.txt-encoding-test-files.txt", "^text/"}, // no BOM
+func setup() {
+	const testResultsJson = "../encoding/test-results.json"
+
+	f, err := os.Open(testResultsJson)
+	if err != nil {
+		panic(err)
+	}
+	err = json.NewDecoder(f).Decode(&tests)
+	if err != nil {
+		panic(err)
+	}
+	f.Close()
+	sort.Slice(tests, func(i, j int) bool {
+		return tests[i].Filename < tests[j].Filename
+	})
+}
+
+type test struct {
+	Filename   string
+	Encoding   string
+	Charset    string
+	Errored    bool
+	Binary     bool
+	Confidence float64
+	Comment    string
+}
+
+var tests = []test{}
+
+var exceptions = map[string]string{
+	"testdata/text/candide-utf-16le.txt":                                "application/octet-stream",
+	"testdata/text/candide-utf-32be.txt":                                "application/octet-stream",
+	"testdata/uchardet/ja/utf-16be.txt":                                 "application/octet-stream",
+	"testdata/uchardet/ja/utf-16le.txt":                                 "application/octet-stream",
+	"testdata/uchardet/ko/iso-2022-kr.txt":                              "application/octet-stream",
+	"testdata/wpt/legacy-mb-japanese/iso-2022-jp/iso2022jp_errors.html": "application/octet-stream",
+	"testdata/wpt/resources/utf-32-big-endian-nobom.html":               "application/octet-stream",
+	"testdata/wpt/resources/utf-32-big-endian-nobom.xml":                "application/octet-stream",
+	"testdata/wpt/resources/utf-32-little-endian-nobom.html":            "application/octet-stream",
+	"testdata/wpt/resources/utf-32-little-endian-nobom.xml":             "application/octet-stream",
 }
 
 func TestGetContentTypeFiles(t *testing.T) {
-	for _, tt := range getContentTypeFilesTests {
-		filePath := "../encoding/testdata/" + tt.filename
+	setup()
+	for _, tt := range tests {
+		regex := "^text/"
+		exception, ok := exceptions[tt.Filename]
+		if ok {
+			regex = exception
+		}
+		filePath := "../encoding/" + tt.Filename
 		contentType, err := GetContentType(filePath)
 		if err != nil {
-			t.Errorf("GetContentType(%q): expected %v, got %v", tt.filename, "nil", err.Error())
+			t.Errorf("GetContentType (%q): got %v, want %v", filePath, err.Error(), "nil")
 		}
-		match, _ := regexp.MatchString(tt.regex, contentType)
+		match, _ := regexp.MatchString(regex, contentType)
 		if !match {
-			t.Errorf("GetContentType(%q): expected %v, got %v", tt.filename, tt.regex, contentType)
+			t.Errorf("GetContentType(%q): got %v, want %v", filePath, contentType, regex)
 		}
 	}
 }
