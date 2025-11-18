@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install syft
-        uses: anchore/sbom-action/download-syft@v0.20.9
+        uses: anchore/sbom-action/download-syft@v0.20.10
 
       - uses: actions/checkout@v5
         with:
