@@ -26,6 +26,26 @@ define _build
 go build -o $1 ./cmd/editorconfig-checker/main.go
 endef
 
+RACE_OPT := -race
+
+# go: -race requires cgo
+ifneq ($(strip $(CGO_ENABLED)),1)
+RACE_OPT =
+endif
+
+GO_VERSION := $(shell go version)
+# go: -race is not supported on windows/arm64
+ifeq ($(findstring windows/arm64,$(GO_VERSION)),windows/arm64)
+RACE_OPT =
+endif
+
+# cgo: C compiler "gcc" not found: exec: "gcc": executable file not found in $PATH
+CC := $(shell go env CC)
+HAS_CC := $(shell command -v $(CC) >/dev/null)
+ifeq ($(HAS_CC),)
+RACE_OPT =
+endif
+
 $(EXE): $(SOURCES)
 	$(call _build,$(EXE))
 
@@ -40,8 +60,8 @@ uninstall: ## Remove executable from PATH
 	rm -f $(DESTDIR)$(prefix)$(mandir)/man1/editorconfig-checker.1
 
 test: ## Run test suite
-	go test -race -coverprofile=coverage.txt -covermode=atomic ./...
-	go test -trimpath -race -coverprofile=coverage.txt -covermode=atomic ./...
+	go test $(RACE_OPT) -coverprofile=coverage.txt -covermode=atomic ./...
+	go test -trimpath $(RACE_OPT) -coverprofile=coverage.txt -covermode=atomic ./...
 	go vet ./...
 	@test -z $(shell gofmt -s -l . | tee $(STDERR)) || (echo "[ERROR] Fix formatting issues with 'gofmt'" && exit 1)
 
