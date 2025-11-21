@@ -1,12 +1,5 @@
 # Changelog
 
-## [3.5.1](https://github.com/editorconfig-checker/editorconfig-checker/compare/v3.5.0...v3.5.1) (2025-11-21)
-
-### Bug Fixes
-
-* support missing or empty charset config file setting ([#505](https://github.com/editorconfig-checker/editorconfig-checker/issues/505)) ([7214c58](https://github.com/editorconfig-checker/editorconfig-checker/commit/7214c58a91d158473eb3e2951e51ec788b877b90))
-
-
 ## [3.5.0](https://github.com/editorconfig-checker/editorconfig-checker/compare/v3.4.1...v3.5.0) (2025-11-18)
 
 
