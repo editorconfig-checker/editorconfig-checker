@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.5.0](https://github.com/editorconfig-checker/editorconfig-checker/compare/v3.4.1...v3.5.0) (2025-11-18)
+
+
+### Features
+
+* support chardet config file setting ([#457](https://github.com/editorconfig-checker/editorconfig-checker/issues/457)) ([f216ce5](https://github.com/editorconfig-checker/editorconfig-checker/commit/f216ce52132e5fbe1d8c7abdcccd6627b264e285))
+
 ## [3.4.1](https://github.com/editorconfig-checker/editorconfig-checker/compare/v3.4.0...v3.4.1) (2025-10-09)
 
 
