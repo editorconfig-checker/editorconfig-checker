@@ -302,6 +302,7 @@ If you choose to [ignore them](#ignoring-default-excludes), these paths are excl
 // package manager, generated, & lock files
 // Cargo (Rust)
 "Cargo\\.lock$",
+"/target/",
 // Composer (PHP)
 "composer\\.lock$",
 // RubyGems (Ruby)
