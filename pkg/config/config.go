@@ -28,6 +28,7 @@ var defaultExcludes = []string{
 	// package manager, generated, & lock files
 	// Cargo (Rust)
 	"Cargo\\.lock$",
+	"/target/",
 	// Composer (PHP)
 	"composer\\.lock$",
 	// RubyGems (Ruby)
