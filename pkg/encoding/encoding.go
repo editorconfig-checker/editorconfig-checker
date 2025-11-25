@@ -246,6 +246,10 @@ func init() {
 // (at least until we can improve our success rate on encoding detection).
 // Per https://github.com/editorconfig-checker/editorconfig-checker/pull/457#issuecomment-2779587476
 func CharsetsMatch(charsetFound, charsetWanted string) bool {
+	if strings.TrimSpace(charsetWanted) == "" {
+		return true
+	}
+
 	charsetFound = normalizeCharsetName(charsetFound)
 	charsetWanted = normalizeCharsetName(charsetWanted)
 

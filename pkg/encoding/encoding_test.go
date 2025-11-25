@@ -194,7 +194,11 @@ func TestCharsetsMatch(t *testing.T) {
 		}
 	}
 
-	charset2s := []string{"", BinaryData, UnknownEncoding, "latin", "utf", "utf32", "unset"}
+	for _, charset1 := range ValidCharsets {
+		tests = append(tests, test{charset1, "", true})
+	}
+
+	charset2s := []string{BinaryData, UnknownEncoding, "latin", "utf", "utf32", "unset"}
 	for _, charset2 := range charset2s {
 		for _, charset1 := range ValidCharsets {
 			tests = append(tests, test{charset1, charset2, false})

@@ -1,8 +1,10 @@
 root = true
 
 [*]
-charset = latin1
 end_of_line=lf
+
+[.editorconfig]
+charset = latin1
 
 [*{utf8,utf-8,UTF-8}*]
 charset = utf8
