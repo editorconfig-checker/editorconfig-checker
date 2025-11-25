@@ -1,5 +1,17 @@
 # Changelog
 
+## [3.6.0](https://github.com/editorconfig-checker/editorconfig-checker/compare/v3.5.0...v3.6.0) (2025-11-25)
+
+
+### Features
+
+* add Rust target/ dir to default excludes ([#507](https://github.com/editorconfig-checker/editorconfig-checker/issues/507)) ([1c7d477](https://github.com/editorconfig-checker/editorconfig-checker/commit/1c7d4776466484f320b77525a83c3be919c59e90))
+
+
+### Bug Fixes
+
+* support when charset is not set ([#506](https://github.com/editorconfig-checker/editorconfig-checker/issues/506)) ([85fcb6b](https://github.com/editorconfig-checker/editorconfig-checker/commit/85fcb6b6a30d392ee92746603ea4aea44e756766)), closes [#505](https://github.com/editorconfig-checker/editorconfig-checker/issues/505)
+
 ## [3.5.0](https://github.com/editorconfig-checker/editorconfig-checker/compare/v3.4.1...v3.5.0) (2025-11-18)
 
 
