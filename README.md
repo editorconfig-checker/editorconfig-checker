@@ -73,6 +73,12 @@ tar xzf ec-$OS-$ARCH.tar.gz && \
 
 Grab a binary from the [release page](https://github.com/editorconfig-checker/editorconfig-checker/releases).
 
+If you are using [mise](https://github.com/jdx/mise), the polyglot tool versions manager, you can install it using a command like this:
+
+```shell
+mise use -g editorconfig-checker@latest
+```
+
 If you have go installed you can run `go get github.com/editorconfig-checker/editorconfig-checker/v3` <!-- x-release-please-major -->
 and run `make build` inside the project folder.
 This will place a binary called `ec` into the `bin` directory.
