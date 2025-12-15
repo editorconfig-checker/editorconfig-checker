@@ -6,7 +6,7 @@ require (
 	github.com/editorconfig/editorconfig-core-go/v2 v2.6.3
 	github.com/gabriel-vasile/mimetype v1.4.12
 	github.com/wlynxg/chardet v1.0.4
-	golang.org/x/text v0.31.0
+	golang.org/x/text v0.32.0
 )
 
 require (
@@ -26,6 +26,6 @@ require (
 
 require (
 	github.com/gkampitakis/go-snaps v0.5.18
-	golang.org/x/mod v0.29.0 // indirect
+	golang.org/x/mod v0.30.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 )
