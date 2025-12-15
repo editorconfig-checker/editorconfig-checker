@@ -71,38 +71,51 @@ tar xzf ec-$OS-$ARCH.tar.gz && \
 
 ## Installation
 
+You can install **editorconfig-checker** in several ways, depending on your platform and preferences:
+
+### 1. Download Prebuilt Binaries
+
 Grab a binary from the [release page](https://github.com/editorconfig-checker/editorconfig-checker/releases).
 
-If you are using [mise](https://github.com/jdx/mise), the polyglot tool versions manager, you can install it using a command like this:
+### 2. Using Go
+
+If you have Go installed:
+
+- Run:
+  ```shell
+  go get github.com/editorconfig-checker/editorconfig-checker/v3
+  ```
+- Then build the binary:
+  ```shell
+  make build
+  ```
+- The binary will be placed in the `bin` directory as `ec`.
+
+Alternatively, with Go 1.16+ you can install globally:
+
+```shell
+go install github.com/editorconfig-checker/editorconfig-checker/v3/cmd/editorconfig-checker@latest
+```
+
+### 3. Using mise (Polyglot Tool Version Manager)
+
+If you use [mise](https://github.com/jdx/mise), install with:
 
 ```shell
 mise use -g editorconfig-checker@latest
 ```
 
-If you have go installed you can run `go get github.com/editorconfig-checker/editorconfig-checker/v3` <!-- x-release-please-major -->
-and run `make build` inside the project folder.
-This will place a binary called `ec` into the `bin` directory.
+### 4. Arch Linux
 
-If you are using Arch Linux, you can use [pacman](https://wiki.archlinux.org/title/Pacman) to install from [extra repository](https://archlinux.org/packages/extra/x86_64/editorconfig-checker/):
-
-```shell
-pacman -S editorconfig-checker
-```
-
-Also, development (VCS) package is available in the [AUR](https://aur.archlinux.org/packages/editorconfig-checker-git):
-
-```shell
-# <favourite-aur-helper> <install-command> editorconfig-checker-git
-
-# i.e.
-paru -S editorconfig-checker-git
-```
-
-If Go 1.16 or greater is installed, you can also install it globally via `go install`:
-
-```shell
-go install github.com/editorconfig-checker/editorconfig-checker/v3/cmd/editorconfig-checker@latest
-```
+- Install from the [extra repository](https://archlinux.org/packages/extra/x86_64/editorconfig-checker/):
+  ```shell
+  pacman -S editorconfig-checker
+  ```
+- Or install the development (VCS) package from the [AUR](https://aur.archlinux.org/packages/editorconfig-checker-git):
+  ```shell
+  # With your favorite AUR helper, e.g.:
+  paru -S editorconfig-checker-git
+  ```
 
 ## Usage
 
