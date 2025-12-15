@@ -97,7 +97,21 @@ Alternatively, with Go 1.16+ you can install globally:
 go install github.com/editorconfig-checker/editorconfig-checker/v3/cmd/editorconfig-checker@latest
 ```
 
-### 3. Using mise (Polyglot Tool Version Manager)
+### 3. Using Nix
+
+If you use [Nix](https://nixos.org/):
+
+```shell
+nix-env -iA nixpkgs.editorconfig-checker
+```
+
+Or, with flakes:
+
+```shell
+nix run nixpkgs#editorconfig-checker
+```
+
+### 4. Using mise (Polyglot Tool Version Manager)
 
 If you use [mise](https://github.com/jdx/mise), install with:
 
@@ -105,7 +119,15 @@ If you use [mise](https://github.com/jdx/mise), install with:
 mise use -g editorconfig-checker@latest
 ```
 
-### 4. Arch Linux
+### 5. Using Homebrew
+
+If you use [Homebrew](https://brew.sh/) on macOS or Linux:
+
+```shell
+brew install editorconfig-checker
+```
+
+### 6. Arch Linux
 
 - Install from the [extra repository](https://archlinux.org/packages/extra/x86_64/editorconfig-checker/):
   ```shell
