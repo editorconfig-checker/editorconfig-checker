@@ -572,8 +572,8 @@ The [ss-open/ci/recipes project](https://gitlab.com/ss-open/ci/recipes) offers a
 
 ## Support
 
-If you have any questions, suggestions, need a wrapper for a programming language or just want to chat join #editorconfig-checker on freenode(IRC).
-If you don't have an IRC-client set up you can use the [freenode webchat](https://webchat.freenode.net/?channels=editorconfig-checker).
+If you have any questions, suggestions, need a wrapper for a programming language or just want to chat join `#editorconfig-checker` on [Libera IRC](https://libera.chat/).
+If you do not have an IRC client you can also use a [webclient](https://libera.chat/guides/clients#connecting-without-installing-anything).
 
 ## Contributing
 
