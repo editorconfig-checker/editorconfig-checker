@@ -570,6 +570,19 @@ The [ss-open/ci/recipes project](https://gitlab.com/ss-open/ci/recipes) offers a
 - Main documentation: <https://gitlab.com/ss-open/ci/recipes/-/blob/main/README.md>
 - Editorconfig job specific documentation: <https://gitlab.com/ss-open/ci/recipes/-/blob/main/stages/lint/editorconfig/README.md>
 
+### Mega-Linter
+
+Instead of installing and configuring `editorconfig-checker` and all other linters in your project CI workflows (GitHub Actions & others), you can use [Mega-Linter](https://megalinter.io/latest/) which does all that for you with a single [assisted installation](https://megalinter.io/latest/install-assisted/).
+
+Mega-Linter embeds [editorconfig-checker](https://megalinter.io/latest/descriptors/editorconfig_editorconfig_checker/) by default in all its [flavors](https://megalinter.io/latest/flavors/), meaning that it will be run at each commit or Pull Request to detect any issue related to `.editorconfig`.
+
+If you want to use only `editorconfig-checker` and not the 70+ other linters, you can use the following `.mega-linter.yml` configuration file:
+
+```yaml
+ENABLE:
+  - EDITORCONFIG
+```
+
 ## Support
 
 If you have any questions, suggestions, need a wrapper for a programming language or just want to chat join `#editorconfig-checker` on [Libera IRC](https://libera.chat/).
