@@ -25,11 +25,10 @@
          1. [via configuration](#via-configuration)
          2. [via arguments](#via-arguments)
 7. [Charset Setting](#charset-setting)
-8. [Docker](#docker)
-9. [Continuous Integration](#continuous-integration)
-10. [Support](#support)
-11. [Contributing](#contributing)
-12. [Semantic Versioning Policy](#semantic-versioning-policy)
+8. [Continuous Integration](#continuous-integration)
+9. [Support](#support)
+10. [Contributing](#contributing)
+11. [Semantic Versioning Policy](#semantic-versioning-policy)
 
 ## What?
 
@@ -111,7 +110,19 @@ Or, with flakes:
 nix run nixpkgs#editorconfig-checker
 ```
 
-### 4. Using mise (Polyglot Tool Version Manager)
+### 4. Using Docker
+
+You can run **editorconfig-checker** inside a Docker container without installing it locally:
+
+```shell
+docker run --rm --volume=$PWD:/check mstruebing/editorconfig-checker
+```
+
+This command mounts your current directory into the container and runs the check inside it.
+
+See also: [Docker Hub: mstruebing/editorconfig-checker](https://hub.docker.com/r/mstruebing/editorconfig-checker)
+
+### 5. Using mise (Polyglot Tool Version Manager)
 
 If you use [mise](https://github.com/jdx/mise), install with:
 
@@ -119,7 +130,7 @@ If you use [mise](https://github.com/jdx/mise), install with:
 mise use -g editorconfig-checker@latest
 ```
 
-### 5. Using Homebrew
+### 6. Using Homebrew
 
 If you use [Homebrew](https://brew.sh/) on macOS or Linux:
 
@@ -127,7 +138,7 @@ If you use [Homebrew](https://brew.sh/) on macOS or Linux:
 brew install editorconfig-checker
 ```
 
-### 6. Arch Linux
+### 7. Arch Linux
 
 - Install from the [extra repository](https://archlinux.org/packages/extra/x86_64/editorconfig-checker/):
   ```shell
@@ -138,6 +149,15 @@ brew install editorconfig-checker
   # With your favorite AUR helper, e.g.:
   paru -S editorconfig-checker-git
   ```
+
+### Language Specific Wrappers:
+
+We do have a couple of language specific wrappers available that you can install with your favorites language package manager.
+See their respective documentation for installation and usage instructions.
+
+* JavaScript/TypeScript: [npm package](https://www.npmjs.com/package/editorconfig-checker)
+* Python: [PyPI package](https://pypi.org/project/editorconfig-checker/)
+* PHP: [Composer package](https://packagist.org/packages/editorconfig-checker/editorconfig-checker)
 
 ## Usage
 
@@ -528,28 +548,20 @@ this may lead to issues, such as mis-identifying line lengths.
 If a file's encoding can't be determined, we identify the encoding as `unknown`,
 report the issue, and decode the file using the default decoder.
 
-## Docker
-
-You are able to run this tool inside a Docker container.
-To do this you need to have Docker installed and run this command in your repository root which you want to check:
-`docker run --rm --volume=$PWD:/check mstruebing/editorconfig-checker`
-
-Docker Hub: [mstruebing/editorconfig-checker](https://hub.docker.com/r/mstruebing/editorconfig-checker)
-
 ## Continuous Integration
 
-### Mega-Linter
+### GitHub Actions
 
-Instead of installing and configuring `editorconfig-checker` and all other linters in your project CI workflows (GitHub Actions & others), you can use [Mega-Linter](https://megalinter.io/latest/) which does all that for you with a single [assisted installation](https://megalinter.io/latest/install-assisted/).
+You can use **editorconfig-checker** in your GitHub Actions workflows to automatically check your codebase for `.editorconfig` compliance on every push or pull request.
 
-Mega-Linter embeds [editorconfig-checker](https://megalinter.io/latest/descriptors/editorconfig_editorconfig_checker/) by default in all its [flavors](https://megalinter.io/latest/flavors/), meaning that it will be run at each commit or Pull Request to detect any issue related to `.editorconfig`.
-
-If you want to use only `editorconfig-checker` and not the 70+ other linters, you can use the following `.mega-linter.yml` configuration file:
+Example workflow step:
 
 ```yaml
-ENABLE:
-  - EDITORCONFIG
+- name: Run editorconfig-checker
+  uses: editorconfig-checker/editorconfig-checker-action
 ```
+
+See also: [action-editorconfig-checker repository](https://github.com/editorconfig-checker/action-editorconfig-checker)
 
 ### GitLab CI
 
