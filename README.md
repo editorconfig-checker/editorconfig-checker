@@ -81,9 +81,9 @@ Grab a binary from the [release page](https://github.com/editorconfig-checker/ed
 If you have Go installed:
 
 - Run:
-  ```shell
-  go get github.com/editorconfig-checker/editorconfig-checker/v3
-  ```
+
+  `go get github.com/editorconfig-checker/editorconfig-checker/v3`  <!-- x-release-please-major -->
+
 - Then build the binary:
   ```shell
   make build
