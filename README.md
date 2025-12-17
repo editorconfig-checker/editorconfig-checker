@@ -72,29 +72,18 @@ tar xzf ec-$OS-$ARCH.tar.gz && \
 
 You can install **editorconfig-checker** in several ways, depending on your platform and preferences:
 
-### 1. Download Prebuilt Binaries
+### 1. Using Go
 
-Grab a binary from the [release page](https://github.com/editorconfig-checker/editorconfig-checker/releases).
-
-### 2. Using Go
-
-If you have Go installed:
-
-- Run:
-
-  `go get github.com/editorconfig-checker/editorconfig-checker/v3`  <!-- x-release-please-major -->
-
-- Then build the binary:
-  ```shell
-  make build
-  ```
-- The binary will be placed in the `bin` directory as `ec`.
-
-Alternatively, with Go 1.16+ you can install globally:
+If you have Go installed, you can install **editorconfig-checker** with the following command:
 
 ```shell
 go install github.com/editorconfig-checker/editorconfig-checker/v3/cmd/editorconfig-checker@latest
 ```
+
+### 2. Download Prebuilt Binaries
+
+Grab a binary from the [release page](https://github.com/editorconfig-checker/editorconfig-checker/releases).
+
 
 ### 3. Using Nix
 
