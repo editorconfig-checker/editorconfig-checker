@@ -25,11 +25,10 @@
          1. [via configuration](#via-configuration)
          2. [via arguments](#via-arguments)
 7. [Charset Setting](#charset-setting)
-8. [Docker](#docker)
-9. [Continuous Integration](#continuous-integration)
-10. [Support](#support)
-11. [Contributing](#contributing)
-12. [Semantic Versioning Policy](#semantic-versioning-policy)
+8. [Continuous Integration](#continuous-integration)
+9. [Support](#support)
+10. [Contributing](#contributing)
+11. [Semantic Versioning Policy](#semantic-versioning-policy)
 
 ## What?
 
@@ -71,38 +70,83 @@ tar xzf ec-$OS-$ARCH.tar.gz && \
 
 ## Installation
 
+You can install **editorconfig-checker** in several ways, depending on your platform and preferences:
+
+### 1. Using Go
+
+If you have Go installed, you can install **editorconfig-checker** with the following command:
+
+```shell
+go install github.com/editorconfig-checker/editorconfig-checker/v3/cmd/editorconfig-checker@latest
+```
+
+### 2. Download Prebuilt Binaries
+
 Grab a binary from the [release page](https://github.com/editorconfig-checker/editorconfig-checker/releases).
 
-If you are using [mise](https://github.com/jdx/mise), the polyglot tool versions manager, you can install it using a command like this:
+
+### 3. Using Nix
+
+If you use [Nix](https://nixos.org/):
+
+```shell
+nix-env -iA nixpkgs.editorconfig-checker
+```
+
+Or, with flakes:
+
+```shell
+nix run nixpkgs#editorconfig-checker
+```
+
+### 4. Using Docker
+
+You can run **editorconfig-checker** inside a Docker container without installing it locally:
+
+```shell
+docker run --rm --volume=$PWD:/check mstruebing/editorconfig-checker
+```
+
+This command mounts your current directory into the container and runs the check inside it.
+
+See also: [Docker Hub: mstruebing/editorconfig-checker](https://hub.docker.com/r/mstruebing/editorconfig-checker)
+
+### 5. Using mise (Polyglot Tool Version Manager)
+
+If you use [mise](https://github.com/jdx/mise), install with:
 
 ```shell
 mise use -g editorconfig-checker@latest
 ```
 
-If you have go installed you can run `go get github.com/editorconfig-checker/editorconfig-checker/v3` <!-- x-release-please-major -->
-and run `make build` inside the project folder.
-This will place a binary called `ec` into the `bin` directory.
+### 6. Using Homebrew
 
-If you are using Arch Linux, you can use [pacman](https://wiki.archlinux.org/title/Pacman) to install from [extra repository](https://archlinux.org/packages/extra/x86_64/editorconfig-checker/):
+If you use [Homebrew](https://brew.sh/) on macOS or Linux:
 
 ```shell
-pacman -S editorconfig-checker
+brew install editorconfig-checker
 ```
 
-Also, development (VCS) package is available in the [AUR](https://aur.archlinux.org/packages/editorconfig-checker-git):
+### 7. Arch Linux
 
-```shell
-# <favourite-aur-helper> <install-command> editorconfig-checker-git
+- Install from the [extra repository](https://archlinux.org/packages/extra/x86_64/editorconfig-checker/):
+  ```shell
+  pacman -S editorconfig-checker
+  ```
+- Or install the development (VCS) package from the [AUR](https://aur.archlinux.org/packages/editorconfig-checker-git):
+  ```shell
+  # With your favorite AUR helper, e.g.:
+  paru -S editorconfig-checker-git
+  ```
 
-# i.e.
-paru -S editorconfig-checker-git
-```
+### Language Specific Wrappers:
 
-If Go 1.16 or greater is installed, you can also install it globally via `go install`:
+We do have a couple of language specific wrappers available that you can install with your favorites language package manager.
+See their respective documentation for installation and usage instructions.
 
-```shell
-go install github.com/editorconfig-checker/editorconfig-checker/v3/cmd/editorconfig-checker@latest
-```
+* JavaScript/TypeScript: [npm package](https://www.npmjs.com/package/editorconfig-checker)
+* Python: [PyPI package](https://pypi.org/project/editorconfig-checker/)
+* PHP: [Composer package](https://packagist.org/packages/editorconfig-checker/editorconfig-checker)
 
 ## Usage
 
@@ -493,15 +537,27 @@ this may lead to issues, such as mis-identifying line lengths.
 If a file's encoding can't be determined, we identify the encoding as `unknown`,
 report the issue, and decode the file using the default decoder.
 
-## Docker
-
-You are able to run this tool inside a Docker container.
-To do this you need to have Docker installed and run this command in your repository root which you want to check:
-`docker run --rm --volume=$PWD:/check mstruebing/editorconfig-checker`
-
-Docker Hub: [mstruebing/editorconfig-checker](https://hub.docker.com/r/mstruebing/editorconfig-checker)
-
 ## Continuous Integration
+
+### GitHub Actions
+
+You can use **editorconfig-checker** in your GitHub Actions workflows to automatically check your codebase for `.editorconfig` compliance on every push or pull request.
+
+Example workflow step:
+
+```yaml
+- name: Run editorconfig-checker
+  uses: editorconfig-checker/editorconfig-checker-action
+```
+
+See also: [action-editorconfig-checker repository](https://github.com/editorconfig-checker/action-editorconfig-checker)
+
+### GitLab CI
+
+The [ss-open/ci/recipes project](https://gitlab.com/ss-open/ci/recipes) offers a ready to use lint job integrating editorconfig-checker.
+
+- Main documentation: <https://gitlab.com/ss-open/ci/recipes/-/blob/main/README.md>
+- Editorconfig job specific documentation: <https://gitlab.com/ss-open/ci/recipes/-/blob/main/stages/lint/editorconfig/README.md>
 
 ### Mega-Linter
 
@@ -516,17 +572,10 @@ ENABLE:
   - EDITORCONFIG
 ```
 
-### GitLab CI
-
-The [ss-open/ci/recipes project](https://gitlab.com/ss-open/ci/recipes) offers a ready to use lint job integrating editorconfig-checker.
-
-- Main documentation: <https://gitlab.com/ss-open/ci/recipes/-/blob/main/README.md>
-- Editorconfig job specific documentation: <https://gitlab.com/ss-open/ci/recipes/-/blob/main/stages/lint/editorconfig/README.md>
-
 ## Support
 
-If you have any questions, suggestions, need a wrapper for a programming language or just want to chat join #editorconfig-checker on freenode(IRC).
-If you don't have an IRC-client set up you can use the [freenode webchat](https://webchat.freenode.net/?channels=editorconfig-checker).
+If you have any questions, suggestions, need a wrapper for a programming language or just want to chat join `#editorconfig-checker` on [Libera IRC](https://libera.chat/).
+If you do not have an IRC client you can also use a [webclient](https://libera.chat/guides/clients#connecting-without-installing-anything).
 
 ## Contributing
 
