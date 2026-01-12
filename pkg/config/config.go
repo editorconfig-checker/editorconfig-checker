@@ -115,8 +115,8 @@ var defaultAllowedContentTypes = []string{
 	"application/json",
 	"application/x-ndjson",
 	"application/xml",
-	"+json",
-	"+xml",
+	"\\+json",
+	"\\+xml",
 }
 
 // Config struct, contains everything a config can contain
