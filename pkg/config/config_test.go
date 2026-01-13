@@ -143,7 +143,7 @@ func TestMerge(t *testing.T) {
 
 	modifiedConfig.Merge(mergeConfig)
 
-	mergeConfig.AllowedContentTypes = []string{"text/", "application/octet-stream", "application/ecmascript", "application/json", "application/x-ndjson", "application/xml", "+json", "+xml", "xml/"}
+	mergeConfig.AllowedContentTypes = []string{"text/", "application/octet-stream", "application/ecmascript", "application/json", "application/x-ndjson", "application/xml", "\\+json", "\\+xml", "xml/"}
 	mergeConfig.Exclude = []string{"testfiles", "testdata", "some-other"}
 
 	expected := mergeConfig
@@ -182,7 +182,7 @@ func TestParse(t *testing.T) {
 		c.Debug != true ||
 		c.IgnoreDefaults != true ||
 		!reflect.DeepEqual(c.Exclude, []string{"testfiles"}) ||
-		!reflect.DeepEqual(c.AllowedContentTypes, []string{"text/", "application/octet-stream", "application/ecmascript", "application/json", "application/x-ndjson", "application/xml", "+json", "+xml", "hey"}) ||
+		!reflect.DeepEqual(c.AllowedContentTypes, []string{"text/", "application/octet-stream", "application/ecmascript", "application/json", "application/x-ndjson", "application/xml", "\\+json", "\\+xml", "hey"}) ||
 		c.SpacesAfterTabs != true ||
 		c.Disable.EndOfLine != false ||
 		c.Disable.TrimTrailingWhitespace != false ||

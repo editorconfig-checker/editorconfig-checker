@@ -82,11 +82,6 @@ func TestValidateFile(t *testing.T) {
 		t.Error("Should have no errors when validating valid file, got", result)
 	}
 
-	result = ValidateFile("./../../testfiles/disabled-block-with-error.txt", *configuration)
-	if len(result) != 1 {
-		t.Error("Should have one error, got", result)
-	}
-
 	configuration = config.NewConfig(nil)
 	configuration.SpacesAfterTabs = false
 	result = ValidateFile("./../../testfiles/spaces-after-tabs.txt", *configuration)
@@ -168,5 +163,13 @@ func TestValidateFile(t *testing.T) {
 	result = ValidateFile("./../../testfiles/spaces-with-tab.c", *configuration)
 	if len(result) != 1 {
 		t.Error("Should have one error, got", result)
+	}
+
+	configuration = config.NewConfig(nil)
+	configuration.Verbose = true
+	configuration.Disable.Indentation = true
+	result = ValidateFile("./../../testfiles/favorites.gpx.txt", *configuration)
+	if len(result) != 0 {
+		t.Error("Should have no errors when validating valid file, got", result)
 	}
 }

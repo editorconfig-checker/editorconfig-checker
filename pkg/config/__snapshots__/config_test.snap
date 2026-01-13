@@ -7,8 +7,8 @@
   "application/json",
   "application/x-ndjson",
   "application/xml",
-  "+json",
-  "+xml"
+  "\\+json",
+  "\\+xml"
  ],
  "Debug": false,
  "Disable": {
