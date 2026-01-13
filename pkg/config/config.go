@@ -107,7 +107,7 @@ var defaultExcludes = []string{
 	"~$",
 }
 
-// keep synced with pkg/validation/validation.go#L20
+// keep synced with pkg/validation/validation.go#L20 (but no escaping)
 var defaultAllowedContentTypes = []string{
 	"text/",
 	"application/octet-stream",
@@ -115,8 +115,8 @@ var defaultAllowedContentTypes = []string{
 	"application/json",
 	"application/x-ndjson",
 	"application/xml",
-	"\\+json",
-	"\\+xml",
+	"+json",
+	"+xml",
 }
 
 // Config struct, contains everything a config can contain
