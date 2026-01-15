@@ -169,4 +169,12 @@ func TestValidateFile(t *testing.T) {
 	if len(result) != 1 {
 		t.Error("Should have one error, got", result)
 	}
+
+	configuration = config.NewConfig(nil)
+	configuration.Verbose = true
+	configuration.Disable.Indentation = true
+	result = ValidateFile("./../../testfiles/favorites.gpx.txt", *configuration)
+	if len(result) != 0 {
+		t.Error("Should have no errors when validating valid file, got", result)
+	}
 }

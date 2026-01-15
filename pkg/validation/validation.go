@@ -30,8 +30,8 @@ var textRegexes = []string{
 	"^application/json$",
 	"^application/x-ndjson$",
 	"^application/xml$",
-	"+json",
-	"+xml$",
+	"\\+json",
+	"\\+xml$",
 }
 
 // ValidateFile Validates a single file and returns the errors

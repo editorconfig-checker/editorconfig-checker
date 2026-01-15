@@ -107,7 +107,7 @@ var defaultExcludes = []string{
 	"~$",
 }
 
-// keep synced with pkg/validation/validation.go#L20
+// keep synced with pkg/validation/validation.go#L20 (but no escaping)
 var defaultAllowedContentTypes = []string{
 	"text/",
 	"application/octet-stream",
