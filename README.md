@@ -546,8 +546,11 @@ You can use **editorconfig-checker** in your GitHub Actions workflows to automat
 Example workflow step:
 
 ```yaml
+- name: Set up editorconfig-checker
+  uses: editorconfig-checker/action-editorconfig-checker@main
+
 - name: Run editorconfig-checker
-  uses: editorconfig-checker/editorconfig-checker-action
+  run: editorconfig-checker
 ```
 
 See also: [action-editorconfig-checker repository](https://github.com/editorconfig-checker/action-editorconfig-checker)
