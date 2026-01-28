@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.6.1](https://github.com/editorconfig-checker/editorconfig-checker/compare/v3.6.0...v3.6.1) (2026-01-22)
+
+
+### Bug Fixes
+
+* empty charset on xlf files ([#527](https://github.com/editorconfig-checker/editorconfig-checker/issues/527)) ([ebaf1b9](https://github.com/editorconfig-checker/editorconfig-checker/commit/ebaf1b91a7b75bbd09f39cea7dee2aa72891b3c6))
+* github actions workflow example in readme ([#528](https://github.com/editorconfig-checker/editorconfig-checker/issues/528)) ([1e564b2](https://github.com/editorconfig-checker/editorconfig-checker/commit/1e564b21ad9dce1bb242ee1acc8b8cec6083ad86))
+
 ## [3.6.0](https://github.com/editorconfig-checker/editorconfig-checker/compare/v3.5.0...v3.6.0) (2025-11-25)
 
 
