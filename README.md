@@ -343,7 +343,7 @@ add x y =
 
 #### Default Excludes
 
-If you choose to [ignore them](#ignoring-default-excludes), these paths are excluded automatically:
+Unless you choose to [ignore them](#ignoring-default-excludes), these paths are excluded automatically:
 
 ```txt
 // source control related files and folders
