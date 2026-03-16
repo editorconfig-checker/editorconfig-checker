@@ -25,7 +25,7 @@ require (
 )
 
 require (
-	github.com/gkampitakis/go-snaps v0.5.20
+	github.com/gkampitakis/go-snaps v0.5.21
 	golang.org/x/mod v0.32.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 )
