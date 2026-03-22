@@ -259,6 +259,21 @@ A sample configuration file can look like this and will be used from your curren
 }
 ```
 
+### Configuration Keys
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| `Verbose` | bool | `false` | Print verbose output during checking |
+| `Debug` | bool | `false` | Print debugging information |
+| `IgnoreDefaults` | bool | `false` | Ignore the default exclude patterns |
+| `SpacesAfterTabs` | bool | `false` | Allow spaces after tabs in indentation (mixed indentation). When `false`, spaces following tabs are flagged as errors |
+| `NoColor` | bool | `false` | Disable colored output |
+| `Exclude` | string[] | `[]` | Regular expressions for files to exclude from checking |
+| `AllowedContentTypes` | string[] | `[]` | Additional content types to check (added to the defaults listed below) |
+| `PassedFiles` | string[] | `[]` | Explicit list of files or directories to check. When set, only these paths are checked instead of auto-discovering files from the working directory or git |
+| `Version` | string | `""` | When set, the tool verifies this value matches the binary version and exits with an error if they differ. Useful for pinning a specific version in CI |
+| `Disable` | object | | Selectively disable individual checks (see below) |
+
 You can set any of the options under the `"Disable"` section to `true` to disable those particular checks.
 
 You could also specify command line arguments, and they will get merged with the configuration file. The command line arguments have a higher precedence than the configuration.
