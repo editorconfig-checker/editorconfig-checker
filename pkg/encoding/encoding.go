@@ -168,6 +168,19 @@ var (
 		0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f,
 	}
 
+	// c0CharsStrictBinary is c0Chars excluding SO (0x0e), SI (0x0f), and ESC (0x1b),
+	// which are used by ISO-2022 family encodings (ISO-2022-JP, ISO-2022-KR, etc.).
+	// Use this for pre-decode binary detection to avoid false positives on ISO-2022 text.
+	c0CharsStrictBinary = []byte{
+		0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
+		// Allow TAB (ASCII 9), LF (10), FF (12), and CR (13)
+		0x08 /*TAB  LF*/, 0x0b, /*FF   CR*/
+		// Allow SO (14) and SI (15) for ISO-2022 shift-out/shift-in
+		0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17,
+		// Allow ESC (27) for ISO-2022 escape sequences
+		0x18, 0x19, 0x1a, 0x1c, 0x1d, 0x1e, 0x1f,
+	}
+
 	c1Chars = []byte{
 		0x80, 0x81, 0x82, 0x83, 0x84, 0x85, 0x86, 0x87,
 		0x88, 0x89, 0x8a, 0x8b, 0x8c, 0x8d, 0x8e, 0x8f,
@@ -277,6 +290,14 @@ func CharsetsMatch(charsetFound, charsetWanted string) bool {
 // If not, it returns the content as a string, the encoding name, and an error.
 func Decode(contentBytes []byte) (string, string, error) {
 	encoding, _, _ := Detect(contentBytes)
+
+	// Check for binary data before attempting to decode.
+	// Binary files (e.g. GPG-encrypted data) can be incorrectly decoded as single-byte encodings like MacCyrillic.
+	// We use IsStrictBinary (which excludes ESC/SO/SI) to avoid false positives on ISO-2022 family text,
+	// and skip the check for UTF-16/32 which naturally contain null bytes.
+	if IsStrictBinary(contentBytes) && !isMultiByteEncoding(encoding) {
+		return string(contentBytes), BinaryData, nil
+	}
 
 	decodedContentString, err := decodeText(contentBytes, encoding)
 	if err != nil {
@@ -436,10 +457,25 @@ func IsBinary(rawFileContent []byte) bool {
 	return containsAnyByte(rawFileContent, c0Chars)
 }
 
+// IsStrictBinary is like IsBinary but does not flag files that only contain
+// ESC (0x1b), SO (0x0e), or SI (0x0f) as their C0 control characters.
+// These are used by ISO-2022 family encodings (ISO-2022-JP, ISO-2022-KR, etc.)
+// and should not cause a file to be treated as binary.
+func IsStrictBinary(rawFileContent []byte) bool {
+	return containsAnyByte(rawFileContent, c0CharsStrictBinary)
+}
+
 // IsBinaryFile is deprecated and may be removed in the future.
 // Use IsBinary instead.
 func IsBinaryFile(rawFileContent []byte) bool {
 	return IsBinary(rawFileContent)
+}
+
+// isMultiByteEncoding returns true if the encoding is a multi-byte encoding
+// (UTF-16 or UTF-32) that naturally contains null bytes.
+func isMultiByteEncoding(enc string) bool {
+	normalized := normalizeName(enc)
+	return strings.HasPrefix(normalized, "utf16") || strings.HasPrefix(normalized, "utf32")
 }
 
 // IsUTF16BE returns a hit/miss ratio to identify if the file is UTF16BE encoded.
