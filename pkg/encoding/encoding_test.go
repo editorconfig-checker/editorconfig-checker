@@ -533,6 +533,31 @@ func TestDecode(t *testing.T) {
 	}
 }
 
+func TestDecodeBinaryFiles(t *testing.T) {
+	binaryFiles := []string{
+		"testdata/encrypted.gpg",
+	}
+
+	for _, filePath := range binaryFiles {
+		fileContent, err := os.ReadFile(filePath)
+		if err != nil {
+			t.Fatalf("could not read %s: %s", filePath, err.Error())
+		}
+
+		if !IsBinary(fileContent) {
+			t.Errorf("IsBinary(%s): expected true, got false", filePath)
+		}
+
+		_, encoding, err := Decode(fileContent)
+		if err != nil {
+			t.Errorf("Decode(%s): unexpected error: %s", filePath, err.Error())
+		}
+		if encoding != BinaryData {
+			t.Errorf("Decode(%s): expected encoding %q, got %q", filePath, BinaryData, encoding)
+		}
+	}
+}
+
 func TestDetect(t *testing.T) {
 	for i, tt := range tests {
 		failTest := tt.Confidence >= minConfidenceToFailTests
