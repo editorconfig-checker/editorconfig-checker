@@ -58,6 +58,8 @@ var defaultExcludes = []string{
 	"\\.terraform\\.lock\\.hcl$",
 	// uv (Python)
 	"uv\\.lock$",
+	// Buf (Protobuf)
+	"buf\\.lock$",
 	// yarn (NodeJS)
 	"\\.pnp\\.c?js$",
 	"\\.pnp\\.loader\\.mjs$",
