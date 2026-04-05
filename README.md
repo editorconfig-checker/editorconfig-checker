@@ -172,6 +172,7 @@ USAGE:
         show which files would be checked
   -exclude string
         a regex which files should be excluded from checking - needs to be a valid regular expression
+        To exclude multiple patterns, combine them with | (pipe): -exclude "vendor|testdata|\.min\.js$"
   -format
         specifies the output format, see "Formats" below for more information
   -h    print the help
@@ -335,6 +336,20 @@ You can exclude paths from being checked in several ways:
 - ignoring a file by documenting it inside the to-be-excluded file
 - adding a regex matching the path to the [configuration file](#configuration)
 - passing a regex matching the path as argument to `--exclude`
+
+The `--exclude` flag accepts a single regular expression. To exclude multiple patterns, combine them using `|` (regex alternation):
+
+```bash
+editorconfig-checker --exclude "vendor|testdata|\.min\.js$"
+```
+
+In a configuration file, you can list each pattern as a separate entry in the `Exclude` array instead:
+
+```json
+{
+  "Exclude": ["vendor", "testdata", "\\.min\\.js$"]
+}
+```
 
 All these excludes are used in addition to the [default excludes](#default-excludes), unless you [opt out of them](#ignoring-default-excludes).
 
