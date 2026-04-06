@@ -171,8 +171,8 @@ USAGE:
   -dry-run
         show which files would be checked
   -exclude string
-        a regex which files should be excluded from checking - needs to be a valid regular expression
-        To exclude multiple patterns, combine them with | (pipe): -exclude "vendor|testdata|\.min\.js$"
+        a regex which files should be excluded from checking - needs to be a valid regular expression.
+        Combine patterns with | (pipe): -exclude "vendor|testdata"
   -format
         specifies the output format, see "Formats" below for more information
   -h    print the help
