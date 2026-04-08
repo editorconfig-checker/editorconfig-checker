@@ -397,6 +397,8 @@ Unless you choose to [ignore them](#ignoring-default-excludes), these paths are 
 "\\.terraform\\.lock\\.hcl$",
 // uv (Python)
 "uv\\.lock$",
+// Buf (Protobuf)
+"buf\\.lock$",
 // yarn (NodeJS)
 "\\.pnp\\.c?js$",
 "\\.pnp\\.loader\\.mjs$",
