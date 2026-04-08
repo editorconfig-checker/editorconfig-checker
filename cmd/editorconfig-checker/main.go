@@ -64,7 +64,7 @@ func disableNoColor(string) error {
 func init() {
 	flag.BoolVar(&writeConfigFile, "init", false, "creates an initial configuration")
 	flag.StringVar(&configFilePath, "config", "", "config")
-	flag.StringVar(&cmdlineExclude, "exclude", "", "a regex which files should be excluded from checking - needs to be a valid regular expression")
+	flag.StringVar(&cmdlineExclude, "exclude", "", "a regex which files should be excluded from checking - needs to be a valid regular expression. Combine patterns with | (pipe): -exclude \"vendor|testdata\"")
 	flag.BoolVar(&cmdlineConfig.IgnoreDefaults, "ignore-defaults", false, "ignore default excludes")
 	flag.BoolVar(&cmdlineConfig.DryRun, "dry-run", false, "show which files would be checked")
 	flag.BoolVar(&cmdlineConfig.ShowVersion, "version", false, "print the version number")
