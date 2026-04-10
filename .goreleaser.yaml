@@ -36,7 +36,7 @@ builds:
   # this build is used to provide the legacy-style archives
   - id: "ec-compat"
     main: ./cmd/editorconfig-checker
-    binary: bin/ec-{{- .Os }}-{{ .Arch }}{{- if .Arm }}v{{ .Arm }}{{ end }}
+    binary: ec
     env:
       - CGO_ENABLED=0
     goos:
