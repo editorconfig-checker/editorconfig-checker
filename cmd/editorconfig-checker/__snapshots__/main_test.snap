@@ -110,3 +110,17 @@ testdata/trailing-whitespace.txt:
 1 errors found
 
 ---
+
+[TestMainColorSupport/format-github-actions-no-color - 1]
+::error file=testdata/trailing-whitespace.txt,line=1::Trailing whitespace
+
+1 errors found
+
+---
+
+[TestMainColorSupport/format-github-actions-color-arg-ignored - 1]
+::error file=testdata/trailing-whitespace.txt,line=1::Trailing whitespace
+
+1 errors found
+
+---

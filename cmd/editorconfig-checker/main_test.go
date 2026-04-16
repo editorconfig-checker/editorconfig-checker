@@ -165,6 +165,10 @@ func TestMainColorSupport(t *testing.T) {
 		{"envvar-yes", env{"NO_COLOR": "yes"}, args{}},
 		{"envvar-no", env{"NO_COLOR": "no"}, args{}},
 		{"envvar-stringval", env{"NO_COLOR": "some test value that nobody would set"}, args{}},
+		// `-format github-actions` must force no-color regardless of other flags.
+		// ANSI escape codes break GitHub Actions annotation parsing (#537).
+		{"format-github-actions-no-color", env{}, args{"--format", "github-actions"}},
+		{"format-github-actions-color-arg-ignored", env{}, args{"--color", "--format", "github-actions"}},
 	}
 
 	// we use the error message of a missing config file to test the coloredness of the output

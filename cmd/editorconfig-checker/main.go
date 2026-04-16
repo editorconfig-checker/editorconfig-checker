@@ -155,6 +155,20 @@ func parseArguments() {
 		}
 	}
 
+	// GitHub Actions annotations do not parse ANSI color codes; they render
+	// as literal escape sequences and break the annotation format. Force
+	// no-color when the effective output format is `github-actions`,
+	// whether set via `-format` or the project config
+	// `.editorconfig-checker.json`. Mirrors Config.Merge: a valid CLI format
+	// overrides the config-file format. See #537.
+	effectiveFormat := currentConfig.Format
+	if cmdlineConfig.Format.IsValid() {
+		effectiveFormat = cmdlineConfig.Format
+	}
+	if effectiveFormat == outputformat.GithubActions {
+		cmdlineConfig.NoColor = true
+	}
+
 	currentConfig.Merge(cmdlineConfig)
 }
 
