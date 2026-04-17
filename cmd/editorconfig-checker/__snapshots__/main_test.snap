@@ -118,9 +118,9 @@ testdata/trailing-whitespace.txt:
 
 ---
 
-[TestMainColorSupport/format-github-actions-color-arg-ignored - 1]
-::error file=testdata/trailing-whitespace.txt,line=1::Trailing whitespace
-
-1 errors found
+[TestMainColorSupport/format-github-actions-color-override - 1]
+[31;1m::error file=testdata/trailing-whitespace.txt,line=1::Trailing whitespace[33;0m
+[31;1m
+1 errors found[33;0m
 
 ---
