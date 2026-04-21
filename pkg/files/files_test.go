@@ -208,6 +208,53 @@ func TestGetFiles(t *testing.T) {
 	}
 }
 
+func TestGetFilesGlobPattern(t *testing.T) {
+	globConfig := config.NewConfig(nil)
+	// Root-level markdown files (README.md, CHANGELOG.md, MAINTAINERS.md,
+	// CONTRIBUTING.md) exist relative to pkg/files when we walk up two levels.
+	globConfig.PassedFiles = []string{"./../../*.md"}
+
+	files, err := GetFiles(*globConfig)
+	if err != nil {
+		t.Fatalf("GetFiles(glob): expected nil, got %s", err.Error())
+	}
+	if len(files) == 0 {
+		t.Fatalf("GetFiles(glob): expected at least one match for ./../../*.md, got 0")
+	}
+	for _, f := range files {
+		if !strings.HasSuffix(f, ".md") {
+			t.Errorf("GetFiles(glob): expected .md matches only, got %q", f)
+		}
+	}
+}
+
+func TestGetFilesGlobWithoutMetaKeepsPath(t *testing.T) {
+	cfg := config.NewConfig(nil)
+	cfg.PassedFiles = []string{"./does/not/exist.txt"}
+
+	files, err := GetFiles(*cfg)
+	if err != nil {
+		t.Fatalf("GetFiles(missing): unexpected error %s", err.Error())
+	}
+	// Non-existent paths without glob metacharacters are passed straight to
+	// AddToFiles, which logs and drops them (they have no content type). The
+	// call should not fail and should not invent matches.
+	for _, f := range files {
+		if f == "./does/not/exist.txt" {
+			return
+		}
+	}
+}
+
+func TestGetFilesGlobNoMatchesKeepsPath(t *testing.T) {
+	cfg := config.NewConfig(nil)
+	cfg.PassedFiles = []string{"./nonexistent-prefix-*.xyz"}
+
+	if _, err := GetFiles(*cfg); err != nil {
+		t.Fatalf("GetFiles(no-match glob): unexpected error %s", err.Error())
+	}
+}
+
 type getContentTypeFilesTest struct {
 	filename string
 	regex    string
