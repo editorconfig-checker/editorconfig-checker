@@ -51,13 +51,17 @@ var (
 	cpuprofile      string
 )
 
+var colorExplicitlySet bool
+
 func enableNoColor(string) error {
 	cmdlineConfig.NoColor = true
+	colorExplicitlySet = true
 	return nil
 }
 
 func disableNoColor(string) error {
 	cmdlineConfig.NoColor = false
+	colorExplicitlySet = true
 	return nil
 }
 
@@ -94,6 +98,7 @@ func parseArguments() {
 	cmdlineExclude = ""
 	cmdlineConfig = config.Config{}
 	writeConfigFile = false
+	colorExplicitlySet = false
 
 	// check the NO_COLOR environment variable before parsing the arguments, so the arguments can override
 	if nocolor := os.Getenv("NO_COLOR"); nocolor != "" {
@@ -153,6 +158,18 @@ func parseArguments() {
 		if arg != "" {
 			cmdlineConfig.PassedFiles = append(cmdlineConfig.PassedFiles, arg)
 		}
+	}
+
+	// GitHub Actions annotations do not parse ANSI color codes; they render
+	// as literal escape sequences and break the annotation format. Default to
+	// no-color when the effective output format is `github-actions`, but let
+	// an explicit --color / --no-color flag take precedence. See #537.
+	effectiveFormat := currentConfig.Format
+	if cmdlineConfig.Format.IsValid() {
+		effectiveFormat = cmdlineConfig.Format
+	}
+	if effectiveFormat == outputformat.GithubActions && !colorExplicitlySet {
+		cmdlineConfig.NoColor = true
 	}
 
 	currentConfig.Merge(cmdlineConfig)
