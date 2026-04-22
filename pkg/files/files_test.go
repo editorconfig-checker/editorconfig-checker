@@ -3,6 +3,7 @@ package files
 import (
 	"encoding/json"
 	"os"
+	"path/filepath"
 	"reflect"
 	"regexp"
 	"runtime"
@@ -252,6 +253,88 @@ func TestGetFilesGlobNoMatchesKeepsPath(t *testing.T) {
 
 	if _, err := GetFiles(*cfg); err != nil {
 		t.Fatalf("GetFiles(no-match glob): unexpected error %s", err.Error())
+	}
+}
+
+func TestHasGlobMetaDetectsAllMetachars(t *testing.T) {
+	cases := []string{"*.go", "file?.txt", "log[0-9].txt", "a/b/c*"}
+	for _, p := range cases {
+		if !hasGlobMeta(p) {
+			t.Errorf("hasGlobMeta(%q): expected true, got false", p)
+		}
+	}
+	if hasGlobMeta("plain/path.txt") {
+		t.Errorf("hasGlobMeta(plain/path.txt): expected false, got true")
+	}
+}
+
+func TestHasGlobMetaSkipsEscapedMetachars(t *testing.T) {
+	if runtime.GOOS == "windows" {
+		t.Skip("filepath.Match treats backslash as a path separator on Windows")
+	}
+	cases := []struct {
+		path string
+		want bool
+	}{
+		{`\*.go`, false},
+		{`\?.txt`, false},
+		{`\[abc\]`, false},
+		{`dir/\*`, false},
+		{`\`, false},
+		{`foo\*bar*`, true},
+	}
+	for _, tc := range cases {
+		if got := hasGlobMeta(tc.path); got != tc.want {
+			t.Errorf("hasGlobMeta(%q): got %v, want %v", tc.path, got, tc.want)
+		}
+	}
+}
+
+func TestResolvePassedFileInvalidPatternErrors(t *testing.T) {
+	_, err := resolvePassedFile("nonexistent-[unclosed")
+	if err == nil {
+		t.Fatalf("resolvePassedFile(invalid pattern): expected error, got nil")
+	}
+	if !strings.Contains(err.Error(), "invalid pattern") {
+		t.Errorf("resolvePassedFile(invalid pattern): expected error to mention \"invalid pattern\", got %q", err.Error())
+	}
+}
+
+func TestGetFilesGlobPropagatesInvalidPattern(t *testing.T) {
+	cfg := config.NewConfig(nil)
+	cfg.PassedFiles = []string{"nonexistent-[unclosed"}
+
+	if _, err := GetFiles(*cfg); err == nil {
+		t.Fatalf("GetFiles(invalid pattern): expected error, got nil")
+	}
+}
+
+func TestGetFilesGlobMatchesDirectory(t *testing.T) {
+	tmp := t.TempDir()
+	dir := filepath.Join(tmp, "dirA")
+	if err := os.Mkdir(dir, 0o755); err != nil {
+		t.Fatalf("setup mkdir: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(dir, "a.txt"), []byte("hello\n"), 0o644); err != nil {
+		t.Fatalf("setup writefile: %v", err)
+	}
+
+	cfg := config.NewConfig(nil)
+	cfg.PassedFiles = []string{filepath.Join(tmp, "dir*")}
+
+	files, err := GetFiles(*cfg)
+	if err != nil {
+		t.Fatalf("GetFiles(dir glob): unexpected error %s", err.Error())
+	}
+	found := false
+	for _, f := range files {
+		if strings.HasSuffix(f, "a.txt") {
+			found = true
+			break
+		}
+	}
+	if !found {
+		t.Errorf("GetFiles(dir glob): expected dir*/a.txt to be walked, got %v", files)
 	}
 }
 
