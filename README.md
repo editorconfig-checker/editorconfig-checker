@@ -271,7 +271,7 @@ A sample configuration file can look like this and will be used from your curren
 | `NoColor` | bool | `false` | Disable colored output |
 | `Exclude` | string[] | `[]` | Regular expressions for files to exclude from checking |
 | `AllowedContentTypes` | string[] | `[]` | Additional content types to check (added to the defaults listed below) |
-| `PassedFiles` | string[] | `[]` | Explicit list of files or directories to check. When set, only these paths are checked instead of auto-discovering files from the working directory or git |
+| `PassedFiles` | string[] | `[]` | Explicit list of files, directories, or shell-style glob patterns (e.g. `src/*.go`) to check. When set, only these paths are checked instead of auto-discovering files from the working directory or git. Glob patterns that don't match any file are left as-is so a subsequent content-type check surfaces the missing path |
 | `Version` | string | `""` | When set, the tool verifies this value matches the binary version and exits with an error if they differ. Useful for pinning a specific version in CI |
 | `Disable` | object | | Selectively disable individual checks (see below) |
 
