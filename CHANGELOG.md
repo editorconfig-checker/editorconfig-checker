@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.6.2](https://github.com/editorconfig-checker/editorconfig-checker/compare/v3.6.1...v3.6.2) (2026-04-23)
+
+
+### Bug Fixes
+
+* **cli:** auto-enable no-color when output format is github-actions ([#557](https://github.com/editorconfig-checker/editorconfig-checker/issues/557)) ([9f4014c](https://github.com/editorconfig-checker/editorconfig-checker/commit/9f4014ce0944f601472e5cbfaec31f711890c780))
+* detect binary files before decoding to prevent false text ([#550](https://github.com/editorconfig-checker/editorconfig-checker/issues/550)) ([f47b30c](https://github.com/editorconfig-checker/editorconfig-checker/commit/f47b30c96713107bc4fe0b7a05e79a293c4874dd))
+
 ## [3.6.1](https://github.com/editorconfig-checker/editorconfig-checker/compare/v3.6.0...v3.6.1) (2026-01-22)
 
 
