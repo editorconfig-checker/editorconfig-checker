@@ -77,6 +77,44 @@ func AddToFiles(filePaths []string, filePath string, config config.Config) []str
 	return append(filePaths, filePath)
 }
 
+// hasGlobMeta reports whether the path contains any of the glob metacharacters
+// recognized by filepath.Match / filepath.Glob: '*', '?', '['.
+func hasGlobMeta(path string) bool {
+	for i := 0; i < len(path); i++ {
+		switch path[i] {
+		case '*', '?', '[':
+			return true
+		case '\\':
+			if i+1 < len(path) {
+				i++
+			}
+		}
+	}
+	return false
+}
+
+// resolvePassedFile expands a single --passed-file argument into one or more
+// concrete paths. Paths that exist on disk are returned unchanged. Paths that
+// don't exist but look like glob patterns are expanded via filepath.Glob; if
+// the pattern matches nothing the argument is returned unchanged so the caller
+// can surface a not-found error in the usual way.
+func resolvePassedFile(passedFile string) ([]string, error) {
+	if _, err := os.Stat(passedFile); err == nil {
+		return []string{passedFile}, nil
+	}
+	if !hasGlobMeta(passedFile) {
+		return []string{passedFile}, nil
+	}
+	matches, err := filepath.Glob(passedFile)
+	if err != nil {
+		return nil, fmt.Errorf("invalid pattern %q: %w", passedFile, err)
+	}
+	if len(matches) == 0 {
+		return []string{passedFile}, nil
+	}
+	return matches, nil
+}
+
 // GetFilesFromDirectory returns all files from a directory and its subdirectories which should be checked
 func GetFilesFromDirectory(rootDir string, config config.Config) ([]string, error) {
 	filePaths := make([]string, 0)
@@ -116,14 +154,20 @@ func GetFiles(config config.Config) ([]string, error) {
 	// Handle explicit passed files
 	if len(config.PassedFiles) != 0 {
 		for _, passedFile := range config.PassedFiles {
-			if !utils.IsDirectory(passedFile) {
-				filePaths = AddToFiles(filePaths, passedFile, config)
-			} else {
-				files, err := GetFilesFromDirectory(passedFile, config)
-				if err != nil {
-					return filePaths, err
+			resolved, err := resolvePassedFile(passedFile)
+			if err != nil {
+				return filePaths, err
+			}
+			for _, entry := range resolved {
+				if utils.IsDirectory(entry) {
+					files, err := GetFilesFromDirectory(entry, config)
+					if err != nil {
+						return filePaths, err
+					}
+					filePaths = append(filePaths, files...)
+				} else {
+					filePaths = AddToFiles(filePaths, entry, config)
 				}
-				filePaths = append(filePaths, files...)
 			}
 		}
 
