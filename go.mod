@@ -5,7 +5,7 @@ go 1.25.0
 require (
 	github.com/editorconfig/editorconfig-core-go/v2 v2.6.4
 	github.com/gabriel-vasile/mimetype v1.4.13
-	github.com/wlynxg/chardet v1.0.4
+	github.com/wlynxg/chardet v1.0.5
 	golang.org/x/text v0.36.0
 )
 
