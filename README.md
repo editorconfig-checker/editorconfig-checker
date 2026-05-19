@@ -139,25 +139,36 @@ brew install editorconfig-checker
   paru -S editorconfig-checker-git
   ```
 
-### Language Specific Wrappers:
+### Language Specific Wrappers
 
 We do have a couple of language specific wrappers available that you can install with your favorites language package manager.
 See their respective documentation for installation and usage instructions.
 
-* JavaScript/TypeScript: [npm package](https://www.npmjs.com/package/editorconfig-checker)
-* Python: [PyPI package](https://pypi.org/project/editorconfig-checker/)
-* PHP: [Composer package](https://packagist.org/packages/editorconfig-checker/editorconfig-checker)
+- JavaScript/TypeScript: [npm package](https://www.npmjs.com/package/editorconfig-checker)
+- Python: [PyPI package](https://pypi.org/project/editorconfig-checker/)
+- PHP: [Composer package](https://packagist.org/packages/editorconfig-checker/editorconfig-checker)
 
 ## Usage
 
 ```txt
 USAGE:
+  editorconfig-checker [OPTIONS] [FILE...]
+
+With no FILE arguments, all files tracked by git are checked. When one or
+more FILE arguments are given, only those files are checked (the configured
+exclude patterns still apply).
+
+OPTIONS:
+  -color
+        enables printing color
   -config string
         config
+  -cpuprofile string
+        write cpu profile to file
   -debug
         print debugging information
   -disable-charset
-        disables the charset check
+        disables only the charset check
   -disable-end-of-line
         disables the trailing whitespace check
   -disable-indent-size
@@ -166,16 +177,19 @@ USAGE:
         disables the indentation check
   -disable-insert-final-newline
         disables the final newline check
+  -disable-max-line-length
+        disables only the max-line-length check
   -disable-trim-trailing-whitespace
         disables the trailing whitespace check
   -dry-run
         show which files would be checked
   -exclude string
-        a regex which files should be excluded from checking - needs to be a valid regular expression.
-        Combine patterns with | (pipe): -exclude "vendor|testdata"
-  -format
-        specifies the output format, see "Formats" below for more information
-  -h    print the help
+        a regex which files should be excluded from checking - needs to be a valid regular expression. Combine patterns with | (pipe): -exclude "vendor|testdata"
+  -f value
+        specify the output format: default, codeclimate, gcc, github-actions (default default)
+  -format value
+        specify the output format: default, codeclimate, gcc, github-actions (default default)
+  -h  print the help
   -help
         print the help
   -ignore-defaults
@@ -184,9 +198,7 @@ USAGE:
         creates an initial configuration
   -no-color
         disables printing color
-  -color
-        enables printing color
-  -v    print debugging information
+  -v  print debugging information
   -verbose
         print debugging information
   -version
@@ -263,7 +275,7 @@ A sample configuration file can look like this and will be used from your curren
 ### Configuration Keys
 
 | Key | Type | Default | Description |
-|-----|------|---------|-------------|
+| --- | --- | --- | --- |
 | `Verbose` | bool | `false` | Print verbose output during checking |
 | `Debug` | bool | `false` | Print debugging information |
 | `IgnoreDefaults` | bool | `false` | Ignore the default exclude patterns |
@@ -524,7 +536,7 @@ encoded, set the charset option to `ascii`.
 If you want to disable charset checking entirely, set the `charset` option to
 `unset`:
 
-```
+```sh
 [dont_check_me_bro!.txt]
 charset = unset
 ```
