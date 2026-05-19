@@ -252,6 +252,13 @@ func ReturnableFlags(config config.Config) bool {
 		config.Logger.Output("%s", version)
 	case config.Help:
 		config.Logger.Output("USAGE:")
+		config.Logger.Output("  editorconfig-checker [OPTIONS] [FILE...]")
+		config.Logger.Output("")
+		config.Logger.Output("With no FILE arguments, all files tracked by git are checked. When one or")
+		config.Logger.Output("more FILE arguments are given, only those files are checked (the configured")
+		config.Logger.Output("exclude patterns still apply).")
+		config.Logger.Output("")
+		config.Logger.Output("OPTIONS:")
 		flag.CommandLine.SetOutput(config.Logger.GetWriter())
 		flag.PrintDefaults()
 		flag.CommandLine.SetOutput(nil)
