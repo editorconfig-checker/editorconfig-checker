@@ -394,7 +394,7 @@ Unless you choose to [ignore them](#ignoring-default-excludes), these paths are 
 // package manager, generated, & lock files
 // Cargo (Rust)
 "Cargo\\.lock$",
-"/target/",
+"(^|/)target/",
 // Composer (PHP)
 "composer\\.lock$",
 // RubyGems (Ruby)
@@ -410,7 +410,7 @@ Unless you choose to [ignore them](#ignoring-default-excludes), these paths are 
 "\\.mvn/wrapper/MavenWrapperDownloader\\.java$",
 "mvnw(\\.cmd)?$",
 // NodeJS
-"/node_modules/",
+"(^|/)node_modules/",
 // npm (NodeJS)
 "npm-shrinkwrap\\.json$",
 "package-lock\\.json$",
