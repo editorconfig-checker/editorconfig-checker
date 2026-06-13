@@ -28,7 +28,7 @@ var defaultExcludes = []string{
 	// package manager, generated, & lock files
 	// Cargo (Rust)
 	"Cargo\\.lock$",
-	"/target/",
+	"(^|/)target/",
 	// Composer (PHP)
 	"composer\\.lock$",
 	// RubyGems (Ruby)
@@ -44,7 +44,7 @@ var defaultExcludes = []string{
 	"\\.mvn/wrapper/MavenWrapperDownloader\\.java$",
 	"mvnw(\\.cmd)?$",
 	// NodeJS
-	"/node_modules/",
+	"(^|/)node_modules/",
 	// npm (NodeJS)
 	"npm-shrinkwrap\\.json$",
 	"package-lock\\.json$",
