@@ -1,10 +1,11 @@
 {
+    "$schema": "./.editorconfig-checker.schema.json",
     "Verbose": false,
     "Debug": false,
     "IgnoreDefaults": false,
     "SpacesAfterTabs": false,
     "NoColor": false,
-    "exclude": [
+    "Exclude": [
         "testfiles",
         "testdata"
     ],
