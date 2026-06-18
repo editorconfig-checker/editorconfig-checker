@@ -1,4 +1,5 @@
 /bin/
+editorconfig-checker
 editorconfig-checker.test
 coverage.txt
 result-bin
