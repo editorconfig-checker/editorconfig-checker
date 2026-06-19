@@ -1,0 +1,135 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "editorconfig-checker configuration",
+    "description": "Configuration for editorconfig-checker",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+        "$schema": {
+            "type": "string",
+            "description": "A field for the JSON schema specification."
+        },
+        "Version": {
+            "type": "string",
+            "default": "",
+            "description": "When set, the tool verifies this value matches the binary version and exits with an error if they differ. Useful for pinning a specific version in CI"
+        },
+        "Verbose": {
+            "type": "boolean",
+            "default": false,
+            "description": "Print verbose output during checking"
+        },
+        "Format": {
+            "type": "string",
+            "default": "default",
+            "description": "Specify the output format",
+            "enum": [
+                "",
+                "default",
+                "codeclimate",
+                "gcc",
+                "github-actions"
+            ]
+        },
+        "Debug": {
+            "type": "boolean",
+            "default": false,
+            "description": "Print debugging information"
+        },
+        "IgnoreDefaults": {
+            "type": "boolean",
+            "default": false,
+            "description": "Ignore the default exclude patterns"
+        },
+        "SpacesAfterTabs": {
+            "type": "boolean",
+            "default": false,
+            "description": "Allow spaces after tabs in indentation (mixed indentation). When `false`, spaces following tabs are flagged as errors"
+        },
+        "SpacesAftertabs": {
+            "type": "boolean",
+            "deprecated": true,
+            "description": "The configuration key `SpacesAftertabs` is deprecated. Use `SpacesAfterTabs` instead"
+        },
+        "NoColor": {
+            "type": "boolean",
+            "default": false,
+            "description": "Disable colored output"
+        },
+        "Exclude": {
+            "type": "array",
+            "default": [],
+            "description": "Regular expressions for files to exclude from checking",
+            "items": {
+                "type": "string"
+            }
+        },
+        "AllowedContentTypes": {
+            "type": "array",
+            "default": [],
+            "description": "Additional content types to check, added to the default allowed content types",
+            "items": {
+                "type": "string"
+            }
+        },
+        "PassedFiles": {
+            "type": "array",
+            "default": [],
+            "description": "Explicit list of files, directories, or shell-style glob patterns (e.g. `src/*.go`) to check. When set, only these paths are checked instead of auto-discovering files from the working directory or git. Glob patterns that don't match any file are left as-is so a subsequent content-type check surfaces the missing path",
+            "items": {
+                "type": "string"
+            }
+        },
+        "Disable": {
+            "type": "object",
+            "default": {
+                "Charset": false,
+                "EndOfLine": false,
+                "Indentation": false,
+                "InsertFinalNewline": false,
+                "TrimTrailingWhitespace": false,
+                "IndentSize": false,
+                "MaxLineLength": false
+            },
+            "description": "Set any of the options under the `Disable` section to `true` to disable those particular checks",
+            "additionalProperties": false,
+            "properties": {
+                "Charset": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Disables only the charset check"
+                },
+                "EndOfLine": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Disables the end-of-line check"
+                },
+                "Indentation": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Disables the indentation check"
+                },
+                "InsertFinalNewline": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Disables the final newline check"
+                },
+                "TrimTrailingWhitespace": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Disables the trailing whitespace check"
+                },
+                "IndentSize": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Disables only the indent-size check"
+                },
+                "MaxLineLength": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Disables only the max-line-length check"
+                }
+            }
+        }
+    }
+}

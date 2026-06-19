@@ -250,8 +250,10 @@ The configuration is done via arguments or it will take the first config file fo
 
 A sample configuration file can look like this and will be used from your current working directory if not specified via the `--config` argument:
 
+<!-- x-release-please-start-version -->
 ```json
 {
+  "$schema": "https://raw.githubusercontent.com/editorconfig-checker/editorconfig-checker/v3.7.0/.editorconfig-checker.schema.json",
   "Verbose": false,
   "Debug": false,
   "IgnoreDefaults": false,
@@ -271,6 +273,9 @@ A sample configuration file can look like this and will be used from your curren
   }
 }
 ```
+<!-- x-release-please-end -->
+
+The `$schema` property is an optional field for specifying the JSON Schema and is ignored by editorconfig-checker.
 
 ### Configuration Keys
 
@@ -481,13 +486,15 @@ If you either set `IgnoreDefaults` to `true` or pass the `-ignore-defaults` comm
 
 ##### via configuration
 
-In your [configuration file](#configuration) you can exclude files with the `"exclude"` key which takes an array of regular expressions.
+In your [configuration file](#configuration) you can exclude files with the `"Exclude"` key which takes an array of regular expressions.
 This will get merged with the default excludes (if not [ignored](#ignoring-default-excludes)). You should remember to escape your regular expressions correctly.
 
 A [configuration file](#configuration) which would ignore all test files and all Markdown files can look like this:
 
+<!-- x-release-please-start-version -->
 ```json
 {
+  "$schema": "https://raw.githubusercontent.com/editorconfig-checker/editorconfig-checker/v3.7.0/.editorconfig-checker.schema.json",
   "Verbose": false,
   "IgnoreDefaults": false,
   "Exclude": ["testfiles", "\\.md$"],
@@ -503,6 +510,7 @@ A [configuration file](#configuration) which would ignore all test files and all
   }
 }
 ```
+<!-- x-release-please-end -->
 
 ##### via arguments
 
