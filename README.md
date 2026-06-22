@@ -458,6 +458,7 @@ Unless you choose to [ignore them](#ignoring-default-excludes), these paths are 
 "\\.bin$",
 "\\.docx?$",
 "\\.exe$",
+"\\.gpg$",
 "\\.pdf$",
 "\\.snap$",
 "\\.xlsx?$",
