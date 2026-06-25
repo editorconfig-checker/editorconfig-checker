@@ -59,7 +59,7 @@ Unsupported features are:
 
 <!-- x-release-please-start-version -->
 ```shell
-VERSION="v3.7.0"
+VERSION="v3.8.0"
 OS="linux"
 ARCH="amd64"
 curl -O -L -C - https://github.com/editorconfig-checker/editorconfig-checker/releases/download/$VERSION/ec-$OS-$ARCH.tar.gz && \
@@ -253,7 +253,7 @@ A sample configuration file can look like this and will be used from your curren
 <!-- x-release-please-start-version -->
 ```json
 {
-  "$schema": "https://raw.githubusercontent.com/editorconfig-checker/editorconfig-checker/v3.7.0/.editorconfig-checker.schema.json",
+  "$schema": "https://raw.githubusercontent.com/editorconfig-checker/editorconfig-checker/v3.8.0/.editorconfig-checker.schema.json",
   "Verbose": false,
   "Debug": false,
   "IgnoreDefaults": false,
@@ -495,7 +495,7 @@ A [configuration file](#configuration) which would ignore all test files and all
 <!-- x-release-please-start-version -->
 ```json
 {
-  "$schema": "https://raw.githubusercontent.com/editorconfig-checker/editorconfig-checker/v3.7.0/.editorconfig-checker.schema.json",
+  "$schema": "https://raw.githubusercontent.com/editorconfig-checker/editorconfig-checker/v3.8.0/.editorconfig-checker.schema.json",
   "Verbose": false,
   "IgnoreDefaults": false,
   "Exclude": ["testfiles", "\\.md$"],

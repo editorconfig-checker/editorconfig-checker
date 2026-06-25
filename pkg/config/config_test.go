@@ -117,7 +117,7 @@ func TestMerge(t *testing.T) {
 
 	mergeConfig := Config{
 		ShowVersion:         true,
-		Version:             "v3.7.0", // x-release-please-version
+		Version:             "v3.8.0", // x-release-please-version
 		Help:                true,
 		DryRun:              true,
 		Path:                "some-other",
