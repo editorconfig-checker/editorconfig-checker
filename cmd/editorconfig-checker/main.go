@@ -125,6 +125,8 @@ func parseArguments() {
 	currentConfig = config.NewConfig(configPaths)
 	loggerInjectionHook()
 
+	currentConfig.Logger.NoColor = cmdlineConfig.NoColor
+
 	if strings.HasSuffix(currentConfig.Path, ".ecrc") {
 		currentConfig.Logger.Warning("The default configuration file name `.ecrc` is deprecated. Use `.editorconfig-checker.json` instead. You can simply rename it")
 	}

@@ -110,6 +110,37 @@ func TestMainWithEcrc(t *testing.T) {
 	}
 }
 
+func TestMainEcrcDeprecationWarningHonorsNoColor(t *testing.T) {
+	output, lastSeenCode := runWithArguments(t, "--no-color", "--config", "testdata/.ecrc")
+	if lastSeenCode != exitCodeNormal {
+		t.Errorf("main exited with return code %d, but we expected %d", lastSeenCode, exitCodeNormal)
+		t.Logf("Output:\n%s", output)
+	}
+	if !strings.Contains(output, "`.ecrc` is deprecated") {
+		t.Error("main did not produce a warning that .ecrc is deprecated despite being given a file named .ecrc.")
+		t.Logf("Output:\n%s", output)
+	}
+	if strings.Contains(output, "\x1b[") {
+		t.Errorf("main produced ANSI color escape codes despite --no-color being set\nOutput:\n%q", output)
+	}
+}
+
+func TestMainEcrcDeprecationWarningHonorsNoColorEnvVar(t *testing.T) {
+	t.Setenv("NO_COLOR", "1")
+	output, lastSeenCode := runWithArguments(t, "--config", "testdata/.ecrc")
+	if lastSeenCode != exitCodeNormal {
+		t.Errorf("main exited with return code %d, but we expected %d", lastSeenCode, exitCodeNormal)
+		t.Logf("Output:\n%s", output)
+	}
+	if !strings.Contains(output, "`.ecrc` is deprecated") {
+		t.Error("main did not produce a warning that .ecrc is deprecated despite being given a file named .ecrc.")
+		t.Logf("Output:\n%s", output)
+	}
+	if strings.Contains(output, "\x1b[") {
+		t.Errorf("main produced ANSI color escape codes despite NO_COLOR being set\nOutput:\n%q", output)
+	}
+}
+
 func TestMainShowVersion(t *testing.T) {
 	output, lastSeenCode := runWithArguments(t, "--version")
 	if lastSeenCode != exitCodeNormal {
