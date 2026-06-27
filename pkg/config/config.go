@@ -89,6 +89,7 @@ var defaultExcludes = []string{
 	"\\.exe$",
 	"\\.gpg$",
 	"\\.pdf$",
+	"\\.plist$",
 	"\\.snap$",
 	"\\.xlsx?$",
 	// archive formats
