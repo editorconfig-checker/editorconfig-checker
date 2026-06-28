@@ -1,5 +1,18 @@
 # Changelog
 
+## [3.8.0](https://github.com/editorconfig-checker/editorconfig-checker/compare/v3.7.0...v3.8.0) (2026-06-25)
+
+
+### Features
+
+* exclude .gpg files ([#571](https://github.com/editorconfig-checker/editorconfig-checker/issues/571)) ([e5b53f4](https://github.com/editorconfig-checker/editorconfig-checker/commit/e5b53f488f7e52a2665316e34500e65a8f3740d8))
+
+
+### Bug Fixes
+
+* anchor node_modules and target default excludes at path start ([#568](https://github.com/editorconfig-checker/editorconfig-checker/issues/568)) ([c0c39af](https://github.com/editorconfig-checker/editorconfig-checker/commit/c0c39af8af2f692a36716481bc89ab4ee68d03e9))
+* honor -no-color for .ecrc deprecation warning ([#575](https://github.com/editorconfig-checker/editorconfig-checker/issues/575)) ([dbb0dbb](https://github.com/editorconfig-checker/editorconfig-checker/commit/dbb0dbb2b100fedc87aa292476c9b7bf029e688e))
+
 ## [3.7.0](https://github.com/editorconfig-checker/editorconfig-checker/compare/v3.6.1...v3.7.0) (2026-05-25)
 
 
