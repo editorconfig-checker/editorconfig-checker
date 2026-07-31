@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.9.0](https://github.com/editorconfig-checker/editorconfig-checker/compare/v3.8.0...v3.9.0) (2026-07-31)
+
+
+### Features
+
+* enable immutable releases ([6865c06](https://github.com/editorconfig-checker/editorconfig-checker/commit/6865c0606d7099ff7b8da5a3e1cd5aced3195a6d))
+
 ## [3.8.0](https://github.com/editorconfig-checker/editorconfig-checker/compare/v3.7.0...v3.8.0) (2026-06-25)
 
 
