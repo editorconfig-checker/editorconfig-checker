@@ -1,5 +1,14 @@
 # Changelog
 
+## [3.10.0](https://github.com/editorconfig-checker/editorconfig-checker/compare/v3.9.0...v3.10.0) (2026-08-07)
+
+
+### Features
+
+* **immutable-releases:** ensure that despite the release being a draft the tag is created ([912f4a9](https://github.com/editorconfig-checker/editorconfig-checker/commit/912f4a986b7da0b22cfa3a055cc24a355dee7cbc))
+* **immutable-releases:** set release-please to create draft releases ([2d48c2e](https://github.com/editorconfig-checker/editorconfig-checker/commit/2d48c2ecae1743614cefa660c2796e14cefd7520))
+* **immutable-release:** tell release-please to create draft releases ([a685b54](https://github.com/editorconfig-checker/editorconfig-checker/commit/a685b542509d0349ce6215adf6088a242fa93d84))
+
 ## [3.9.0](https://github.com/editorconfig-checker/editorconfig-checker/compare/v3.8.0...v3.9.0) (2026-07-31)
 
 
