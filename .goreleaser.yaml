@@ -276,7 +276,6 @@ changelog:
 
 release:
   mode: keep-existing
-  draft: true
   prerelease: auto
   header: |
     ## editorconfig-checker {{ .Tag }} ({{ .Date }})
