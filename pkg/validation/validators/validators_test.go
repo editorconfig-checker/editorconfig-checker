@@ -73,6 +73,14 @@ func TestFinalNewline(t *testing.T) {
 		{"x\r", "false", "", errors.New("No final newline expected")},
 		{"x\r\n", "true", "", nil},
 		{"x\r\n", "false", "", errors.New("No final newline expected")},
+		{"x", "true", "unset", errors.New("Final newline expected")},
+		{"x", "false", "unset", nil},
+		{"x\n", "true", "unset", nil},
+		{"x\n", "false", "unset", errors.New("No final newline expected")},
+		{"x\r", "true", "unset", nil},
+		{"x\r", "false", "unset", errors.New("No final newline expected")},
+		{"x\r\n", "true", "unset", nil},
+		{"x\r\n", "false", "unset", errors.New("No final newline expected")},
 	}
 
 	for _, tt := range finalNewlineTests {
@@ -106,6 +114,18 @@ func TestLineEnding(t *testing.T) {
 		{"x\r", "crlf", errors.New("Not all lines have the correct end of line character")},
 		{"x\n", "crlf", errors.New("Not all lines have the correct end of line character")},
 		{"x\ry\nz\n", "crlf", errors.New("Not all lines have the correct end of line character")},
+
+		{"x", "", nil},
+		{"x\n", "", nil},
+		{"x\r", "", nil},
+		{"x\r\n", "", nil},
+		{"x\ry\nz\n", "", nil},
+
+		{"x", "unset", nil},
+		{"x\n", "unset", nil},
+		{"x\r", "unset", nil},
+		{"x\r\n", "unset", nil},
+		{"x\ry\nz\n", "unset", nil},
 	}
 
 	for _, tt := range linedEndingTests {
