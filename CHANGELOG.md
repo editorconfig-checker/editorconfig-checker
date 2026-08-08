@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.11.0](https://github.com/editorconfig-checker/editorconfig-checker/compare/v3.10.0...v3.11.0) (2026-08-08)
+
+
+### Features
+
+* **immutable-release:** goreleaser should publish its release ([4c08f2c](https://github.com/editorconfig-checker/editorconfig-checker/commit/4c08f2ccd339734ff92f2f04d146cd91af02d225))
+
 ## [3.10.0](https://github.com/editorconfig-checker/editorconfig-checker/compare/v3.9.0...v3.10.0) (2026-08-07)
 
 
