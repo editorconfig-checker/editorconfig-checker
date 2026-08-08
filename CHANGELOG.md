@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.11.1](https://github.com/editorconfig-checker/editorconfig-checker/compare/v3.11.0...v3.11.1) (2026-08-08)
+
+
+### Features
+
+* **immutable-release:** tell goreleaser to use the existing draft release ([a8e6136](https://github.com/editorconfig-checker/editorconfig-checker/commit/a8e6136975cbcd66d1e09d2967a4b64178864e50))
+
 ## [3.11.0](https://github.com/editorconfig-checker/editorconfig-checker/compare/v3.10.0...v3.11.0) (2026-08-08)
 
 
