@@ -102,7 +102,7 @@ func TrailingWhitespace(line string, trimTrailingWhitespace bool) error {
 
 // FinalNewline validates if a file has a final and correct newline
 func FinalNewline(fileContent string, insertFinalNewline string, endOfLine string) error {
-	if endOfLine != "" && insertFinalNewline == "true" {
+	if endOfLine != "" && endOfLine != "unset" && insertFinalNewline == "true" {
 		expectedEolChar := utils.GetEolChar(endOfLine)
 		if !strings.HasSuffix(fileContent, expectedEolChar) || (expectedEolChar == "\n" && strings.HasSuffix(fileContent, "\r\n")) {
 			return errors.New("Wrong line endings or no final newline")
@@ -124,7 +124,7 @@ func FinalNewline(fileContent string, insertFinalNewline string, endOfLine strin
 
 // LineEnding validates if a file uses the correct line endings
 func LineEnding(fileContent string, endOfLine string) error {
-	if endOfLine != "" {
+	if endOfLine != "" && endOfLine != "unset" {
 		expectedEolChar := utils.GetEolChar(endOfLine)
 		expectedEols := len(strings.Split(fileContent, expectedEolChar))
 		lfEols := len(strings.Split(fileContent, "\n"))
