@@ -62,7 +62,7 @@ universal_binaries:
 
 archives:
   - id: archive-editorconfig-checker
-    builds:
+    ids:
       - editorconfig-checker
     formats:
       - tar.gz
@@ -75,7 +75,7 @@ archives:
           - zip
 
   - id: archive-ec
-    builds:
+    ids:
       - ec-compat
     formats:
       - tar.gz
