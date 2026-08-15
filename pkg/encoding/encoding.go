@@ -4,7 +4,6 @@ package encoding
 import (
 	"bytes"
 	"fmt"
-	"slices"
 	"strings"
 	"unicode/utf8"
 
@@ -220,12 +219,6 @@ var (
 	encodingToDecoderMap map[string]string
 
 	supportedUTFEncodingMap map[string]string
-
-	latin1Encodings = []string{
-		CharsetLatin1,
-		"ascii",
-		"iso88591",
-	}
 )
 
 func init() {
@@ -276,8 +269,10 @@ func CharsetsMatch(charsetFound, charsetWanted string) bool {
 		}
 	}
 
-	// latin1 (iso88591), and ascii files are utf8 files, too.
-	if charsetWanted == "utf8" && slices.Contains(latin1Encodings, charsetFound) {
+	// ascii is a strict subset of utf8, so ascii files are utf8 files, too.
+	// latin1 (iso88591) files are not: a lone 0xA0 byte, for instance, is
+	// valid latin1 but is not valid utf8.
+	if charsetWanted == "utf8" && charsetFound == "ascii" {
 		return true
 	}
 

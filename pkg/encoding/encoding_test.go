@@ -156,6 +156,7 @@ func TestCharsetsMatch(t *testing.T) {
 		{CharsetLatin1, "iso88591", false},
 		{CharsetLatin1, "iso8859-1", false},
 		{CharsetLatin1, "iso-8859-1", false},
+		{CharsetLatin1, "utf-8", false}, // issue #597: latin1 is not a subset of utf-8
 		{CharsetUTF8, "utf8", true},
 		{CharsetUTF8BOM, "utf8bom", true},
 		{CharsetUTF8BOM, "utf-8bom", true},
@@ -186,9 +187,6 @@ func TestCharsetsMatch(t *testing.T) {
 	for _, charset1 := range ValidCharsets {
 		for _, charset2 := range ValidCharsets {
 			if charset1 != charset2 {
-				if charset1 == "latin1" && charset2 == "utf-8" {
-					continue
-				}
 				tests = append(tests, test{charset1, charset2, false})
 			}
 		}

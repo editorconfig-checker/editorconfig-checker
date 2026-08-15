@@ -295,3 +295,21 @@ func TestMaxLineLength(t *testing.T) {
 		}
 	}
 }
+
+// TestCharsetLatin1IsNotUtf8 guards issue #597: a file detected as ISO-8859-1
+// is not valid UTF-8 (e.g. a lone 0xA0 byte), so `charset = utf-8` must fail.
+func TestCharsetLatin1IsNotUtf8(t *testing.T) {
+	c := config.Config{}
+	if err := Charset("utf-8", "ISO-8859-1", c); err == nil {
+		t.Error(`Charset("utf-8", "ISO-8859-1"): expected an error, got nil`)
+	}
+	if err := Charset("utf-8", "ascii", c); err != nil {
+		t.Errorf(`Charset("utf-8", "ascii"): expected nil, got %v`, err)
+	}
+	if err := Charset("utf-8", "UTF-8", c); err != nil {
+		t.Errorf(`Charset("utf-8", "UTF-8"): expected nil, got %v`, err)
+	}
+	if err := Charset("latin1", "ISO-8859-1", c); err != nil {
+		t.Errorf(`Charset("latin1", "ISO-8859-1"): expected nil, got %v`, err)
+	}
+}
