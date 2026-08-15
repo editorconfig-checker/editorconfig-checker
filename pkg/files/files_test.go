@@ -173,6 +173,12 @@ func TestAddToFiles(t *testing.T) {
 			*configuration,
 			[]string{"./files.go"},
 		},
+		{
+			[]string{},
+			"./does/not/exist.txt",
+			*configuration,
+			[]string{},
+		},
 	}
 
 	for _, tt := range addToFilesTests {
@@ -242,7 +248,7 @@ func TestGetFilesGlobWithoutMetaKeepsPath(t *testing.T) {
 	// call should not fail and should not invent matches.
 	for _, f := range files {
 		if f == "./does/not/exist.txt" {
-			return
+			t.Fatalf("GetFiles(missing): expected %q to be dropped, got: %v", "./does/not/exist.txt", files)
 		}
 	}
 }

@@ -65,10 +65,11 @@ func AddToFiles(filePaths []string, filePath string, config config.Config) []str
 	if err != nil {
 		config.Logger.Error("Could not get the ContentType of file: %s", filePath)
 		config.Logger.Error("%v", err.Error())
+		return filePaths
 	}
 	config.Logger.Debug("AddToFiles: detected ContentType %s on file %s", contentType, filePath)
 
-	if err == nil && !IsAllowedContentType(contentType, config) {
+	if !IsAllowedContentType(contentType, config) {
 		config.Logger.Verbose("Not adding %s to be checked, it does not have an allowed ContentType", filePath)
 		return filePaths
 	}
