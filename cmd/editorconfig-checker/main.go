@@ -82,7 +82,7 @@ func init() {
 	flag.BoolFunc("no-color", "disables printing color", enableNoColor)
 	flag.BoolFunc("color", "enables printing color", disableNoColor)
 	flag.BoolVar(&cmdlineConfig.Disable.TrimTrailingWhitespace, "disable-trim-trailing-whitespace", false, "disables the trailing whitespace check")
-	flag.BoolVar(&cmdlineConfig.Disable.EndOfLine, "disable-end-of-line", false, "disables the trailing whitespace check")
+	flag.BoolVar(&cmdlineConfig.Disable.EndOfLine, "disable-end-of-line", false, "disables the end-of-line check")
 	flag.BoolVar(&cmdlineConfig.Disable.InsertFinalNewline, "disable-insert-final-newline", false, "disables the final newline check")
 	flag.BoolVar(&cmdlineConfig.Disable.Indentation, "disable-indentation", false, "disables the indentation check")
 	flag.BoolVar(&cmdlineConfig.Disable.IndentSize, "disable-indent-size", false, "disables only the indent-size check")
