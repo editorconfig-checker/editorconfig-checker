@@ -2,7 +2,9 @@
 package error
 
 import (
+	"cmp"
 	"encoding/json"
+	"slices"
 
 	// x-release-please-start-major
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/config"
@@ -64,25 +66,49 @@ func ConsolidateErrors(errors []ValidationError, config config.Config) []Validat
 
 	config.Logger.Debug("sorted errors: %d with line number -1, %d with a line number", len(lineLessErrors), len(errorsWithLines))
 
+	// Group by message first, so that a block of one kind of error is still
+	// recognised as a block when a different kind of error is reported on the
+	// same lines. Scanning the list in input order only finds a block when its
+	// members happen to be adjacent in that list.
+	grouped := make(map[string][]ValidationError)
+	for _, singleError := range errorsWithLines {
+		message := singleError.Message.Error()
+		grouped[message] = append(grouped[message], singleError)
+	}
+
 	var consolidatedErrors []ValidationError
 
-	// scan through the errors
-	for i := 0; i < len(errorsWithLines); i++ {
-		thisError := errorsWithLines[i]
-		config.Logger.Debug("investigating error %d(%s)", i, thisError.Message)
-		// scan through the errors after the current one
-		for j, nextError := range errorsWithLines[i+1:] {
-			config.Logger.Debug("comparing against error %d(%s)", j, nextError.Message)
-			if nextError.Message.Error() == thisError.Message.Error() && nextError.LineNumber == thisError.LineNumber+thisError.AdditionalIdenticalErrorCount+1 {
-				thisError.AdditionalIdenticalErrorCount++ // keep track of how many consecutive lines we've seen
-				i++                                       // make sure the outer loop jumps over the consecutive errors we just found
-			} else {
-				break // if they are different errors we can stop comparing messages
-			}
-		}
+	for message, groupErrors := range grouped {
+		slices.SortStableFunc(groupErrors, func(a, b ValidationError) int {
+			return cmp.Compare(a.LineNumber, b.LineNumber)
+		})
 
-		consolidatedErrors = append(consolidatedErrors, thisError)
+		config.Logger.Debug("consolidating %d errors with message %q", len(groupErrors), message)
+
+		for i := 0; i < len(groupErrors); i++ {
+			thisError := groupErrors[i]
+			thisError.AdditionalIdenticalErrorCount = 0
+
+			// walk forward while the next error sits on the line right after
+			// the range collected so far
+			for i+1 < len(groupErrors) &&
+				groupErrors[i+1].LineNumber == thisError.LineNumber+thisError.AdditionalIdenticalErrorCount+1 {
+				thisError.AdditionalIdenticalErrorCount++
+				i++
+			}
+
+			consolidatedErrors = append(consolidatedErrors, thisError)
+		}
 	}
+
+	// map iteration order is random, so put the result back into a stable,
+	// human-friendly order: by line, then by message
+	slices.SortStableFunc(consolidatedErrors, func(a, b ValidationError) int {
+		if c := cmp.Compare(a.LineNumber, b.LineNumber); c != 0 {
+			return c
+		}
+		return cmp.Compare(a.Message.Error(), b.Message.Error())
+	})
 
 	return append(lineLessErrors, consolidatedErrors...)
 }

@@ -216,7 +216,6 @@ func TestConsolidateErrorCounts(t *testing.T) {
 }
 
 func TestConsolidatingInterleavedErrors(t *testing.T) {
-	t.Skip("Consolidating non-consecutive errors is not supported by the current implementation")
 	/*
 		an assumption made about the possible future implement:
 		it is implied that the implementation will sort the error messages by their error message
@@ -244,7 +243,7 @@ func TestConsolidatingInterleavedErrors(t *testing.T) {
 		{LineNumber: 1, AdditionalIdenticalErrorCount: 2, Message: errors.New("message kind 2")},
 		{LineNumber: 2, AdditionalIdenticalErrorCount: 1, Message: errors.New("message kind 1")},
 		{LineNumber: 3, AdditionalIdenticalErrorCount: 0, Message: errors.New("message kind 3")},
-		{LineNumber: 4, AdditionalIdenticalErrorCount: 1, Message: errors.New("message kind 4")},
+		{LineNumber: 4, AdditionalIdenticalErrorCount: 0, Message: errors.New("message kind 4")},
 		{LineNumber: 5, AdditionalIdenticalErrorCount: 0, Message: errors.New("message kind 1")},
 	}
 
