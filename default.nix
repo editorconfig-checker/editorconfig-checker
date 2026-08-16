@@ -4,11 +4,6 @@ with pkgs;
 buildGoPackage rec {
   version = "v3.11.1" # x-release-please-version
 
-  # create link so the tool can also be executed as `ec`
-  postInstall = ''
-    ln -s $bin/bin/editorconfig-checker $bin/bin/ec
-  '';
-
   name = "editorconfig-checker-${version}";
 
   goPackagePath = "github.com/editorconfig-checker/editorconfig-checker/v2";
