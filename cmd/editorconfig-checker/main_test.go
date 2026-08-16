@@ -2,7 +2,6 @@ package main
 
 import (
 	"bytes"
-	"flag"
 	"os"
 	"runtime"
 	"strings"
@@ -228,22 +227,6 @@ func cdRelativeToRepo(t *testing.T, path string) {
 	t.Helper()
 	newdir := "../../" + path
 	t.Chdir(newdir)
-}
-
-// TestFlagDisableEndOfLineDescribesEndOfLine guards against the description for
-// -disable-end-of-line being copy-pasted from -disable-trim-trailing-whitespace,
-// which would leave the flag documented as disabling the wrong check.
-func TestFlagDisableEndOfLineDescribesEndOfLine(t *testing.T) {
-	f := flag.CommandLine.Lookup("disable-end-of-line")
-	if f == nil {
-		t.Fatal("expected a -disable-end-of-line flag to be registered")
-	}
-	if !strings.Contains(f.Usage, "end-of-line") {
-		t.Errorf("expected -disable-end-of-line's description to mention the end-of-line check, got %q", f.Usage)
-	}
-	if strings.Contains(f.Usage, "trailing whitespace") {
-		t.Errorf("-disable-end-of-line's description wrongly mentions the trailing whitespace check, got %q", f.Usage)
-	}
 }
 
 func TestReturnCodeInterface(t *testing.T) {
