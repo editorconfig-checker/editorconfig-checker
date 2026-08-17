@@ -8,6 +8,10 @@ import (
 	"testing"
 
 	"github.com/gkampitakis/go-snaps/snaps"
+
+	// x-release-please-start-major
+	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/outputformat"
+	// x-release-please-end
 )
 
 var mainHasRun chan int
@@ -219,6 +223,74 @@ func TestMainColorSupport(t *testing.T) {
 			snaps.MatchSnapshot(t, output)
 		})
 	}
+}
+
+func simulateGithubActions(t *testing.T) {
+	t.Helper()
+
+	initialDetectOutputFormat := detectOutputFormat
+	t.Cleanup(func() {
+		detectOutputFormat = initialDetectOutputFormat
+	})
+
+	detectOutputFormat = func() (outputformat.OutputFormat, bool) {
+		return outputformat.GithubActions, true
+	}
+}
+
+func expectFormatAfterParsing(t *testing.T, expectedFormat outputformat.OutputFormat, args ...string) {
+	t.Helper()
+
+	setArguments(t, args...)
+	parseArguments()
+
+	if currentConfig.Format != expectedFormat {
+		t.Errorf("the output format was %q, but we expected %q", currentConfig.Format, expectedFormat)
+	}
+}
+
+func TestMainFormatIsAutodetectedInsideGithubActions(t *testing.T) {
+	simulateGithubActions(t)
+
+	expectFormatAfterParsing(t, outputformat.GithubActions)
+}
+
+func TestMainFormatIsNotAutodetectedOutsideOfCI(t *testing.T) {
+	// nothing sets a format, so it stays unset and `error.PrintErrors` falls back to the default format
+	expectFormatAfterParsing(t, "")
+}
+
+func TestMainExplicitArgumentWinsOverTheAutodetectedFormat(t *testing.T) {
+	simulateGithubActions(t)
+
+	expectFormatAfterParsing(t, outputformat.GCC, "--format", "gcc")
+}
+
+func TestMainConfigurationFileWinsOverTheAutodetectedFormat(t *testing.T) {
+	simulateGithubActions(t)
+
+	expectFormatAfterParsing(t, outputformat.GCC, "--config", "testdata/format-gcc.json")
+}
+
+func TestMainExplicitArgumentWinsOverTheConfigurationFile(t *testing.T) {
+	simulateGithubActions(t)
+
+	expectFormatAfterParsing(t, outputformat.Codeclimate, "--config", "testdata/format-gcc.json", "--format", "codeclimate")
+}
+
+func TestMainExplicitArgumentIsUnaffectedOutsideOfCI(t *testing.T) {
+	expectFormatAfterParsing(t, outputformat.GCC, "--format", "gcc")
+}
+
+func TestMainConfigurationFileIsUnaffectedOutsideOfCI(t *testing.T) {
+	expectFormatAfterParsing(t, outputformat.GCC, "--config", "testdata/format-gcc.json")
+}
+
+func TestMainAutodetectedFormatDisablesColor(t *testing.T) {
+	simulateGithubActions(t)
+
+	output, _ := runWithArguments(t, `--exclude=""`, "--ignore-defaults", "testdata/trailing-whitespace.txt")
+	snaps.MatchSnapshot(t, output)
 }
 
 // a little Helper to set the current working dir relative to the repository root,
