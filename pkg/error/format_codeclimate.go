@@ -43,7 +43,7 @@ func newCodeclimateIssue(err ValidationError, path string) CodeclimateIssue {
 			Path: path,
 			Lines: CodeclimateLines{
 				Begin: err.LineNumber,
-				End:   err.AdditionalIdenticalErrorCount,
+				End:   err.LineNumber + err.AdditionalIdenticalErrorCount,
 			},
 		},
 	}
