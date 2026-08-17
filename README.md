@@ -242,10 +242,7 @@ The following output formats are supported:
 
 ## Configuration
 
-The configuration is done via arguments or it will take the first config file found with the following file names:
-
-- `.editorconfig-checker.json`
-- `.ecrc` (deprecated filename, soon unsupported)
+The configuration is done via arguments or it will take the config file named `.editorconfig-checker.json`.
 
 A sample configuration file can look like this and will be used from your current working directory if not specified via the `--config` argument:
 
