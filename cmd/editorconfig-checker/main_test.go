@@ -177,6 +177,10 @@ func TestMainColorSupport(t *testing.T) {
 	// Otherwise the first test fails...
 	t.Setenv("NO_COLOR", "")
 
+	// these snapshots capture the coloring of the default format, which the
+	// autodetected `github-actions` format would replace when running inside a CI
+	simulateNoCI(t)
+
 	tests := []struct {
 		name string
 		env  env
@@ -225,7 +229,9 @@ func TestMainColorSupport(t *testing.T) {
 	}
 }
 
-func simulateGithubActions(t *testing.T) {
+// the environment running these tests may be a CI itself, so tests that depend on
+// the detected environment have to pin it instead of inheriting the ambient one
+func simulateDetectedFormat(t *testing.T, format outputformat.OutputFormat, detected bool) {
 	t.Helper()
 
 	initialDetectOutputFormat := detectOutputFormat
@@ -234,8 +240,20 @@ func simulateGithubActions(t *testing.T) {
 	})
 
 	detectOutputFormat = func() (outputformat.OutputFormat, bool) {
-		return outputformat.GithubActions, true
+		return format, detected
 	}
+}
+
+func simulateGithubActions(t *testing.T) {
+	t.Helper()
+
+	simulateDetectedFormat(t, outputformat.GithubActions, true)
+}
+
+func simulateNoCI(t *testing.T) {
+	t.Helper()
+
+	simulateDetectedFormat(t, outputformat.Default, false)
 }
 
 func expectFormatAfterParsing(t *testing.T, expectedFormat outputformat.OutputFormat, args ...string) {
@@ -256,6 +274,8 @@ func TestMainFormatIsAutodetectedInsideGithubActions(t *testing.T) {
 }
 
 func TestMainFormatIsNotAutodetectedOutsideOfCI(t *testing.T) {
+	simulateNoCI(t)
+
 	// nothing sets a format, so it stays unset and `error.PrintErrors` falls back to the default format
 	expectFormatAfterParsing(t, "")
 }
@@ -279,10 +299,14 @@ func TestMainExplicitArgumentWinsOverTheConfigurationFile(t *testing.T) {
 }
 
 func TestMainExplicitArgumentIsUnaffectedOutsideOfCI(t *testing.T) {
+	simulateNoCI(t)
+
 	expectFormatAfterParsing(t, outputformat.GCC, "--format", "gcc")
 }
 
 func TestMainConfigurationFileIsUnaffectedOutsideOfCI(t *testing.T) {
+	simulateNoCI(t)
+
 	expectFormatAfterParsing(t, outputformat.GCC, "--config", "testdata/format-gcc.json")
 }
 
