@@ -100,12 +100,16 @@ func hasGlobMeta(path string) bool {
 // named it explicitly. Patterns are expanded via filepath.Glob; one that
 // matches nothing is returned unchanged, so an empty match is not an error.
 func resolvePassedFile(passedFile string) ([]string, error) {
-	if _, err := os.Stat(passedFile); err == nil {
+	_, statErr := os.Stat(passedFile)
+	if statErr == nil {
 		return []string{passedFile}, nil
 	}
 	if !hasGlobMeta(passedFile) {
-		// A plain path that is not there is a typo, not a pattern that matched nothing.
-		return nil, fmt.Errorf("%s: no such file or directory", passedFile)
+		// A plain path that is not usable is a user error, not a pattern that
+		// matched nothing. Wrap the stat error so a cause other than a missing
+		// file, a permission denied on the parent directory for instance, is
+		// reported as it is.
+		return nil, fmt.Errorf("resolving %s: %w", passedFile, statErr)
 	}
 	matches, err := filepath.Glob(passedFile)
 	if err != nil {

@@ -240,8 +240,7 @@ func TestGetFilesMissingPathWithoutMetaErrors(t *testing.T) {
 	cfg.PassedFiles = []string{"./does/not/exist.txt"}
 
 	// A path the user named explicitly, with no glob metacharacters, is a typo
-	// rather than a pattern that matched nothing, so it has to be an error.
-	// Previously it was passed on and silently dropped, and the run exited 0.
+	// rather than a pattern that matched nothing, so it is an error.
 	_, err := GetFiles(*cfg)
 	if err == nil {
 		t.Fatal("GetFiles(missing): expected an error for a path that does not exist, got nil")
