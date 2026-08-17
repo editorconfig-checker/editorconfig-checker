@@ -95,16 +95,17 @@ func hasGlobMeta(path string) bool {
 }
 
 // resolvePassedFile expands a single --passed-file argument into one or more
-// concrete paths. Paths that exist on disk are returned unchanged. Paths that
-// don't exist but look like glob patterns are expanded via filepath.Glob; if
-// the pattern matches nothing the argument is returned unchanged so the caller
-// can surface a not-found error in the usual way.
+// concrete paths. Paths that exist on disk are returned unchanged. A path that
+// does not exist and holds no glob metacharacters is an error, since the user
+// named it explicitly. Patterns are expanded via filepath.Glob; one that
+// matches nothing is returned unchanged, so an empty match is not an error.
 func resolvePassedFile(passedFile string) ([]string, error) {
 	if _, err := os.Stat(passedFile); err == nil {
 		return []string{passedFile}, nil
 	}
 	if !hasGlobMeta(passedFile) {
-		return []string{passedFile}, nil
+		// A plain path that is not there is a typo, not a pattern that matched nothing.
+		return nil, fmt.Errorf("%s: no such file or directory", passedFile)
 	}
 	matches, err := filepath.Glob(passedFile)
 	if err != nil {

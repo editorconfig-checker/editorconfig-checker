@@ -235,21 +235,19 @@ func TestGetFilesGlobPattern(t *testing.T) {
 	}
 }
 
-func TestGetFilesGlobWithoutMetaKeepsPath(t *testing.T) {
+func TestGetFilesMissingPathWithoutMetaErrors(t *testing.T) {
 	cfg := config.NewConfig(nil)
 	cfg.PassedFiles = []string{"./does/not/exist.txt"}
 
-	files, err := GetFiles(*cfg)
-	if err != nil {
-		t.Fatalf("GetFiles(missing): unexpected error %s", err.Error())
+	// A path the user named explicitly, with no glob metacharacters, is a typo
+	// rather than a pattern that matched nothing, so it has to be an error.
+	// Previously it was passed on and silently dropped, and the run exited 0.
+	_, err := GetFiles(*cfg)
+	if err == nil {
+		t.Fatal("GetFiles(missing): expected an error for a path that does not exist, got nil")
 	}
-	// Non-existent paths without glob metacharacters are passed straight to
-	// AddToFiles, which logs and drops them (they have no content type). The
-	// call should not fail and should not invent matches.
-	for _, f := range files {
-		if f == "./does/not/exist.txt" {
-			t.Fatalf("GetFiles(missing): expected %q to be dropped, got: %v", "./does/not/exist.txt", files)
-		}
+	if !strings.Contains(err.Error(), "./does/not/exist.txt") {
+		t.Errorf("GetFiles(missing): error should name the path, got %q", err.Error())
 	}
 }
 
