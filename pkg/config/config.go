@@ -23,8 +23,8 @@ var DefaultExcludes = strings.Join(defaultExcludes, "|")
 // defaultExcludes are an array to produce the correct string from
 var defaultExcludes = []string{
 	// source control related files and folders
-	"\\.git/",
-	"\\.jj/",
+	"(^|/)\\.git/",
+	"(^|/)\\.jj/",
 	// package manager, generated, & lock files
 	// Cargo (Rust)
 	"Cargo\\.lock$",
@@ -63,7 +63,7 @@ var defaultExcludes = []string{
 	// yarn (NodeJS)
 	"\\.pnp\\.c?js$",
 	"\\.pnp\\.loader\\.mjs$",
-	"\\.yarn/",
+	"(^|/)\\.yarn/",
 	"yarn\\.lock$",
 	// font files
 	"\\.eot$",
