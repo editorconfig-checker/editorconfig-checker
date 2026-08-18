@@ -8,6 +8,10 @@ import (
 	"testing"
 
 	"github.com/gkampitakis/go-snaps/snaps"
+
+	// x-release-please-start-major
+	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/outputformat"
+	// x-release-please-end
 )
 
 var mainHasRun chan int
@@ -129,6 +133,10 @@ func TestMainColorSupport(t *testing.T) {
 	// Otherwise the first test fails...
 	t.Setenv("NO_COLOR", "")
 
+	// these snapshots capture the coloring of the default format, which the
+	// autodetected `github-actions` format would replace when running inside a CI
+	simulateNoCI(t)
+
 	tests := []struct {
 		name string
 		env  env
@@ -175,6 +183,94 @@ func TestMainColorSupport(t *testing.T) {
 			snaps.MatchSnapshot(t, output)
 		})
 	}
+}
+
+// the environment running these tests may be a CI itself, so tests that depend on
+// the detected environment have to pin it instead of inheriting the ambient one
+func simulateDetectedFormat(t *testing.T, format outputformat.OutputFormat, detected bool) {
+	t.Helper()
+
+	initialDetectOutputFormat := detectOutputFormat
+	t.Cleanup(func() {
+		detectOutputFormat = initialDetectOutputFormat
+	})
+
+	detectOutputFormat = func() (outputformat.OutputFormat, bool) {
+		return format, detected
+	}
+}
+
+func simulateGithubActions(t *testing.T) {
+	t.Helper()
+
+	simulateDetectedFormat(t, outputformat.GithubActions, true)
+}
+
+func simulateNoCI(t *testing.T) {
+	t.Helper()
+
+	simulateDetectedFormat(t, outputformat.Default, false)
+}
+
+func expectFormatAfterParsing(t *testing.T, expectedFormat outputformat.OutputFormat, args ...string) {
+	t.Helper()
+
+	setArguments(t, args...)
+	parseArguments()
+
+	if currentConfig.Format != expectedFormat {
+		t.Errorf("the output format was %q, but we expected %q", currentConfig.Format, expectedFormat)
+	}
+}
+
+func TestMainFormatIsAutodetectedInsideGithubActions(t *testing.T) {
+	simulateGithubActions(t)
+
+	expectFormatAfterParsing(t, outputformat.GithubActions)
+}
+
+func TestMainFormatIsNotAutodetectedOutsideOfCI(t *testing.T) {
+	simulateNoCI(t)
+
+	// nothing sets a format, so it stays unset and `error.PrintErrors` falls back to the default format
+	expectFormatAfterParsing(t, "")
+}
+
+func TestMainExplicitArgumentWinsOverTheAutodetectedFormat(t *testing.T) {
+	simulateGithubActions(t)
+
+	expectFormatAfterParsing(t, outputformat.GCC, "--format", "gcc")
+}
+
+func TestMainConfigurationFileWinsOverTheAutodetectedFormat(t *testing.T) {
+	simulateGithubActions(t)
+
+	expectFormatAfterParsing(t, outputformat.GCC, "--config", "testdata/format-gcc.json")
+}
+
+func TestMainExplicitArgumentWinsOverTheConfigurationFile(t *testing.T) {
+	simulateGithubActions(t)
+
+	expectFormatAfterParsing(t, outputformat.Codeclimate, "--config", "testdata/format-gcc.json", "--format", "codeclimate")
+}
+
+func TestMainExplicitArgumentIsUnaffectedOutsideOfCI(t *testing.T) {
+	simulateNoCI(t)
+
+	expectFormatAfterParsing(t, outputformat.GCC, "--format", "gcc")
+}
+
+func TestMainConfigurationFileIsUnaffectedOutsideOfCI(t *testing.T) {
+	simulateNoCI(t)
+
+	expectFormatAfterParsing(t, outputformat.GCC, "--config", "testdata/format-gcc.json")
+}
+
+func TestMainAutodetectedFormatDisablesColor(t *testing.T) {
+	simulateGithubActions(t)
+
+	output, _ := runWithArguments(t, `--exclude=""`, "--ignore-defaults", "testdata/trailing-whitespace.txt")
+	snaps.MatchSnapshot(t, output)
 }
 
 // a little Helper to set the current working dir relative to the repository root,

@@ -9,6 +9,8 @@ import (
 	"runtime/pprof"
 	"strconv"
 
+	"github.com/gkampitakis/ciinfo"
+
 	// x-release-please-start-major
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/config"
 	eccerror "github.com/editorconfig-checker/editorconfig-checker/v3/pkg/error"
@@ -51,6 +53,13 @@ var (
 )
 
 var colorExplicitlySet bool
+
+var detectOutputFormat = func() (outputformat.OutputFormat, bool) {
+	if ciinfo.IsVendor("GITHUB_ACTIONS") {
+		return outputformat.GithubActions, true
+	}
+	return outputformat.Default, false
+}
 
 func enableNoColor(string) error {
 	cmdlineConfig.NoColor = true
@@ -154,6 +163,12 @@ func parseArguments() {
 	for _, arg := range flag.Args() {
 		if arg != "" {
 			cmdlineConfig.PassedFiles = append(cmdlineConfig.PassedFiles, arg)
+		}
+	}
+
+	if !cmdlineConfig.Format.IsValid() && !currentConfig.Format.IsValid() {
+		if detected, ok := detectOutputFormat(); ok {
+			cmdlineConfig.Format = detected
 		}
 	}
 
