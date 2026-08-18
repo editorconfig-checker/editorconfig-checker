@@ -110,8 +110,8 @@ dockers:
     use: buildx
     dockerfile: Dockerfile
     image_templates:
-      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-amd64"
-      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-amd64"
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Version }}-amd64"
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Version }}-amd64"
     build_flag_templates:
       - "--label=org.opencontainers.image.created={{.Date}}"
       - "--label=org.opencontainers.image.title={{.ProjectName}}"
@@ -129,8 +129,8 @@ dockers:
     use: buildx
     dockerfile: Dockerfile
     image_templates:
-      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-i386"
-      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-i386"
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Version }}-i386"
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Version }}-i386"
     build_flag_templates:
       - "--label=org.opencontainers.image.created={{.Date}}"
       - "--label=org.opencontainers.image.title={{.ProjectName}}"
@@ -149,8 +149,8 @@ dockers:
     use: buildx
     dockerfile: Dockerfile
     image_templates:
-      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm64v8"
-      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm64v8"
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Version }}-arm64v8"
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Version }}-arm64v8"
     build_flag_templates:
       - "--label=org.opencontainers.image.created={{.Date}}"
       - "--label=org.opencontainers.image.title={{.ProjectName}}"
@@ -170,8 +170,8 @@ dockers:
     use: buildx
     dockerfile: Dockerfile
     image_templates:
-      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm32v6"
-      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm32v6"
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Version }}-arm32v6"
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Version }}-arm32v6"
     build_flag_templates:
       - "--label=org.opencontainers.image.created={{.Date}}"
       - "--label=org.opencontainers.image.title={{.ProjectName}}"
@@ -184,70 +184,70 @@ dockers:
 docker_manifests:
   - id: docker_manifest-dockerhub-tag
     skip_push: false
-    name_template: "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}"
+    name_template: "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Version }}"
     image_templates:
-      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-amd64"
-      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm64v8"
-      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm32v6"
-      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-i386"
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Version }}-amd64"
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Version }}-arm64v8"
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Version }}-arm32v6"
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Version }}-i386"
   - id: docker_manifest-ghcr-tag
     skip_push: false
-    name_template: "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}"
+    name_template: "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Version }}"
     image_templates:
-      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-amd64"
-      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm64v8"
-      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm32v6"
-      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-i386"
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Version }}-amd64"
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Version }}-arm64v8"
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Version }}-arm32v6"
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Version }}-i386"
 
-  - id: docker_manifest-dockerhub-vMajor
+  - id: docker_manifest-dockerhub-major
     skip_push: auto
-    name_template: "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:v{{ .Major }}"
+    name_template: "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Major }}"
     image_templates:
-      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-amd64"
-      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm64v8"
-      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm32v6"
-      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-i386"
-  - id: docker_manifest-dockerhub-vMajorMinor
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Version }}-amd64"
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Version }}-arm64v8"
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Version }}-arm32v6"
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Version }}-i386"
+  - id: docker_manifest-dockerhub-major-minor
     skip_push: auto
-    name_template: "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:v{{ .Major }}.{{ .Minor }}"
+    name_template: "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Major }}.{{ .Minor }}"
     image_templates:
-      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-amd64"
-      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm64v8"
-      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm32v6"
-      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-i386"
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Version }}-amd64"
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Version }}-arm64v8"
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Version }}-arm32v6"
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Version }}-i386"
   - id: docker_manifest-dockerhub-latest
     skip_push: auto
     name_template: "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:latest"
     image_templates:
-      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-amd64"
-      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm64v8"
-      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm32v6"
-      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Tag }}-i386"
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Version }}-amd64"
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Version }}-arm64v8"
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Version }}-arm32v6"
+      - "{{ .Env.DOCKERHUB_USERNAME }}/editorconfig-checker:{{ .Version }}-i386"
 
-  - id: docker_manifest-ghcr-vMajor
+  - id: docker_manifest-ghcr-major
     skip_push: auto
-    name_template: "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:v{{ .Major }}"
+    name_template: "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Major }}"
     image_templates:
-      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-amd64"
-      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm64v8"
-      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm32v6"
-      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-i386"
-  - id: docker_manifest-ghcr-vMajorMinor
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Version }}-amd64"
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Version }}-arm64v8"
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Version }}-arm32v6"
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Version }}-i386"
+  - id: docker_manifest-ghcr-major-minor
     skip_push: auto
-    name_template: "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:v{{ .Major }}.{{ .Minor }}"
+    name_template: "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Major }}.{{ .Minor }}"
     image_templates:
-      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-amd64"
-      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm64v8"
-      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm32v6"
-      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-i386"
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Version }}-amd64"
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Version }}-arm64v8"
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Version }}-arm32v6"
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Version }}-i386"
   - id: docker_manifest-ghcr-latest
     skip_push: auto
     name_template: "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:latest"
     image_templates:
-      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-amd64"
-      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm64v8"
-      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-arm32v6"
-      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Tag }}-i386"
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Version }}-amd64"
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Version }}-arm64v8"
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Version }}-arm32v6"
+      - "ghcr.io/{{ .Env.GHCR_USERNAME }}/editorconfig-checker:{{ .Version }}-i386"
 checksum:
   name_template: "checksums.txt"
 sboms:
