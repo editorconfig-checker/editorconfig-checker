@@ -169,7 +169,7 @@ OPTIONS:
   -disable-charset
         disables only the charset check
   -disable-end-of-line
-        disables the trailing whitespace check
+        disables the end-of-line check
   -disable-indent-size
         disables only the indent-size check
   -disable-indentation
