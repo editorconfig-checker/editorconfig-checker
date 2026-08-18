@@ -16,16 +16,11 @@
                 "README.md",
                 "go.mod",
                 "default.nix",
-                "cmd/editorconfig-checker/main.go",
-                "pkg/config/config.go",
-                "pkg/config/config_test.go",
-                "pkg/error/error.go",
-                "pkg/error/error_test.go",
-                "pkg/files/files.go",
-                "pkg/validation/validation.go",
-                "pkg/validation/validation_test.go",
-                "pkg/validation/validators/validators.go",
-                "pkg/validation/validators/validators_test.go"
+                {
+                    "type": "generic",
+                    "path": "**/*.go",
+                    "glob": true
+                }
             ]
         }
     }
