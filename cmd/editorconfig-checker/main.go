@@ -8,7 +8,6 @@ import (
 	"os"
 	"runtime/pprof"
 	"strconv"
-	"strings"
 
 	// x-release-please-start-major
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/config"
@@ -25,7 +24,7 @@ import (
 var version string = "v3.11.1" // x-release-please-version
 
 // defaultConfigFileNames determines the file names where the config is located
-var defaultConfigFileNames = []string{".editorconfig-checker.json", ".ecrc"}
+var defaultConfigFileNames = []string{".editorconfig-checker.json"}
 
 // currentConfig is the config used in this run
 var currentConfig *config.Config
@@ -126,10 +125,6 @@ func parseArguments() {
 	loggerInjectionHook()
 
 	currentConfig.Logger.NoColor = cmdlineConfig.NoColor
-
-	if strings.HasSuffix(currentConfig.Path, ".ecrc") {
-		currentConfig.Logger.Warning("The default configuration file name `.ecrc` is deprecated. Use `.editorconfig-checker.json` instead. You can simply rename it")
-	}
 
 	if writeConfigFile {
 		err := currentConfig.Save(version)

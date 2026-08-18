@@ -21,9 +21,6 @@ indent_size = unset
 [*.nix]
 indent_size = 2
 
-[.ecrc]
-indent_size = 2
-
 [Makefile]
 indent_style = tab
 indent_size = unset
