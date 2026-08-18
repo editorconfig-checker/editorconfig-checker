@@ -91,8 +91,8 @@ func TestMainLoadingAncientConfig(t *testing.T) {
 		t.Errorf("main exited with return code %d, but we expected %d", lastSeenCode, exitCodeErrorOccurred)
 		t.Logf("Output:\n%s", output)
 	}
-	if !strings.Contains(output, "SpacesAftertabs") {
-		t.Errorf("main did not produce a warning that SpacesAftertabs is deprecated\nOutput:\n%s", output)
+	if !strings.Contains(output, "Version from config file is not the same as the version of the binary") {
+		t.Errorf("main did not report the config file version mismatch\nOutput:\n%s", output)
 		t.Logf("Output:\n%s", output)
 	}
 }

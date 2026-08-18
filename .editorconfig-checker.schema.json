@@ -46,11 +46,6 @@
             "default": false,
             "description": "Allow spaces after tabs in indentation (mixed indentation). When `false`, spaces following tabs are flagged as errors"
         },
-        "SpacesAftertabs": {
-            "type": "boolean",
-            "deprecated": true,
-            "description": "The configuration key `SpacesAftertabs` is deprecated. Use `SpacesAfterTabs` instead"
-        },
         "NoColor": {
             "type": "boolean",
             "default": false,
