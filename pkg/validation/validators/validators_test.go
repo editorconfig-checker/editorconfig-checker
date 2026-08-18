@@ -148,7 +148,7 @@ func TestIndentation(t *testing.T) {
 		{"    x", "space", 4, nil},
 		{"   x", "space", 4, errors.New("Wrong amount of left-padding spaces(want multiple of 4)")},
 		{"	x", "tab", 0, nil},
-		{"   x", "tab", 0, errors.New("Wrong indentation type(spaces instead of tabs)")},
+		{"   x", "tab", 0, errors.New("Wrong indentation type (spaces instead of tabs)")},
 		{"	x", "x", 0, nil},
 		{"   x", "x", 0, nil},
 	}
@@ -222,7 +222,7 @@ func TestTab(t *testing.T) {
 		{"	x", spacesForbidden, nil},
 		{"	", spacesForbidden, nil},
 		{"		x", spacesForbidden, nil},
-		{"  	a", spacesForbidden, errors.New("Wrong indentation type(spaces instead of tabs)")},
+		{"  	a", spacesForbidden, errors.New("Wrong indentation type (spaces instead of tabs)")},
 		{" *", spacesForbidden, nil},
 		{"	 *", spacesForbidden, nil},
 		{"	 * some comment", spacesForbidden, nil},

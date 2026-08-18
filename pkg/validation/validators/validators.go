@@ -79,7 +79,7 @@ func Tab(line string, config config.Config) error {
 		matched := re.MatchString(line)
 
 		if !matched {
-			return errors.New("Wrong indentation type(spaces instead of tabs)")
+			return errors.New("Wrong indentation type (spaces instead of tabs)")
 		}
 
 	}
