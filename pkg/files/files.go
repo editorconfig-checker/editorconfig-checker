@@ -65,10 +65,11 @@ func AddToFiles(filePaths []string, filePath string, config config.Config) []str
 	if err != nil {
 		config.Logger.Error("Could not get the ContentType of file: %s", filePath)
 		config.Logger.Error("%v", err.Error())
+		return filePaths
 	}
 	config.Logger.Debug("AddToFiles: detected ContentType %s on file %s", contentType, filePath)
 
-	if err == nil && !IsAllowedContentType(contentType, config) {
+	if !IsAllowedContentType(contentType, config) {
 		config.Logger.Verbose("Not adding %s to be checked, it does not have an allowed ContentType", filePath)
 		return filePaths
 	}
@@ -94,16 +95,21 @@ func hasGlobMeta(path string) bool {
 }
 
 // resolvePassedFile expands a single --passed-file argument into one or more
-// concrete paths. Paths that exist on disk are returned unchanged. Paths that
-// don't exist but look like glob patterns are expanded via filepath.Glob; if
-// the pattern matches nothing the argument is returned unchanged so the caller
-// can surface a not-found error in the usual way.
+// concrete paths. Paths that exist on disk are returned unchanged. A path that
+// does not exist and holds no glob metacharacters is an error, since the user
+// named it explicitly. Patterns are expanded via filepath.Glob; one that
+// matches nothing is returned unchanged, so an empty match is not an error.
 func resolvePassedFile(passedFile string) ([]string, error) {
-	if _, err := os.Stat(passedFile); err == nil {
+	_, statErr := os.Stat(passedFile)
+	if statErr == nil {
 		return []string{passedFile}, nil
 	}
 	if !hasGlobMeta(passedFile) {
-		return []string{passedFile}, nil
+		// A plain path that is not usable is a user error, not a pattern that
+		// matched nothing. Wrap the stat error so a cause other than a missing
+		// file, a permission denied on the parent directory for instance, is
+		// reported as it is.
+		return nil, fmt.Errorf("resolving %s: %w", passedFile, statErr)
 	}
 	matches, err := filepath.Glob(passedFile)
 	if err != nil {
