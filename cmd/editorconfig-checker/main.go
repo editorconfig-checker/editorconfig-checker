@@ -15,6 +15,7 @@ import (
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/config"
 	eccerror "github.com/editorconfig-checker/editorconfig-checker/v3/pkg/error"
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/files"
+	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/fix"
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/outputformat"
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/utils"
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/validation"
@@ -79,6 +80,7 @@ func init() {
 	flag.StringVar(&cmdlineExclude, "exclude", "", "a regex which files should be excluded from checking - needs to be a valid regular expression. Combine patterns with | (pipe): -exclude \"vendor|testdata\"")
 	flag.BoolVar(&cmdlineConfig.IgnoreDefaults, "ignore-defaults", false, "ignore default excludes")
 	flag.BoolVar(&cmdlineConfig.DryRun, "dry-run", false, "show which files would be checked")
+	flag.BoolVar(&cmdlineConfig.Fix, "fix", false, "fix supported EditorConfig violations before checking")
 	flag.BoolVar(&cmdlineConfig.ShowVersion, "version", false, "print the version number")
 	flag.BoolVar(&cmdlineConfig.Help, "help", false, "print the help")
 	flag.BoolVar(&cmdlineConfig.Help, "h", false, "print the help")
@@ -238,6 +240,28 @@ func main() {
 		}
 
 		exitProxy(exitCodeNormal)
+	}
+
+	if config.Fix {
+		for _, filePath := range filePaths {
+			lock := config.EditorconfigConfig
+			def, warnings, err := lock.LoadGraceful(filePath)
+			if err != nil {
+				config.Logger.Error("cannot load %s as .editorconfig: %s", filePath, err)
+				exitProxy(exitCodeErrorOccurred)
+			}
+			if warnings != nil {
+				config.Logger.Warning("%v", warnings.Error())
+			}
+			changed, err := fix.FixFile(filePath, config, def)
+			if err != nil {
+				config.Logger.Error("cannot fix %s: %s", filePath, err)
+				exitProxy(exitCodeErrorOccurred)
+			}
+			if changed {
+				config.Logger.Verbose("Fixed %s", filePath)
+			}
+		}
 	}
 
 	errors := validation.ProcessValidation(filePaths, config)

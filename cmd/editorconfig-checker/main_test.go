@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"os"
+	"path/filepath"
 	"runtime"
 	"strings"
 	"testing"
@@ -68,6 +69,66 @@ func TestMainWithFilesGiven(t *testing.T) {
 	if lastSeenCode != exitCodeNormal {
 		t.Errorf("main exited with return code %d, but we expected %d", lastSeenCode, exitCodeNormal)
 		t.Logf("Output:\n%s", output)
+	}
+}
+
+func TestMainFixesFilesBeforeChecking(t *testing.T) {
+	dir := t.TempDir()
+	if err := os.WriteFile(filepath.Join(dir, ".editorconfig"), []byte("[*]\ntrim_trailing_whitespace = true\ninsert_final_newline = true\n"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	path := filepath.Join(dir, "file.txt")
+	if err := os.WriteFile(path, []byte("value  "), 0644); err != nil {
+		t.Fatal(err)
+	}
+	oldDir, err := os.Getwd()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.Chdir(dir); err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() { _ = os.Chdir(oldDir) })
+	_, code := runWithArguments(t, "--fix", path)
+	if code != exitCodeNormal {
+		t.Fatalf("fix command exited with %d", code)
+	}
+	got, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if string(got) != "value\n" {
+		t.Fatalf("got %q, want %q", got, "value\\n")
+	}
+}
+
+func TestMainFixWithEndOfLineDisabledStillChecksFinalNewline(t *testing.T) {
+	dir := t.TempDir()
+	if err := os.WriteFile(filepath.Join(dir, ".editorconfig"), []byte("[*]\nend_of_line = lf\ninsert_final_newline = true\n"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	path := filepath.Join(dir, "file.txt")
+	if err := os.WriteFile(path, []byte("value\r\n"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	oldDir, err := os.Getwd()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.Chdir(dir); err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() { _ = os.Chdir(oldDir) })
+	_, code := runWithArguments(t, "--fix", "--disable-end-of-line", path)
+	if code != exitCodeNormal {
+		t.Fatalf("fix command exited with %d for a file whose final newline is valid", code)
+	}
+	got, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if string(got) != "value\r\n" {
+		t.Fatalf("got %q, want original CRLF content", got)
 	}
 }
 

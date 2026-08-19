@@ -186,6 +186,8 @@ OPTIONS:
         a regex which files should be excluded from checking - needs to be a valid regular expression. Combine patterns with | (pipe): -exclude "vendor|testdata"
   -f value
         specify the output format: default, codeclimate, gcc, github-actions (default default)
+  -fix
+        fix supported EditorConfig violations before checking
   -format value
         specify the output format: default, codeclimate, gcc, github-actions (default default)
   -h  print the help
@@ -207,6 +209,25 @@ OPTIONS:
 If you run this tool from a repository root it will check all files which are added to the git repository and are text files. If the tool isn't able to determine a file type it will be added to be checked too.
 
 If you run this tool from a normal directory it will check all files which are text files. If the tool isn't able to determine a file type it will be added to be checked too.
+
+### Fixing files
+
+Use `--fix` to apply the safe fixes supported by
+editorconfig-checker before it checks the files. The fix mode currently supports
+only these rules:
+
+- `trim_trailing_whitespace = true`
+- `end_of_line = lf`, `cr`, or `crlf`
+- `insert_final_newline = true` or `false`
+
+Indentation, `indent_size`, `max_line_length`, and `charset` violations remain
+check-only. All non-UTF-8, invalid UTF-8, and binary-like files are skipped, as
+are symbolic links and empty files. Inline disable directives are honored for
+trailing whitespace, and files with `editorconfig-checker-disable-file` are
+skipped. A second `--fix` run is idempotent. Changes are written through a
+same-directory temporary file and replacement; this is crash-resistant and
+atomic only where the operating system and filesystem provide those guarantees.
+Replacing a path does not update other hard links to the original file.
 
 ### Formats
 

@@ -189,10 +189,16 @@ func ValidateFileWithDefinition(filePath string, config config.Config, def *edit
 
 // ValidateFinalNewline runs the final newline validator and processes the error into the proper type
 func ValidateFinalNewline(fileInformation files.FileInformation, config config.Config) error.ValidationError {
+	endOfLine := fileInformation.Editorconfig.Raw["end_of_line"]
+	if config.Disable.EndOfLine {
+		// A disabled end-of-line check must not make the final-newline check
+		// enforce the configured line-ending representation as a side effect.
+		endOfLine = ""
+	}
 	if currentError := validators.FinalNewline(
 		fileInformation.Content,
 		fileInformation.Editorconfig.Raw["insert_final_newline"],
-		fileInformation.Editorconfig.Raw["end_of_line"]); !config.Disable.InsertFinalNewline && currentError != nil {
+		endOfLine); !config.Disable.InsertFinalNewline && currentError != nil {
 		config.Logger.Verbose("Final newline error found in %s", fileInformation.FilePath)
 		return error.ValidationError{LineNumber: -1, Message: currentError}
 	}
