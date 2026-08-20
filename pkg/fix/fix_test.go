@@ -1,6 +1,7 @@
 package fix
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -101,6 +102,14 @@ func TestFixFileSkipsEmptyAndNonRegularFiles(t *testing.T) {
 	if _, err := FixFile(filepath.Join(dir, "missing.txt"), cfg, definition(nil)); err == nil {
 		t.Fatal("missing file should return an error")
 	}
+
+	noOp := filepath.Join(dir, "no-op.txt")
+	if err := os.WriteFile(noOp, []byte("already clean\n"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	if changed, err := FixFile(noOp, cfg, definition(nil)); err != nil || changed {
+		t.Fatalf("no-op policy: changed=%v, err=%v", changed, err)
+	}
 }
 
 func TestFixFileSkipsInvalidRules(t *testing.T) {
@@ -129,6 +138,33 @@ func TestFixFileSkipsInvalidRules(t *testing.T) {
 			}
 			got, _ := os.ReadFile(path)
 			if string(got) != string(input) {
+				t.Fatalf("got %q, want %q", got, input)
+			}
+		})
+	}
+}
+
+func TestFixFilePreservesExistingNewlinesWhenEOLDisabled(t *testing.T) {
+	for _, input := range []string{"value\n", "value\r\n"} {
+		t.Run(fmt.Sprintf("%x", input), func(t *testing.T) {
+			path := filepath.Join(t.TempDir(), "file.txt")
+			if err := os.WriteFile(path, []byte(input), 0644); err != nil {
+				t.Fatal(err)
+			}
+			cfg := *config.NewConfig(nil)
+			cfg.Disable.EndOfLine = true
+			changed, err := FixFile(path, cfg, definition(map[string]string{
+				"end_of_line":          "crlf",
+				"insert_final_newline": "true",
+			}))
+			if err != nil {
+				t.Fatal(err)
+			}
+			if changed {
+				t.Fatal("already-present final newline should be preserved")
+			}
+			got, _ := os.ReadFile(path)
+			if string(got) != input {
 				t.Fatalf("got %q, want %q", got, input)
 			}
 		})
@@ -206,6 +242,18 @@ func TestFixHelpers(t *testing.T) {
 			t.Errorf("fixFinalNewline(%q, %q) = %q, want %q", test.input, test.policy, got, test.want)
 		}
 	}
+	for _, test := range []struct {
+		input, want string
+	}{
+		{"value\r\n", "\r\n"},
+		{"value\n", "\n"},
+		{"value\r", "\r"},
+		{"value", ""},
+	} {
+		if got := detectFinalEOL([]byte(test.input)); got != test.want {
+			t.Errorf("detectFinalEOL(%q) = %q, want %q", test.input, got, test.want)
+		}
+	}
 }
 
 func TestAtomicWriteRefusesLostUpdate(t *testing.T) {
@@ -229,10 +277,13 @@ func TestAtomicWriteRefusesLostUpdate(t *testing.T) {
 	}
 }
 
-func TestSplitPathForFilesInCurrentDirectory(t *testing.T) {
-	dir, base := splitPath("file.txt")
-	if dir != "." || base != "file.txt" {
-		t.Fatalf("splitPath returned %q, %q", dir, base)
+func TestAtomicWriteFailureBeforeReplacement(t *testing.T) {
+	dir := t.TempDir()
+	if err := atomicWrite(filepath.Join(dir, "missing.txt"), []byte("replacement"), 0644, nil); err == nil {
+		t.Fatal("expected missing target to be rejected")
+	}
+	if err := atomicWrite(filepath.Join(dir, "missing-parent", "file.txt"), []byte("replacement"), 0644, nil); err == nil {
+		t.Fatal("expected temporary-file creation to fail for a missing parent")
 	}
 }
 
@@ -273,6 +324,7 @@ func TestFixFileSkipsUnsafeFilesAndSymlinks(t *testing.T) {
 		data []byte
 	}{
 		{"non-utf8", []byte{0xff, 'a', ' ', '\n'}},
+		{"invalid-utf8", []byte{0x81, 'a', ' ', '\n'}},
 		{"binary", []byte{'a', 0, ' ', '\n'}},
 	}
 	for _, tt := range tests {

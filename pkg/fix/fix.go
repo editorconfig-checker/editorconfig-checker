@@ -64,13 +64,13 @@ func readFixableFile(filePath string, cfg config.Config) (os.FileInfo, []byte, b
 	if hasDisableFile(content) {
 		return info, nil, false, nil
 	}
+	if !utf8.Valid(content) {
+		verbose(&cfg, "Skipping %s: content is not valid UTF-8", filePath)
+		return info, nil, false, nil
+	}
 	encodingName, _, _ := encoding.Detect(content)
 	if !isSupportedEncoding(encodingName) {
 		verbose(&cfg, "Skipping %s: unsupported encoding %s", filePath, encodingName)
-		return info, nil, false, nil
-	}
-	if !utf8.Valid(content) {
-		verbose(&cfg, "Skipping %s: content is not valid UTF-8", filePath)
 		return info, nil, false, nil
 	}
 	return info, content, true, nil
@@ -247,11 +247,7 @@ func fileMode(info os.FileInfo) os.FileMode {
 }
 
 func splitPath(path string) (string, string) {
-	dir := filepath.Dir(path)
-	if dir == "" {
-		dir = "."
-	}
-	return dir, filepath.Base(path)
+	return filepath.Dir(path), filepath.Base(path)
 }
 
 type linePart struct {

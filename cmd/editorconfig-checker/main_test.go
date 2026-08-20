@@ -154,6 +154,25 @@ func TestMainFixReportsEditorconfigError(t *testing.T) {
 	}
 }
 
+func TestMainFixReportsEditorconfigWarning(t *testing.T) {
+	dir := t.TempDir()
+	if err := os.WriteFile(filepath.Join(dir, ".editorconfig"), []byte("[*]\ntrim_trailing_whitespace = maybe\n"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	path := filepath.Join(dir, "file.txt")
+	if err := os.WriteFile(path, []byte("value  \n"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	t.Chdir(dir)
+	output, code := runWithArguments(t, "--fix", path)
+	if code != exitCodeNormal {
+		t.Fatalf("fix command exited with %d, output: %s", code, output)
+	}
+	if !strings.Contains(output, "not an acceptable value") {
+		t.Fatalf("fix command did not report editorconfig warning: %s", output)
+	}
+}
+
 func TestMainInitializingANewConfig(t *testing.T) {
 	dir := t.TempDir()
 
