@@ -9,7 +9,7 @@ ifeq ($(wildcard "C:/Program Files/Git/usr/bin/*"),)
 export PATH:="C:/Program Files/Git/usr/bin:$(PATH)"
 endif
 
-EXE=bin/ec$(EXEEXT)
+EXE=bin/editorconfig-checker$(EXEEXT)
 SRC_DIR := $(shell dirname "$(realpath "$(firstword $(MAKEFILE_LIST))")")
 SOURCES = $(shell find "$(SRC_DIR)" -type f -name "*.go")
 
@@ -17,7 +17,7 @@ prefix = /usr/local
 bindir = /bin
 mandir = /share/man
 
-all: build ## Build bin/ec
+all: build ## Build bin/editorconfig-checker
 
 clean: ## Clean bin/ directory
 	rm -f ./bin/*
@@ -49,7 +49,7 @@ endif
 $(EXE): $(SOURCES)
 	$(call _build,$(EXE))
 
-build: $(EXE) ## Build bin/ec
+build: $(EXE) ## Build bin/editorconfig-checker
 
 install: build ## Build and install executable in PATH
 	install -D $(EXE) $(DESTDIR)$(prefix)$(bindir)/editorconfig-checker
@@ -74,11 +74,11 @@ testnorace: ## Run test suite without -race which requires cgo
 bench: ## Run benchmark
 	go test -bench=. ./**/*/
 
-run: build ## Build and run bin/ec
-	@./bin/ec --exclude "\\.git" --exclude "\\.exe$$"
+run: build ## Build and run bin/editorconfig-checker
+	@./bin/editorconfig-checker --exclude "\\.git" --exclude "\\.exe$$"
 
-run-verbose: build ## Build and run bin/ec --verbose
-	@./bin/ec --verbose --exclude "\\.git" --exclude "\\.exe$$"
+run-verbose: build ## Build and run bin/editorconfig-checker --verbose
+	@./bin/editorconfig-checker --verbose --exclude "\\.git" --exclude "\\.exe$$"
 
 nix-build: ## Build for nix
 	nix-build -E 'with import <nixpkgs> { }; callPackage ./default.nix {}'
