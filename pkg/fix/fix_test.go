@@ -83,6 +83,159 @@ func TestFixFileRespectsDisable(t *testing.T) {
 	}
 }
 
+func TestFixFileSkipsEmptyAndNonRegularFiles(t *testing.T) {
+	dir := t.TempDir()
+	cfg := *config.NewConfig(nil)
+	if changed, err := FixFile(dir, cfg, definition(map[string]string{"insert_final_newline": "true"})); err != nil || changed {
+		t.Fatalf("directory: changed=%v, err=%v", changed, err)
+	}
+
+	empty := filepath.Join(dir, "empty.txt")
+	if err := os.WriteFile(empty, nil, 0644); err != nil {
+		t.Fatal(err)
+	}
+	if changed, err := FixFile(empty, cfg, definition(map[string]string{"insert_final_newline": "true"})); err != nil || changed {
+		t.Fatalf("empty file: changed=%v, err=%v", changed, err)
+	}
+
+	if _, err := FixFile(filepath.Join(dir, "missing.txt"), cfg, definition(nil)); err == nil {
+		t.Fatal("missing file should return an error")
+	}
+}
+
+func TestFixFileSkipsInvalidRules(t *testing.T) {
+	tests := []struct {
+		name  string
+		rules map[string]string
+	}{
+		{"invalid-eol", map[string]string{"end_of_line": "dos"}},
+		{"invalid-final-newline", map[string]string{"insert_final_newline": "sometimes"}},
+		{"unset-rules", map[string]string{"end_of_line": "unset", "insert_final_newline": "unset"}},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			path := filepath.Join(t.TempDir(), "file.txt")
+			input := []byte("value\r\n")
+			if err := os.WriteFile(path, input, 0644); err != nil {
+				t.Fatal(err)
+			}
+			cfg := *config.NewConfig(nil)
+			changed, err := FixFile(path, cfg, definition(tt.rules))
+			if err != nil {
+				t.Fatal(err)
+			}
+			if changed {
+				t.Fatal("invalid or unset rules should not change the file")
+			}
+			got, _ := os.ReadFile(path)
+			if string(got) != string(input) {
+				t.Fatalf("got %q, want %q", got, input)
+			}
+		})
+	}
+}
+
+func TestFixFileSupportsConfiguredPolicies(t *testing.T) {
+	tests := []struct {
+		name, input, want, eol string
+	}{
+		{"lf", "a\r\nb", "a\nb\n", "\n"},
+		{"crlf", "a\nb", "a\r\nb\r\n", "\r\n"},
+		{"cr", "a\n b\r\n", "a\r b\r", "\r"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			path := filepath.Join(t.TempDir(), "file.txt")
+			if err := os.WriteFile(path, []byte(tt.input), 0644); err != nil {
+				t.Fatal(err)
+			}
+			cfg := *config.NewConfig(nil)
+			changed, err := FixFile(path, cfg, definition(map[string]string{
+				"end_of_line":          tt.name,
+				"insert_final_newline": "true",
+			}))
+			if err != nil || !changed {
+				t.Fatalf("changed=%v, err=%v", changed, err)
+			}
+			got, _ := os.ReadFile(path)
+			if string(got) != tt.want {
+				t.Fatalf("got %q, want %q", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestFixHelpers(t *testing.T) {
+	for _, test := range []struct {
+		raw, want string
+	}{
+		{"", ""}, {"unset", ""}, {"lf", "\n"}, {"cr", "\r"}, {"crlf", "\r\n"},
+	} {
+		got, ok := configuredEOL(test.raw)
+		if !ok || got != test.want {
+			t.Errorf("configuredEOL(%q) = %q, %v", test.raw, got, ok)
+		}
+	}
+	if _, ok := configuredEOL("invalid"); ok {
+		t.Fatal("invalid EOL should be rejected")
+	}
+	for _, test := range []string{"", "unset", "true", "false"} {
+		if _, ok := configuredFinalNewline(test); !ok {
+			t.Errorf("configuredFinalNewline(%q) rejected", test)
+		}
+	}
+	if _, ok := configuredFinalNewline("invalid"); ok {
+		t.Fatal("invalid final-newline value should be rejected")
+	}
+	if !isSupportedEncoding("UTF-8-SIG") || !isSupportedEncoding("ascii") || !isSupportedEncoding("unknown") {
+		t.Fatal("expected supported encodings")
+	}
+	if isSupportedEncoding("latin1") {
+		t.Fatal("latin1 should remain check-only")
+	}
+
+	for _, test := range []struct {
+		input, want, policy string
+	}{
+		{"a", "a\n", "true"},
+		{"a\r\n", "a", "false"},
+		{"a\r", "a\r", "true"},
+	} {
+		got := fixFinalNewline([]byte(test.input), test.policy, "")
+		if string(got) != test.want {
+			t.Errorf("fixFinalNewline(%q, %q) = %q, want %q", test.input, test.policy, got, test.want)
+		}
+	}
+}
+
+func TestAtomicWriteRefusesLostUpdate(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "file.txt")
+	if err := os.WriteFile(path, []byte("before"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	info, err := os.Stat(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(path, []byte("changed concurrently"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	if err := atomicWrite(path, []byte("replacement"), fileMode(info), info); err == nil {
+		t.Fatal("expected replacement to be rejected after a concurrent change")
+	}
+	got, _ := os.ReadFile(path)
+	if string(got) != "changed concurrently" {
+		t.Fatalf("lost update changed file to %q", got)
+	}
+}
+
+func TestSplitPathForFilesInCurrentDirectory(t *testing.T) {
+	dir, base := splitPath("file.txt")
+	if dir != "." || base != "file.txt" {
+		t.Fatalf("splitPath returned %q, %q", dir, base)
+	}
+}
+
 func TestFixFileDirectiveScopes(t *testing.T) {
 	tests := []struct {
 		name, input, want string

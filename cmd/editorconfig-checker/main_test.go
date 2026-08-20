@@ -89,9 +89,12 @@ func TestMainFixesFilesBeforeChecking(t *testing.T) {
 		t.Fatal(err)
 	}
 	t.Cleanup(func() { _ = os.Chdir(oldDir) })
-	_, code := runWithArguments(t, "--fix", path)
+	output, code := runWithArguments(t, "--fix", "--verbose", path)
 	if code != exitCodeNormal {
 		t.Fatalf("fix command exited with %d", code)
+	}
+	if !strings.Contains(output, "Fixed") {
+		t.Fatalf("verbose fix output did not report the changed file: %s", output)
 	}
 	got, err := os.ReadFile(path)
 	if err != nil {
@@ -129,6 +132,25 @@ func TestMainFixWithEndOfLineDisabledStillChecksFinalNewline(t *testing.T) {
 	}
 	if string(got) != "value\r\n" {
 		t.Fatalf("got %q, want original CRLF content", got)
+	}
+}
+
+func TestMainFixReportsEditorconfigError(t *testing.T) {
+	dir := t.TempDir()
+	if err := os.WriteFile(filepath.Join(dir, ".editorconfig"), []byte("[*\n"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	path := filepath.Join(dir, "file.txt")
+	if err := os.WriteFile(path, []byte("value  "), 0644); err != nil {
+		t.Fatal(err)
+	}
+	t.Chdir(dir)
+	output, code := runWithArguments(t, "--fix", path)
+	if code != exitCodeErrorOccurred {
+		t.Fatalf("fix command exited with %d, output: %s", code, output)
+	}
+	if !strings.Contains(output, "cannot load") {
+		t.Fatalf("fix command did not report editorconfig load failure: %s", output)
 	}
 }
 

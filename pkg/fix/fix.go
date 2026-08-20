@@ -21,77 +21,84 @@ import (
 // not modified: rewriting those files without an encoding-aware encoder could
 // corrupt their contents.
 func FixFile(filePath string, cfg config.Config, def *editorconfig.Definition) (bool, error) {
+	info, content, ok, err := readFixableFile(filePath, cfg)
+	if err != nil || !ok {
+		return false, err
+	}
+	fixed, changed := fixContent(content, cfg, def)
+	if !changed {
+		return false, nil
+	}
+	if err := atomicWrite(filePath, fixed, fileMode(info), info); err != nil {
+		return false, err
+	}
+	return true, nil
+}
+
+func readFixableFile(filePath string, cfg config.Config) (os.FileInfo, []byte, bool, error) {
 	info, err := os.Lstat(filePath)
 	if err != nil {
-		return false, err
+		return nil, nil, false, err
 	}
 	if info.Mode()&os.ModeSymlink != 0 {
 		verbose(&cfg, "Skipping %s: symbolic links are not modified", filePath)
-		return false, nil
+		return info, nil, false, nil
 	}
 	if !info.Mode().IsRegular() {
 		verbose(&cfg, "Skipping %s: not a regular file", filePath)
-		return false, nil
+		return info, nil, false, nil
 	}
 	content, err := os.ReadFile(filePath)
 	if err != nil {
-		return false, err
+		return info, nil, false, err
 	}
 	// Empty files are intentionally left alone. The validation pipeline treats
 	// them as having no lines, regardless of insert_final_newline.
 	if len(content) == 0 {
-		return false, nil
+		return info, nil, false, nil
 	}
 	if bytes.Contains(content, []byte("\x00")) {
 		verbose(&cfg, "Skipping %s: binary-like content", filePath)
-		return false, nil
+		return info, nil, false, nil
 	}
 	if hasDisableFile(content) {
-		return false, nil
+		return info, nil, false, nil
 	}
 	encodingName, _, _ := encoding.Detect(content)
-	normalizedEncoding := strings.ToLower(strings.NewReplacer("-", "", "_", "").Replace(encodingName))
-	if normalizedEncoding != "" && normalizedEncoding != "unknown" && normalizedEncoding != "ascii" && normalizedEncoding != "utf8" && normalizedEncoding != "utf8sig" && normalizedEncoding != "utf8bom" {
+	if !isSupportedEncoding(encodingName) {
 		verbose(&cfg, "Skipping %s: unsupported encoding %s", filePath, encodingName)
-		return false, nil
+		return info, nil, false, nil
 	}
 	if !utf8.Valid(content) {
 		verbose(&cfg, "Skipping %s: content is not valid UTF-8", filePath)
-		return false, nil
+		return info, nil, false, nil
 	}
+	return info, content, true, nil
+}
 
-	original := content
+func isSupportedEncoding(name string) bool {
+	normalized := strings.ToLower(strings.NewReplacer("-", "", "_", "").Replace(name))
+	return normalized == "" || normalized == "unknown" || normalized == "ascii" ||
+		normalized == "utf8" || normalized == "utf8sig" || normalized == "utf8bom"
+}
+
+func fixContent(original []byte, cfg config.Config, def *editorconfig.Definition) ([]byte, bool) {
 	bom := []byte(nil)
+	content := original
 	if bytes.HasPrefix(content, []byte{0xef, 0xbb, 0xbf}) {
 		bom, content = append([]byte(nil), content[:3]...), content[3:]
 	}
 
-	endOfLine := strings.ToLower(def.Raw["end_of_line"])
-	if endOfLine == "unset" {
-		endOfLine = ""
-	}
-	desiredEOL := ""
-	switch endOfLine {
-	case "lf":
-		desiredEOL = "\n"
-	case "cr":
-		desiredEOL = "\r"
-	case "crlf":
-		desiredEOL = "\r\n"
-	case "":
-	default:
+	desiredEOL, valid := configuredEOL(def.Raw["end_of_line"])
+	if !valid {
 		// Unknown values are reported by validation; never guess a rewrite.
-		return false, nil
+		return original, false
 	}
-
+	insert, valid := configuredFinalNewline(def.Raw["insert_final_newline"])
+	if !valid {
+		return original, false
+	}
 	trim := def.Raw["trim_trailing_whitespace"] == "true" && !cfg.Disable.TrimTrailingWhitespace
-	insert := strings.ToLower(def.Raw["insert_final_newline"])
-	if insert == "unset" {
-		insert = ""
-	}
-	if insert != "" && insert != "true" && insert != "false" {
-		return false, nil
-	}
 	if cfg.Disable.EndOfLine {
 		desiredEOL = ""
 	}
@@ -99,10 +106,42 @@ func FixFile(filePath string, cfg config.Config, def *editorconfig.Definition) (
 		insert = ""
 	}
 	if !trim && desiredEOL == "" && insert == "" {
-		return false, nil
+		return original, false
 	}
 
-	parts := splitLines(content)
+	fixed := fixLines(splitLines(content), trim, desiredEOL)
+	fixed = fixFinalNewline(fixed, insert, desiredEOL)
+	fixed = append(bom, fixed...)
+	return fixed, !bytes.Equal(original, fixed)
+}
+
+func configuredEOL(raw string) (string, bool) {
+	switch value := strings.ToLower(raw); value {
+	case "", "unset":
+		return "", true
+	case "lf":
+		return "\n", true
+	case "cr":
+		return "\r", true
+	case "crlf":
+		return "\r\n", true
+	default:
+		return "", false
+	}
+}
+
+func configuredFinalNewline(raw string) (string, bool) {
+	switch value := strings.ToLower(raw); value {
+	case "", "unset":
+		return "", true
+	case "true", "false":
+		return value, true
+	default:
+		return "", false
+	}
+}
+
+func fixLines(parts []linePart, trim bool, desiredEOL string) []byte {
 	var out bytes.Buffer
 	for _, part := range parts {
 		line := part.text
@@ -116,39 +155,33 @@ func FixFile(filePath string, cfg config.Config, def *editorconfig.Definition) (
 		out.Write(line)
 		out.Write(terminator)
 	}
-	fixed := out.Bytes()
+	return out.Bytes()
+}
 
+func fixFinalNewline(content []byte, insert, desiredEOL string) []byte {
 	if insert == "true" {
 		eol := desiredEOL
 		if eol == "" {
-			eol = detectFinalEOL(fixed)
+			eol = detectFinalEOL(content)
 			if eol == "" {
 				eol = "\n"
 			}
 		}
-		if !bytes.HasSuffix(fixed, []byte(eol)) {
-			fixed = append(fixed, eol...)
+		if !bytes.HasSuffix(content, []byte(eol)) {
+			content = append(content, eol...)
 		}
 	} else if insert == "false" {
-		for len(fixed) > 0 {
-			if bytes.HasSuffix(fixed, []byte("\r\n")) {
-				fixed = fixed[:len(fixed)-2]
-			} else if fixed[len(fixed)-1] == '\r' || fixed[len(fixed)-1] == '\n' {
-				fixed = fixed[:len(fixed)-1]
+		for len(content) > 0 {
+			if bytes.HasSuffix(content, []byte("\r\n")) {
+				content = content[:len(content)-2]
+			} else if content[len(content)-1] == '\r' || content[len(content)-1] == '\n' {
+				content = content[:len(content)-1]
 			} else {
 				break
 			}
 		}
 	}
-
-	fixed = append(bom, fixed...)
-	if bytes.Equal(original, fixed) {
-		return false, nil
-	}
-	if err := atomicWrite(filePath, fixed, fileMode(info), info); err != nil {
-		return false, err
-	}
-	return true, nil
+	return content
 }
 
 func verbose(cfg *config.Config, format string, args ...any) {

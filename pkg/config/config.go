@@ -128,7 +128,7 @@ type Config struct {
 	ShowVersion bool
 	Help        bool
 	DryRun      bool
-	Fix         bool `json:"-"`
+	Fix         bool
 	Path        string
 
 	// CONFIG FILE
