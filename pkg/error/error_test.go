@@ -9,8 +9,8 @@ import (
 	"testing"
 
 	// x-release-please-start-major
-	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/config"
-	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/outputformat"
+	"github.com/editorconfig-checker/editorconfig-checker/v4/pkg/config"
+	"github.com/editorconfig-checker/editorconfig-checker/v4/pkg/outputformat"
 
 	// x-release-please-end
 

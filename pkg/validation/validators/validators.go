@@ -9,9 +9,9 @@ import (
 	"unicode/utf8"
 
 	// x-release-please-start-major
-	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/config"
-	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/encoding"
-	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/utils"
+	"github.com/editorconfig-checker/editorconfig-checker/v4/pkg/config"
+	"github.com/editorconfig-checker/editorconfig-checker/v4/pkg/encoding"
+	"github.com/editorconfig-checker/editorconfig-checker/v4/pkg/utils"
 	// x-release-please-end
 )
 

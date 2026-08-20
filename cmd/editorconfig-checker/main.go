@@ -12,18 +12,18 @@ import (
 	"github.com/gkampitakis/ciinfo"
 
 	// x-release-please-start-major
-	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/config"
-	eccerror "github.com/editorconfig-checker/editorconfig-checker/v3/pkg/error"
-	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/files"
-	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/outputformat"
-	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/utils"
-	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/validation"
+	"github.com/editorconfig-checker/editorconfig-checker/v4/pkg/config"
+	eccerror "github.com/editorconfig-checker/editorconfig-checker/v4/pkg/error"
+	"github.com/editorconfig-checker/editorconfig-checker/v4/pkg/files"
+	"github.com/editorconfig-checker/editorconfig-checker/v4/pkg/outputformat"
+	"github.com/editorconfig-checker/editorconfig-checker/v4/pkg/utils"
+	"github.com/editorconfig-checker/editorconfig-checker/v4/pkg/validation"
 	// x-release-please-end
 )
 
 // version is used for the help and to verify against the version stored in the config file
 // version is dynamically set at compiletime
-var version string = "v3.11.1" // x-release-please-version
+var version string = "v4.0.0" // x-release-please-version
 
 // defaultConfigFileNames determines the file names where the config is located
 var defaultConfigFileNames = []string{".editorconfig-checker.json"}
