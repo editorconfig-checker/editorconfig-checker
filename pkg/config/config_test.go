@@ -120,6 +120,7 @@ func TestMerge(t *testing.T) {
 		Version:             "v3.11.1", // x-release-please-version
 		Help:                true,
 		DryRun:              true,
+		Fix:                 true,
 		Path:                "some-other",
 		Verbose:             true,
 		Format:              "default",
