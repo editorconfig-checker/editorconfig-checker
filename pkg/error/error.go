@@ -79,11 +79,11 @@ func ConsolidateErrors(errors []ValidationError, config config.Config) []Validat
 	var consolidatedErrors []ValidationError
 
 	for message, groupErrors := range grouped {
+		config.Logger.Debug("consolidating %d errors with message %q", len(groupErrors), message)
+
 		slices.SortStableFunc(groupErrors, func(a, b ValidationError) int {
 			return cmp.Compare(a.LineNumber, b.LineNumber)
 		})
-
-		config.Logger.Debug("consolidating %d errors with message %q", len(groupErrors), message)
 
 		for i := 0; i < len(groupErrors); i++ {
 			thisError := groupErrors[i]
