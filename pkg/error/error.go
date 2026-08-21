@@ -66,26 +66,12 @@ func byNumberAndErrorMessage(error1 ValidationError, error2 ValidationError) int
 }
 
 func ConsolidateErrors(errors []ValidationError, config config.Config) []ValidationError {
-	var lineLessErrors []ValidationError
-	var errorsWithLines []ValidationError
-
-	// filter the errors, so we do not need to care about LineNumber == -1 in the loop below
-	for _, singleError := range errors {
-		if singleError.LineNumber == -1 {
-			lineLessErrors = append(lineLessErrors, singleError)
-		} else {
-			errorsWithLines = append(errorsWithLines, singleError)
-		}
-	}
-
-	config.Logger.Debug("sorted errors: %d with line number -1, %d with a line number", len(lineLessErrors), len(errorsWithLines))
-
 	// Group by message first, so that a block of one kind of error is still
 	// recognised as a block when a different kind of error is reported on the
 	// same lines. Scanning the list in input order only finds a block when its
 	// members happen to be adjacent in that list.
 	grouped := make(map[string][]ValidationError)
-	for _, singleError := range errorsWithLines {
+	for _, singleError := range errors {
 		message := singleError.Message.Error()
 		grouped[message] = append(grouped[message], singleError)
 	}
@@ -116,7 +102,7 @@ func ConsolidateErrors(errors []ValidationError, config config.Config) []Validat
 	// human-friendly order: by line, then by message
 	slices.SortStableFunc(consolidatedErrors, byNumberAndErrorMessage)
 
-	return append(lineLessErrors, consolidatedErrors...)
+	return consolidatedErrors
 }
 
 func PrintErrorCount(errorCount int, config config.Config) {
