@@ -99,7 +99,6 @@ func ConsolidateErrors(errors []ValidationError, config config.Config) []Validat
 
 		for i := 0; i < len(groupErrors); i++ {
 			thisError := groupErrors[i]
-			thisError.AdditionalIdenticalErrorCount = 0
 
 			// walk forward while the next error sits on the line right after
 			// the range collected so far
