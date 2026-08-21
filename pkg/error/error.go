@@ -51,6 +51,11 @@ func GetErrorCount(errors []ValidationErrors) int {
 	return errorCount
 }
 
+// byNumber orders validation errors by the line they were reported on.
+func byNumber(error1 ValidationError, error2 ValidationError) int {
+	return cmp.Compare(error1.LineNumber, error2.LineNumber)
+}
+
 func ConsolidateErrors(errors []ValidationError, config config.Config) []ValidationError {
 	var lineLessErrors []ValidationError
 	var errorsWithLines []ValidationError
@@ -81,9 +86,7 @@ func ConsolidateErrors(errors []ValidationError, config config.Config) []Validat
 	for message, groupErrors := range grouped {
 		config.Logger.Debug("consolidating %d errors with message %q", len(groupErrors), message)
 
-		slices.SortStableFunc(groupErrors, func(a, b ValidationError) int {
-			return cmp.Compare(a.LineNumber, b.LineNumber)
-		})
+		slices.SortStableFunc(groupErrors, byNumber)
 
 		for i := 0; i < len(groupErrors); i++ {
 			thisError := groupErrors[i]
