@@ -2,7 +2,9 @@
 package error
 
 import (
+	"cmp"
 	"encoding/json"
+	"slices"
 
 	// x-release-please-start-major
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/config"
@@ -49,42 +51,58 @@ func GetErrorCount(errors []ValidationErrors) int {
 	return errorCount
 }
 
-func ConsolidateErrors(errors []ValidationError, config config.Config) []ValidationError {
-	var lineLessErrors []ValidationError
-	var errorsWithLines []ValidationError
+// byNumber orders validation errors by the line they were reported on.
+func byNumber(error1 ValidationError, error2 ValidationError) int {
+	return cmp.Compare(error1.LineNumber, error2.LineNumber)
+}
 
-	// filter the errors, so we do not need to care about LineNumber == -1 in the loop below
-	for _, singleError := range errors {
-		if singleError.LineNumber == -1 {
-			lineLessErrors = append(lineLessErrors, singleError)
-		} else {
-			errorsWithLines = append(errorsWithLines, singleError)
-		}
+// byNumberAndErrorMessage orders validation errors by the line they were
+// reported on, and errors sharing a line by their message.
+func byNumberAndErrorMessage(error1 ValidationError, error2 ValidationError) int {
+	if order := cmp.Compare(error1.LineNumber, error2.LineNumber); order != 0 {
+		return order
 	}
+	return cmp.Compare(error1.Message.Error(), error2.Message.Error())
+}
 
-	config.Logger.Debug("sorted errors: %d with line number -1, %d with a line number", len(lineLessErrors), len(errorsWithLines))
+func ConsolidateErrors(errors []ValidationError, config config.Config) []ValidationError {
+	// Group by message first, so that a block of one kind of error is still
+	// recognised as a block when a different kind of error is reported on the
+	// same lines. Scanning the list in input order only finds a block when its
+	// members happen to be adjacent in that list.
+	grouped := make(map[string][]ValidationError)
+	for _, singleError := range errors {
+		message := singleError.Message.Error()
+		grouped[message] = append(grouped[message], singleError)
+	}
 
 	var consolidatedErrors []ValidationError
 
-	// scan through the errors
-	for i := 0; i < len(errorsWithLines); i++ {
-		thisError := errorsWithLines[i]
-		config.Logger.Debug("investigating error %d(%s)", i, thisError.Message)
-		// scan through the errors after the current one
-		for j, nextError := range errorsWithLines[i+1:] {
-			config.Logger.Debug("comparing against error %d(%s)", j, nextError.Message)
-			if nextError.Message.Error() == thisError.Message.Error() && nextError.LineNumber == thisError.LineNumber+thisError.AdditionalIdenticalErrorCount+1 {
-				thisError.AdditionalIdenticalErrorCount++ // keep track of how many consecutive lines we've seen
-				i++                                       // make sure the outer loop jumps over the consecutive errors we just found
-			} else {
-				break // if they are different errors we can stop comparing messages
-			}
-		}
+	for message, groupErrors := range grouped {
+		config.Logger.Debug("consolidating %d errors with message %q", len(groupErrors), message)
 
-		consolidatedErrors = append(consolidatedErrors, thisError)
+		slices.SortStableFunc(groupErrors, byNumber)
+
+		for i := 0; i < len(groupErrors); i++ {
+			thisError := groupErrors[i]
+
+			// walk forward while the next error sits on the line right after
+			// the range collected so far
+			for i+1 < len(groupErrors) &&
+				groupErrors[i+1].LineNumber == thisError.LineNumber+thisError.AdditionalIdenticalErrorCount+1 {
+				thisError.AdditionalIdenticalErrorCount++
+				i++
+			}
+
+			consolidatedErrors = append(consolidatedErrors, thisError)
+		}
 	}
 
-	return append(lineLessErrors, consolidatedErrors...)
+	// map iteration order is random, so put the result back into a stable,
+	// human-friendly order: by line, then by message
+	slices.SortStableFunc(consolidatedErrors, byNumberAndErrorMessage)
+
+	return consolidatedErrors
 }
 
 func PrintErrorCount(errorCount int, config config.Config) {
