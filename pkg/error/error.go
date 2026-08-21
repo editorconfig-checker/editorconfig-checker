@@ -56,6 +56,15 @@ func byNumber(error1 ValidationError, error2 ValidationError) int {
 	return cmp.Compare(error1.LineNumber, error2.LineNumber)
 }
 
+// byNumberAndErrorMessage orders validation errors by the line they were
+// reported on, and errors sharing a line by their message.
+func byNumberAndErrorMessage(error1 ValidationError, error2 ValidationError) int {
+	if order := cmp.Compare(error1.LineNumber, error2.LineNumber); order != 0 {
+		return order
+	}
+	return cmp.Compare(error1.Message.Error(), error2.Message.Error())
+}
+
 func ConsolidateErrors(errors []ValidationError, config config.Config) []ValidationError {
 	var lineLessErrors []ValidationError
 	var errorsWithLines []ValidationError
@@ -106,12 +115,7 @@ func ConsolidateErrors(errors []ValidationError, config config.Config) []Validat
 
 	// map iteration order is random, so put the result back into a stable,
 	// human-friendly order: by line, then by message
-	slices.SortStableFunc(consolidatedErrors, func(a, b ValidationError) int {
-		if c := cmp.Compare(a.LineNumber, b.LineNumber); c != 0 {
-			return c
-		}
-		return cmp.Compare(a.Message.Error(), b.Message.Error())
-	})
+	slices.SortStableFunc(consolidatedErrors, byNumberAndErrorMessage)
 
 	return append(lineLessErrors, consolidatedErrors...)
 }
