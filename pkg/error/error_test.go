@@ -154,6 +154,31 @@ func TestValidationErrorEqual(t *testing.T) {
 	}
 }
 
+func TestByNumberAndErrorMessage(t *testing.T) {
+	tests := []struct {
+		name     string
+		error1   ValidationError
+		error2   ValidationError
+		expected int
+	}{
+		{"a lower line number comes first", ValidationError{LineNumber: 1, Message: errors.New("b")}, ValidationError{LineNumber: 2, Message: errors.New("a")}, -1},
+		{"a higher line number comes last", ValidationError{LineNumber: 3, Message: errors.New("a")}, ValidationError{LineNumber: 2, Message: errors.New("b")}, 1},
+		{"a file-level error comes before the first line", ValidationError{LineNumber: -1, Message: errors.New("z")}, ValidationError{LineNumber: 1, Message: errors.New("a")}, -1},
+		{"one line, the message decides", ValidationError{LineNumber: 2, Message: errors.New("a")}, ValidationError{LineNumber: 2, Message: errors.New("b")}, -1},
+		{"one line, the message decides the other way", ValidationError{LineNumber: 2, Message: errors.New("b")}, ValidationError{LineNumber: 2, Message: errors.New("a")}, 1},
+		{"same line and same message are equal", ValidationError{LineNumber: 2, Message: errors.New("a")}, ValidationError{LineNumber: 2, Message: errors.New("a")}, 0},
+	}
+
+	for _, testCase := range tests {
+		t.Run(testCase.name, func(t *testing.T) {
+			actual := byNumberAndErrorMessage(testCase.error1, testCase.error2)
+			if actual != testCase.expected {
+				t.Errorf("byNumberAndErrorMessage(%v, %v) returned %d, expected %d", testCase.error1, testCase.error2, actual, testCase.expected)
+			}
+		})
+	}
+}
+
 func TestConsolidateErrors(t *testing.T) {
 	input := []ValidationError{
 		// two messages that become one block
@@ -216,7 +241,6 @@ func TestConsolidateErrorCounts(t *testing.T) {
 }
 
 func TestConsolidatingInterleavedErrors(t *testing.T) {
-	t.Skip("Consolidating non-consecutive errors is not supported by the current implementation")
 	/*
 		an assumption made about the possible future implement:
 		it is implied that the implementation will sort the error messages by their error message
@@ -244,7 +268,7 @@ func TestConsolidatingInterleavedErrors(t *testing.T) {
 		{LineNumber: 1, AdditionalIdenticalErrorCount: 2, Message: errors.New("message kind 2")},
 		{LineNumber: 2, AdditionalIdenticalErrorCount: 1, Message: errors.New("message kind 1")},
 		{LineNumber: 3, AdditionalIdenticalErrorCount: 0, Message: errors.New("message kind 3")},
-		{LineNumber: 4, AdditionalIdenticalErrorCount: 1, Message: errors.New("message kind 4")},
+		{LineNumber: 4, AdditionalIdenticalErrorCount: 0, Message: errors.New("message kind 4")},
 		{LineNumber: 5, AdditionalIdenticalErrorCount: 0, Message: errors.New("message kind 1")},
 	}
 
