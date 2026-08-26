@@ -246,10 +246,10 @@ func TestDetectByBOM(t *testing.T) {
 						tests[i].Confidence = confidence
 						t.Logf("DetectByBOM: setting test=%+v", tests[i])
 						continue
-					} else {
-						tests[i].Comment += encoding2 + " (bom),"
-						// There's no BOM, so keep testing.
 					}
+
+					tests[i].Comment += encoding2 + " (bom),"
+					// There's no BOM, so keep testing.
 				}
 				t.Error("FAIL: " + msg)
 			} else {
@@ -286,9 +286,9 @@ func TestIsUTF32BE(t *testing.T) {
 						tests[i].Confidence = confidence
 						t.Logf("IsUTF32BE: setting test=%+v", tests[i])
 						continue
-					} else {
-						tests[i].Comment += "utf32be,"
 					}
+
+					tests[i].Comment += "utf32be,"
 				}
 				t.Error("FAIL: " + msg)
 			} else {
@@ -325,9 +325,9 @@ func TestIsUTF32LE(t *testing.T) {
 						tests[i].Confidence = confidence
 						t.Logf("IsUTF32LE: setting test=%+v", tests[i])
 						continue
-					} else {
-						tests[i].Comment += "utf32le,"
 					}
+
+					tests[i].Comment += "utf32le,"
 				}
 				t.Error("FAIL: " + msg)
 			} else {
@@ -364,9 +364,9 @@ func TestIsUTF16BE(t *testing.T) {
 						tests[i].Confidence = confidence
 						t.Logf("IsUTF16BE: setting test=%+v", tests[i])
 						continue
-					} else {
-						tests[i].Comment += "utf16be,"
 					}
+
+					tests[i].Comment += "utf16be,"
 				}
 				t.Error("FAIL: " + msg)
 			} else {
@@ -403,9 +403,9 @@ func TestIsUTF16LE(t *testing.T) {
 						tests[i].Confidence = confidence
 						t.Logf("IsUTF16LE: setting test=%+v", tests[i])
 						continue
-					} else {
-						tests[i].Comment += "utf16le,"
 					}
+
+					tests[i].Comment += "utf16le,"
 				}
 				t.Error("FAIL: " + msg)
 			} else {
@@ -441,9 +441,9 @@ func TestIsBinary(t *testing.T) {
 						tests[i].Confidence = confidence
 						t.Logf("IsBinary: setting test=%+v", tests[i])
 						continue
-					} else {
-						tests[i].Comment += "binary,"
 					}
+
+					tests[i].Comment += "binary,"
 				}
 				t.Error("FAIL: " + msg)
 			} else {
@@ -602,11 +602,11 @@ func TestDetect(t *testing.T) {
 						tests[i].Confidence = confidence
 						t.Logf("Detect: setting test=%+v", tests[i])
 						continue
-					} else {
-						t.Logf("Detect2: confidence=%f", confidence)
-						tests[i].Confidence = 0
-						t.Logf("Detect2: setting test=%+v", tests[i])
 					}
+
+					t.Logf("Detect2: confidence=%f", confidence)
+					tests[i].Confidence = 0
+					t.Logf("Detect2: setting test=%+v", tests[i])
 				}
 				t.Error("FAIL: " + msg)
 			} else {
