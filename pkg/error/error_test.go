@@ -306,11 +306,12 @@ func TestFormatErrors(t *testing.T) {
 		and vice versa, unless the tests are differentiated by the path separator.
 	*/
 	var safePathSep string
-	if os.PathSeparator == '/' {
+	switch os.PathSeparator {
+	case '/':
 		safePathSep = "slash"
-	} else if os.PathSeparator == '\\' {
+	case '\\':
 		safePathSep = "backslash"
-	} else {
+	default:
 		t.Fatal("current path separator is unexpected - please fix test to handle this path separator")
 	}
 	s := snaps.WithConfig(

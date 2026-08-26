@@ -25,14 +25,15 @@ var (
 
 // Indentation validates a files indentation
 func Indentation(line string, indentStyle string, indentSize int, config config.Config) error {
-	if indentStyle == "space" {
+	switch indentStyle {
+	case "space":
 		return Space(line, indentSize, config)
-	} else if indentStyle == "tab" {
+	case "tab":
 		return Tab(line, config)
+	default:
+		// if no indentStyle is given it should be valid
+		return nil
 	}
-
-	// if no indentStyle is given it should be valid
-	return nil
 }
 
 // Space validates if a line is indented correctly respecting the indentSize
