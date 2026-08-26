@@ -172,7 +172,7 @@ func MaxLineLength(line string, maxLineLength int, charSet string) error {
 }
 
 // Charset validates a file's charset
-func Charset(charsetWanted string, charsetFound string, config config.Config) error {
+func Charset(charsetWanted string, charsetFound string) error {
 	if charsetWanted == "unset" {
 		return nil
 	}

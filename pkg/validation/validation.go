@@ -271,8 +271,7 @@ func ValidateMaxLineLength(fileInformation files.FileInformation, config config.
 func ValidateCharset(fileInformation files.FileInformation, config config.Config, charset string) error.ValidationError {
 	if currentError := validators.Charset(
 		fileInformation.Editorconfig.Raw["charset"],
-		charset,
-		config); !config.Disable.Charset && currentError != nil {
+		charset); !config.Disable.Charset && currentError != nil {
 		config.Logger.Verbose("Wrong charset found in %s", fileInformation.FilePath)
 		return error.ValidationError{LineNumber: -1, Message: currentError}
 	}
