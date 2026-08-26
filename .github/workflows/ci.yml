@@ -52,6 +52,9 @@ jobs:
     name: CI on Windows
     runs-on: windows-latest
     steps:
+      - run: |
+          git config --system core.autocrlf false
+          git config --system core.eol lf
       - uses: actions/checkout@v7
       - uses: actions/setup-go@v7
         with:
