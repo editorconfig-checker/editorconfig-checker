@@ -63,7 +63,7 @@ func (l *Logger) Configure(newLogger *Logger) {
 }
 
 // Debug prints a message when Debugg is set to true on the Logger
-func (l *Logger) Debug(format string, a ...interface{}) {
+func (l *Logger) Debug(format string, a ...any) {
 	if l.DebugEnabled {
 		message := fmt.Sprintf(format, a...)
 		l.println(message)
@@ -71,7 +71,7 @@ func (l *Logger) Debug(format string, a ...interface{}) {
 }
 
 // Verbose prints a message when Verbosee is set to true on the Logger
-func (l *Logger) Verbose(format string, a ...interface{}) {
+func (l *Logger) Verbose(format string, a ...any) {
 	if l.VerboseEnabled {
 		message := fmt.Sprintf(format, a...)
 		l.println(message)
@@ -79,7 +79,7 @@ func (l *Logger) Verbose(format string, a ...interface{}) {
 }
 
 // Warning prints a warning message to Stdout in yellow
-func (l *Logger) Warning(format string, a ...interface{}) {
+func (l *Logger) Warning(format string, a ...any) {
 	message := fmt.Sprintf(format, a...)
 	if l.NoColor {
 		l.println(message)
@@ -89,13 +89,13 @@ func (l *Logger) Warning(format string, a ...interface{}) {
 }
 
 // Output prints a message on Stdout in 'normal' color
-func (l *Logger) Output(format string, a ...interface{}) {
+func (l *Logger) Output(format string, a ...any) {
 	message := fmt.Sprintf(format, a...)
 	l.println(message)
 }
 
 // Error prints an error message to Stdout in red
-func (l *Logger) Error(format string, a ...interface{}) {
+func (l *Logger) Error(format string, a ...any) {
 	message := fmt.Sprintf(format, a...)
 	if l.NoColor {
 		l.println(message)
