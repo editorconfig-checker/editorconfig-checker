@@ -21,34 +21,34 @@ func TestFinalNewline(t *testing.T) {
 		{"x\r", "true", "cr", nil},
 		{"x\r\n", "true", "crlf", nil},
 
-		{"x", "true", "lf", errors.New("Wrong line endings or no final newline")},
-		{"x", "true", "cr", errors.New("Wrong line endings or no final newline")},
-		{"x", "true", "crlf", errors.New("Wrong line endings or no final newline")},
+		{"x", "true", "lf", errors.New("wrong line endings or no final newline")},
+		{"x", "true", "cr", errors.New("wrong line endings or no final newline")},
+		{"x", "true", "crlf", errors.New("wrong line endings or no final newline")},
 
-		{"x\n", "true", "cr", errors.New("Wrong line endings or no final newline")},
-		{"x\n", "true", "crlf", errors.New("Wrong line endings or no final newline")},
+		{"x\n", "true", "cr", errors.New("wrong line endings or no final newline")},
+		{"x\n", "true", "crlf", errors.New("wrong line endings or no final newline")},
 
-		{"x\r", "true", "lf", errors.New("Wrong line endings or no final newline")},
-		{"x\r", "true", "crlf", errors.New("Wrong line endings or no final newline")},
+		{"x\r", "true", "lf", errors.New("wrong line endings or no final newline")},
+		{"x\r", "true", "crlf", errors.New("wrong line endings or no final newline")},
 
-		{"x\r\n", "true", "lf", errors.New("Wrong line endings or no final newline")},
-		{"x\r\n", "true", "cr", errors.New("Wrong line endings or no final newline")},
+		{"x\r\n", "true", "lf", errors.New("wrong line endings or no final newline")},
+		{"x\r\n", "true", "cr", errors.New("wrong line endings or no final newline")},
 
 		// insert_final_newline false
 		{"x", "false", "lf", nil},
-		{"x\n", "false", "lf", errors.New("No final newline expected")},
-		{"x\r", "false", "lf", errors.New("No final newline expected")},
-		{"x\r\n", "false", "lf", errors.New("No final newline expected")},
+		{"x\n", "false", "lf", errors.New("no final newline expected")},
+		{"x\r", "false", "lf", errors.New("no final newline expected")},
+		{"x\r\n", "false", "lf", errors.New("no final newline expected")},
 
 		{"x", "false", "cr", nil},
-		{"x\n", "false", "cr", errors.New("No final newline expected")},
-		{"x\r", "false", "cr", errors.New("No final newline expected")},
-		{"x\r\n", "false", "cr", errors.New("No final newline expected")},
+		{"x\n", "false", "cr", errors.New("no final newline expected")},
+		{"x\r", "false", "cr", errors.New("no final newline expected")},
+		{"x\r\n", "false", "cr", errors.New("no final newline expected")},
 
 		{"x", "false", "crlf", nil},
-		{"x\n", "false", "crlf", errors.New("No final newline expected")},
-		{"x\r", "false", "crlf", errors.New("No final newline expected")},
-		{"x\r\n", "false", "crlf", errors.New("No final newline expected")},
+		{"x\n", "false", "crlf", errors.New("no final newline expected")},
+		{"x\r", "false", "crlf", errors.New("no final newline expected")},
+		{"x\r\n", "false", "crlf", errors.New("no final newline expected")},
 
 		// insert_final_newline not set
 		{"x", "", "lf", nil},
@@ -65,22 +65,22 @@ func TestFinalNewline(t *testing.T) {
 		{"x\r\n", "", "crlf", nil},
 
 		// end_of_line not set
-		{"x", "true", "", errors.New("Final newline expected")},
+		{"x", "true", "", errors.New("final newline expected")},
 		{"x", "false", "", nil},
 		{"x\n", "true", "", nil},
-		{"x\n", "false", "", errors.New("No final newline expected")},
+		{"x\n", "false", "", errors.New("no final newline expected")},
 		{"x\r", "true", "", nil},
-		{"x\r", "false", "", errors.New("No final newline expected")},
+		{"x\r", "false", "", errors.New("no final newline expected")},
 		{"x\r\n", "true", "", nil},
-		{"x\r\n", "false", "", errors.New("No final newline expected")},
-		{"x", "true", "unset", errors.New("Final newline expected")},
+		{"x\r\n", "false", "", errors.New("no final newline expected")},
+		{"x", "true", "unset", errors.New("final newline expected")},
 		{"x", "false", "unset", nil},
 		{"x\n", "true", "unset", nil},
-		{"x\n", "false", "unset", errors.New("No final newline expected")},
+		{"x\n", "false", "unset", errors.New("no final newline expected")},
 		{"x\r", "true", "unset", nil},
-		{"x\r", "false", "unset", errors.New("No final newline expected")},
+		{"x\r", "false", "unset", errors.New("no final newline expected")},
 		{"x\r\n", "true", "unset", nil},
-		{"x\r\n", "false", "unset", errors.New("No final newline expected")},
+		{"x\r\n", "false", "unset", errors.New("no final newline expected")},
 	}
 
 	for _, tt := range finalNewlineTests {
@@ -99,21 +99,21 @@ func TestLineEnding(t *testing.T) {
 	}{
 		{"x", "lf", nil},
 		{"x\n", "lf", nil},
-		{"x\r", "lf", errors.New("Not all lines have the correct end of line character")},
-		{"x\r\n", "lf", errors.New("Not all lines have the correct end of line character")},
-		{"x\ry\nz\n", "lf", errors.New("Not all lines have the correct end of line character")},
+		{"x\r", "lf", errors.New("not all lines have the correct end of line character")},
+		{"x\r\n", "lf", errors.New("not all lines have the correct end of line character")},
+		{"x\ry\nz\n", "lf", errors.New("not all lines have the correct end of line character")},
 
 		{"x", "cr", nil},
 		{"x\r", "cr", nil},
-		{"x\n", "cr", errors.New("Not all lines have the correct end of line character")},
-		{"x\r\n", "cr", errors.New("Not all lines have the correct end of line character")},
-		{"x\ry\nz\n", "cr", errors.New("Not all lines have the correct end of line character")},
+		{"x\n", "cr", errors.New("not all lines have the correct end of line character")},
+		{"x\r\n", "cr", errors.New("not all lines have the correct end of line character")},
+		{"x\ry\nz\n", "cr", errors.New("not all lines have the correct end of line character")},
 
 		{"x", "crlf", nil},
 		{"x\r\n", "crlf", nil},
-		{"x\r", "crlf", errors.New("Not all lines have the correct end of line character")},
-		{"x\n", "crlf", errors.New("Not all lines have the correct end of line character")},
-		{"x\ry\nz\n", "crlf", errors.New("Not all lines have the correct end of line character")},
+		{"x\r", "crlf", errors.New("not all lines have the correct end of line character")},
+		{"x\n", "crlf", errors.New("not all lines have the correct end of line character")},
+		{"x\ry\nz\n", "crlf", errors.New("not all lines have the correct end of line character")},
 
 		{"x", "", nil},
 		{"x\n", "", nil},
@@ -146,9 +146,9 @@ func TestIndentation(t *testing.T) {
 		expected    error
 	}{
 		{"    x", "space", 4, nil},
-		{"   x", "space", 4, errors.New("Wrong amount of left-padding spaces(want multiple of 4)")},
+		{"   x", "space", 4, errors.New("wrong amount of left-padding spaces(want multiple of 4)")},
 		{"	x", "tab", 0, nil},
-		{"   x", "tab", 0, errors.New("Wrong indentation type (spaces instead of tabs)")},
+		{"   x", "tab", 0, errors.New("wrong indentation type (spaces instead of tabs)")},
 		{"	x", "x", 0, nil},
 		{"   x", "x", 0, nil},
 	}
@@ -179,9 +179,9 @@ func TestSpace(t *testing.T) {
 		{"x", 4, enabledIndentSizeConfig, nil},
 		{"    x", 4, enabledIndentSizeConfig, nil},
 		// 5 spaces
-		{"     x", 4, enabledIndentSizeConfig, errors.New("Wrong amount of left-padding spaces(want multiple of 4)")},
+		{"     x", 4, enabledIndentSizeConfig, errors.New("wrong amount of left-padding spaces(want multiple of 4)")},
 		// 3 spaces
-		{"   x", 4, enabledIndentSizeConfig, errors.New("Wrong amount of left-padding spaces(want multiple of 4)")},
+		{"   x", 4, enabledIndentSizeConfig, errors.New("wrong amount of left-padding spaces(want multiple of 4)")},
 		// correct indented block comment, empty and non empty
 		{"     *", 4, enabledIndentSizeConfig, nil},
 		{"     * some comment", 4, enabledIndentSizeConfig, nil},
@@ -192,8 +192,8 @@ func TestSpace(t *testing.T) {
 		{"  x ", 4, disabledIndentSizeConfig, nil},
 		{"    x ", 4, disabledIndentSizeConfig, nil},
 		{"     x ", 4, disabledIndentSizeConfig, nil},
-		{"	x ", 4, disabledIndentSizeConfig, errors.New("Wrong indent style found (tabs instead of spaces)")},
-		{"    		x a", 4, disabledIndentSizeConfig, errors.New("Wrong indent style found (tabs instead of spaces)")},
+		{"	x ", 4, disabledIndentSizeConfig, errors.New("wrong indent style found (tabs instead of spaces)")},
+		{"    		x a", 4, disabledIndentSizeConfig, errors.New("wrong indent style found (tabs instead of spaces)")},
 	}
 
 	for _, tt := range spaceTests {
@@ -222,7 +222,7 @@ func TestTab(t *testing.T) {
 		{"	x", spacesForbidden, nil},
 		{"	", spacesForbidden, nil},
 		{"		x", spacesForbidden, nil},
-		{"  	a", spacesForbidden, errors.New("Wrong indentation type (spaces instead of tabs)")},
+		{"  	a", spacesForbidden, errors.New("wrong indentation type (spaces instead of tabs)")},
 		{" *", spacesForbidden, nil},
 		{"	 *", spacesForbidden, nil},
 		{"	 * some comment", spacesForbidden, nil},
@@ -251,13 +251,13 @@ func TestTrailingWhitespace(t *testing.T) {
 		{"x", false, nil},
 
 		// Spaces
-		{"x ", true, errors.New("Trailing whitespace")},
+		{"x ", true, errors.New("trailing whitespace")},
 		{"x ", false, nil},
 		{"x .", true, nil},
 		{"x .", false, nil},
 
 		// Tabs
-		{"x	", true, errors.New("Trailing whitespace")},
+		{"x	", true, errors.New("trailing whitespace")},
 		{"x	", false, nil},
 		{"x	.", true, nil},
 		{"x	.", false, nil},
@@ -279,12 +279,12 @@ func TestMaxLineLength(t *testing.T) {
 		expected      error
 	}{
 		{"検索は次の", 5, "utf-8", nil},
-		{"検索は次の", 2, "utf-8", errors.New("Line too long (5 instead of 2)")},
+		{"検索は次の", 2, "utf-8", errors.New("line too long (5 instead of 2)")},
 		{"\xEF\xBB\xBF検索は次の", 5, "utf-8-bom", nil},
-		{"検索は次の", 5, "latin1", errors.New("Line too long (15 instead of 5)")},
+		{"検索は次の", 5, "latin1", errors.New("line too long (15 instead of 5)")},
 		{"", 80, "latin1", nil},
-		{"abc", 2, "latin1", errors.New("Line too long (3 instead of 2)")},
-		{"   ", 2, "latin1", errors.New("Line too long (3 instead of 2)")},
+		{"abc", 2, "latin1", errors.New("line too long (3 instead of 2)")},
+		{"   ", 2, "latin1", errors.New("line too long (3 instead of 2)")},
 		{"xx", 2, "latin1", nil},
 	}
 

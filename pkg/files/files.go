@@ -281,7 +281,7 @@ func GetRelativePath(filePath string) (string, error) {
 
 	cwd, err := os.Getwd()
 	if err != nil {
-		return "", fmt.Errorf("Could not get the current working directory")
+		return "", fmt.Errorf("could not get the current working directory")
 	}
 
 	cwd = filepath.FromSlash(cwd)
