@@ -341,11 +341,6 @@ func TestGetFilesGlobMatchesDirectory(t *testing.T) {
 	}
 }
 
-type getContentTypeFilesTest struct {
-	filename string
-	regex    string
-}
-
 func setup() {
 	const testResultsJSON = "../encoding/test-results.json"
 
