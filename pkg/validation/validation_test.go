@@ -31,6 +31,11 @@ func TestProcessValidation(t *testing.T) {
 	if (len(processValidationResult) > 1) || (len(processValidationResult[0].Errors) != 1) {
 		t.Error("Wrong file should have errors, got", processValidationResult)
 	}
+
+	processValidationResult = ProcessValidation([]string{"./../../testfiles/definitely-not-utf8.txt"}, *configuration)
+	if (len(processValidationResult) > 1) || (len(processValidationResult[0].Errors) != 1) {
+		t.Error("definitely-not-utf8 file should have errors, got", processValidationResult)
+	}
 }
 
 func TestValidateFile(t *testing.T) {
