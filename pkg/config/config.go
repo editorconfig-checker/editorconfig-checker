@@ -364,7 +364,7 @@ func (c Config) Save(version string) error {
 	}
 
 	configJSON, _ := json.MarshalIndent(writtenConfig{Version: version}, "", "  ")
-	configString := strings.Replace(string(configJSON[:]), "null", "[]", -1)
+	configString := strings.ReplaceAll(string(configJSON[:]), "null", "[]")
 	err := os.WriteFile(c.Path, []byte(configString), 0o644)
 
 	return err
