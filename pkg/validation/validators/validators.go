@@ -134,16 +134,16 @@ func LineEnding(fileContent string, endOfLine string) error {
 
 		switch endOfLine {
 		case "lf":
-			if !(expectedEols == lfEols && crEols == 1 && crlfEols == 1) {
+			if expectedEols != lfEols || crEols != 1 || crlfEols != 1 {
 				return errors.New("not all lines have the correct end of line character")
 			}
 		case "cr":
-			if !(expectedEols == crEols && lfEols == 1 && crlfEols == 1) {
+			if expectedEols != crEols || lfEols != 1 || crlfEols != 1 {
 				return errors.New("not all lines have the correct end of line character")
 			}
 		case "crlf":
 			// A bit hacky because \r\n matches \r and \n
-			if !(expectedEols == crlfEols && lfEols == expectedEols && crEols == expectedEols) {
+			if expectedEols != crlfEols || lfEols != expectedEols || crEols != expectedEols {
 				return errors.New("not all lines have the correct end of line character")
 			}
 		}
