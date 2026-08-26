@@ -10,6 +10,7 @@ import (
 	// x-release-please-start-major
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/logger"
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/outputformat"
+
 	// x-release-please-end
 
 	"github.com/gkampitakis/go-snaps/snaps"
