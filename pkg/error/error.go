@@ -67,7 +67,7 @@ func byNumberAndErrorMessage(error1 ValidationError, error2 ValidationError) int
 
 func ConsolidateErrors(errors []ValidationError, config config.Config) []ValidationError {
 	// Group by message first, so that a block of one kind of error is still
-	// recognised as a block when a different kind of error is reported on the
+	// recognized as a block when a different kind of error is reported on the
 	// same lines. Scanning the list in input order only finds a block when its
 	// members happen to be adjacent in that list.
 	grouped := make(map[string][]ValidationError)
