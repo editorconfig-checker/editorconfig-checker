@@ -25,7 +25,7 @@ const minConfidenceToSetEncoding = 10
 
 const defaultConfidence = 1
 
-const testResultsJson = "test-results.json"
+const testResultsJSON = "test-results.json"
 
 const addNewFilesEnvVar = "EDITORCONFIG_ADD_NEW_FILES"
 
@@ -682,8 +682,8 @@ func readFile(filename string) ([]byte, error) {
 }
 
 func setup() {
-	if exists(testResultsJson) {
-		f, err := os.Open(testResultsJson)
+	if exists(testResultsJSON) {
+		f, err := os.Open(testResultsJSON)
 		if err != nil {
 			panic(err)
 		}
@@ -699,7 +699,7 @@ func setup() {
 
 	if !addNewFiles {
 		if len(tests) == 0 {
-			fmt.Printf("File not found: %q\n", testResultsJson)
+			fmt.Printf("File not found: %q\n", testResultsJSON)
 		}
 		return
 	}
@@ -822,7 +822,7 @@ func teardown() {
 		return tests[i].Filename < tests[j].Filename
 	})
 
-	f, err := os.Create(testResultsJson)
+	f, err := os.Create(testResultsJSON)
 	if err != nil {
 		panic(err)
 	}
