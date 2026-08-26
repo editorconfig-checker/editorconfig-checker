@@ -6,3 +6,5 @@ result-bin
 path
 node_modules
 dist/
+# vim swapfiles
+**/*.sw[pomn]
