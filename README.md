@@ -75,9 +75,11 @@ You can install **editorconfig-checker** in several ways, depending on your plat
 
 If you have Go installed, you can install **editorconfig-checker** with the following command:
 
+<!-- x-release-please-start-major -->
 ```shell
 go install github.com/editorconfig-checker/editorconfig-checker/v3/cmd/editorconfig-checker@latest
 ```
+<!-- x-release-please-end -->
 
 ### 2. Download Prebuilt Binaries
 

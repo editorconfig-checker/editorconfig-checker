@@ -7,7 +7,9 @@ import (
 	"runtime"
 	"testing"
 
+	// x-release-please-start-major
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/config"
+	// x-release-please-end
 	editorconfig "github.com/editorconfig/editorconfig-core-go/v2"
 )
 

@@ -11,8 +11,10 @@ import (
 
 	editorconfig "github.com/editorconfig/editorconfig-core-go/v2"
 
+	// x-release-please-start-major
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/config"
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/encoding"
+	// x-release-please-end
 )
 
 // FixFile applies the safe, supported fixes for filePath. It returns true when
