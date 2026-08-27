@@ -1,11 +1,12 @@
 module github.com/editorconfig-checker/editorconfig-checker/v3 // x-release-please-major
 
-go 1.25.0
+go 1.27.0
 
 require (
 	github.com/editorconfig/editorconfig-core-go/v2 v2.6.4
 	github.com/gabriel-vasile/mimetype v1.4.15
 	github.com/gkampitakis/ciinfo v0.3.4
+	github.com/gkampitakis/go-snaps v0.5.23
 	github.com/wlynxg/chardet v1.0.5
 	golang.org/x/text v0.41.0
 )
@@ -22,10 +23,6 @@ require (
 	github.com/tidwall/match v1.1.1 // indirect
 	github.com/tidwall/pretty v1.2.1 // indirect
 	github.com/tidwall/sjson v1.2.5 // indirect
-)
-
-require (
-	github.com/gkampitakis/go-snaps v0.5.23
 	golang.org/x/mod v0.38.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 )
