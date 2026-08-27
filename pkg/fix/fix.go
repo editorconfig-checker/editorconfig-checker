@@ -17,12 +17,12 @@ import (
 	// x-release-please-end
 )
 
-// FixFile applies the safe, supported fixes for filePath. It returns true when
+// File applies the safe, supported fixes for filePath. It returns true when
 // the file was changed. Rules which are not explicitly supported remain check-only.
 // Files which are not valid UTF-8 (including binary-like files) are deliberately
 // not modified: rewriting those files without an encoding-aware encoder could
 // corrupt their contents.
-func FixFile(filePath string, cfg config.Config, def *editorconfig.Definition) (bool, error) {
+func File(filePath string, cfg config.Config, def *editorconfig.Definition) (bool, error) {
 	info, content, ok, err := readFixableFile(filePath, cfg)
 	if err != nil || !ok {
 		return false, err

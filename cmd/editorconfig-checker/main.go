@@ -253,7 +253,7 @@ func main() {
 			if warnings != nil {
 				config.Logger.Warning("%v", warnings.Error())
 			}
-			changed, err := fix.FixFile(filePath, config, def)
+			changed, err := fix.File(filePath, config, def)
 			if err != nil {
 				config.Logger.Error("cannot fix %s: %s", filePath, err)
 				exitProxy(exitCodeErrorOccurred)
