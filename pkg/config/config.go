@@ -128,6 +128,7 @@ type Config struct {
 	ShowVersion bool
 	Help        bool
 	DryRun      bool
+	Fix         bool
 	Path        string
 
 	// CONFIG FILE
@@ -217,6 +218,10 @@ func (c *Config) Parse() error {
 func (c *Config) Merge(config Config) {
 	if config.DryRun {
 		c.DryRun = config.DryRun
+	}
+
+	if config.Fix {
+		c.Fix = config.Fix
 	}
 
 	if config.ShowVersion {

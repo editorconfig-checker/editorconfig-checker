@@ -32,6 +32,7 @@
   "testfiles",
   "testdata"
  ],
+ "Fix": false,
  "Format": "default",
  "Help": false,
  "IgnoreDefaults": false,
