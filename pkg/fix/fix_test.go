@@ -37,6 +37,10 @@ func TestFixFile(t *testing.T) {
 			if err := os.WriteFile(path, []byte(tt.input), 0755); err != nil {
 				t.Fatal(err)
 			}
+			before, err := os.Stat(path)
+			if err != nil {
+				t.Fatal(err)
+			}
 			cfg := *config.NewConfig(nil)
 			changed, err := FixFile(path, cfg, definition(tt.rules))
 			if err != nil {
@@ -62,9 +66,12 @@ func TestFixFile(t *testing.T) {
 			if changed {
 				t.Fatal("fix is not idempotent")
 			}
-			mode, _ := os.Stat(path)
-			if mode.Mode().Perm() != 0755 {
-				t.Fatalf("permissions changed: %o", mode.Mode().Perm())
+			after, err := os.Stat(path)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if after.Mode().Perm() != before.Mode().Perm() {
+				t.Fatalf("permissions changed: %o, want %o", after.Mode().Perm(), before.Mode().Perm())
 			}
 		})
 	}
