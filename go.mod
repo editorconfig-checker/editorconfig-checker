@@ -1,6 +1,6 @@
 module github.com/editorconfig-checker/editorconfig-checker/v3 // x-release-please-major
 
-go 1.27.0
+go 1.26.0
 
 require (
 	github.com/editorconfig/editorconfig-core-go/v2 v2.6.4
