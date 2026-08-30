@@ -25,14 +25,15 @@ var (
 
 // Indentation validates a files indentation
 func Indentation(line string, indentStyle string, indentSize int, config config.Config) error {
-	if indentStyle == "space" {
+	switch indentStyle {
+	case "space":
 		return Space(line, indentSize, config)
-	} else if indentStyle == "tab" {
+	case "tab":
 		return Tab(line, config)
+	default:
+		// if no indentStyle is given it should be valid
+		return nil
 	}
-
-	// if no indentStyle is given it should be valid
-	return nil
 }
 
 // Space validates if a line is indented correctly respecting the indentSize
@@ -42,7 +43,7 @@ func Space(line string, indentSize int, config config.Config) error {
 		matched := spaceRegexp.MatchString(line)
 
 		if !matched {
-			return fmt.Errorf("Wrong indent style found (tabs instead of spaces)")
+			return fmt.Errorf("wrong indent style found (tabs instead of spaces)")
 		}
 
 		if !config.Disable.IndentSize && indentSize > 0 {
@@ -53,7 +54,7 @@ func Space(line string, indentSize int, config config.Config) error {
 			matched, _ := regexp.MatchString(regexpPattern, line)
 
 			if !matched {
-				return fmt.Errorf("Wrong amount of left-padding spaces(want multiple of %d)", indentSize)
+				return fmt.Errorf("wrong amount of left-padding spaces(want multiple of %d)", indentSize)
 			}
 		}
 	}
@@ -79,7 +80,7 @@ func Tab(line string, config config.Config) error {
 		matched := re.MatchString(line)
 
 		if !matched {
-			return errors.New("Wrong indentation type (spaces instead of tabs)")
+			return errors.New("wrong indentation type (spaces instead of tabs)")
 		}
 
 	}
@@ -93,7 +94,7 @@ func TrailingWhitespace(line string, trimTrailingWhitespace bool) error {
 		matched := trailingWhitespaceRegexp.MatchString(line)
 
 		if matched {
-			return errors.New("Trailing whitespace")
+			return errors.New("trailing whitespace")
 		}
 	}
 
@@ -105,17 +106,17 @@ func FinalNewline(fileContent string, insertFinalNewline string, endOfLine strin
 	if endOfLine != "" && endOfLine != "unset" && insertFinalNewline == "true" {
 		expectedEolChar := utils.GetEolChar(endOfLine)
 		if !strings.HasSuffix(fileContent, expectedEolChar) || (expectedEolChar == "\n" && strings.HasSuffix(fileContent, "\r\n")) {
-			return errors.New("Wrong line endings or no final newline")
+			return errors.New("wrong line endings or no final newline")
 		}
 	} else {
 		hasFinalNewline := finalNewlineRegexp.MatchString(fileContent)
 
 		if insertFinalNewline == "false" && hasFinalNewline {
-			return errors.New("No final newline expected")
+			return errors.New("no final newline expected")
 		}
 
 		if insertFinalNewline == "true" && !hasFinalNewline {
-			return errors.New("Final newline expected")
+			return errors.New("final newline expected")
 		}
 	}
 
@@ -133,17 +134,17 @@ func LineEnding(fileContent string, endOfLine string) error {
 
 		switch endOfLine {
 		case "lf":
-			if !(expectedEols == lfEols && crEols == 1 && crlfEols == 1) {
-				return errors.New("Not all lines have the correct end of line character")
+			if expectedEols != lfEols || crEols != 1 || crlfEols != 1 {
+				return errors.New("not all lines have the correct end of line character")
 			}
 		case "cr":
-			if !(expectedEols == crEols && lfEols == 1 && crlfEols == 1) {
-				return errors.New("Not all lines have the correct end of line character")
+			if expectedEols != crEols || lfEols != 1 || crlfEols != 1 {
+				return errors.New("not all lines have the correct end of line character")
 			}
 		case "crlf":
 			// A bit hacky because \r\n matches \r and \n
-			if !(expectedEols == crlfEols && lfEols == expectedEols && crEols == expectedEols) {
-				return errors.New("Not all lines have the correct end of line character")
+			if expectedEols != crlfEols || lfEols != expectedEols || crEols != expectedEols {
+				return errors.New("not all lines have the correct end of line character")
 			}
 		}
 	}
@@ -165,14 +166,14 @@ func MaxLineLength(line string, maxLineLength int, charSet string) error {
 	}
 
 	if length > maxLineLength {
-		return fmt.Errorf("Line too long (%d instead of %d)", length, maxLineLength)
+		return fmt.Errorf("line too long (%d instead of %d)", length, maxLineLength)
 	}
 
 	return nil
 }
 
 // Charset validates a file's charset
-func Charset(charsetWanted string, charsetFound string, config config.Config) error {
+func Charset(charsetWanted string, charsetFound string) error {
 	if charsetWanted == "unset" {
 		return nil
 	}
@@ -182,7 +183,7 @@ func Charset(charsetWanted string, charsetFound string, config config.Config) er
 	if !encoding.CharsetsMatch(charsetFound, charsetWanted) {
 		// lowercase it as that's how they're listed in the ec spec.
 		charsetWanted = strings.ToLower(charsetWanted)
-		return fmt.Errorf("Wrong character encoding (%q instead of %q)", charsetFound, charsetWanted)
+		return fmt.Errorf("wrong character encoding (%q instead of %q)", charsetFound, charsetWanted)
 	}
 	return nil
 }

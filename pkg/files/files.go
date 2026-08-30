@@ -64,7 +64,7 @@ func AddToFiles(filePaths []string, filePath string, config config.Config) []str
 	contentType, err := GetContentType(filePath)
 	if err != nil {
 		config.Logger.Error("Could not get the ContentType of file: %s", filePath)
-		config.Logger.Error("%v", err.Error())
+		config.Logger.Error("%s", err)
 		return filePaths
 	}
 	config.Logger.Debug("AddToFiles: detected ContentType %s on file %s", contentType, filePath)
@@ -281,7 +281,7 @@ func GetRelativePath(filePath string) (string, error) {
 
 	cwd, err := os.Getwd()
 	if err != nil {
-		return "", fmt.Errorf("Could not get the current working directory")
+		return "", fmt.Errorf("could not get the current working directory")
 	}
 
 	cwd = filepath.FromSlash(cwd)

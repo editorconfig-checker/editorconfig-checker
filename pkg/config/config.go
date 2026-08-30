@@ -175,7 +175,7 @@ func NewConfig(configPaths []string) *Config {
 		Parser: editorconfig.NewCachedParser(),
 	}
 
-	var configPath string = ""
+	var configPath string
 	for _, path := range configPaths {
 		if utils.IsRegularFile(path) {
 			configPath = path
@@ -364,7 +364,7 @@ func (c Config) Save(version string) error {
 	}
 
 	configJSON, _ := json.MarshalIndent(writtenConfig{Version: version}, "", "  ")
-	configString := strings.Replace(string(configJSON[:]), "null", "[]", -1)
+	configString := strings.ReplaceAll(string(configJSON[:]), "null", "[]")
 	err := os.WriteFile(c.Path, []byte(configString), 0o644)
 
 	return err

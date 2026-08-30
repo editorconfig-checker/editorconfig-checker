@@ -1,7 +1,6 @@
 package config
 
 import (
-	"os"
 	"path/filepath"
 	"reflect"
 	"regexp"
@@ -10,6 +9,7 @@ import (
 	// x-release-please-start-major
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/logger"
 	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/outputformat"
+
 	// x-release-please-end
 
 	"github.com/gkampitakis/go-snaps/snaps"
@@ -197,9 +197,7 @@ func TestParse(t *testing.T) {
 }
 
 func TestSave(t *testing.T) {
-	dir, _ := os.MkdirTemp("", "example")
-	defer os.RemoveAll(dir)
-	configFile := filepath.Join(dir, "config")
+	configFile := filepath.Join(t.TempDir(), "config")
 	c := NewConfig([]string{configFile})
 	if c.Save("VERSION") != nil {
 		t.Error("Should create the config")

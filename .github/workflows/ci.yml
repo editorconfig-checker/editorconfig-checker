@@ -8,6 +8,9 @@ on:
 
 permissions:
   id-token: write
+  contents: read
+  pull-requests: read
+  checks: write
 
 jobs:
   lint-commit:
@@ -62,3 +65,13 @@ jobs:
       - run: make test
       - run: make run
       - run: make bench
+
+  golangci-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: "go.mod"
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v9

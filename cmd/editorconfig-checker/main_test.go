@@ -81,14 +81,7 @@ func TestMainFixesFilesBeforeChecking(t *testing.T) {
 	if err := os.WriteFile(path, []byte("value  "), 0644); err != nil {
 		t.Fatal(err)
 	}
-	oldDir, err := os.Getwd()
-	if err != nil {
-		t.Fatal(err)
-	}
-	if err := os.Chdir(dir); err != nil {
-		t.Fatal(err)
-	}
-	t.Cleanup(func() { _ = os.Chdir(oldDir) })
+	t.Chdir(dir)
 	output, code := runWithArguments(t, "--fix", "--verbose", path)
 	if code != exitCodeNormal {
 		t.Fatalf("fix command exited with %d", code)
@@ -114,14 +107,7 @@ func TestMainFixWithEndOfLineDisabledStillChecksFinalNewline(t *testing.T) {
 	if err := os.WriteFile(path, []byte("value\r\n"), 0644); err != nil {
 		t.Fatal(err)
 	}
-	oldDir, err := os.Getwd()
-	if err != nil {
-		t.Fatal(err)
-	}
-	if err := os.Chdir(dir); err != nil {
-		t.Fatal(err)
-	}
-	t.Cleanup(func() { _ = os.Chdir(oldDir) })
+	t.Chdir(dir)
 	_, code := runWithArguments(t, "--fix", "--disable-end-of-line", path)
 	if code != exitCodeNormal {
 		t.Fatalf("fix command exited with %d for a file whose final newline is valid", code)

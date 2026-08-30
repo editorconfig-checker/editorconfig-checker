@@ -3,6 +3,7 @@ package error
 import (
 	"bytes"
 	"errors"
+	"fmt"
 	"os"
 	"path/filepath"
 	"slices"
@@ -305,11 +306,12 @@ func TestFormatErrors(t *testing.T) {
 		and vice versa, unless the tests are differentiated by the path separator.
 	*/
 	var safePathSep string
-	if os.PathSeparator == '/' {
+	switch os.PathSeparator {
+	case '/':
 		safePathSep = "slash"
-	} else if os.PathSeparator == '\\' {
+	case '\\':
 		safePathSep = "backslash"
-	} else {
+	default:
 		t.Fatal("current path separator is unexpected - please fix test to handle this path separator")
 	}
 	s := snaps.WithConfig(
@@ -405,7 +407,15 @@ func TestMain(m *testing.M) {
 	v := m.Run()
 
 	// After all tests have run `go-snaps` will sort snapshots
-	snaps.Clean(m, snaps.CleanOpts{Sort: true})
+	dirty, err := snaps.Clean(m, snaps.CleanOpts{Sort: true})
+	if err != nil {
+		fmt.Println("Error cleaning snaps:", err)
+		os.Exit(1)
+	}
+	if dirty {
+		fmt.Println("Some snapshots were outdated.")
+		os.Exit(1)
+	}
 
 	os.Exit(v)
 }

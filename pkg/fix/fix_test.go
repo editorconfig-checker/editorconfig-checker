@@ -42,7 +42,7 @@ func TestFixFile(t *testing.T) {
 				t.Fatal(err)
 			}
 			cfg := *config.NewConfig(nil)
-			changed, err := FixFile(path, cfg, definition(tt.rules))
+			changed, err := File(path, cfg, definition(tt.rules))
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -59,7 +59,7 @@ func TestFixFile(t *testing.T) {
 			if !changed {
 				t.Fatal("expected file to change")
 			}
-			changed, err = FixFile(path, cfg, definition(tt.rules))
+			changed, err = File(path, cfg, definition(tt.rules))
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -84,7 +84,7 @@ func TestFixFileRespectsDisable(t *testing.T) {
 		t.Fatal(err)
 	}
 	cfg := *config.NewConfig(nil)
-	changed, err := FixFile(path, cfg, definition(map[string]string{"trim_trailing_whitespace": "true"}))
+	changed, err := File(path, cfg, definition(map[string]string{"trim_trailing_whitespace": "true"}))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -96,7 +96,7 @@ func TestFixFileRespectsDisable(t *testing.T) {
 func TestFixFileSkipsEmptyAndNonRegularFiles(t *testing.T) {
 	dir := t.TempDir()
 	cfg := *config.NewConfig(nil)
-	if changed, err := FixFile(dir, cfg, definition(map[string]string{"insert_final_newline": "true"})); err != nil || changed {
+	if changed, err := File(dir, cfg, definition(map[string]string{"insert_final_newline": "true"})); err != nil || changed {
 		t.Fatalf("directory: changed=%v, err=%v", changed, err)
 	}
 
@@ -104,11 +104,11 @@ func TestFixFileSkipsEmptyAndNonRegularFiles(t *testing.T) {
 	if err := os.WriteFile(empty, nil, 0644); err != nil {
 		t.Fatal(err)
 	}
-	if changed, err := FixFile(empty, cfg, definition(map[string]string{"insert_final_newline": "true"})); err != nil || changed {
+	if changed, err := File(empty, cfg, definition(map[string]string{"insert_final_newline": "true"})); err != nil || changed {
 		t.Fatalf("empty file: changed=%v, err=%v", changed, err)
 	}
 
-	if _, err := FixFile(filepath.Join(dir, "missing.txt"), cfg, definition(nil)); err == nil {
+	if _, err := File(filepath.Join(dir, "missing.txt"), cfg, definition(nil)); err == nil {
 		t.Fatal("missing file should return an error")
 	}
 
@@ -116,7 +116,7 @@ func TestFixFileSkipsEmptyAndNonRegularFiles(t *testing.T) {
 	if err := os.WriteFile(noOp, []byte("already clean\n"), 0644); err != nil {
 		t.Fatal(err)
 	}
-	if changed, err := FixFile(noOp, cfg, definition(nil)); err != nil || changed {
+	if changed, err := File(noOp, cfg, definition(nil)); err != nil || changed {
 		t.Fatalf("no-op policy: changed=%v, err=%v", changed, err)
 	}
 }
@@ -138,7 +138,7 @@ func TestFixFileSkipsInvalidRules(t *testing.T) {
 				t.Fatal(err)
 			}
 			cfg := *config.NewConfig(nil)
-			changed, err := FixFile(path, cfg, definition(tt.rules))
+			changed, err := File(path, cfg, definition(tt.rules))
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -162,7 +162,7 @@ func TestFixFilePreservesExistingNewlinesWhenEOLDisabled(t *testing.T) {
 			}
 			cfg := *config.NewConfig(nil)
 			cfg.Disable.EndOfLine = true
-			changed, err := FixFile(path, cfg, definition(map[string]string{
+			changed, err := File(path, cfg, definition(map[string]string{
 				"end_of_line":          "crlf",
 				"insert_final_newline": "true",
 			}))
@@ -195,7 +195,7 @@ func TestFixFileSupportsConfiguredPolicies(t *testing.T) {
 				t.Fatal(err)
 			}
 			cfg := *config.NewConfig(nil)
-			changed, err := FixFile(path, cfg, definition(map[string]string{
+			changed, err := File(path, cfg, definition(map[string]string{
 				"end_of_line":          tt.name,
 				"insert_final_newline": "true",
 			}))
@@ -312,7 +312,7 @@ func TestFixFileDirectiveScopes(t *testing.T) {
 				t.Fatal(err)
 			}
 			cfg := *config.NewConfig(nil)
-			changed, err := FixFile(path, cfg, definition(map[string]string{"trim_trailing_whitespace": "true"}))
+			changed, err := File(path, cfg, definition(map[string]string{"trim_trailing_whitespace": "true"}))
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -343,7 +343,7 @@ func TestFixFileSkipsUnsafeFilesAndSymlinks(t *testing.T) {
 				t.Fatal(err)
 			}
 			cfg := *config.NewConfig(nil)
-			changed, err := FixFile(path, cfg, definition(map[string]string{"trim_trailing_whitespace": "true"}))
+			changed, err := File(path, cfg, definition(map[string]string{"trim_trailing_whitespace": "true"}))
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -363,7 +363,7 @@ func TestFixFileSkipsUnsafeFilesAndSymlinks(t *testing.T) {
 		t.Skipf("symlinks unavailable: %v", err)
 	}
 	cfg := *config.NewConfig(nil)
-	changed, err := FixFile(link, cfg, definition(map[string]string{"trim_trailing_whitespace": "true"}))
+	changed, err := File(link, cfg, definition(map[string]string{"trim_trailing_whitespace": "true"}))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -386,7 +386,7 @@ func TestFixFilePreservesBOMAndHonorsDisabledChecks(t *testing.T) {
 	cfg.Disable.TrimTrailingWhitespace = true
 	cfg.Disable.EndOfLine = true
 	cfg.Disable.InsertFinalNewline = true
-	changed, err := FixFile(path, cfg, definition(map[string]string{"trim_trailing_whitespace": "true", "end_of_line": "lf", "insert_final_newline": "true"}))
+	changed, err := File(path, cfg, definition(map[string]string{"trim_trailing_whitespace": "true", "end_of_line": "lf", "insert_final_newline": "true"}))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -394,7 +394,7 @@ func TestFixFilePreservesBOMAndHonorsDisabledChecks(t *testing.T) {
 		t.Fatal("disabled checks changed file")
 	}
 	cfg.Disable = config.DisabledChecks{}
-	changed, err = FixFile(path, cfg, definition(map[string]string{"trim_trailing_whitespace": "true", "end_of_line": "lf", "insert_final_newline": "true"}))
+	changed, err = File(path, cfg, definition(map[string]string{"trim_trailing_whitespace": "true", "end_of_line": "lf", "insert_final_newline": "true"}))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -415,7 +415,7 @@ func TestFixFileDisableEndOfLineStillAddsNewline(t *testing.T) {
 	}
 	cfg := *config.NewConfig(nil)
 	cfg.Disable.EndOfLine = true
-	changed, err := FixFile(path, cfg, definition(map[string]string{"end_of_line": "crlf", "insert_final_newline": "true"}))
+	changed, err := File(path, cfg, definition(map[string]string{"end_of_line": "crlf", "insert_final_newline": "true"}))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -440,7 +440,7 @@ func TestFixFilePreservesSpecialPermissionBits(t *testing.T) {
 		t.Fatal(err)
 	}
 	cfg := *config.NewConfig(nil)
-	changed, err := FixFile(path, cfg, definition(map[string]string{"trim_trailing_whitespace": "true"}))
+	changed, err := File(path, cfg, definition(map[string]string{"trim_trailing_whitespace": "true"}))
 	if err != nil {
 		t.Fatal(err)
 	}

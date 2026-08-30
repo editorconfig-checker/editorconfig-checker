@@ -2,6 +2,7 @@ package logger
 
 import (
 	"bytes"
+	"fmt"
 	"os"
 	"testing"
 
@@ -127,7 +128,15 @@ func TestMain(m *testing.M) {
 	v := m.Run()
 
 	// After all tests have run `go-snaps` will sort snapshots
-	snaps.Clean(m, snaps.CleanOpts{Sort: true})
+	dirty, err := snaps.Clean(m, snaps.CleanOpts{Sort: true})
+	if err != nil {
+		fmt.Println("Error cleaning snaps:", err)
+		os.Exit(1)
+	}
+	if dirty {
+		fmt.Println("Some snapshots were outdated.")
+		os.Exit(1)
+	}
 
 	os.Exit(v)
 }

@@ -1,7 +1,6 @@
 package encoding
 
 import (
-	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"os"
@@ -13,9 +12,7 @@ import (
 	"strings"
 	"testing"
 	"text/tabwriter"
-	"unicode/utf8"
 
-	"github.com/wlynxg/chardet"
 	"github.com/wlynxg/chardet/consts"
 )
 
@@ -25,7 +22,7 @@ const minConfidenceToSetEncoding = 10
 
 const defaultConfidence = 1
 
-const testResultsJson = "test-results.json"
+const testResultsJSON = "test-results.json"
 
 const addNewFilesEnvVar = "EDITORCONFIG_ADD_NEW_FILES"
 
@@ -246,10 +243,10 @@ func TestDetectByBOM(t *testing.T) {
 						tests[i].Confidence = confidence
 						t.Logf("DetectByBOM: setting test=%+v", tests[i])
 						continue
-					} else {
-						tests[i].Comment += encoding2 + " (bom),"
-						// There's no BOM, so keep testing.
 					}
+
+					tests[i].Comment += encoding2 + " (bom),"
+					// There's no BOM, so keep testing.
 				}
 				t.Error("FAIL: " + msg)
 			} else {
@@ -286,9 +283,9 @@ func TestIsUTF32BE(t *testing.T) {
 						tests[i].Confidence = confidence
 						t.Logf("IsUTF32BE: setting test=%+v", tests[i])
 						continue
-					} else {
-						tests[i].Comment += "utf32be,"
 					}
+
+					tests[i].Comment += "utf32be,"
 				}
 				t.Error("FAIL: " + msg)
 			} else {
@@ -325,9 +322,9 @@ func TestIsUTF32LE(t *testing.T) {
 						tests[i].Confidence = confidence
 						t.Logf("IsUTF32LE: setting test=%+v", tests[i])
 						continue
-					} else {
-						tests[i].Comment += "utf32le,"
 					}
+
+					tests[i].Comment += "utf32le,"
 				}
 				t.Error("FAIL: " + msg)
 			} else {
@@ -364,9 +361,9 @@ func TestIsUTF16BE(t *testing.T) {
 						tests[i].Confidence = confidence
 						t.Logf("IsUTF16BE: setting test=%+v", tests[i])
 						continue
-					} else {
-						tests[i].Comment += "utf16be,"
 					}
+
+					tests[i].Comment += "utf16be,"
 				}
 				t.Error("FAIL: " + msg)
 			} else {
@@ -403,9 +400,9 @@ func TestIsUTF16LE(t *testing.T) {
 						tests[i].Confidence = confidence
 						t.Logf("IsUTF16LE: setting test=%+v", tests[i])
 						continue
-					} else {
-						tests[i].Comment += "utf16le,"
 					}
+
+					tests[i].Comment += "utf16le,"
 				}
 				t.Error("FAIL: " + msg)
 			} else {
@@ -441,9 +438,9 @@ func TestIsBinary(t *testing.T) {
 						tests[i].Confidence = confidence
 						t.Logf("IsBinary: setting test=%+v", tests[i])
 						continue
-					} else {
-						tests[i].Comment += "binary,"
 					}
+
+					tests[i].Comment += "binary,"
 				}
 				t.Error("FAIL: " + msg)
 			} else {
@@ -602,11 +599,11 @@ func TestDetect(t *testing.T) {
 						tests[i].Confidence = confidence
 						t.Logf("Detect: setting test=%+v", tests[i])
 						continue
-					} else {
-						t.Logf("Detect2: confidence=%f", confidence)
-						tests[i].Confidence = 0
-						t.Logf("Detect2: setting test=%+v", tests[i])
 					}
+
+					t.Logf("Detect2: confidence=%f", confidence)
+					tests[i].Confidence = 0
+					t.Logf("Detect2: setting test=%+v", tests[i])
 				}
 				t.Error("FAIL: " + msg)
 			} else {
@@ -682,8 +679,8 @@ func readFile(filename string) ([]byte, error) {
 }
 
 func setup() {
-	if exists(testResultsJson) {
-		f, err := os.Open(testResultsJson)
+	if exists(testResultsJSON) {
+		f, err := os.Open(testResultsJSON)
 		if err != nil {
 			panic(err)
 		}
@@ -699,7 +696,7 @@ func setup() {
 
 	if !addNewFiles {
 		if len(tests) == 0 {
-			fmt.Printf("File not found: %q\n", testResultsJson)
+			fmt.Printf("File not found: %q\n", testResultsJSON)
 		}
 		return
 	}
@@ -781,29 +778,6 @@ func setup() {
 	}
 }
 
-func find(filename string) string { //nolint:unused
-	if exists(filename) {
-		return filepath.ToSlash(filename)
-	}
-
-	var found string
-
-	_ = filepath.Walk("testdata", func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
-		if !info.IsDir() && info.Name() == filename {
-			found = path
-
-			return filepath.SkipDir // stop walking
-		}
-
-		return nil
-	})
-
-	return filepath.ToSlash(found)
-}
-
 func exists(path string) bool { //nolint:unused
 	_, err := os.Stat(path)
 	return err == nil || !os.IsNotExist(err)
@@ -822,7 +796,7 @@ func teardown() {
 		return tests[i].Filename < tests[j].Filename
 	})
 
-	f, err := os.Create(testResultsJson)
+	f, err := os.Create(testResultsJSON)
 	if err != nil {
 		panic(err)
 	}
@@ -831,50 +805,6 @@ func teardown() {
 	// Need 4 spaces to pass tests.
 	enc.SetIndent("", "    ")
 	_ = enc.Encode(tests)
-}
-
-func dump(contentBytes []byte, t *testing.T) { //nolint:unused
-	t.Helper()
-
-	result := chardet.Detect(contentBytes)
-	isValidUTF8 := utf8.Valid(contentBytes)
-	t.Logf("chardet.Detect()=%+v utf8.Valid()=%v", result, isValidUTF8)
-
-	c0Index := containsAnyByteIndex(contentBytes, c0Chars)
-	c1Index := containsAnyByteIndex(contentBytes, c1Chars)
-	hiIndex := containsAnyByteIndex(contentBytes, hiChars)
-	t.Logf("length =0x%04x", len(contentBytes))
-	t.Logf("c0Index=0x%04x", c0Index)
-	t.Logf("c1Index=0x%04x", c1Index)
-	t.Logf("hiIndex=0x%04x", hiIndex)
-	dump := 256
-	last := min(dump, len(contentBytes))
-	fmt.Printf("Start:      0x%04x:\n%s\n", 0, hex.Dump(contentBytes[:last]))
-	if c0Index >= 0 {
-		last := min(c0Index+dump, len(contentBytes))
-		fmt.Printf("c0Index:    0x%04x:\n%v\n", c0Index, hex.Dump(contentBytes[c0Index:last]))
-	}
-	if c1Index >= 0 {
-		last := min(c1Index+dump, len(contentBytes))
-		fmt.Printf("c1Index:    0x%04x:\n%v\n", c1Index, hex.Dump(contentBytes[c1Index:last]))
-	}
-	if hiIndex >= 0 {
-		last := min(hiIndex+dump, len(contentBytes))
-		fmt.Printf("hiIndex: 0x%04x:\n%v\n", hiIndex, hex.Dump(contentBytes[hiIndex:last]))
-	}
-}
-
-func containsAnyByteIndex(a, b []byte) int { //nolint:unused
-	lookup := [256]bool{}
-	for _, c := range b {
-		lookup[c] = true
-	}
-	for i, c := range a {
-		if lookup[c] {
-			return i
-		}
-	}
-	return -1
 }
 
 func encodingToCharset(encoding string) string {

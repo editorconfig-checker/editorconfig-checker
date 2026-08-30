@@ -24,7 +24,7 @@ import (
 
 // version is used for the help and to verify against the version stored in the config file
 // version is dynamically set at compiletime
-var version string = "v3.11.1" // x-release-please-version
+var version = "v3.11.1" // x-release-please-version
 
 // defaultConfigFileNames determines the file names where the config is located
 var defaultConfigFileNames = []string{".editorconfig-checker.json"}
@@ -119,7 +119,7 @@ func parseArguments() {
 			nocolorParsedAsBool = true
 		}
 		if nocolorParsedAsBool {
-			enableNoColor("")
+			_ = enableNoColor("")
 		}
 	}
 
@@ -140,7 +140,7 @@ func parseArguments() {
 	if writeConfigFile {
 		err := currentConfig.Save(version)
 		if err != nil {
-			currentConfig.Logger.Error("%v", err.Error())
+			currentConfig.Logger.Error("%s", err)
 			exitProxy(exitCodeErrorOccurred)
 		}
 
@@ -148,10 +148,10 @@ func parseArguments() {
 	}
 
 	err := currentConfig.Parse()
-	// this error should be surpressed if the configFilePath was not set by the user
+	// this error should be suppressed if the configFilePath was not set by the user
 	// since the default config paths could trigger this
-	if err != nil && !(configFilePath == "" && errors.Is(err, fs.ErrNotExist)) {
-		currentConfig.Logger.Error("%v", err.Error())
+	if err != nil && (configFilePath != "" || !errors.Is(err, fs.ErrNotExist)) {
+		currentConfig.Logger.Error("%s", err)
 		exitProxy(exitCodeConfigFileNotFound)
 	}
 
@@ -230,7 +230,7 @@ func main() {
 	// contains all files which should be checked
 	filePaths, err := files.GetFiles(config)
 	if err != nil {
-		config.Logger.Error("%v", err.Error())
+		config.Logger.Error("%s", err)
 		exitProxy(exitCodeErrorOccurred)
 	}
 
@@ -253,7 +253,7 @@ func main() {
 			if warnings != nil {
 				config.Logger.Warning("%v", warnings.Error())
 			}
-			changed, err := fix.FixFile(filePath, config, def)
+			changed, err := fix.File(filePath, config, def)
 			if err != nil {
 				config.Logger.Error("cannot fix %s: %s", filePath, err)
 				exitProxy(exitCodeErrorOccurred)
