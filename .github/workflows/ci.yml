@@ -31,7 +31,7 @@ jobs:
           - windows-latest
     runs-on: ${{ matrix.os }}
     steps:
-      - name: setup git to always use linefeed as end-of-line during checkout (windows sadly has a diofferent default)
+      - name: setup git to always use linefeed as end-of-line during checkout (windows sadly has a different default)
         if: matrix.os == 'windows-latest'
         run: |
           git config --system core.autocrlf false
