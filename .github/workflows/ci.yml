@@ -22,9 +22,20 @@ jobs:
       - uses: wagoid/commitlint-github-action@v6.2.1
 
   ci:
-    name: CI on Linux
-    runs-on: ubuntu-latest
+    name: CI
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+          - windows-latest
+    runs-on: ${{ matrix.os }}
     steps:
+      - name: setup git to always use linefeed as end-of-line during checkout (windows sadly has a different default)
+        if: matrix.os == 'windows-latest'
+        run: |
+          git config --system core.autocrlf false
+          git config --system core.eol lf
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0
@@ -39,39 +50,12 @@ jobs:
         with:
           use_oidc: true
 
-  ci-macos:
-    name: CI on MacOS
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-go@v7
-        with:
-          go-version: stable
-      - run: make test
-      - run: make run
-      - run: make bench
-
-  ci-windows:
-    name: CI on Windows
-    runs-on: windows-latest
-    steps:
-      - run: |
-          git config --system core.autocrlf false
-          git config --system core.eol lf
-      - uses: actions/checkout@v7
-      - uses: actions/setup-go@v7
-        with:
-          go-version: stable
-      - run: make test
-      - run: make run
-      - run: make bench
-
   golangci-lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-go@v7
         with:
-          go-version-file: "go.mod"
+          go-version: stable
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v9
