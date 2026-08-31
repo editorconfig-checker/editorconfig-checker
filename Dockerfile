@@ -4,10 +4,12 @@
 
 FROM alpine:latest
 
+ARG TARGETPLATFORM
+
 RUN apk add --no-cache git \
     && git config --global --add safe.directory /check
 WORKDIR /check/
 
-COPY editorconfig-checker /usr/bin/
+COPY $TARGETPLATFORM/editorconfig-checker /usr/bin/
 
 CMD ["/usr/bin/editorconfig-checker"]
