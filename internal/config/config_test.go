@@ -7,8 +7,8 @@ import (
 	"testing"
 
 	// x-release-please-start-major
-	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/logger"
-	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/outputformat"
+	"github.com/editorconfig-checker/editorconfig-checker/v3/internal/logger"
+	"github.com/editorconfig-checker/editorconfig-checker/v3/internal/outputformat"
 
 	// x-release-please-end
 

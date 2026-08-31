@@ -11,11 +11,11 @@ import (
 	"sync"
 
 	// x-release-please-start-major
-	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/config"
-	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/encoding"
-	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/error"
-	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/files"
-	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/validation/validators"
+	"github.com/editorconfig-checker/editorconfig-checker/v3/internal/config"
+	"github.com/editorconfig-checker/editorconfig-checker/v3/internal/encoding"
+	"github.com/editorconfig-checker/editorconfig-checker/v3/internal/error"
+	"github.com/editorconfig-checker/editorconfig-checker/v3/internal/files"
+	"github.com/editorconfig-checker/editorconfig-checker/v3/internal/validation/validators"
 
 	// x-release-please-end
 
