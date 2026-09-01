@@ -682,3 +682,7 @@ However, as it is a code quality tool, it's not always clear when a minor or maj
   - Removal of a [path to exclude by default](#default-excludes).
   - Removal of support for an [editorconfig](https://editorconfig.org/) property.
   - Bug fixes, which result in **editorconfig-checker** reporting more linting errors, because the previous behavior was incorrect according to the [editorconfig specification](https://editorconfig.org/).
+
+## Supported versions of Go
+
+We officially support the last two releases of Go. Our published binaries will always be built using the latest available patch version of Go, and our [go.mod](go.mod) will always stays at the minor version before that. We encourage everyone to build editorconfig-checker with the highest version practical, but recognize that some users cannot upgrade to a new version of go immediately.
