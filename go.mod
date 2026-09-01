@@ -3,6 +3,9 @@ module github.com/editorconfig-checker/editorconfig-checker/v3 // x-release-plea
 // this version is always kept at the original release of the oldstable go version.
 go 1.26.0
 
+// but suggest a current toolchain
+toolchain go1.27.0
+
 require (
 	github.com/editorconfig/editorconfig-core-go/v2 v2.6.4
 	github.com/gabriel-vasile/mimetype v1.4.15
