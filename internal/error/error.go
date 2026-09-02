@@ -7,9 +7,9 @@ import (
 	"slices"
 
 	// x-release-please-start-major
-	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/config"
-	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/files"
-	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/outputformat"
+	"github.com/editorconfig-checker/editorconfig-checker/v3/internal/config"
+	"github.com/editorconfig-checker/editorconfig-checker/v3/internal/files"
+	"github.com/editorconfig-checker/editorconfig-checker/v3/internal/outputformat"
 	// x-release-please-end
 )
 

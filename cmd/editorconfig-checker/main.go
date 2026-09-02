@@ -12,13 +12,13 @@ import (
 	"github.com/gkampitakis/ciinfo"
 
 	// x-release-please-start-major
-	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/config"
-	eccerror "github.com/editorconfig-checker/editorconfig-checker/v3/pkg/error"
-	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/files"
-	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/fix"
-	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/outputformat"
-	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/utils"
-	"github.com/editorconfig-checker/editorconfig-checker/v3/pkg/validation"
+	"github.com/editorconfig-checker/editorconfig-checker/v3/internal/config"
+	eccerror "github.com/editorconfig-checker/editorconfig-checker/v3/internal/error"
+	"github.com/editorconfig-checker/editorconfig-checker/v3/internal/files"
+	"github.com/editorconfig-checker/editorconfig-checker/v3/internal/fix"
+	"github.com/editorconfig-checker/editorconfig-checker/v3/internal/outputformat"
+	"github.com/editorconfig-checker/editorconfig-checker/v3/internal/utils"
+	"github.com/editorconfig-checker/editorconfig-checker/v3/internal/validation"
 	// x-release-please-end
 )
 
