@@ -16,8 +16,8 @@ import (
 	"github.com/editorconfig/editorconfig-core-go/v2"
 
 	// x-release-please-start-major
-	"github.com/editorconfig-checker/editorconfig-checker/v3/internal/config"
-	"github.com/editorconfig-checker/editorconfig-checker/v3/internal/utils"
+	"github.com/editorconfig-checker/editorconfig-checker/v4/internal/config"
+	"github.com/editorconfig-checker/editorconfig-checker/v4/internal/utils"
 	// x-release-please-end
 )
 

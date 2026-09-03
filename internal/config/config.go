@@ -11,9 +11,9 @@ import (
 	"github.com/editorconfig/editorconfig-core-go/v2"
 
 	// x-release-please-start-major
-	"github.com/editorconfig-checker/editorconfig-checker/v3/internal/logger"
-	"github.com/editorconfig-checker/editorconfig-checker/v3/internal/outputformat"
-	"github.com/editorconfig-checker/editorconfig-checker/v3/internal/utils"
+	"github.com/editorconfig-checker/editorconfig-checker/v4/internal/logger"
+	"github.com/editorconfig-checker/editorconfig-checker/v4/internal/outputformat"
+	"github.com/editorconfig-checker/editorconfig-checker/v4/internal/utils"
 	// x-release-please-end
 )
 

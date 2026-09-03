@@ -1,5 +1,51 @@
 # Changelog
 
+## [4.0.0](https://github.com/editorconfig-checker/editorconfig-checker/compare/v3.11.1...v4.0.0) (2026-09-03)
+
+
+### ⚠ BREAKING CHANGES
+
+* internalize our packages ([#619](https://github.com/editorconfig-checker/editorconfig-checker/issues/619))<br>It will no longer be possible to import our internal packages in your code. If you rely on one of our packages please let us know by opening an issue.
+* migrate to goreleaser dockers_v2. ([#617](https://github.com/editorconfig-checker/editorconfig-checker/issues/617))<br>This means we stop publishing the arch-suffixed images like `3.11.2-amd64` or `3.11.2-arm64v8`. All these architectures are still provided in the multiarch tag `3.11.2`.
+* rename ec to editorconfig-checker ([#371](https://github.com/editorconfig-checker/editorconfig-checker/issues/371))
+* `.ecrc` is no longer discovered as a default config file name. Rename `.ecrc` to `.editorconfig-checker.json`, or pass the file explicitly with `--config .ecrc`.
+* Docker image tags no longer carry a leading `v`. Pull `3.12.0`, `3.12` and `3` instead of `v3.12.0`, `v3.12` and `v3`
+* the deprecated `SpacesAftertabs` configuration key has been removed, use `SpacesAfterTabs` instead.
+* stop accepting latin1 files as utf-8. ([#598](https://github.com/editorconfig-checker/editorconfig-checker/issues/598))<br>Previously `charset=utf-8` was satisfied with files encoded as `latin1`. While most of the `latin1` range is identical to `utf-8`, not all is. If you request `utf-8` but have `latin1` encoded files expect these files to be reported as violations now.
+
+### Features
+
+* add safe EditorConfig autofixes ([#612](https://github.com/editorconfig-checker/editorconfig-checker/issues/612)) ([2f4962c](https://github.com/editorconfig-checker/editorconfig-checker/commit/2f4962c596d85445720acee9e67853a93ff8fabd))
+* auto-detect `github-actions` output format in CI ([#606](https://github.com/editorconfig-checker/editorconfig-checker/issues/606)) ([271c500](https://github.com/editorconfig-checker/editorconfig-checker/commit/271c500a31a9984b8f5221863d82d6b79e3f5631))
+* remove support for the deprecated `.ecrc` config file name ([#603](https://github.com/editorconfig-checker/editorconfig-checker/issues/603)) ([2062751](https://github.com/editorconfig-checker/editorconfig-checker/commit/2062751696a47f09fdca5249b8ae7e42b8471b2a))
+
+
+### Bug Fixes
+
+* add missing space in wrong indentation type error message ([#610](https://github.com/editorconfig-checker/editorconfig-checker/issues/610)) ([e0f1b56](https://github.com/editorconfig-checker/editorconfig-checker/commit/e0f1b561a2cee12b77c83259125bc1e4a01a9c52))
+* allow builds with Go 1.26 ([#615](https://github.com/editorconfig-checker/editorconfig-checker/issues/615)) ([343018a](https://github.com/editorconfig-checker/editorconfig-checker/commit/343018a4a3fc5cb2a9b51e36046203a1d0cdfae3))
+* consolidate error blocks that are interleaved with other errors ([#601](https://github.com/editorconfig-checker/editorconfig-checker/issues/601)) ([76b6313](https://github.com/editorconfig-checker/editorconfig-checker/commit/76b6313bc26a546591020c4d4c1c35848393c95d))
+* correct end line in codeclimate formatter output ([#602](https://github.com/editorconfig-checker/editorconfig-checker/issues/602)) ([2476e7c](https://github.com/editorconfig-checker/editorconfig-checker/commit/2476e7c6716c9c496fe1cbee1da3fb8c13e32b78))
+* correct the -disable-end-of-line flag description ([#600](https://github.com/editorconfig-checker/editorconfig-checker/issues/600)) ([1615efc](https://github.com/editorconfig-checker/editorconfig-checker/commit/1615efcaed1a5fb93179a4f8b6ad554332053825))
+* drop a path whose content type could not be read ([#599](https://github.com/editorconfig-checker/editorconfig-checker/issues/599)) ([46995b1](https://github.com/editorconfig-checker/editorconfig-checker/commit/46995b1db09d5371b2e684bca693d9e56f7fcaaa))
+* handle `unset` for `end_of_line` and `insert_final_newline` ([#594](https://github.com/editorconfig-checker/editorconfig-checker/issues/594)) ([123ba31](https://github.com/editorconfig-checker/editorconfig-checker/commit/123ba319dcad0e048aaa182db1c6f4e37e13b573)), closes [#580](https://github.com/editorconfig-checker/editorconfig-checker/issues/580)
+* remove ambiguity between potential folder and file matches ([#611](https://github.com/editorconfig-checker/editorconfig-checker/issues/611)) ([4c4f7d4](https://github.com/editorconfig-checker/editorconfig-checker/commit/4c4f7d4c30900263dbb37d0c84568c4c719e4792))
+* remove leading `v` from Docker image tags ([#607](https://github.com/editorconfig-checker/editorconfig-checker/issues/607)) ([3827a6c](https://github.com/editorconfig-checker/editorconfig-checker/commit/3827a6c595a1001dc3958448b9b4e645975b3068))
+* remove retired goreportcard badge ([2a9dd32](https://github.com/editorconfig-checker/editorconfig-checker/commit/2a9dd32f6e2543ac331eadaadec23f8494d6e499))
+* stop accepting latin1 files as utf-8. ([#598](https://github.com/editorconfig-checker/editorconfig-checker/issues/598))&lt;br&gt;Previously `charset=utf-8` was satisfied with files encoded as `latin1`. While most of the `latin1` range is identical to `utf-8`, not all is. If you request `utf-8` but have `latin1` encoded files expect these files to be reported as violations now. ([4d84a77](https://github.com/editorconfig-checker/editorconfig-checker/commit/4d84a778c96073290eb6130fbefdaa9c77b8c2aa))
+* typo in config, `SpacesAftertabs` =&gt; `SpacesAfterTabs` ([#604](https://github.com/editorconfig-checker/editorconfig-checker/issues/604)) ([bbc3f03](https://github.com/editorconfig-checker/editorconfig-checker/commit/bbc3f035076dd4d1249baecafb29c8e10bf65a91))
+
+
+### Miscellaneous Chores
+
+* internalize our packages ([#619](https://github.com/editorconfig-checker/editorconfig-checker/issues/619))&lt;br&gt;It will no longer be possible to import our internal packages in your code. If you rely on one of our packages please let us know by opening an issue. ([d42bcb7](https://github.com/editorconfig-checker/editorconfig-checker/commit/d42bcb7af0ba6e633a662467d8137a2ce6244e83))
+* rename ec to editorconfig-checker ([#371](https://github.com/editorconfig-checker/editorconfig-checker/issues/371)) ([0e3b27f](https://github.com/editorconfig-checker/editorconfig-checker/commit/0e3b27f7e298718620ad0e60b66e6afc4dc52bb9))
+
+
+### Continuous Integration
+
+* migrate to goreleaser dockers_v2. ([#617](https://github.com/editorconfig-checker/editorconfig-checker/issues/617))&lt;br&gt;This means we stop publishing the arch-suffixed images like `3.11.2-amd64` or `3.11.2-arm64v8`. All these architectures are still provided in the multiarch tag `3.11.2`. ([d4c1442](https://github.com/editorconfig-checker/editorconfig-checker/commit/d4c14421f81ad8099dbfd45ad0dd3b2141a2986d))
+
 ## [3.11.1](https://github.com/editorconfig-checker/editorconfig-checker/compare/v3.11.0...v3.11.1) (2026-08-08)
 
 

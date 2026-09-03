@@ -1,4 +1,4 @@
-module github.com/editorconfig-checker/editorconfig-checker/v3 // x-release-please-major
+module github.com/editorconfig-checker/editorconfig-checker/v4 // x-release-please-major
 
 // this version is always kept at the original release of the oldstable go version.
 go 1.26.0
