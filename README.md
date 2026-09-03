@@ -104,9 +104,17 @@ nix run nixpkgs#editorconfig-checker
 
 You can run **editorconfig-checker** inside a Docker container without installing it locally:
 
+<!-- x-release-please-start-version -->
 ```shell
-docker run --rm --volume=$PWD:/check mstruebing/editorconfig-checker
+docker run --rm --volume=$PWD:/check ghcr.io/editorconfig-checker/editorconfig-checker:4.0.0
 ```
+
+or
+
+```shell
+docker run --rm --volume=$PWD:/check mstruebing/editorconfig-checker:4.0.0
+```
+<!-- x-release-please-end -->
 
 This command mounts your current directory into the container and runs the check inside it.
 
