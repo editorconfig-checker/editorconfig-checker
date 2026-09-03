@@ -14,7 +14,7 @@ repos:
       - id: validate_manifest
   - repo: https://github.com/editorconfig-checker/editorconfig-checker
     # this git tag name is kept in sync by release-please
-    rev: v3.2.0
+    rev: v4.0.0
     hooks:
       - id: editorconfig-checker
         stages:
