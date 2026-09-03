@@ -58,7 +58,7 @@ Unsupported features are:
 
 <!-- x-release-please-start-version -->
 ```shell
-VERSION="v3.11.1"
+VERSION="v4.0.0"
 OS="linux"
 ARCH="amd64"
 curl -O -L -C - https://github.com/editorconfig-checker/editorconfig-checker/releases/download/$VERSION/editorconfig-checker-$OS-$ARCH.tar.gz && \
@@ -77,7 +77,7 @@ If you have Go installed, you can install **editorconfig-checker** with the foll
 
 <!-- x-release-please-start-major -->
 ```shell
-go install github.com/editorconfig-checker/editorconfig-checker/v3/cmd/editorconfig-checker@latest
+go install github.com/editorconfig-checker/editorconfig-checker/v4/cmd/editorconfig-checker@latest
 ```
 <!-- x-release-please-end -->
 
@@ -272,7 +272,7 @@ A sample configuration file can look like this and will be used from your curren
 <!-- x-release-please-start-version -->
 ```json
 {
-  "$schema": "https://raw.githubusercontent.com/editorconfig-checker/editorconfig-checker/v3.11.1/.editorconfig-checker.schema.json",
+  "$schema": "https://raw.githubusercontent.com/editorconfig-checker/editorconfig-checker/v4.0.0/.editorconfig-checker.schema.json",
   "Verbose": false,
   "Debug": false,
   "IgnoreDefaults": false,
@@ -514,7 +514,7 @@ A [configuration file](#configuration) which would ignore all test files and all
 <!-- x-release-please-start-version -->
 ```json
 {
-  "$schema": "https://raw.githubusercontent.com/editorconfig-checker/editorconfig-checker/v3.11.1/.editorconfig-checker.schema.json",
+  "$schema": "https://raw.githubusercontent.com/editorconfig-checker/editorconfig-checker/v4.0.0/.editorconfig-checker.schema.json",
   "Verbose": false,
   "IgnoreDefaults": false,
   "Exclude": ["testfiles", "\\.md$"],

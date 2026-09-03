@@ -11,7 +11,7 @@ import (
 	"github.com/gkampitakis/go-snaps/snaps"
 
 	// x-release-please-start-major
-	"github.com/editorconfig-checker/editorconfig-checker/v3/internal/outputformat"
+	"github.com/editorconfig-checker/editorconfig-checker/v4/internal/outputformat"
 	// x-release-please-end
 )
 

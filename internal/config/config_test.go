@@ -7,8 +7,8 @@ import (
 	"testing"
 
 	// x-release-please-start-major
-	"github.com/editorconfig-checker/editorconfig-checker/v3/internal/logger"
-	"github.com/editorconfig-checker/editorconfig-checker/v3/internal/outputformat"
+	"github.com/editorconfig-checker/editorconfig-checker/v4/internal/logger"
+	"github.com/editorconfig-checker/editorconfig-checker/v4/internal/outputformat"
 
 	// x-release-please-end
 
@@ -117,7 +117,7 @@ func TestMerge(t *testing.T) {
 
 	mergeConfig := Config{
 		ShowVersion:         true,
-		Version:             "v3.11.1", // x-release-please-version
+		Version:             "v4.0.0", // x-release-please-version
 		Help:                true,
 		DryRun:              true,
 		Fix:                 true,

@@ -12,19 +12,19 @@ import (
 	"github.com/gkampitakis/ciinfo"
 
 	// x-release-please-start-major
-	"github.com/editorconfig-checker/editorconfig-checker/v3/internal/config"
-	eccerror "github.com/editorconfig-checker/editorconfig-checker/v3/internal/error"
-	"github.com/editorconfig-checker/editorconfig-checker/v3/internal/files"
-	"github.com/editorconfig-checker/editorconfig-checker/v3/internal/fix"
-	"github.com/editorconfig-checker/editorconfig-checker/v3/internal/outputformat"
-	"github.com/editorconfig-checker/editorconfig-checker/v3/internal/utils"
-	"github.com/editorconfig-checker/editorconfig-checker/v3/internal/validation"
+	"github.com/editorconfig-checker/editorconfig-checker/v4/internal/config"
+	eccerror "github.com/editorconfig-checker/editorconfig-checker/v4/internal/error"
+	"github.com/editorconfig-checker/editorconfig-checker/v4/internal/files"
+	"github.com/editorconfig-checker/editorconfig-checker/v4/internal/fix"
+	"github.com/editorconfig-checker/editorconfig-checker/v4/internal/outputformat"
+	"github.com/editorconfig-checker/editorconfig-checker/v4/internal/utils"
+	"github.com/editorconfig-checker/editorconfig-checker/v4/internal/validation"
 	// x-release-please-end
 )
 
 // version is used for the help and to verify against the version stored in the config file
 // version is dynamically set at compiletime
-var version = "v3.11.1" // x-release-please-version
+var version = "v4.0.0" // x-release-please-version
 
 // defaultConfigFileNames determines the file names where the config is located
 var defaultConfigFileNames = []string{".editorconfig-checker.json"}
