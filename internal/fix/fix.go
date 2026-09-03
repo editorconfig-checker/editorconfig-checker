@@ -311,17 +311,24 @@ func splitLines(content []byte) []linePart {
 	return result
 }
 
+// detectFinalEOL returns the line terminator that ends the last complete line
+// of content, or "" when content holds no line terminator at all. It looks for
+// the last terminator anywhere in content rather than only at the suffix,
+// because the caller needs an answer precisely when content does *not* end
+// with a terminator; a suffix-only check returns "" in exactly that case and
+// leaves the caller guessing.
 func detectFinalEOL(content []byte) string {
-	if bytes.HasSuffix(content, []byte("\r\n")) {
-		return "\r\n"
+	idx := bytes.LastIndexAny(content, "\r\n")
+	if idx < 0 {
+		return ""
 	}
-	if bytes.HasSuffix(content, []byte("\r")) {
+	if content[idx] == '\r' {
 		return "\r"
 	}
-	if bytes.HasSuffix(content, []byte("\n")) {
-		return "\n"
+	if idx > 0 && content[idx-1] == '\r' {
+		return "\r\n"
 	}
-	return ""
+	return "\n"
 }
 
 func hasDisableFile(content []byte) bool {
