@@ -1,14 +1,17 @@
 # Documentation at https://goreleaser.com
 version: 2
 project_name: editorconfig-checker
+
 env:
   - REPO_LICENSE=MIT
   - DOCKERHUB_USERNAME={{ if index .Env "DOCKERHUB_USERNAME"  }}{{ .Env.DOCKERHUB_USERNAME }}{{ else }}mstruebing{{ end }}
   - GHCR_USERNAME={{ if index .Env "GHCR_USERNAME"  }}{{ .Env.GHCR_USERNAME }}{{ else }}editorconfig-checker{{ end }}
+
 before:
   hooks:
     - go mod tidy
     - go generate ./...
+
 builds:
   - id: "editorconfig-checker"
     main: ./cmd/editorconfig-checker
@@ -19,7 +22,6 @@ builds:
       - linux
       - windows
       - darwin
-
     goarch:
       - amd64
       - arm64
@@ -65,7 +67,7 @@ nfpms:
       - archlinux
 
 dockers_v2:
-  - id: docker-linux-amd64
+  - id: docker-linux
     ids:
       - editorconfig-checker
     dockerfile: Dockerfile
@@ -93,6 +95,7 @@ dockers_v2:
 
 checksum:
   name_template: "checksums.txt"
+
 sboms:
   - artifacts: package
     id: sbom-package
