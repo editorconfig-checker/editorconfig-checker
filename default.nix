@@ -2,7 +2,7 @@
 with pkgs;
 
 buildGoPackage rec {
-  version = "v4.0.0" # x-release-please-version
+  version = "v4.0.1" # x-release-please-version
 
   name = "editorconfig-checker-${version}";
 

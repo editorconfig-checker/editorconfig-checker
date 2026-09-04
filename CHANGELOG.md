@@ -1,5 +1,14 @@
 # Changelog
 
+## [4.0.1](https://github.com/editorconfig-checker/editorconfig-checker/compare/v4.0.0...v4.0.1) (2026-09-04)
+
+
+### Bug Fixes
+
+* bump golang.org/x/mod to v0.40.0 ([3d2215c](https://github.com/editorconfig-checker/editorconfig-checker/commit/3d2215c10a8495b6eee06863d1582685431a46e8))
+* **ci:** build docker images for all our platforms ([a34a6ee](https://github.com/editorconfig-checker/editorconfig-checker/commit/a34a6eeac71bea7a428d4f6333a1683633750c3a))
+* update pre-commit-config to use v4 of our repo ([fcd68bf](https://github.com/editorconfig-checker/editorconfig-checker/commit/fcd68bffdacddb356f8c9f7cbfb838744302d17d))
+
 ## [4.0.0](https://github.com/editorconfig-checker/editorconfig-checker/compare/v3.11.1...v4.0.0) (2026-09-03)
 
 

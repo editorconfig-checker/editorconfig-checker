@@ -58,7 +58,7 @@ Unsupported features are:
 
 <!-- x-release-please-start-version -->
 ```shell
-VERSION="v4.0.0"
+VERSION="v4.0.1"
 OS="linux"
 ARCH="amd64"
 curl -O -L -C - https://github.com/editorconfig-checker/editorconfig-checker/releases/download/$VERSION/editorconfig-checker-$OS-$ARCH.tar.gz && \
@@ -106,13 +106,13 @@ You can run **editorconfig-checker** inside a Docker container without installin
 
 <!-- x-release-please-start-version -->
 ```shell
-docker run --rm --volume=$PWD:/check ghcr.io/editorconfig-checker/editorconfig-checker:4.0.0
+docker run --rm --volume=$PWD:/check ghcr.io/editorconfig-checker/editorconfig-checker:4.0.1
 ```
 
 or
 
 ```shell
-docker run --rm --volume=$PWD:/check mstruebing/editorconfig-checker:4.0.0
+docker run --rm --volume=$PWD:/check mstruebing/editorconfig-checker:4.0.1
 ```
 <!-- x-release-please-end -->
 
@@ -280,7 +280,7 @@ A sample configuration file can look like this and will be used from your curren
 <!-- x-release-please-start-version -->
 ```json
 {
-  "$schema": "https://raw.githubusercontent.com/editorconfig-checker/editorconfig-checker/v4.0.0/.editorconfig-checker.schema.json",
+  "$schema": "https://raw.githubusercontent.com/editorconfig-checker/editorconfig-checker/v4.0.1/.editorconfig-checker.schema.json",
   "Verbose": false,
   "Debug": false,
   "IgnoreDefaults": false,
@@ -522,7 +522,7 @@ A [configuration file](#configuration) which would ignore all test files and all
 <!-- x-release-please-start-version -->
 ```json
 {
-  "$schema": "https://raw.githubusercontent.com/editorconfig-checker/editorconfig-checker/v4.0.0/.editorconfig-checker.schema.json",
+  "$schema": "https://raw.githubusercontent.com/editorconfig-checker/editorconfig-checker/v4.0.1/.editorconfig-checker.schema.json",
   "Verbose": false,
   "IgnoreDefaults": false,
   "Exclude": ["testfiles", "\\.md$"],
