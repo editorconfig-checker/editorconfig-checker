@@ -210,6 +210,37 @@ func TestFixFileSupportsConfiguredPolicies(t *testing.T) {
 	}
 }
 
+// With end_of_line unset the fixer must not impose a line ending: adding the
+// final newline has to reuse the one the file already uses, or a CRLF file
+// silently becomes mixed.
+func TestFixFileKeepsExistingEOLWhenEndOfLineUnset(t *testing.T) {
+	for _, tt := range []struct {
+		name, input, want string
+	}{
+		{"crlf", "alpha\r\nbeta\r\ngamma", "alpha\r\nbeta\r\ngamma\r\n"},
+		{"cr", "alpha\rbeta\rgamma", "alpha\rbeta\rgamma\r"},
+		{"lf", "alpha\nbeta\ngamma", "alpha\nbeta\ngamma\n"},
+		{"single line has no terminator to reuse", "alpha", "alpha\n"},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			path := filepath.Join(t.TempDir(), "file.txt")
+			if err := os.WriteFile(path, []byte(tt.input), 0644); err != nil {
+				t.Fatal(err)
+			}
+			changed, err := File(path, *config.NewConfig(nil), definition(map[string]string{
+				"insert_final_newline": "true",
+			}))
+			if err != nil || !changed {
+				t.Fatalf("changed=%v, err=%v", changed, err)
+			}
+			got, _ := os.ReadFile(path)
+			if string(got) != tt.want {
+				t.Fatalf("got %q, want %q", got, tt.want)
+			}
+		})
+	}
+}
+
 func TestFixHelpers(t *testing.T) {
 	for _, test := range []struct {
 		raw, want string
@@ -245,6 +276,11 @@ func TestFixHelpers(t *testing.T) {
 		{"a", "a\n", "true"},
 		{"a\r\n", "a", "false"},
 		{"a\r", "a\r", "true"},
+		// A file missing only its final newline keeps the line ending its
+		// other lines already use, instead of always gaining an LF.
+		{"a\r\nb", "a\r\nb\r\n", "true"},
+		{"a\rb", "a\rb\r", "true"},
+		{"a\nb", "a\nb\n", "true"},
 	} {
 		got := fixFinalNewline([]byte(test.input), test.policy, "")
 		if string(got) != test.want {
@@ -258,6 +294,11 @@ func TestFixHelpers(t *testing.T) {
 		{"value\n", "\n"},
 		{"value\r", "\r"},
 		{"value", ""},
+		// Content that does not end with a terminator still reports the one
+		// its earlier lines use.
+		{"a\r\nb", "\r\n"},
+		{"a\rb", "\r"},
+		{"a\nb", "\n"},
 	} {
 		if got := detectFinalEOL([]byte(test.input)); got != test.want {
 			t.Errorf("detectFinalEOL(%q) = %q, want %q", test.input, got, test.want)
