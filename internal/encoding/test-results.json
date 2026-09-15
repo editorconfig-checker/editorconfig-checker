@@ -180,6 +180,15 @@
         "Comment": ""
     },
     {
+        "Filename": "testdata/issues/issue627.txt",
+        "Encoding": "Ascii",
+        "Charset": "latin1",
+        "Errored": false,
+        "Binary": true,
+        "Confidence": 1,
+        "Comment": "ASCII with ANSI color escape codes"
+    },
+    {
         "Filename": "testdata/mimetype/html.html",
         "Encoding": "Ascii",
         "Charset": "latin1",
@@ -379,7 +388,7 @@
     },
     {
         "Filename": "testdata/text/rashomon-iso-2022-jp.txt",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "ISO-2022-JP",
         "Charset": "latin1",
         "Errored": false,
         "Binary": true,
@@ -739,7 +748,7 @@
     },
     {
         "Filename": "testdata/uchardet/en/ascii.txt",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": true,
@@ -1135,7 +1144,7 @@
     },
     {
         "Filename": "testdata/uchardet/ja/iso-2022-jp.txt",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "ISO-2022-JP",
         "Charset": "latin1",
         "Errored": false,
         "Binary": true,
@@ -1207,7 +1216,7 @@
     },
     {
         "Filename": "testdata/uchardet/ko/iso-2022-kr.txt",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": true,
@@ -2188,7 +2197,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-japanese/iso-2022-jp/iso2022jp_chars-csiso2022jp.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "ISO-2022-JP",
         "Charset": "latin1",
         "Errored": false,
         "Binary": true,
@@ -2197,7 +2206,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-japanese/iso-2022-jp/iso2022jp_chars.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "ISO-2022-JP",
         "Charset": "latin1",
         "Errored": false,
         "Binary": true,
@@ -2206,7 +2215,7 @@
     },
     {
         "Filename": "testdata/wpt/legacy-mb-japanese/iso-2022-jp/iso2022jp_errors.html",
-        "Encoding": "ISO-8859-1",
+        "Encoding": "Ascii",
         "Charset": "latin1",
         "Errored": false,
         "Binary": true,
