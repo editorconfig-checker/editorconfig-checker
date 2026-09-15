@@ -358,18 +358,19 @@ func Detect(contentBytes []byte) (string, float64, string) {
 			}
 		}
 
-		hasC0 := containsAnyByte(contentBytes, c0Chars)
 		hasC1 := containsAnyByte(contentBytes, c1Chars)
 		hasHI := containsAnyByte(contentBytes, hiChars)
 
 		if utf8.Valid(contentBytes) {
-			if !hasC0 && !hasC1 && !hasHI {
-				encoding = consts.Ascii
-				break
-			}
-
+			// Content without a byte >= 0x80 is 7-bit, so it is ASCII and
+			// therefore valid UTF-8, even when it holds a C0 control
+			// character such as the ESC of an ANSI color code. ISO-2022
+			// family encodings are 7-bit too, so a positive detection of
+			// one of those is kept when we can decode it.
 			if !hasHI {
-				encoding = consts.ISO88591
+				if !isDecodableISO2022Encoding(encoding) {
+					encoding = consts.Ascii
+				}
 				break
 			}
 
@@ -464,6 +465,19 @@ func IsStrictBinary(rawFileContent []byte) bool {
 // Use IsBinary instead.
 func IsBinaryFile(rawFileContent []byte) bool {
 	return IsBinary(rawFileContent)
+}
+
+// isDecodableISO2022Encoding returns true if the encoding is from the ISO-2022
+// family, which encodes non-ASCII text using 7-bit escape sequences, and we
+// have a decoder for it.
+func isDecodableISO2022Encoding(enc string) bool {
+	if !strings.HasPrefix(normalizeName(enc), "iso2022") {
+		return false
+	}
+
+	_, ok := getDecoder(enc)
+
+	return ok
 }
 
 // isMultiByteEncoding returns true if the encoding is a multi-byte encoding
