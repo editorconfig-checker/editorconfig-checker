@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.0.2](https://github.com/editorconfig-checker/editorconfig-checker/compare/v4.0.1...v4.0.2) (2026-09-16)
+
+
+### Bug Fixes
+
+* **encoding:** detect 7-bit content with control characters as ASCII ([#629](https://github.com/editorconfig-checker/editorconfig-checker/issues/629)) ([289dc53](https://github.com/editorconfig-checker/editorconfig-checker/commit/289dc53dadbce83eefcddb5e178947150d789805)), closes [#627](https://github.com/editorconfig-checker/editorconfig-checker/issues/627)
+* keep the file's existing line ending when adding a final newline ([#622](https://github.com/editorconfig-checker/editorconfig-checker/issues/622)) ([cea460f](https://github.com/editorconfig-checker/editorconfig-checker/commit/cea460f0b9952babe8021eece0fd489888f71122))
+
 ## [4.0.1](https://github.com/editorconfig-checker/editorconfig-checker/compare/v4.0.0...v4.0.1) (2026-09-04)
 
 
