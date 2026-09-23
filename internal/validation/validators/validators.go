@@ -160,9 +160,7 @@ func MaxLineLength(line string, maxLineLength int, charSet string) error {
 	// line of five accented or CJK characters as ten or fifteen characters
 	// long, which is what issue #115 described.
 	if charSet == "utf-8" || charSet == "utf-8-bom" || charSet == "" || charSet == "unset" {
-		if strings.HasPrefix(line, "\xEF\xBB\xBF") {
-			line = line[3:] // strip BOM
-		}
+		line = strings.TrimPrefix(line, "\xEF\xBB\xBF") // strip BOM
 		length = utf8.RuneCountInString(line)
 	} else {
 		// TODO: Handle utf-16be and utf-16le properly. Unfortunately, Go doesn't provide a utf16.RuneCountinString() function
