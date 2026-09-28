@@ -65,6 +65,8 @@ var defaultExcludes = []string{
 	"\\.pnp\\.loader\\.mjs$",
 	"(^|/)\\.yarn/",
 	"yarn\\.lock$",
+	// Ansible
+	"(^|/)\\.ansible/",
 	// font files
 	"\\.eot$",
 	"\\.otf$",
