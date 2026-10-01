@@ -463,6 +463,8 @@ Unless you choose to [ignore them](#ignoring-default-excludes), these paths are 
 "\\.pnp\\.loader\\.mjs$",
 "(^|/)\\.yarn/",
 "yarn\\.lock$",
+// Ansible
+"(^|/)\\.ansible/",
 // font files
 "\\.eot$",
 "\\.otf$",
