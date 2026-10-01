@@ -282,6 +282,14 @@ func TestMaxLineLength(t *testing.T) {
 		{"検索は次の", 2, "utf-8", errors.New("line too long (5 instead of 2)")},
 		{"\xEF\xBB\xBF検索は次の", 5, "utf-8-bom", nil},
 		{"検索は次の", 5, "latin1", errors.New("line too long (15 instead of 5)")},
+		// An unset charset counts characters, not the bytes of the already
+		// decoded content. Regression guard for issue #115, which the 2020 fix
+		// only covered for an explicitly declared utf-8.
+		{"検索は次の", 5, "", nil},
+		{"検索は次の", 2, "", errors.New("line too long (5 instead of 2)")},
+		{"検索は次の", 5, "unset", nil},
+		{"\xEF\xBB\xBF検索は次の", 5, "", nil},
+		{"abc", 2, "", errors.New("line too long (3 instead of 2)")},
 		{"", 80, "latin1", nil},
 		{"abc", 2, "latin1", errors.New("line too long (3 instead of 2)")},
 		{"   ", 2, "latin1", errors.New("line too long (3 instead of 2)")},
