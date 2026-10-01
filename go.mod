@@ -7,7 +7,7 @@ go 1.26.0
 toolchain go1.27.0
 
 require (
-	github.com/editorconfig/editorconfig-core-go/v2 v2.6.4
+	github.com/editorconfig/editorconfig-core-go/v2 v2.6.5
 	github.com/gabriel-vasile/mimetype v1.4.15
 	github.com/gkampitakis/ciinfo v0.3.4
 	github.com/gkampitakis/go-snaps v0.5.23
@@ -22,11 +22,10 @@ require (
 	github.com/maruel/natural v1.3.0 // indirect
 	github.com/rogpeppe/go-internal v1.13.1 // indirect
 	github.com/sergi/go-diff v1.4.0 // indirect
-	github.com/stretchr/testify v1.8.1 // indirect
 	github.com/tidwall/gjson v1.19.0 // indirect
 	github.com/tidwall/match v1.1.1 // indirect
 	github.com/tidwall/pretty v1.2.1 // indirect
 	github.com/tidwall/sjson v1.2.5 // indirect
 	golang.org/x/mod v0.41.0 // indirect
-	gopkg.in/ini.v1 v1.67.0 // indirect
+	gopkg.in/ini.v1 v1.67.3 // indirect
 )
