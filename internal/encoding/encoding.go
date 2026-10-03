@@ -161,8 +161,8 @@ var (
 	// See https://en.wikipedia.org/wiki/C0_and_C1_control_codes
 	c0Chars = []byte{
 		0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
-		// Allow TAB (ASCII 9), LF (10), FF (12), and CR (13)
-		0x08 /*TAB  LF*/, 0x0b /*FF   CR*/, 0x0e, 0x0f,
+		// Allow BS (ASCII 8), TAB (ASCII 9), LF (10), FF (12), and CR (13)
+		0x0b /*FF   CR*/, 0x0e, 0x0f,
 		0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17,
 		0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f,
 	}
@@ -172,8 +172,8 @@ var (
 	// Use this for pre-decode binary detection to avoid false positives on ISO-2022 text.
 	c0CharsStrictBinary = []byte{
 		0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
-		// Allow TAB (ASCII 9), LF (10), FF (12), and CR (13)
-		0x08 /*TAB  LF*/, 0x0b, /*FF   CR*/
+		// Allow BS (ASCII 8), TAB (ASCII 9), LF (10), FF (12), and CR (13)
+		0x0b, /*FF   CR*/
 		// Allow SO (14) and SI (15) for ISO-2022 shift-out/shift-in
 		0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17,
 		// Allow ESC (27) for ISO-2022 escape sequences
@@ -448,7 +448,7 @@ func DetectByBOM(contentBytes []byte) string {
 	return ""
 }
 
-// IsBinary returns true if the bytes contain \x00-\x08,\x0b,\x0e-\x1f .
+// IsBinary returns true if the bytes contain \x00-\x07,\x0b,\x0e-\x1f .
 func IsBinary(rawFileContent []byte) bool {
 	return containsAnyByte(rawFileContent, c0Chars)
 }

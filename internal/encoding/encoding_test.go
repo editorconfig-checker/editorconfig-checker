@@ -553,6 +553,46 @@ func TestDecodeBinaryFiles(t *testing.T) {
 	}
 }
 
+func TestBackspaceNotBinary(t *testing.T) {
+	testCases := []struct {
+		name     string
+		content  []byte
+		expected string
+	}{
+		{
+			name:     "ASCII with backspace",
+			content:  []byte("hello\bworld\n"),
+			expected: consts.Ascii,
+		},
+		{
+			name:     "UTF-8 with backspace",
+			content:  []byte("hello 世界\b\n"),
+			expected: consts.UTF8,
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			if IsBinary(tc.content) {
+				t.Errorf("IsBinary: expected false, got true")
+			}
+			if IsStrictBinary(tc.content) {
+				t.Errorf("IsStrictBinary: expected false, got true")
+			}
+			decoded, enc, err := Decode(tc.content)
+			if err != nil {
+				t.Fatalf("Decode: unexpected error: %v", err)
+			}
+			if enc != tc.expected {
+				t.Errorf("Decode: expected encoding %q, got %q", tc.expected, enc)
+			}
+			if decoded != string(tc.content) {
+				t.Errorf("Decode: expected content %q, got %q", string(tc.content), decoded)
+			}
+		})
+	}
+}
+
 func TestDetect(t *testing.T) {
 	for i, tt := range tests {
 		failTest := tt.Confidence >= minConfidenceToFailTests
