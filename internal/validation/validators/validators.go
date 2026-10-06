@@ -154,10 +154,13 @@ func LineEnding(fileContent string, endOfLine string) error {
 
 func MaxLineLength(line string, maxLineLength int, charSet string) error {
 	var length int
-	if charSet == "utf-8" || charSet == "utf-8-bom" {
-		if charSet == "utf-8-bom" && strings.HasPrefix(line, "\xEF\xBB\xBF") {
-			line = line[3:] // strip BOM
-		}
+	// An unset charset is the common case: most .editorconfig files set
+	// max_line_length without setting charset. The content reaching this point
+	// has already been decoded to UTF-8, so counting its bytes would report a
+	// line of five accented or CJK characters as ten or fifteen characters
+	// long, which is what issue #115 described.
+	if charSet == "utf-8" || charSet == "utf-8-bom" || charSet == "" || charSet == "unset" {
+		line = strings.TrimPrefix(line, "\xEF\xBB\xBF") // strip BOM
 		length = utf8.RuneCountInString(line)
 	} else {
 		// TODO: Handle utf-16be and utf-16le properly. Unfortunately, Go doesn't provide a utf16.RuneCountinString() function
