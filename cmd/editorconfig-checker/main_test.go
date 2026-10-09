@@ -369,6 +369,82 @@ func cdRelativeToRepo(t *testing.T, path string) {
 	t.Chdir(newdir)
 }
 
+func TestMainExplicitExcludedFileWarnsAndExitsZero(t *testing.T) {
+	dir := t.TempDir()
+	patchFile := filepath.Join(dir, "changes.patch")
+	if err := os.WriteFile(patchFile, []byte("diff\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	t.Chdir(dir)
+	output, code := runWithArguments(t, "--no-color", "changes.patch")
+	if code != exitCodeNormal {
+		t.Errorf("expected exit code %d, got %d", exitCodeNormal, code)
+	}
+	expected := "skipped: changes.patch (excluded by pattern \\.patch$)"
+	if !strings.Contains(output, expected) {
+		t.Errorf("expected %q in output, got %q", expected, output)
+	}
+}
+
+func TestMainExplicitExcludedFileWithCustomExclude(t *testing.T) {
+	dir := t.TempDir()
+	file := filepath.Join(dir, "test.custom")
+	if err := os.WriteFile(file, []byte("trailing \n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	t.Chdir(dir)
+	output, code := runWithArguments(t, "--no-color", "-exclude", `\.custom$`, "test.custom")
+	if code != exitCodeNormal {
+		t.Errorf("expected exit code %d, got %d", exitCodeNormal, code)
+	}
+	expected := "skipped: test.custom (excluded by pattern \\.custom$)"
+	if !strings.Contains(output, expected) {
+		t.Errorf("expected %q in output, got %q", expected, output)
+	}
+}
+
+func TestMainExplicitExcludedFileWithIgnoreDefaultsChecksFile(t *testing.T) {
+	dir := t.TempDir()
+	if err := os.WriteFile(filepath.Join(dir, ".editorconfig"), []byte("[*]\ninsert_final_newline = true\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	patchFile := filepath.Join(dir, "changes.patch")
+	if err := os.WriteFile(patchFile, []byte("no final newline"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	t.Chdir(dir)
+	output, code := runWithArguments(t, "--no-color", "--ignore-defaults", "changes.patch")
+	if code != exitCodeErrorOccurred {
+		t.Errorf("expected exit code %d because file was checked and has violation, got %d", exitCodeErrorOccurred, code)
+	}
+	if strings.Contains(output, "skipped: changes.patch") {
+		t.Errorf("expected file not to be skipped when --ignore-defaults is active, output: %s", output)
+	}
+}
+
+func TestMainExplicitMixedFilesValidAndExcluded(t *testing.T) {
+	dir := t.TempDir()
+	if err := os.WriteFile(filepath.Join(dir, ".editorconfig"), []byte("[*]\ninsert_final_newline = true\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	patchFile := filepath.Join(dir, "changes.patch")
+	if err := os.WriteFile(patchFile, []byte("content\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	validFile := filepath.Join(dir, "valid.txt")
+	if err := os.WriteFile(validFile, []byte("valid\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	t.Chdir(dir)
+	output, code := runWithArguments(t, "--no-color", "valid.txt", "changes.patch")
+	if code != exitCodeNormal {
+		t.Errorf("expected exit code %d, got %d", exitCodeNormal, code)
+	}
+	if !strings.Contains(output, "skipped: changes.patch (excluded by pattern \\.patch$)") {
+		t.Errorf("expected skip warning for changes.patch, got %s", output)
+	}
+}
+
 func TestReturnCodeInterface(t *testing.T) {
 	// These constants are possibly used by external processes, so we must not change them
 	if exitCodeNormal != 0 {

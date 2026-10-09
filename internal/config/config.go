@@ -345,6 +345,23 @@ func (c *Config) CachedExcludesAsRegexp() (*regexp.Regexp, error) {
 	return c.excludeRegexp, nil
 }
 
+// DefaultExcludesList returns a copy of default exclude patterns.
+func DefaultExcludesList() []string {
+	return append([]string(nil), defaultExcludes...)
+}
+
+// GetExcludePatterns returns all active exclude patterns in evaluation order.
+func (c *Config) GetExcludePatterns() []string {
+	var patterns []string
+	if len(c.Exclude) > 0 {
+		patterns = append(patterns, c.Exclude...)
+	}
+	if !c.IgnoreDefaults {
+		patterns = append(patterns, defaultExcludes...)
+	}
+	return patterns
+}
+
 // Save saves the config to it's Path
 func (c Config) Save(version string) error {
 	if utils.IsRegularFile(c.Path) {
