@@ -9,6 +9,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"regexp"
 	"strings"
 
 	"github.com/gabriel-vasile/mimetype"
@@ -48,6 +49,28 @@ func IsExcluded(filePath string, config config.Config) (bool, error) {
 		return true, err
 	}
 	return re.MatchString(relativeFilePath), nil
+}
+
+// GetMatchingExclude returns the exclude pattern matching the given file path, if excluded.
+func GetMatchingExclude(filePath string, config config.Config) (string, bool, error) {
+	isExcluded, err := IsExcluded(filePath, config)
+	if err != nil || !isExcluded {
+		return "", false, err
+	}
+
+	relativeFilePath, _ := GetRelativePath(filePath)
+
+	for _, pattern := range config.GetExcludePatterns() {
+		re, err := regexp.Compile(pattern)
+		if err != nil {
+			continue
+		}
+		if re.MatchString(relativeFilePath) {
+			return pattern, true, nil
+		}
+	}
+
+	return "", true, nil
 }
 
 // AddToFiles adds a file to a slice if it isn't already in there
@@ -159,6 +182,7 @@ func GetFiles(config config.Config) ([]string, error) {
 
 	// Handle explicit passed files
 	if len(config.PassedFiles) != 0 {
+		seenSkipped := make(map[string]bool)
 		for _, passedFile := range config.PassedFiles {
 			resolved, err := resolvePassedFile(passedFile)
 			if err != nil {
@@ -172,7 +196,29 @@ func GetFiles(config config.Config) ([]string, error) {
 					}
 					filePaths = append(filePaths, files...)
 				} else {
-					filePaths = AddToFiles(filePaths, entry, config)
+					pattern, isExcluded, err := GetMatchingExclude(entry, config)
+					if err != nil {
+						return filePaths, err
+					}
+					if isExcluded {
+						relPath, relErr := GetRelativePath(entry)
+						dedupKey := entry
+						if relErr == nil {
+							dedupKey = relPath
+						}
+						if !seenSkipped[dedupKey] {
+							seenSkipped[dedupKey] = true
+							if config.Logger != nil {
+								if pattern != "" {
+									config.Logger.Warning("skipped: %s (excluded by pattern %s)", entry, pattern)
+								} else {
+									config.Logger.Warning("skipped: %s (excluded)", entry)
+								}
+							}
+						}
+					} else {
+						filePaths = AddToFiles(filePaths, entry, config)
+					}
 				}
 			}
 		}
@@ -286,7 +332,11 @@ func GetRelativePath(filePath string) (string, error) {
 
 	cwd = filepath.FromSlash(cwd)
 	rel, err := filepath.Rel(cwd, filePath)
-	return filepath.ToSlash(rel), err
+	if err != nil {
+		return filepath.ToSlash(filepath.Clean(filePath)), nil
+	}
+
+	return filepath.ToSlash(rel), nil
 }
 
 // IsAllowedContentType returns whether the contentType is
