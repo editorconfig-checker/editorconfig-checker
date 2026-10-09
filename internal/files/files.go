@@ -58,10 +58,7 @@ func GetMatchingExclude(filePath string, config config.Config) (string, bool, er
 		return "", false, err
 	}
 
-	relativeFilePath, err := GetRelativePath(filePath)
-	if err != nil {
-		return "", true, err
-	}
+	relativeFilePath, _ := GetRelativePath(filePath)
 
 	for _, pattern := range config.GetExcludePatterns() {
 		re, err := regexp.Compile(pattern)
@@ -335,7 +332,11 @@ func GetRelativePath(filePath string) (string, error) {
 
 	cwd = filepath.FromSlash(cwd)
 	rel, err := filepath.Rel(cwd, filePath)
-	return filepath.ToSlash(rel), err
+	if err != nil {
+		return filepath.ToSlash(filepath.Clean(filePath)), nil
+	}
+
+	return filepath.ToSlash(rel), nil
 }
 
 // IsAllowedContentType returns whether the contentType is

@@ -109,6 +109,14 @@ func TestGetRelativePath(t *testing.T) {
 	}
 
 	if runtime.GOOS == "windows" {
+		crossDrivePath := "Z:\\other\\drive\\file.txt"
+		relCross, err := GetRelativePath(crossDrivePath)
+		if err != nil {
+			t.Errorf("GetRelativePath cross-drive unexpected error: %v", err)
+		}
+		if relCross != "Z:/other/drive/file.txt" {
+			t.Errorf("GetRelativePath cross-drive expected Z:/other/drive/file.txt, got %s", relCross)
+		}
 		t.Skip("Windows fails if current directory is deleted")
 	}
 
@@ -389,6 +397,24 @@ func TestGetMatchingExclude(t *testing.T) {
 	if isExcluded {
 		t.Errorf("expected no match when IgnoreDefaults is true, got pattern %q", pattern)
 	}
+
+	invalidCfg := config.NewConfig(nil)
+	invalidCfg.Exclude = []string{"["}
+	_, _, err = GetMatchingExclude("main.go", *invalidCfg)
+	if err == nil {
+		t.Errorf("expected error for invalid regex pattern, got nil")
+	}
+
+	splitCfg := config.NewConfig(nil)
+	splitCfg.IgnoreDefaults = true
+	splitCfg.Exclude = []string{"(", ")"}
+	pattern, isExcluded, err = GetMatchingExclude("main.go", *splitCfg)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if !isExcluded || pattern != "" {
+		t.Errorf("expected isExcluded=true and pattern=\"\", got match=%v, pattern=%q", isExcluded, pattern)
+	}
 }
 
 func TestGetFilesExplicitExcludedFile(t *testing.T) {
@@ -482,6 +508,85 @@ func TestGetFilesExplicitExcludedFile(t *testing.T) {
 		}
 		output := buf.String()
 		expectedWarning := "skipped: " + validFile + " (excluded by pattern valid\\.txt$)"
+		if !strings.Contains(output, expectedWarning) {
+			t.Errorf("expected warning %q in output, got: %q", expectedWarning, output)
+		}
+	})
+
+	t.Run("empty matching pattern warning", func(t *testing.T) {
+		cfg := config.NewConfig(nil)
+		cfg.NoColor = true
+		cfg.IgnoreDefaults = true
+		cfg.Exclude = []string{"(", ")"}
+		cfg.PassedFiles = []string{validFile}
+		buf := new(bytes.Buffer)
+		cfg.Logger.SetWriter(buf)
+
+		files, err := GetFiles(*cfg)
+		if err != nil {
+			t.Fatalf("unexpected error: %v", err)
+		}
+		if len(files) != 0 {
+			t.Errorf("expected 0 files, got %v", files)
+		}
+		output := buf.String()
+		expectedWarning := "skipped: " + validFile + " (excluded)"
+		if !strings.Contains(output, expectedWarning) {
+			t.Errorf("expected warning %q in output, got: %q", expectedWarning, output)
+		}
+	})
+
+	t.Run("invalid exclude pattern returns error", func(t *testing.T) {
+		cfg := config.NewConfig(nil)
+		cfg.Exclude = []string{"["}
+		cfg.PassedFiles = []string{validFile}
+		_, err := GetFiles(*cfg)
+		if err == nil {
+			t.Errorf("expected error when exclude regex is invalid")
+		}
+	})
+
+	t.Run("nil logger does not panic when skipping excluded file", func(t *testing.T) {
+		cfg := config.NewConfig(nil)
+		cfg.Logger = nil
+		cfg.PassedFiles = []string{patchFile}
+
+		files, err := GetFiles(*cfg)
+		if err != nil {
+			t.Fatalf("unexpected error: %v", err)
+		}
+		if len(files) != 0 {
+			t.Errorf("expected 0 files, got %v", files)
+		}
+	})
+
+	t.Run("relative explicit excluded file emits warning", func(t *testing.T) {
+		tempDir, err := os.MkdirTemp(".", "test-explicit-*")
+		if err != nil {
+			t.Fatal(err)
+		}
+		t.Cleanup(func() { _ = os.RemoveAll(tempDir) })
+
+		relPatch := filepath.Join(tempDir, "relative.patch")
+		if err := os.WriteFile(relPatch, []byte("diff\n"), 0o644); err != nil {
+			t.Fatal(err)
+		}
+
+		cfg := config.NewConfig(nil)
+		cfg.NoColor = true
+		cfg.PassedFiles = []string{relPatch}
+		buf := new(bytes.Buffer)
+		cfg.Logger.SetWriter(buf)
+
+		files, err := GetFiles(*cfg)
+		if err != nil {
+			t.Fatalf("unexpected error: %v", err)
+		}
+		if len(files) != 0 {
+			t.Errorf("expected 0 files, got %v", files)
+		}
+		output := buf.String()
+		expectedWarning := "skipped: " + relPatch + " (excluded by pattern \\.patch$)"
 		if !strings.Contains(output, expectedWarning) {
 			t.Errorf("expected warning %q in output, got: %q", expectedWarning, output)
 		}
