@@ -12,7 +12,7 @@ require (
 	github.com/gkampitakis/ciinfo v0.3.4
 	github.com/gkampitakis/go-snaps v0.5.23
 	github.com/wlynxg/chardet v1.0.5
-	golang.org/x/text v0.42.0
+	golang.org/x/text v0.43.0
 )
 
 require (
