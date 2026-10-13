@@ -310,7 +310,7 @@ The `$schema` property is an optional field for specifying the JSON Schema and i
 | --- | --- | --- | --- |
 | `Verbose` | bool | `false` | Print verbose output during checking |
 | `Debug` | bool | `false` | Print debugging information |
-| `IgnoreDefaults` | bool | `false` | Ignore the default exclude patterns |
+| `IgnoreDefaults` | bool | `false` | Ignore the [default exclude patterns](#default-excludes) |
 | `SpacesAfterTabs` | bool | `false` | Allow spaces after tabs in indentation (mixed indentation). When `false`, spaces following tabs are flagged as errors |
 | `NoColor` | bool | `false` | Disable colored output |
 | `Exclude` | string[] | `[]` | Regular expressions for files to exclude from checking |
@@ -509,6 +509,8 @@ Unless you choose to [ignore them](#ignoring-default-excludes), these paths are 
 ```
 
 #### Ignoring Default Excludes
+
+`IgnoreDefaults` is `false` by default, so if you do not configure anything and pass no commandline switch, the [default excludes](#default-excludes) are respected — these paths are excluded automatically.
 
 If you either set `IgnoreDefaults` to `true` or pass the `-ignore-defaults` commandline switch, the [default excludes](#default-excludes) will be ignored entirely.
 
