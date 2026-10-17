@@ -109,13 +109,13 @@ func TestGetRelativePath(t *testing.T) {
 	}
 
 	if runtime.GOOS == "windows" {
-		crossDrivePath := "Z:\\other\\drive\\file.txt"
+		crossDrivePath := "Z:\\there\\drive\\file.txt"
 		relCross, err := GetRelativePath(crossDrivePath)
 		if err != nil {
 			t.Errorf("GetRelativePath cross-drive unexpected error: %v", err)
 		}
-		if relCross != "Z:/other/drive/file.txt" {
-			t.Errorf("GetRelativePath cross-drive expected Z:/other/drive/file.txt, got %s", relCross)
+		if relCross != "Z:/there/drive/file.txt" {
+			t.Errorf("GetRelativePath cross-drive expected Z:/there/drive/file.txt, got %s", relCross)
 		}
 		t.Skip("Windows fails if current directory is deleted")
 	}
@@ -561,14 +561,18 @@ func TestGetFilesExplicitExcludedFile(t *testing.T) {
 	})
 
 	t.Run("relative explicit excluded file emits warning", func(t *testing.T) {
-		tempDir, err := os.MkdirTemp(".", "test-explicit-*")
+		tempDir := t.TempDir()
+		cwd, err := os.Getwd()
 		if err != nil {
 			t.Fatal(err)
 		}
-		t.Cleanup(func() { _ = os.RemoveAll(tempDir) })
+		relDir, err := filepath.Rel(cwd, tempDir)
+		if err != nil {
+			t.Skip("cannot form relative path across drives")
+		}
 
-		relPatch := filepath.Join(tempDir, "relative.patch")
-		if err := os.WriteFile(relPatch, []byte("diff\n"), 0o644); err != nil {
+		relPatch := filepath.Join(relDir, "relative.patch")
+		if err := os.WriteFile(filepath.Join(tempDir, "relative.patch"), []byte("diff\n"), 0o644); err != nil {
 			t.Fatal(err)
 		}
 
