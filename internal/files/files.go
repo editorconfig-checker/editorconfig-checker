@@ -213,6 +213,10 @@ func ReadLines(content string) []string {
 	var lines []string
 	stringReader := strings.NewReader(content)
 	fileScanner := bufio.NewScanner(stringReader)
+	// By default a line can't be longer than 64 KiB: Scan stops at the first
+	// longer line and everything from there on is silently dropped. The
+	// content is already in memory, so let a line be as long as all of it.
+	fileScanner.Buffer(nil, len(content)+1)
 	for fileScanner.Scan() {
 		lines = append(lines, fileScanner.Text())
 	}
