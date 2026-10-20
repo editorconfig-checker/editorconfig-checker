@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.0.3](https://github.com/editorconfig-checker/editorconfig-checker/compare/v4.0.2...v4.0.3) (2026-10-20)
+
+
+### Bug Fixes
+
+* **encoding:** allow backspace control character in text files ([#634](https://github.com/editorconfig-checker/editorconfig-checker/issues/634)) ([a453f70](https://github.com/editorconfig-checker/editorconfig-checker/commit/a453f70e611cf95b97a23242416a02a0ff8cda74)), closes [#591](https://github.com/editorconfig-checker/editorconfig-checker/issues/591)
+* keep checking a file past a line longer than 64 KiB ([#643](https://github.com/editorconfig-checker/editorconfig-checker/issues/643)) ([2d5e114](https://github.com/editorconfig-checker/editorconfig-checker/commit/2d5e114c83580c7683f25fb9820ef9ae6df2d5ed))
+
 ## [4.0.2](https://github.com/editorconfig-checker/editorconfig-checker/compare/v4.0.1...v4.0.2) (2026-09-16)
 
 
