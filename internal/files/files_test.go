@@ -402,3 +402,26 @@ func TestGetContentTypeFiles(t *testing.T) {
 		}
 	}
 }
+
+func TestReadLines(t *testing.T) {
+	// longer than the 64 KiB token limit of a default bufio.Scanner
+	longLine := strings.Repeat("a", 128*1024)
+
+	readLinesTests := []struct {
+		content  string
+		expected []string
+	}{
+		{"", nil},
+		{"a\nb\n", []string{"a", "b"}},
+		{"a\r\nb\r\n", []string{"a", "b"}},
+		{"a\nb", []string{"a", "b"}},
+		{"a\n" + longLine + "\nb \n", []string{"a", longLine, "b "}},
+	}
+
+	for _, tt := range readLinesTests {
+		actual := ReadLines(tt.content)
+		if !reflect.DeepEqual(actual, tt.expected) {
+			t.Errorf("ReadLines(%.20q): expected %.20q, got %.20q", tt.content, tt.expected, actual)
+		}
+	}
+}
