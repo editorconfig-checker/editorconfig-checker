@@ -3,6 +3,7 @@ package files
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"io"
 	"io/fs"
@@ -51,31 +52,35 @@ func IsExcluded(filePath string, config config.Config) (bool, error) {
 }
 
 // AddToFiles adds a file to a slice if it isn't already in there
-// and meets the requirements and returns the new slice
-func AddToFiles(filePaths []string, filePath string, config config.Config) []string {
+// and meets the requirements and returns the new slice.
+// A file that does not exist is skipped, any other error is returned.
+func AddToFiles(filePaths []string, filePath string, config config.Config) ([]string, error) {
 	config.Logger.Debug("AddToFiles: investigating file %s", filePath)
 
 	isExcluded, err := IsExcluded(filePath, config)
 	if err == nil && isExcluded {
 		config.Logger.Verbose("Not adding %s to be checked, it is excluded", filePath)
-		return filePaths
+		return filePaths, nil
 	}
 
 	contentType, err := GetContentType(filePath)
 	if err != nil {
+		if !errors.Is(err, fs.ErrNotExist) {
+			return filePaths, err
+		}
 		config.Logger.Error("Could not get the ContentType of file: %s", filePath)
 		config.Logger.Error("%s", err)
-		return filePaths
+		return filePaths, nil
 	}
 	config.Logger.Debug("AddToFiles: detected ContentType %s on file %s", contentType, filePath)
 
 	if !IsAllowedContentType(contentType, config) {
 		config.Logger.Verbose("Not adding %s to be checked, it does not have an allowed ContentType", filePath)
-		return filePaths
+		return filePaths, nil
 	}
 
 	config.Logger.Verbose("Adding %s to be checked", filePath)
-	return append(filePaths, filePath)
+	return append(filePaths, filePath), nil
 }
 
 // hasGlobMeta reports whether the path contains any of the glob metacharacters
@@ -136,7 +141,10 @@ func GetFilesFromDirectory(rootDir string, config config.Config) ([]string, erro
 
 		fullPath := filepath.Join(rootDir, path)
 		if fi.Mode().IsRegular() {
-			filePaths = AddToFiles(filePaths, fullPath, config)
+			filePaths, err = AddToFiles(filePaths, fullPath, config)
+			if err != nil {
+				return err
+			}
 		} else if fi.IsDir() {
 			if isExcluded, err := IsExcluded(fullPath, config); err == nil && isExcluded {
 				config.Logger.Verbose("Not adding %s and subentries to be checked, it is excluded", fullPath)
@@ -172,7 +180,10 @@ func GetFiles(config config.Config) ([]string, error) {
 					}
 					filePaths = append(filePaths, files...)
 				} else {
-					filePaths = AddToFiles(filePaths, entry, config)
+					filePaths, err = AddToFiles(filePaths, entry, config)
+					if err != nil {
+						return filePaths, err
+					}
 				}
 			}
 		}
@@ -200,7 +211,10 @@ func GetFiles(config config.Config) ([]string, error) {
 			// The err would be a broken symlink for example,
 			// so we want to program to continue but the file should not be checked
 			if err == nil && fi.Mode().IsRegular() {
-				filePaths = AddToFiles(filePaths, filePath, config)
+				filePaths, err = AddToFiles(filePaths, filePath, config)
+				if err != nil {
+					return filePaths, err
+				}
 			}
 		}
 	}
@@ -241,7 +255,7 @@ func GetContentType(path string) (string, error) {
 
 	fileContent, err := os.OpenFile(path, os.O_RDONLY, 0)
 	if err != nil {
-		panic(err)
+		return "", err
 	}
 	defer fileContent.Close()
 

@@ -54,6 +54,56 @@ func TestGetContentType(t *testing.T) {
 	}
 }
 
+// writeUnreadableFile creates a non-empty file in dir that cannot be opened for reading
+func writeUnreadableFile(t *testing.T, dir string) string {
+	t.Helper()
+	filePath := filepath.Join(dir, "unreadable.txt")
+	if err := os.WriteFile(filePath, []byte("hello\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.Chmod(filePath, 0); err != nil {
+		t.Fatal(err)
+	}
+	// root can still read the file, and so can Windows, which only sets the read-only attribute
+	if f, err := os.Open(filePath); err == nil {
+		f.Close()
+		t.Skip("the file is still readable after removing its permissions")
+	}
+	return filePath
+}
+
+func TestGetContentTypeUnreadableFile(t *testing.T) {
+	filePath := writeUnreadableFile(t, t.TempDir())
+
+	_, err := GetContentType(filePath)
+	if err == nil {
+		t.Errorf("GetContentType(%q): expected an error, got nil", filePath)
+	}
+}
+
+func TestAddToFilesUnreadableFile(t *testing.T) {
+	filePath := writeUnreadableFile(t, t.TempDir())
+
+	_, err := AddToFiles([]string{}, filePath, *config.NewConfig(nil))
+	if err == nil {
+		t.Errorf("AddToFiles(%q): expected an error, got nil", filePath)
+	}
+}
+
+func TestGetFilesUnreadableFile(t *testing.T) {
+	dir := t.TempDir()
+	filePath := writeUnreadableFile(t, dir)
+
+	for _, passedFile := range []string{filePath, dir} {
+		cfg := config.NewConfig(nil)
+		cfg.PassedFiles = []string{passedFile}
+
+		if _, err := GetFiles(*cfg); err == nil {
+			t.Errorf("GetFiles(%q): expected an error, got nil", passedFile)
+		}
+	}
+}
+
 func TestIsAllowedContentType(t *testing.T) {
 	configuration := config.Config{AllowedContentTypes: []string{"text/", "application/octet-stream"}}
 	isAllowedContentTypeTests := []struct {
@@ -182,7 +232,10 @@ func TestAddToFiles(t *testing.T) {
 	}
 
 	for _, tt := range addToFilesTests {
-		actual := AddToFiles(tt.filePaths, tt.filePath, tt.config)
+		actual, err := AddToFiles(tt.filePaths, tt.filePath, tt.config)
+		if err != nil {
+			t.Errorf("AddToFiles(%s, %s, %+v): expected nil, got %s", tt.filePaths, tt.filePath, tt.config, err.Error())
+		}
 
 		if !reflect.DeepEqual(actual, tt.expected) {
 			t.Error(actual)
