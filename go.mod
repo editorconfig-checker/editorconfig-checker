@@ -8,7 +8,7 @@ toolchain go1.27.0
 
 require (
 	github.com/editorconfig/editorconfig-core-go/v2 v2.6.5
-	github.com/gabriel-vasile/mimetype v1.4.15
+	github.com/gabriel-vasile/mimetype v1.4.16
 	github.com/gkampitakis/ciinfo v0.3.4
 	github.com/gkampitakis/go-snaps v0.5.23
 	github.com/wlynxg/chardet v1.0.5
