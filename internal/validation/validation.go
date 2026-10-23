@@ -187,9 +187,15 @@ func ValidateFileWithDefinition(filePath string, config config.Config, def *edit
 	return validationErrors
 }
 
+// property returns the value of a property from the editorconfig definition in lowercase,
+// since the values of the known properties are case-insensitive
+func property(def *editorconfig.Definition, key string) string {
+	return strings.ToLower(def.Raw[key])
+}
+
 // ValidateFinalNewline runs the final newline validator and processes the error into the proper type
 func ValidateFinalNewline(fileInformation files.FileInformation, config config.Config) error.ValidationError {
-	endOfLine := fileInformation.Editorconfig.Raw["end_of_line"]
+	endOfLine := property(fileInformation.Editorconfig, "end_of_line")
 	if config.Disable.EndOfLine {
 		// A disabled end-of-line check must not make the final-newline check
 		// enforce the configured line-ending representation as a side effect.
@@ -197,7 +203,7 @@ func ValidateFinalNewline(fileInformation files.FileInformation, config config.C
 	}
 	if currentError := validators.FinalNewline(
 		fileInformation.Content,
-		fileInformation.Editorconfig.Raw["insert_final_newline"],
+		property(fileInformation.Editorconfig, "insert_final_newline"),
 		endOfLine); !config.Disable.InsertFinalNewline && currentError != nil {
 		config.Logger.Verbose("Final newline error found in %s", fileInformation.FilePath)
 		return error.ValidationError{LineNumber: -1, Message: currentError}
@@ -210,7 +216,7 @@ func ValidateFinalNewline(fileInformation files.FileInformation, config config.C
 func ValidateLineEnding(fileInformation files.FileInformation, config config.Config) error.ValidationError {
 	if currentError := validators.LineEnding(
 		fileInformation.Content,
-		fileInformation.Editorconfig.Raw["end_of_line"]); !config.Disable.EndOfLine && currentError != nil {
+		property(fileInformation.Editorconfig, "end_of_line")); !config.Disable.EndOfLine && currentError != nil {
 		config.Logger.Verbose("Line ending error found in %s", fileInformation.FilePath)
 		return error.ValidationError{LineNumber: -1, Message: currentError}
 	}
@@ -229,7 +235,7 @@ func ValidateIndentation(fileInformation files.FileInformation, config config.Co
 
 	if currentError := validators.Indentation(
 		fileInformation.Line,
-		fileInformation.Editorconfig.Raw["indent_style"],
+		property(fileInformation.Editorconfig, "indent_style"),
 		indentSize, config); !config.Disable.Indentation && currentError != nil {
 		config.Logger.Verbose("Indentation error found in %s on line %d", fileInformation.FilePath, fileInformation.LineNumber)
 		return error.ValidationError{LineNumber: fileInformation.LineNumber + 1, Message: currentError}
@@ -242,7 +248,7 @@ func ValidateIndentation(fileInformation files.FileInformation, config config.Co
 func ValidateTrailingWhitespace(fileInformation files.FileInformation, config config.Config) error.ValidationError {
 	if currentError := validators.TrailingWhitespace(
 		fileInformation.Line,
-		fileInformation.Editorconfig.Raw["trim_trailing_whitespace"] == "true"); !config.Disable.TrimTrailingWhitespace && currentError != nil {
+		property(fileInformation.Editorconfig, "trim_trailing_whitespace") == "true"); !config.Disable.TrimTrailingWhitespace && currentError != nil {
 		config.Logger.Verbose("Trailing whitespace error found in %s on line %d", fileInformation.FilePath, fileInformation.LineNumber)
 		return error.ValidationError{LineNumber: fileInformation.LineNumber + 1, Message: currentError}
 	}
@@ -257,7 +263,7 @@ func ValidateMaxLineLength(fileInformation files.FileInformation, config config.
 		return error.ValidationError{}
 	}
 
-	charSet := fileInformation.Editorconfig.Raw["charset"]
+	charSet := property(fileInformation.Editorconfig, "charset")
 
 	if currentError := validators.MaxLineLength(fileInformation.Line, maxLineLength, charSet); !config.Disable.MaxLineLength && currentError != nil {
 		config.Logger.Verbose("Max line length error found in %s on %d", fileInformation.FilePath, fileInformation.LineNumber)
@@ -270,7 +276,7 @@ func ValidateMaxLineLength(fileInformation files.FileInformation, config config.
 // ValidateCharset runs the charset validator and processes the error into the proper type
 func ValidateCharset(fileInformation files.FileInformation, config config.Config, charset string) error.ValidationError {
 	if currentError := validators.Charset(
-		fileInformation.Editorconfig.Raw["charset"],
+		property(fileInformation.Editorconfig, "charset"),
 		charset); !config.Disable.Charset && currentError != nil {
 		config.Logger.Verbose("Wrong charset found in %s", fileInformation.FilePath)
 		return error.ValidationError{LineNumber: -1, Message: currentError}
