@@ -27,6 +27,7 @@ func TestFixFile(t *testing.T) {
 		{"cr", "a\nb\r\n", "a\rb\r", map[string]string{"end_of_line": "cr", "insert_final_newline": "true"}},
 		{"mixed", "a\r\nb\nc\r", "a\nb\nc", map[string]string{"end_of_line": "lf", "insert_final_newline": "false"}},
 		{"trailing", "a \n b\t", "a\n b", map[string]string{"trim_trailing_whitespace": "true", "insert_final_newline": "false"}},
+		{"uppercase-values", "a \r\nb", "a\nb\n", map[string]string{"end_of_line": "LF", "trim_trailing_whitespace": "TRUE", "insert_final_newline": "True"}},
 		{"empty-final-newline", "", "", map[string]string{"insert_final_newline": "true"}},
 		{"no-final-newline", "a\n\n", "a", map[string]string{"insert_final_newline": "false"}},
 		{"false-policy", "a\n", "a", map[string]string{"insert_final_newline": "false"}},
