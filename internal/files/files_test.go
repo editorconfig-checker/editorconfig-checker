@@ -3,6 +3,7 @@ package files
 import (
 	"encoding/json"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"reflect"
 	"regexp"
@@ -212,6 +213,67 @@ func TestGetFiles(t *testing.T) {
 		if len(files) > 0 && err != nil {
 			t.Errorf("GetFiles(.): expected nil, got %s", err.Error())
 		}
+	}
+}
+
+func TestGetFilesFromGitWithSpecialCharacters(t *testing.T) {
+	if _, err := exec.LookPath("git"); err != nil {
+		t.Skip("git is not installed")
+	}
+
+	// git exports GIT_DIR and the like to hooks, and the tests may run from one
+	// (see .pre-commit-config.yaml). Unset them, so that the git commands below
+	// act on the test repository and not on the outer one.
+	vars, err := exec.Command("git", "rev-parse", "--local-env-vars").Output()
+	if err != nil {
+		t.Fatalf("setup git rev-parse: %v", err)
+	}
+	for _, name := range strings.Fields(string(vars)) {
+		t.Setenv(name, "") // so that it is restored after the test
+		os.Unsetenv(name)
+	}
+
+	names := []string{
+		"plain.txt",
+		"with space.txt",
+		// git ls-files prints these quoted and escaped unless -z is given
+		"café.md",
+		"日本語.txt",
+	}
+	if runtime.GOOS != "windows" {
+		// same, but these characters are not allowed in file names on Windows
+		names = append(names, `quo"te.txt`, `back\slash.txt`, "tab\there.txt", "new\nline.txt")
+	}
+
+	git := func(args ...string) {
+		t.Helper()
+		if out, err := exec.Command("git", args...).CombinedOutput(); err != nil {
+			t.Fatalf("setup git %s: %v\n%s", args[0], err, out)
+		}
+	}
+
+	dir := t.TempDir()
+	t.Chdir(dir)
+	git("init")
+	for i, name := range names {
+		if err := os.WriteFile(name, []byte("hello\n"), 0o644); err != nil {
+			t.Fatalf("setup writefile: %v", err)
+		}
+		// track every other file, so that both --cached and --others are covered
+		if i%2 == 0 {
+			git("add", "--", name)
+		}
+	}
+
+	files, err := GetFiles(*config.NewConfig(nil))
+	if err != nil {
+		t.Fatalf("GetFiles(git): unexpected error %s", err.Error())
+	}
+
+	sort.Strings(names)
+	sort.Strings(files)
+	if !reflect.DeepEqual(files, names) {
+		t.Errorf("GetFiles(git): expected %q, got %q", names, files)
 	}
 }
 
