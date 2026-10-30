@@ -180,7 +180,10 @@ func GetFiles(config config.Config) ([]string, error) {
 		return filePaths, nil
 	}
 
-	byteArray, err := exec.Command("git", "ls-files", "--cached", "--others", "--exclude-standard").Output()
+	// -z makes git print the paths verbatim and NUL-terminated. Without it, paths
+	// with unusual characters (by default any non-ASCII one, see core.quotePath)
+	// are printed quoted and escaped, and no such file would be found.
+	byteArray, err := exec.Command("git", "ls-files", "-z", "--cached", "--others", "--exclude-standard").Output()
 	if err != nil {
 		// It is not a git repository.
 		cwd, err := os.Getwd()
@@ -191,7 +194,7 @@ func GetFiles(config config.Config) ([]string, error) {
 		return GetFilesFromDirectory(cwd, config)
 	}
 
-	filesSlice := strings.SplitSeq(string(byteArray[:]), "\n")
+	filesSlice := strings.SplitSeq(string(byteArray[:]), "\x00")
 
 	for filePath := range filesSlice {
 		if len(filePath) > 0 {
