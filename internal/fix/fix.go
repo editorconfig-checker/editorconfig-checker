@@ -100,7 +100,7 @@ func fixContent(original []byte, cfg config.Config, def *editorconfig.Definition
 	if !valid {
 		return original, false
 	}
-	trim := def.Raw["trim_trailing_whitespace"] == "true" && !cfg.Disable.TrimTrailingWhitespace
+	trim := strings.ToLower(def.Raw["trim_trailing_whitespace"]) == "true" && !cfg.Disable.TrimTrailingWhitespace
 	if cfg.Disable.EndOfLine {
 		desiredEOL = ""
 	}

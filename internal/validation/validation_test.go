@@ -1,11 +1,15 @@
 package validation
 
 import (
+	"os"
+	"path/filepath"
 	"testing"
 
 	// x-release-please-start-major
 	"github.com/editorconfig-checker/editorconfig-checker/v4/internal/config"
 	// x-release-please-end
+
+	"github.com/editorconfig/editorconfig-core-go/v2"
 )
 
 func TestProcessValidation(t *testing.T) {
@@ -181,5 +185,26 @@ func TestValidateFile(t *testing.T) {
 	result = ValidateFile("./../../testfiles/favorites.gpx.txt", *configuration)
 	if len(result) != 0 {
 		t.Error("Should have no errors when validating valid file, got", result)
+	}
+}
+
+func TestValidateFileWithDefinitionUppercaseValues(t *testing.T) {
+	filePath := filepath.Join(t.TempDir(), "file.txt")
+	if err := os.WriteFile(filePath, []byte("a\r\n\tb \r\n   c"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+
+	// the values of the known properties are case-insensitive
+	def := &editorconfig.Definition{Raw: map[string]string{
+		"end_of_line":              "LF",
+		"indent_style":             "Space",
+		"indent_size":              "4",
+		"insert_final_newline":     "TRUE",
+		"trim_trailing_whitespace": "True",
+	}}
+
+	result := ValidateFileWithDefinition(filePath, *config.NewConfig(nil), def)
+	if len(result) != 5 {
+		t.Errorf("Should have 5 errors, got %v", result)
 	}
 }
