@@ -31,6 +31,9 @@ func TestFixFile(t *testing.T) {
 		{"empty-final-newline", "", "", map[string]string{"insert_final_newline": "true"}},
 		{"no-final-newline", "a\n\n", "a", map[string]string{"insert_final_newline": "false"}},
 		{"false-policy", "a\n", "a", map[string]string{"insert_final_newline": "false"}},
+		{"bom-added", "a\n", "\xef\xbb\xbfa\n", map[string]string{"charset": "utf-8-bom"}},
+		{"bom-removed", "\xef\xbb\xbfa\n", "a\n", map[string]string{"charset": "utf-8"}},
+		{"bom-added-with-eol-fix", "a\r\n", "\xef\xbb\xbfa\n", map[string]string{"charset": "utf-8-bom", "end_of_line": "lf"}},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -91,6 +94,55 @@ func TestFixFileRespectsDisable(t *testing.T) {
 	}
 	if changed {
 		t.Fatal("disabled line should not be changed")
+	}
+}
+
+func TestFixFileKeepsBOMWithoutCharsetDecision(t *testing.T) {
+	tests := []struct {
+		name  string
+		input string
+		rules map[string]string
+	}{
+		{"no-charset", "\xef\xbb\xbfa\n", nil},
+		{"latin1", "\xef\xbb\xbfa\n", map[string]string{"charset": "latin1"}},
+		{"unknown", "\xef\xbb\xbfa\n", map[string]string{"charset": "utf-16le"}},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			path := filepath.Join(t.TempDir(), "file.txt")
+			if err := os.WriteFile(path, []byte(tt.input), 0644); err != nil {
+				t.Fatal(err)
+			}
+			cfg := *config.NewConfig(nil)
+			changed, err := File(path, cfg, definition(tt.rules))
+			if err != nil {
+				t.Fatal(err)
+			}
+			if changed {
+				t.Fatal("BOM state without a charset decision must be kept")
+			}
+			got, err := os.ReadFile(path)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if string(got) != tt.input {
+				t.Fatalf("got %q, want %q", got, tt.input)
+			}
+		})
+	}
+
+	disabledPath := filepath.Join(t.TempDir(), "file.txt")
+	if err := os.WriteFile(disabledPath, []byte("a\n"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	cfg := *config.NewConfig(nil)
+	cfg.Disable.Charset = true
+	changed, err := File(disabledPath, cfg, definition(map[string]string{"charset": "utf-8-bom"}))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if changed {
+		t.Fatal("charset disabled: BOM must not be added")
 	}
 }
 
