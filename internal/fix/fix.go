@@ -107,14 +107,46 @@ func fixContent(original []byte, cfg config.Config, def *editorconfig.Definition
 	if cfg.Disable.InsertFinalNewline {
 		insert = ""
 	}
-	if !trim && desiredEOL == "" && insert == "" {
+	desiredBOM, bomConfigured := configuredBOM(def.Raw["charset"])
+	if cfg.Disable.Charset {
+		bomConfigured = false
+	}
+	if !trim && desiredEOL == "" && insert == "" && !bomConfigured {
 		return original, false
 	}
 
 	fixed := fixLines(splitLines(content), trim, desiredEOL)
 	fixed = fixFinalNewline(fixed, insert, desiredEOL)
-	fixed = append(bom, fixed...)
+	switch {
+	case bomConfigured && desiredBOM && bom == nil:
+		// charset = utf-8-bom on a file without a BOM adds it.
+		fixed = append([]byte{0xef, 0xbb, 0xbf}, fixed...)
+	case bomConfigured && !desiredBOM:
+		// charset = utf-8 removes the BOM; the content was already split off.
+	default:
+		// No charset decision keeps the file's BOM state as-is.
+		fixed = append(bom, fixed...)
+	}
 	return fixed, !bytes.Equal(original, fixed)
+}
+
+// configuredBOM maps a charset EditorConfig value to the BOM state a fixed
+// file should have. Only the UTF-8 variants carry a BOM decision: other
+// charsets are not fixable here (their files never reach the fixer as valid
+// UTF-8), and validation reports unknown values itself. The second return is
+// false when no decision can be made and the current BOM state must be kept.
+func configuredBOM(raw string) (bool, bool) {
+	normalized := strings.ToLower(strings.NewReplacer("-", "", "_", "").Replace(strings.TrimSpace(raw)))
+	switch normalized {
+	case "", "unset", "latin1", "unknown":
+		return false, false
+	case "utf8":
+		return false, true
+	case "utf8bom", "utf8sig":
+		return true, true
+	default:
+		return false, false
+	}
 }
 
 func configuredEOL(raw string) (string, bool) {
