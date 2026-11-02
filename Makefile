@@ -29,7 +29,7 @@ endef
 RACE_OPT := -race
 
 # go: -race requires cgo
-ifneq ($(strip $(CGO_ENABLED)),1)
+ifneq ($(strip $(shell go env CGO_ENABLED)),1)
 RACE_OPT =
 endif
 
@@ -41,7 +41,7 @@ endif
 
 # cgo: C compiler "gcc" not found: exec: "gcc": executable file not found in $PATH
 CC := $(shell go env CC)
-HAS_CC := $(shell command -v $(CC) >/dev/null)
+HAS_CC := $(shell command -v $(CC))
 ifeq ($(HAS_CC),)
 RACE_OPT =
 endif
