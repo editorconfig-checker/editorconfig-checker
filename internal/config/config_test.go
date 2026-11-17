@@ -244,3 +244,47 @@ func TestDefaultExcludesAnchoring(t *testing.T) {
 		}
 	}
 }
+
+func TestGetExcludePatterns(t *testing.T) {
+	c := Config{}
+	patterns := c.GetExcludePatterns()
+	if len(patterns) == 0 {
+		t.Fatalf("expected default exclude patterns, got empty slice")
+	}
+	if patterns[0] != "(^|/)\\.git/" {
+		t.Errorf("expected first pattern to be (^|/)\\.git/, got %s", patterns[0])
+	}
+
+	c.Exclude = []string{"custom_exclude"}
+	patternsWithCustom := c.GetExcludePatterns()
+	if len(patternsWithCustom) != len(patterns)+1 {
+		t.Errorf("expected %d patterns, got %d", len(patterns)+1, len(patternsWithCustom))
+	}
+	if patternsWithCustom[0] != "custom_exclude" {
+		t.Errorf("expected first pattern to be custom_exclude, got %s", patternsWithCustom[0])
+	}
+
+	c.IgnoreDefaults = true
+	patternsIgnoreDefaults := c.GetExcludePatterns()
+	if len(patternsIgnoreDefaults) != 1 || patternsIgnoreDefaults[0] != "custom_exclude" {
+		t.Errorf("expected only custom_exclude, got %v", patternsIgnoreDefaults)
+	}
+
+	c.Exclude = nil
+	patternsEmpty := c.GetExcludePatterns()
+	if len(patternsEmpty) != 0 {
+		t.Errorf("expected empty patterns when ignoring defaults without custom excludes, got %v", patternsEmpty)
+	}
+}
+
+func TestDefaultExcludesList(t *testing.T) {
+	list := DefaultExcludesList()
+	if len(list) == 0 {
+		t.Fatalf("expected non-empty default excludes list")
+	}
+	list[0] = "modified"
+	secondList := DefaultExcludesList()
+	if secondList[0] == "modified" {
+		t.Errorf("DefaultExcludesList should return an isolated copy")
+	}
+}
