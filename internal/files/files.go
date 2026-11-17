@@ -3,7 +3,6 @@ package files
 
 import (
 	"bufio"
-	"errors"
 	"fmt"
 	"io"
 	"io/fs"
@@ -65,7 +64,7 @@ func AddToFiles(filePaths []string, filePath string, config config.Config) ([]st
 
 	contentType, err := GetContentType(filePath)
 	if err != nil {
-		if !errors.Is(err, fs.ErrNotExist) {
+		if !isNotExist(err) {
 			return filePaths, err
 		}
 		config.Logger.Error("Could not get the ContentType of file: %s", filePath)
