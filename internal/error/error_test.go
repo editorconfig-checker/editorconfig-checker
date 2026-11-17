@@ -379,6 +379,37 @@ func TestFormatErrors(t *testing.T) {
 	}
 }
 
+func TestPrintErrorsAsGHAEscapesWorkflowCommand(t *testing.T) {
+	input := []ValidationErrors{
+		{
+			FilePath: "docs/a,b:c%d.md",
+			Errors: []ValidationError{
+				{LineNumber: -1, Message: errors.New("100% wrong\nreally")},
+				{LineNumber: 3, Message: errors.New("trailing whitespace")},
+				{LineNumber: 5, Message: errors.New("wrong indent")},
+				{LineNumber: 6, Message: errors.New("wrong indent")},
+			},
+		},
+	}
+
+	expected := "::error file=docs/a%2Cb%3Ac%25d.md::100%25 wrong%0Areally\n" +
+		"::error file=docs/a%2Cb%3Ac%25d.md,line=3::trailing whitespace\n" +
+		"::error file=docs/a%2Cb%3Ac%25d.md,line=5,endLine=6::wrong indent\n" +
+		"\n3 errors found\n"
+
+	buffer := bytes.Buffer{}
+	config := config.NewConfig(nil)
+	config.Format = outputformat.GithubActions
+	config.NoColor = true
+	config.Logger.NoColor = true
+	config.Logger.SetWriter(&buffer)
+	PrintErrors(input, *config)
+
+	if buffer.String() != expected {
+		t.Errorf("unexpected github-actions output\nwant: %q\ngot:  %q", expected, buffer.String())
+	}
+}
+
 func TestPrintErrorCount(t *testing.T) {
 	tests := []struct {
 		name       string

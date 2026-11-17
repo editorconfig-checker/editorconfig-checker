@@ -5,6 +5,7 @@ import (
 	"cmp"
 	"encoding/json"
 	"slices"
+	"strings"
 
 	// x-release-please-start-major
 	"github.com/editorconfig-checker/editorconfig-checker/v4/internal/config"
@@ -148,6 +149,15 @@ func PrintErrorsAsHumanReadable(errors []ValidationErrors, config config.Config)
 	PrintErrorCount(errorCount, config)
 }
 
+// ghaDataEscaper and ghaPropertyEscaper escape the message and the property
+// values of a workflow command, the same way the GitHub Actions toolkit does.
+// Without this, a file name containing a comma or a colon ends the file
+// property early and the annotation points at the wrong file.
+var (
+	ghaDataEscaper     = strings.NewReplacer("%", "%25", "\r", "%0D", "\n", "%0A")
+	ghaPropertyEscaper = strings.NewReplacer("%", "%25", "\r", "%0D", "\n", "%0A", ":", "%3A", ",", "%2C")
+)
+
 func PrintErrorsAsGHA(errors []ValidationErrors, config config.Config) {
 	errorCount := 0
 	for _, fileErrors := range errors {
@@ -160,24 +170,26 @@ func PrintErrorsAsGHA(errors []ValidationErrors, config config.Config) {
 			config.Logger.Error("%s", err)
 			continue
 		}
+		relativeFilePath = ghaPropertyEscaper.Replace(relativeFilePath)
 
 		fileErrors.Errors = ConsolidateErrors(fileErrors.Errors, config)
 
 		// github-actions: A format dedicated for usage in Github Actions
 		for _, singleError := range fileErrors.Errors {
 			errorCount++
+			message := ghaDataEscaper.Replace(singleError.Message.Error())
 
 			if singleError.LineNumber == -1 {
-				config.Logger.Error("::error file=%s::%s", relativeFilePath, singleError.Message)
+				config.Logger.Error("::error file=%s::%s", relativeFilePath, message)
 				continue
 			}
 
 			if singleError.AdditionalIdenticalErrorCount == 0 {
-				config.Logger.Error("::error file=%s,line=%d::%s", relativeFilePath, singleError.LineNumber, singleError.Message)
+				config.Logger.Error("::error file=%s,line=%d::%s", relativeFilePath, singleError.LineNumber, message)
 				continue
 			}
 
-			config.Logger.Error("::error file=%s,line=%d,endLine=%d::%s", relativeFilePath, singleError.LineNumber, singleError.LineNumber+singleError.AdditionalIdenticalErrorCount, singleError.Message)
+			config.Logger.Error("::error file=%s,line=%d,endLine=%d::%s", relativeFilePath, singleError.LineNumber, singleError.LineNumber+singleError.AdditionalIdenticalErrorCount, message)
 		}
 	}
 	PrintErrorCount(errorCount, config)
