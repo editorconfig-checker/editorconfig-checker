@@ -78,6 +78,32 @@ func TestFixFile(t *testing.T) {
 	}
 }
 
+func TestFixPreservesCarriageReturnInsideLine(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "commands.vim")
+	input := []byte("command! WindowsToLinux :%s/\r$//\n")
+	if err := os.WriteFile(path, input, 0644); err != nil {
+		t.Fatal(err)
+	}
+	cfg := *config.NewConfig(nil)
+	changed, err := File(path, cfg, definition(map[string]string{
+		"end_of_line":          "lf",
+		"insert_final_newline": "true",
+	}))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if changed {
+		t.Fatal("interior carriage return was treated as a line ending")
+	}
+	got, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if string(got) != string(input) {
+		t.Fatalf("got %q, want %q", got, input)
+	}
+}
+
 func TestFixFileRespectsDisable(t *testing.T) {
 	path := filepath.Join(t.TempDir(), "file.txt")
 	input := "// editorconfig-checker-disable-next-line\na \n"

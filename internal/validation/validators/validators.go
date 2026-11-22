@@ -123,30 +123,37 @@ func FinalNewline(fileContent string, insertFinalNewline string, endOfLine strin
 	return nil
 }
 
-// LineEnding validates if a file uses the correct line endings
+// LineEnding validates if a file uses the correct line endings.
+// A carriage return that sits inside an LF-terminated line is content. Vim
+// patterns such as :%s/^M$// store that byte in the line, and it is not a break.
 func LineEnding(fileContent string, endOfLine string) error {
-	if endOfLine != "" && endOfLine != "unset" {
-		expectedEolChar := utils.GetEolChar(endOfLine)
-		expectedEols := len(strings.Split(fileContent, expectedEolChar))
-		lfEols := len(strings.Split(fileContent, "\n"))
-		crEols := len(strings.Split(fileContent, "\r"))
-		crlfEols := len(strings.Split(fileContent, "\r\n"))
+	if endOfLine == "" || endOfLine == "unset" {
+		return nil
+	}
+	var expected string
+	switch endOfLine {
+	case "lf":
+		expected = "\n"
+	case "cr":
+		expected = "\r"
+	case "crlf":
+		expected = "\r\n"
+	default:
+		return nil
+	}
 
-		switch endOfLine {
-		case "lf":
-			if expectedEols != lfEols || crEols != 1 || crlfEols != 1 {
-				return errors.New("not all lines have the correct end of line character")
-			}
-		case "cr":
-			if expectedEols != crEols || lfEols != 1 || crlfEols != 1 {
-				return errors.New("not all lines have the correct end of line character")
-			}
-		case "crlf":
-			// A bit hacky because \r\n matches \r and \n
-			if expectedEols != crlfEols || lfEols != expectedEols || crEols != expectedEols {
-				return errors.New("not all lines have the correct end of line character")
-			}
+	content := []byte(fileContent)
+	hasLF := utils.FileHasLF(content)
+	for i := 0; i < len(content); {
+		n := utils.LineBreakLen(content, i, hasLF)
+		if n == 0 {
+			i++
+			continue
 		}
+		if string(content[i:i+n]) != expected {
+			return errors.New("not all lines have the correct end of line character")
+		}
+		i += n
 	}
 
 	return nil

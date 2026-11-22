@@ -14,6 +14,7 @@ import (
 	// x-release-please-start-major
 	"github.com/editorconfig-checker/editorconfig-checker/v4/internal/config"
 	"github.com/editorconfig-checker/editorconfig-checker/v4/internal/encoding"
+	"github.com/editorconfig-checker/editorconfig-checker/v4/internal/utils"
 	// x-release-please-end
 )
 
@@ -259,18 +260,23 @@ type linePart struct {
 
 func splitLines(content []byte) []linePart {
 	var result []linePart
-	for len(content) > 0 {
-		idx := bytes.IndexAny(content, "\r\n")
-		if idx < 0 {
-			result = append(result, linePart{text: append([]byte(nil), content...)})
-			break
+	hasLF := utils.FileHasLF(content)
+	start := 0
+	for i := 0; i < len(content); {
+		n := utils.LineBreakLen(content, i, hasLF)
+		if n == 0 {
+			i++
+			continue
 		}
-		termLen := 1
-		if content[idx] == '\r' && idx+1 < len(content) && content[idx+1] == '\n' {
-			termLen = 2
-		}
-		result = append(result, linePart{text: append([]byte(nil), content[:idx]...), terminator: append([]byte(nil), content[idx:idx+termLen]...)})
-		content = content[idx+termLen:]
+		result = append(result, linePart{
+			text:       append([]byte(nil), content[start:i]...),
+			terminator: append([]byte(nil), content[i:i+n]...),
+		})
+		i += n
+		start = i
+	}
+	if start < len(content) {
+		result = append(result, linePart{text: append([]byte(nil), content[start:]...)})
 	}
 	// Match the line-scoped directives understood by validation. Global rules
 	// (line endings and final newlines) are intentionally not line-scoped, but
@@ -333,8 +339,14 @@ func detectFinalEOL(content []byte) string {
 
 func hasDisableFile(content []byte) bool {
 	first := content
-	if idx := bytes.IndexAny(first, "\r\n"); idx >= 0 {
-		first = first[:idx]
+	hasLF := utils.FileHasLF(content)
+	for i := 0; i < len(content); {
+		n := utils.LineBreakLen(content, i, hasLF)
+		if n > 0 {
+			first = content[:i]
+			break
+		}
+		i++
 	}
 	return bytes.Contains(first, []byte("editorconfig-checker-disable-file"))
 }
