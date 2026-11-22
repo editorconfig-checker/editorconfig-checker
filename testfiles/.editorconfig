@@ -24,3 +24,6 @@ indent_size = unset
 
 [definitely-not-utf8.txt]
 charset = utf-8
+
+[invalid-max-line-length.txt]
+max_line_length = 2px

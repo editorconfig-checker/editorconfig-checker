@@ -174,6 +174,13 @@ func TestValidateFile(t *testing.T) {
 
 	configuration = config.NewConfig(nil)
 	configuration.Verbose = true
+	result = ValidateFile("./../../testfiles/invalid-max-line-length.txt", *configuration)
+	if len(result) != 1 {
+		t.Error("Should have one error for an unparsable max_line_length, got", result)
+	}
+
+	configuration = config.NewConfig(nil)
+	configuration.Verbose = true
 	result = ValidateFile("./../../testfiles/spaces-with-tab.c", *configuration)
 	if len(result) != 1 {
 		t.Error("Should have one error, got", result)

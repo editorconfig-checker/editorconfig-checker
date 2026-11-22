@@ -3,6 +3,7 @@ package validation
 
 import (
 	"bytes"
+	"fmt"
 	"os"
 	"regexp"
 	"runtime"
@@ -258,7 +259,19 @@ func ValidateTrailingWhitespace(fileInformation files.FileInformation, config co
 
 // ValidateMaxLineLength runs the max line length validator and processes the error into the proper type
 func ValidateMaxLineLength(fileInformation files.FileInformation, config config.Config) error.ValidationError {
-	maxLineLength, err := strconv.Atoi(fileInformation.Editorconfig.Raw["max_line_length"])
+	rawMaxLineLength := fileInformation.Editorconfig.Raw["max_line_length"]
+	// an unparsable value used to silently turn the check off, so a typo in the
+	// .editorconfig disabled it without any diagnostic
+	if rawMaxLineLength != "" && !config.Disable.MaxLineLength {
+		if _, err := strconv.Atoi(rawMaxLineLength); err != nil {
+			return error.ValidationError{
+				LineNumber: -1,
+				Message:    fmt.Errorf("invalid max_line_length value '%s': expected a whole number", rawMaxLineLength),
+			}
+		}
+	}
+
+	maxLineLength, err := strconv.Atoi(rawMaxLineLength)
 	if err != nil {
 		return error.ValidationError{}
 	}
