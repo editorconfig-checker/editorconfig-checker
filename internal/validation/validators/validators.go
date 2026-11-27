@@ -54,7 +54,7 @@ func Space(line string, indentSize int, config config.Config) error {
 			matched, _ := regexp.MatchString(regexpPattern, line)
 
 			if !matched {
-				return fmt.Errorf("wrong amount of left-padding spaces(want multiple of %d)", indentSize)
+				return fmt.Errorf("wrong number of left-padding spaces(want multiple of %d)", indentSize)
 			}
 		}
 	}
