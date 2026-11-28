@@ -146,7 +146,7 @@ func TestIndentation(t *testing.T) {
 		expected    error
 	}{
 		{"    x", "space", 4, nil},
-		{"   x", "space", 4, errors.New("wrong amount of left-padding spaces(want multiple of 4)")},
+		{"   x", "space", 4, errors.New("wrong number of left-padding spaces(want multiple of 4)")},
 		{"	x", "tab", 0, nil},
 		{"   x", "tab", 0, errors.New("wrong indentation type (spaces instead of tabs)")},
 		{"	x", "x", 0, nil},
@@ -179,9 +179,9 @@ func TestSpace(t *testing.T) {
 		{"x", 4, enabledIndentSizeConfig, nil},
 		{"    x", 4, enabledIndentSizeConfig, nil},
 		// 5 spaces
-		{"     x", 4, enabledIndentSizeConfig, errors.New("wrong amount of left-padding spaces(want multiple of 4)")},
+		{"     x", 4, enabledIndentSizeConfig, errors.New("wrong number of left-padding spaces(want multiple of 4)")},
 		// 3 spaces
-		{"   x", 4, enabledIndentSizeConfig, errors.New("wrong amount of left-padding spaces(want multiple of 4)")},
+		{"   x", 4, enabledIndentSizeConfig, errors.New("wrong number of left-padding spaces(want multiple of 4)")},
 		// correct indented block comment, empty and non empty
 		{"     *", 4, enabledIndentSizeConfig, nil},
 		{"     * some comment", 4, enabledIndentSizeConfig, nil},

@@ -40,7 +40,7 @@ func (error1 *ValidationError) Equal(error2 ValidationError) bool {
 
 }
 
-// GetErrorCount returns the amount of errors
+// GetErrorCount returns the number of errors
 func GetErrorCount(errors []ValidationErrors) int {
 	var errorCount = 0
 
