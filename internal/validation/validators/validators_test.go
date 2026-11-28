@@ -101,7 +101,9 @@ func TestLineEnding(t *testing.T) {
 		{"x\n", "lf", nil},
 		{"x\r", "lf", errors.New("not all lines have the correct end of line character")},
 		{"x\r\n", "lf", errors.New("not all lines have the correct end of line character")},
-		{"x\ry\nz\n", "lf", errors.New("not all lines have the correct end of line character")},
+		{"x\ry\nz\n", "lf", nil},
+		{"x\r\ny\n", "lf", errors.New("not all lines have the correct end of line character")},
+		{":%s/\r$//\n", "lf", nil},
 
 		{"x", "cr", nil},
 		{"x\r", "cr", nil},
